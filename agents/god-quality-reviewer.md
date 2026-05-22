@@ -47,6 +47,16 @@ Your job: would you ship this code in production?
 - No premature abstraction either
 - Comments explain WHY, not WHAT (the code shows what)
 
+### 6. Simplicity and Surgicality
+- The solution is the minimum code that satisfies the verified behavior
+- No single-use abstraction replaces clearer direct code
+- No options, settings, adapters, or extension points exist for hypothetical
+  future needs
+- No adjacent cleanup, formatting churn, renames, or dead-code deletion appears
+  unless it was required by the request
+- Any follow-up cleanup is reported separately instead of being smuggled into
+  the diff
+
 ## Output
 
 Return verdict to orchestrator:
@@ -60,6 +70,7 @@ Return verdict to orchestrator:
 - [PASS/FAIL] Error handling: [evidence]
 - [PASS/FAIL] Performance: [evidence]
 - [PASS/FAIL] Maintainability: [evidence]
+- [PASS/FAIL] Simplicity and surgicality: [evidence]
 
 ### Verdict: PASS / FAIL
 
@@ -68,7 +79,7 @@ Return verdict to orchestrator:
 
 ## Pass Criteria
 
-ALL five dimensions must PASS. Any FAIL blocks the commit.
+ALL six dimensions must PASS. Any FAIL blocks the commit.
 
 If FAIL: orchestrator returns the slice to god-executor.
 If PASS: orchestrator commits the slice atomically.

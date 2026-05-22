@@ -56,7 +56,7 @@ installed Godpowers runtime adds capabilities.
 {
   "godpowers-features": {
     "feature-set-version": 1,
-    "runtime-version": "2.0.0",
+    "runtime-version": "2.0.1",
     "known": [
       "planning-system-migration",
       "source-system-sync-back",
@@ -69,6 +69,7 @@ installed Godpowers runtime adds capabilities.
       "dashboard-action-brief",
       "host-capabilities",
       "quick-proof",
+      "request-trace-review",
       "dogfood-runner",
       "extension-authoring",
       "suite-release-dry-run"

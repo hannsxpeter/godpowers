@@ -28,6 +28,11 @@ Spawn **god-spec-reviewer** in fresh context with:
 - The plan or PRD acceptance criteria
 - The test results
 
+Stage 1 also checks that touched files trace to the request, acceptance
+criteria, failing test, or implementation-caused cleanup. Scope creep,
+speculative flexibility, and unrelated churn fail here before code-quality
+review begins.
+
 If FAIL: report findings and STOP. The code must be fixed before Stage 2.
 If PASS: proceed to Stage 2.
 
@@ -35,6 +40,10 @@ If PASS: proceed to Stage 2.
 
 Spawn **god-quality-reviewer** in fresh context with:
 - The code to review (independent of stage 1 findings)
+
+Stage 2 checks readability, security, error handling, performance,
+maintainability, and simplicity/surgicality. A solution that is technically
+correct but broader than needed still fails review.
 
 If FAIL: report findings.
 If PASS: review complete.

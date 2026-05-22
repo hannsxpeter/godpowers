@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v2.0.0.
+Complete command, agent, and artifact reference for v2.0.1.
 
 ## Slash commands (110 total)
 
@@ -27,6 +27,11 @@ Complete command, agent, and artifact reference for v2.0.0.
 Dashboard status uses workflow progress from `.godpowers/state.json` tracked
 steps. Audit, hygiene, remediation, and launch-readiness scores are separate
 metrics and should be labeled separately in closeouts.
+
+Build and review commands enforce request-trace discipline. Executors state
+assumptions, public behavior, expected files, and verification before editing.
+Reviewers block scope creep, speculative flexibility, unrelated cleanup, and
+diff churn that cannot be traced to the request or slice plan.
 
 ### Lifecycle (Tier 0)
 - `/god-init` - Initialize a Godpowers project. Detects mode (A/B/C/D) and scale.
@@ -194,9 +199,9 @@ First-party packs on npm:
 ### Tier 2 - Building agents
 - `god-repo-scaffolder` - Repo bootstrap.
 - `god-planner` - Build slice planner.
-- `god-executor` - TDD-enforced implementer.
-- `god-spec-reviewer` - Stage 1 code review.
-- `god-quality-reviewer` - Stage 2 code review.
+- `god-executor` - TDD-enforced implementer with request-trace discipline.
+- `god-spec-reviewer` - Stage 1 code review for spec compliance and scope.
+- `god-quality-reviewer` - Stage 2 code review for quality, simplicity, and surgicality.
 - `god-storyteller` - STORY.md writer.
 
 ### Tier 3 - Shipping agents

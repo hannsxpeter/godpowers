@@ -42,6 +42,14 @@ Answer each with EVIDENCE from the code:
    - Anything in the code that wasn't in the plan?
    - If yes: was it necessary, or is it scope creep?
 
+5. **Can every changed line trace to the request?**
+   - Does each file touched map to a plan item, acceptance criterion, failing
+     test, or cleanup caused by the implementation?
+   - Were unrelated comments, formatting, names, or neighboring abstractions
+     changed without a plan-backed reason?
+   - Did the executor add future options, broad configurability, or generic
+     interfaces that the current slice does not need?
+
 ## Output
 
 Return verdict to orchestrator:
@@ -65,6 +73,8 @@ Return verdict to orchestrator:
 - Every acceptance criterion has a corresponding test
 - All edge cases from the plan are covered
 - No scope creep without justification
+- Every touched file has request-trace evidence
+- No speculative flexibility or unrelated cleanup entered the diff
 
 If FAIL: orchestrator returns the slice to god-executor with the failures.
 If PASS: orchestrator spawns god-quality-reviewer next.

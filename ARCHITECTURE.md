@@ -1,12 +1,12 @@
 # Godpowers Architecture (v2 Design Target)
 
-> Status: STABLE v2.0.0 (pure-skill model plus executable proof, dogfood, host guarantees, and release surface sync)
+> Status: STABLE v2.0.1 (pure-skill model plus executable proof, dogfood, host guarantees, release surface sync, and request-trace review)
 > Authors: Godpowers Team
-> Last updated: 2026-05-16
+> Last updated: 2026-05-22
 
 This document is the canonical design for Godpowers as a coherent product.
-v2.0.0 keeps the public slash-command surface stable while adding executable
-proof as a first-class product surface. Auto-invoked commands, spawned agents,
+v2.0.1 keeps the public slash-command surface stable while adding
+request-trace review guardrails to the executable proof baseline. Auto-invoked commands, spawned agents,
 local runtime helpers, platform-specific spawning limits, migration imports,
 sync-back writes, feature-awareness refreshes, repo documentation sync, repo
 surface sync, quick proof runs, dogfood runs, canary reports, and dashboard

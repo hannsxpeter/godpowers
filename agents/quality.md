@@ -20,6 +20,8 @@ see_also: [security, deploy]
 - [DECISION] `npm run pack:check` verifies the npm package contains required runtime files and excludes local-only files.
 - [DECISION] `npm run release:check` combines the full test suite, audit checks, and package contents checks.
 - [DECISION] The full test suite includes quick proof docs, repo-doc sync, repo-surface sync, automation surface sync, host capabilities, extension authoring, dogfood, Mode D, installer smoke, workflow runner, OTel, and extension publish-readiness checks.
+- [DECISION] Build and review agents enforce request-trace discipline: assumptions, public behavior, expected files, and verification command must be explicit before implementation.
+- [DECISION] Reviewers block speculative flexibility, unrelated cleanup, and diff churn that cannot be traced to the user request, slice plan, failing test, or implementation-caused cleanup.
 
 ## Standards
 

@@ -154,7 +154,7 @@ Each agent has these fields:
 | **Outputs** | Source code, test files, regression tests (in repo, not .godpowers/) |
 | **Downstream consumers** | god-spec-reviewer, god-quality-reviewer |
 | **Artifact awareness** | Just the slice plan and immediate context (FRESH context per slice; doesn't see other slices) |
-| **Handoff** | Returns to orchestrator. DOES NOT commit. Reviewers must pass first. Have-nots B-01..B-12. |
+| **Handoff** | Returns to orchestrator with tests, checks, changed files, request-trace evidence, and follow-up cleanup noticed but not touched. DOES NOT commit. Reviewers must pass first. Have-nots B-01..B-12. |
 | **Standards check** | NO (reviewers serve this purpose) |
 
 ### god-spec-reviewer
@@ -162,11 +162,11 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | god-orchestrator after god-executor completes a slice; `/god-review` |
-| **Inputs** | The slice plan, PRD acceptance criteria, the code god-executor wrote |
+| **Inputs** | The slice plan, PRD acceptance criteria, the code god-executor wrote, and request-trace evidence |
 | **Outputs** | PASS or FAIL verdict (returned to orchestrator), findings if FAIL |
 | **Downstream consumers** | god-quality-reviewer (only if PASS) |
 | **Artifact awareness** | Slice plan, PRD requirements |
-| **Handoff** | If FAIL: returns to orchestrator, which returns slice to god-executor with feedback. If PASS: orchestrator spawns god-quality-reviewer. |
+| **Handoff** | If FAIL: returns to orchestrator, which returns slice to god-executor with feedback, including scope creep or unrelated churn. If PASS: orchestrator spawns god-quality-reviewer. |
 | **Standards check** | This IS the standards check (stage 1) |
 
 ### god-quality-reviewer
@@ -178,7 +178,7 @@ Each agent has these fields:
 | **Outputs** | PASS or FAIL verdict (returned to orchestrator), findings if FAIL |
 | **Downstream consumers** | god-orchestrator (commits if both PASS) |
 | **Artifact awareness** | Just the code. Does NOT see other slices. |
-| **Handoff** | If FAIL: orchestrator returns to god-executor. If PASS: orchestrator commits the slice atomically. |
+| **Handoff** | If FAIL: orchestrator returns to god-executor, including any overcomplication, speculative abstraction, or surgicality failure. If PASS: orchestrator commits the slice atomically. |
 | **Standards check** | This IS the standards check (stage 2) |
 
 ---

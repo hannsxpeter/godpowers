@@ -2,8 +2,8 @@
 
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
-> Last updated: 2026-05-16
-> Current shipped: v2.0.0
+> Last updated: 2026-05-22
+> Current shipped: v2.0.1
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 2.0 public adoption window. Everything user-facing remains slash-command based.
@@ -12,7 +12,7 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v2.0.0)
+### Current surface (v2.0.1)
 
 What works today:
 - **110 slash commands** as thin orchestrators (front door, lifecycle, planning,
@@ -80,6 +80,10 @@ What works today:
   Mode D suite.
 - **Codex agent metadata**: all 40 Godpowers specialist agents install with
   matching TOML metadata files for Codex spawnability
+- **Request-trace build and review guardrails**: executors state assumptions,
+  changed public behavior, expected files, and verification before editing,
+  while reviewers block speculative flexibility, unrelated cleanup, and
+  untraceable diff churn.
 - **Safe-sync release truth routing**: `/god-next` and `/god-deploy` route
   unresolved safe sync gates to `/god-reconcile Release Truth And Safe Sync`
 - **Direct release gate enforcement**: Tier 3 commands, `/god-mode`, and
@@ -127,6 +131,21 @@ See [CHANGELOG.md](../CHANGELOG.md) for full release history.
 ---
 
 ## Stability window
+
+### v2.0.1 - Request-Trace Review Stable
+
+**Theme**: keep the public command surface frozen while making existing build
+and review workflows narrower, clearer, and less surprising.
+
+Changed in 2.0.1:
+
+- `god-executor` now records assumptions, public behavior, expected files, and
+  verification before implementation.
+- `god-spec-reviewer` blocks scope creep and touched files that do not trace
+  to the request, plan, acceptance criteria, failing test, or cleanup caused by
+  the implementation.
+- `god-quality-reviewer` adds a simplicity and surgicality dimension that
+  blocks speculative abstraction, unrelated cleanup, and broad future-proofing.
 
 ### v2.0.0 - Executable Proof Stable
 

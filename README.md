@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.0.1-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -21,11 +21,12 @@ Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 2.0.0 makes the proof loop executable. `npx godpowers quick-proof
+Version 2.0.1 keeps the proof loop executable. `npx godpowers quick-proof
 --project=.` now renders a shipped fixture with real `.godpowers/state.json`,
 computed next action, missing-artifact visibility, and host guarantees. The
-release also ships a proof transcript, adoption canary harness, published npm
-install verifier, and package checks that require the proof fixture to ship.
+2.0 line also ships a proof transcript, adoption canary harness, published npm
+install verifier, package checks that require the proof fixture to ship, and
+request-trace review guardrails for narrower implementation diffs.
 
 Strict release readiness remains fail-closed. Godpowers requires delegated
 release checks to cover root docs, docs, agents, skills, routing, workflows,
@@ -50,7 +51,8 @@ It fuses four disciplines into one unified workflow:
 - **Execution engine** - fresh-context agents in parallel waves with atomic
   commits. No context rot. No sequential bottlenecks.
 - **Quality immune system** - TDD enforcement, two-stage code review (spec
-  compliance + code quality), verification before completion.
+  compliance + code quality), request-trace discipline, surgical diffs, and
+  verification before completion.
 - **Team intelligence** - scale-adaptive complexity, specialized agent personas
   (PM, Architect, Executor, Reviewer, Harden Auditor, etc.).
 
@@ -249,6 +251,11 @@ going through build, verification, repair, launch, and final sync. Red tests,
 typecheck, lint, build, or check output enter the repair loop instead of being
 reported as the final result.
 
+Build execution also keeps diffs narrow. Executors state assumptions, expected
+files, changed public behavior, and verification before editing. Reviewers
+block speculative flexibility, unrelated cleanup, and any touched file that
+does not trace back to the request or slice plan.
+
 If `.godpowers` state already exists, `/god-mode --yolo` resumes from disk
 instead of asking for the project description again.
 
@@ -388,6 +395,7 @@ Every artifact passes these mechanical checks before it is treated as complete:
 | Artifact-on-disk | Phantom resume (agent claims done, file does not exist) |
 | Critical-finding gate | Shipping with known security holes |
 | TDD enforcement | Code without tests |
+| Request-trace review | Scope creep, unrelated cleanup, speculative abstraction |
 | Two-stage review | Code that passes tests but violates spec or quality |
 
 These checks are guardrails, not proof that the product is right. A PRD can

@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-05-22
+
+Request-trace review guardrails.
+
+### Added
+- Added request-trace discipline to `god-executor`: assumptions, public
+  behavior, expected files, and verification command must be explicit before
+  implementation.
+- Added scope and request-trace review checks to `god-spec-reviewer` so
+  unplanned touched files, speculative flexibility, and unrelated churn block
+  review before quality review begins.
+- Added a simplicity and surgicality dimension to `god-quality-reviewer` so
+  overcomplicated but technically correct code does not pass review.
+- Added `request-trace-review` to runtime feature awareness for upgraded
+  projects.
+
+### Changed
+- `/god-build` and `/god-review` docs now describe the narrow-diff guardrails
+  as part of existing workflows instead of introducing a new command.
+- README, reference docs, roadmap, architecture, quality pillar, release notes,
+  package metadata, and lockfile now align to `2.0.1`.
+
+### Guardrails
+- The public command surface stays frozen; the change strengthens existing
+  executor and reviewer contracts.
+- Reviewers now reject speculative abstraction, unrelated cleanup, and diff
+  churn that cannot be traced to the user request, slice plan, failing test, or
+  implementation-caused cleanup.
+
 ## [2.0.0] - 2026-05-16
 
 Executable proof release.

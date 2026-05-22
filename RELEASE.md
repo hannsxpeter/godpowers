@@ -1,12 +1,11 @@
-# Godpowers 2.0.0 Release
+# Godpowers 2.0.1 Release
 
-Date: 2026-05-16
+Date: 2026-05-22
 
-Godpowers 2.0.0 is the executable proof release. It turns the first-user trust
-loop from documentation into a packaged command: `npx godpowers quick-proof
---project=.`. The command renders a shipped fixture with real
-`.godpowers/state.json`, computed next action, missing-artifact visibility, and
-host guarantees from the caller's environment.
+Godpowers 2.0.1 is the request-trace review release. It keeps the 2.0
+executable proof surface stable while tightening existing build and review
+workflows so implementation diffs stay narrow, verifiable, and tied to the
+user request.
 
 ## What is stable
 
@@ -32,20 +31,20 @@ host guarantees from the caller's environment.
 - Extension authoring scaffold helper
 - Mode D suite release dry-run planner
 - Release gate enforcement through `npm run release:check`
+- Request-trace discipline in `god-executor`
+- Scope and request-trace checks in `god-spec-reviewer`
+- Simplicity and surgicality checks in `god-quality-reviewer`
 
 ## What is new
 
-- Added `lib/quick-proof.js` and the packaged `fixtures/quick-proof/` project.
-- Added the `quick-proof` CLI command as the first executable proof path.
-- Added `docs/quick-proof.md` to make the first 10 minutes concrete.
-- Added `docs/proof-transcript.md` with captured command output.
-- Added `docs/adoption-canary.md` with pass/fail criteria and feedback routing.
-- Added `scripts/run-adoption-canary.js` to clone an external repo and capture
-  quick proof, dashboard status, and next-route output.
-- Added `scripts/verify-published-install.js` to verify the npm registry
-  artifact after publish.
-- Updated README, getting started, reference, release checklist, and Pillars
-  context so executable proof is part of the product surface.
+- Added request-trace discipline to `god-executor`: assumptions, public
+  behavior, expected files, and verification command must be explicit before
+  implementation.
+- Added scope and request-trace checks to `god-spec-reviewer`.
+- Added simplicity and surgicality checks to `god-quality-reviewer`.
+- Added `request-trace-review` to runtime feature awareness.
+- Updated README, reference docs, roadmap, architecture, quality pillar,
+  changelog, package metadata, and lockfile for `2.0.1`.
 
 ## Guardrails
 
@@ -53,6 +52,10 @@ host guarantees from the caller's environment.
 - Quick proof reports the user's current host guarantees separately from the
   shipped fixture state.
 - Package contents checks require the quick-proof module and fixture state.
+- Build and review commands keep the public command surface unchanged.
+- Reviewers reject speculative abstraction, unrelated cleanup, and diff churn
+  that cannot be traced to the request, slice plan, failing test, or
+  implementation-caused cleanup.
 - Published install verification checks quick proof, status, next, Claude
   install, and Codex metadata install against the registry artifact.
 - The adoption canary harness captures CLI-verifiable signals only. Host slash
@@ -71,7 +74,7 @@ Release validation includes:
 - local reinstall from the generated tarball
 - npm publish with provenance when available
 - `node scripts/verify-published-install.js godpowers@latest`
-- GitHub release creation for `v2.0.0`
+- GitHub release creation for `v2.0.1`
 
-The `v2.0.0` tag should point to the release commit that matches the npm
-`godpowers@2.0.0` package.
+The `v2.0.1` tag should point to the release commit that matches the npm
+`godpowers@2.0.1` package.

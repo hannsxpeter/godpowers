@@ -51,6 +51,24 @@ For every behavior in this slice:
 - **"I'll add tests after"**: VIOLATION. Stop. Write the test now.
 - **Skipping refactor**: allowed only if the GREEN code is already clean.
 - **Multiple slices in one commit**: VIOLATION. One slice = one commit.
+- **Speculative flexibility**: VIOLATION. Do not add configuration,
+  extension points, generalized helpers, or future-proof branches unless the
+  slice plan requires them.
+- **Unrelated cleanup**: VIOLATION. Do not reformat, rename, refactor, or
+  delete adjacent code that is not required for this slice. Mention it as a
+  follow-up instead.
+
+## Request Trace Discipline
+
+Before editing, convert the slice into a short execution contract:
+- Assumptions you are making
+- The public behavior that will change
+- The smallest files you expect to touch
+- The verification command that proves success
+
+Every changed line must trace back to that contract, the failing test, or a
+cleanup created by your own change. If you cannot explain the trace, revert
+that line before returning control to the orchestrator.
 
 ## After All Behaviors Complete
 
@@ -63,6 +81,7 @@ For every behavior in this slice:
    - Test results
    - Typecheck/check results
    - Files changed
+   - Any unrelated improvement you noticed but intentionally left untouched
    - Ready for two-stage review
 
 DO NOT commit yet. The orchestrator will spawn god-spec-reviewer and
@@ -79,6 +98,10 @@ happen.
 - Test suite failing (any test, not just yours)
 - Typecheck/check command failing
 - Stub/placeholder code in the implementation
+- Speculative abstraction, unused configurability, or generalized plumbing not
+  demanded by the slice
+- Drive-by formatting, renaming, refactoring, or dead-code deletion unrelated
+  to the slice
 
 ## Repair Mode
 

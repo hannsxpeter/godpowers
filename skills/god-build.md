@@ -39,12 +39,14 @@ For each slice in the wave (parallel):
    - The slice plan only (not the whole PLAN.md)
    - Relevant ARCH context for this slice
    - Stack DECISION
-2. Wait for executor to complete (TDD enforced)
+2. Wait for executor to complete (TDD and request-trace discipline enforced)
 3. Spawn **god-spec-reviewer** in fresh context (independent of executor)
-   - If FAIL: return slice to god-executor with findings
+   - If FAIL: return slice to god-executor with findings, including any
+     scope creep or request-trace failures
    - If PASS: proceed to stage 2
 4. Spawn **god-quality-reviewer** in fresh context (independent)
-   - If FAIL: return slice to god-executor with findings
+   - If FAIL: return slice to god-executor with findings, including any
+     overcomplication, speculative abstraction, or unrelated cleanup
    - If PASS: commit the slice atomically
 5. Update `.godpowers/build/STATE.md`
 
