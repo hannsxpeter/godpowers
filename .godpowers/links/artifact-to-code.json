@@ -1,0 +1,106 @@
+{
+  "P-MUST-01": [
+    "agents/god-orchestrator.md"
+  ],
+  "P-MUST-02": [
+    "lib/state.js"
+  ],
+  "P-MUST-03": [
+    "lib/multi-repo-detector.js"
+  ],
+  "P-MUST-04": [
+    "agents/god-pm.md"
+  ],
+  "P-MUST-05": [
+    "agents/god-architect.md"
+  ],
+  "P-MUST-06": [
+    "agents/god-roadmapper.md"
+  ],
+  "P-MUST-07": [
+    "agents/god-stack-selector.md"
+  ],
+  "P-MUST-08": [
+    "agents/god-repo-scaffolder.md"
+  ],
+  "P-MUST-09": [
+    "agents/god-executor.md",
+    "agents/god-planner.md"
+  ],
+  "P-MUST-10": [
+    "agents/god-quality-reviewer.md",
+    "agents/god-spec-reviewer.md"
+  ],
+  "P-MUST-11": [
+    "lib/have-nots-validator.js"
+  ],
+  "P-MUST-12": [
+    "lib/artifact-linter.js"
+  ],
+  "P-MUST-13": [
+    "lib/linkage.js"
+  ],
+  "P-MUST-14": [
+    "lib/code-scanner.js",
+    "lib/reverse-sync.js"
+  ],
+  "P-MUST-15": [
+    "lib/drift-detector.js"
+  ],
+  "P-MUST-16": [
+    "lib/dashboard.js"
+  ],
+  "P-MUST-17": [
+    "lib/recipes.js"
+  ],
+  "P-MUST-18": [
+    "lib/router.js"
+  ],
+  "P-MUST-19": [
+    "lib/requirements.js",
+    "skills/god-progress.md"
+  ],
+  "P-MUST-20": [
+    "lib/checkpoint.js"
+  ],
+  "P-MUST-21": [
+    "bin/install.js",
+    "lib/installer-core.js"
+  ],
+  "P-MUST-22": [
+    "agents/god-harden-auditor.md"
+  ],
+  "P-SHOULD-01": [
+    "agents/god-deploy-engineer.md"
+  ],
+  "P-SHOULD-02": [
+    "agents/god-observability-engineer.md"
+  ],
+  "P-SHOULD-03": [
+    "agents/god-launch-strategist.md"
+  ],
+  "P-SHOULD-04": [
+    "agents/god-updater.md"
+  ],
+  "P-SHOULD-05": [
+    "lib/host-capabilities.js"
+  ],
+  "P-SHOULD-06": [
+    "lib/runtime-test.js"
+  ],
+  "P-SHOULD-07": [
+    "lib/source-sync.js"
+  ],
+  "P-COULD-01": [
+    "agents/god-coordinator.md"
+  ],
+  "P-COULD-02": [
+    "agents/god-automation-engineer.md"
+  ],
+  "P-COULD-03": [
+    "lib/otel-exporter.js"
+  ],
+  "P-COULD-04": [
+    "agents/god-spike-runner.md"
+  ]
+}

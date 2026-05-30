@@ -1,0 +1,173 @@
+# Roadmap
+
+> Reconstructed from the shipped Godpowers v2.1.1 codebase. Increments carry a
+> stable M-slug id, a Status, and the PRD requirement ids they deliver. Status is
+> derived from the linkage map; an increment is marked done only when its
+> requirements are implemented and shipped. Horizons reflect the original build
+> order, not remaining work: nearly everything here is already built.
+
+## Now (currently building, committed)
+
+### Delivery Increment 1: Autonomous orchestration
+- **ID**: M-orchestration
+- **Status**: done
+- **Goal**: A user runs one command and Godpowers drives the whole project run, pausing only for real human decisions.
+- **Completion gate**: `/god-mode` advances every tier from disk state and resumes cleanly across sessions.
+- **Size**: L
+- **Depends on**: None
+- **Features (from PRD)**:
+  - P-MUST-01
+  - P-MUST-02
+  - P-MUST-03
+  - P-MUST-20
+
+### Delivery Increment 2: Planning artifacts
+- **ID**: M-planning
+- **Status**: done
+- **Goal**: Godpowers produces a PRD, architecture, roadmap, and stack decision an engineer can build from without a clarification meeting.
+- **Completion gate**: All four planning artifacts exist on disk and pass have-nots.
+- **Size**: L
+- **Depends on**: M-orchestration
+- **Features (from PRD)**:
+  - P-MUST-04
+  - P-MUST-05
+  - P-MUST-06
+  - P-MUST-07
+
+### Delivery Increment 3: Build and review
+- **ID**: M-build-review
+- **Status**: done
+- **Goal**: Godpowers scaffolds a repo and builds features test-first, with two independent reviews before any commit.
+- **Completion gate**: Each slice lands with a passing test and survives spec review and quality review.
+- **Size**: L
+- **Depends on**: M-planning
+- **Features (from PRD)**:
+  - P-MUST-08
+  - P-MUST-09
+  - P-MUST-10
+
+### Delivery Increment 4: Quality gates
+- **ID**: M-quality-gates
+- **Status**: done
+- **Goal**: Every artifact is checked against named failure modes and mechanically linted before it ships.
+- **Completion gate**: A have-not trip or a lint error blocks the artifact until repaired.
+- **Size**: M
+- **Depends on**: M-planning
+- **Features (from PRD)**:
+  - P-MUST-11
+  - P-MUST-12
+
+### Delivery Increment 5: Traceability
+- **ID**: M-traceability
+- **Status**: done
+- **Goal**: Every requirement maps to the code that implements it, and drift between artifacts and code is surfaced.
+- **Completion gate**: The linkage map resolves requirement ids to files and flags code referencing removed ids.
+- **Size**: M
+- **Depends on**: M-build-review
+- **Features (from PRD)**:
+  - P-MUST-13
+  - P-MUST-14
+  - P-MUST-15
+
+### Delivery Increment 6: Status and routing
+- **ID**: M-status-routing
+- **Status**: done
+- **Goal**: The user always sees where the project stands and the single best next action, derived from disk.
+- **Completion gate**: `/god-status` and `/god-next` render from disk and name their runtime source.
+- **Size**: M
+- **Depends on**: M-orchestration
+- **Features (from PRD)**:
+  - P-MUST-16
+  - P-MUST-17
+  - P-MUST-18
+
+### Delivery Increment 7: Deliverable progress
+- **ID**: M-deliverable-progress
+- **Status**: building
+- **Goal**: The user can see which requirements and increments are done, in progress, or not started, and open one checklist file.
+- **Completion gate**: `/god-progress` writes a REQUIREMENTS.md ledger derived from the linkage map; shipped in a tagged release.
+- **Size**: M
+- **Depends on**: M-status-routing
+- **Features (from PRD)**:
+  - P-MUST-19
+
+### Delivery Increment 8: Multi-tool reach
+- **ID**: M-multi-tool
+- **Status**: done
+- **Goal**: One install puts Godpowers into Claude Code, Codex, Cursor, Windsurf, Gemini, and other agent tools.
+- **Completion gate**: The installer writes the correct skill and agent layout per host.
+- **Size**: M
+- **Depends on**: M-orchestration
+- **Features (from PRD)**:
+  - P-MUST-21
+
+### Delivery Increment 9: Security hardening
+- **ID**: M-hardening
+- **Status**: done
+- **Goal**: A deployed app is reviewed against the OWASP Top 10 before it is allowed to launch.
+- **Completion gate**: A Critical finding blocks launch until fixed.
+- **Size**: M
+- **Depends on**: M-build-review
+- **Features (from PRD)**:
+  - P-MUST-22
+
+## Next (planned, flexible)
+
+### Delivery Increment 10: Shipping pipeline
+- **ID**: M-shipping
+- **Status**: done
+- **Goal**: Godpowers sets up deploy, observability, and launch so an app reaches real users with tested rollback and D-7 to D+7 runbooks.
+- **Completion gate**: Same-artifact promotion, SLO-backed alerts, and a launch runbook all exist.
+- **Size**: L
+- **Depends on**: M-hardening
+- **Features (from PRD)**:
+  - P-SHOULD-01
+  - P-SHOULD-02
+  - P-SHOULD-03
+
+### Delivery Increment 11: Steady-state operations
+- **ID**: M-steady-state
+- **Status**: done
+- **Goal**: After launch, feature, hotfix, and refactor workflows keep artifacts, linkage, and runtime in sync.
+- **Completion gate**: A feature run reconciles against existing artifacts and verifies the running app.
+- **Size**: L
+- **Depends on**: M-shipping
+- **Features (from PRD)**:
+  - P-SHOULD-04
+  - P-SHOULD-05
+  - P-SHOULD-06
+  - P-SHOULD-07
+
+### Delivery Increment 12: Advanced capabilities
+- **ID**: M-advanced
+- **Status**: done
+- **Goal**: Power users get Mode D multi-repo suite coordination, host automation, OpenTelemetry export, and research spikes.
+- **Completion gate**: Mode D sync, automation setup, OpenTelemetry export, and spikes each run end to end.
+- **Size**: L
+- **Depends on**: M-steady-state
+- **Features (from PRD)**:
+  - P-COULD-01
+  - P-COULD-02
+  - P-COULD-03
+  - P-COULD-04
+
+## Later (intent, not commitment)
+
+### Theme: Deeper traceability and ecosystem
+- Track per-requirement test coverage in the ledger, not only code links.
+- Preview impacted dependents and planned writes before a Mode D suite mutation.
+- Grow the published extension and integration ecosystem.
+
+---
+
+## Have-Nots Checklist
+
+- [x] Every delivery increment goal fails substitution test
+- [x] Every increment has a stable M-slug id and a Status field
+- [x] Every committed increment lists the PRD requirement ids it delivers
+- [x] Every completion gate is observable (not subjective)
+- [x] No feature appears that isn't in the PRD
+- [x] Delivery increments are NOT all the same size (real prioritization)
+- [x] Dependency edges are explicit
+- [x] No day-level precision without capacity input
+- [x] Later section has at least one theme

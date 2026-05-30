@@ -1,0 +1,116 @@
+{
+  "P-MUST-01\u0000agents/god-orchestrator.md": [
+    "reconstruct"
+  ],
+  "P-MUST-02\u0000lib/state.js": [
+    "reconstruct"
+  ],
+  "P-MUST-03\u0000lib/multi-repo-detector.js": [
+    "reconstruct"
+  ],
+  "P-MUST-04\u0000agents/god-pm.md": [
+    "reconstruct"
+  ],
+  "P-MUST-05\u0000agents/god-architect.md": [
+    "reconstruct"
+  ],
+  "P-MUST-06\u0000agents/god-roadmapper.md": [
+    "reconstruct"
+  ],
+  "P-MUST-07\u0000agents/god-stack-selector.md": [
+    "reconstruct"
+  ],
+  "P-MUST-08\u0000agents/god-repo-scaffolder.md": [
+    "reconstruct"
+  ],
+  "P-MUST-09\u0000agents/god-executor.md": [
+    "reconstruct"
+  ],
+  "P-MUST-09\u0000agents/god-planner.md": [
+    "reconstruct"
+  ],
+  "P-MUST-10\u0000agents/god-spec-reviewer.md": [
+    "reconstruct"
+  ],
+  "P-MUST-10\u0000agents/god-quality-reviewer.md": [
+    "reconstruct"
+  ],
+  "P-MUST-11\u0000lib/have-nots-validator.js": [
+    "reconstruct"
+  ],
+  "P-MUST-12\u0000lib/artifact-linter.js": [
+    "reconstruct"
+  ],
+  "P-MUST-13\u0000lib/linkage.js": [
+    "reconstruct"
+  ],
+  "P-MUST-14\u0000lib/reverse-sync.js": [
+    "reconstruct"
+  ],
+  "P-MUST-14\u0000lib/code-scanner.js": [
+    "reconstruct"
+  ],
+  "P-MUST-15\u0000lib/drift-detector.js": [
+    "reconstruct"
+  ],
+  "P-MUST-16\u0000lib/dashboard.js": [
+    "reconstruct"
+  ],
+  "P-MUST-17\u0000lib/recipes.js": [
+    "reconstruct"
+  ],
+  "P-MUST-18\u0000lib/router.js": [
+    "reconstruct"
+  ],
+  "P-MUST-19\u0000lib/requirements.js": [
+    "reconstruct"
+  ],
+  "P-MUST-19\u0000skills/god-progress.md": [
+    "reconstruct"
+  ],
+  "P-MUST-20\u0000lib/checkpoint.js": [
+    "reconstruct"
+  ],
+  "P-MUST-21\u0000lib/installer-core.js": [
+    "reconstruct"
+  ],
+  "P-MUST-21\u0000bin/install.js": [
+    "reconstruct"
+  ],
+  "P-MUST-22\u0000agents/god-harden-auditor.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-01\u0000agents/god-deploy-engineer.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-02\u0000agents/god-observability-engineer.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-03\u0000agents/god-launch-strategist.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-04\u0000agents/god-updater.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-05\u0000lib/host-capabilities.js": [
+    "reconstruct"
+  ],
+  "P-SHOULD-06\u0000lib/runtime-test.js": [
+    "reconstruct"
+  ],
+  "P-SHOULD-07\u0000lib/source-sync.js": [
+    "reconstruct"
+  ],
+  "P-COULD-01\u0000agents/god-coordinator.md": [
+    "reconstruct"
+  ],
+  "P-COULD-02\u0000agents/god-automation-engineer.md": [
+    "reconstruct"
+  ],
+  "P-COULD-03\u0000lib/otel-exporter.js": [
+    "reconstruct"
+  ],
+  "P-COULD-04\u0000agents/god-spike-runner.md": [
+    "reconstruct"
+  ]
+}

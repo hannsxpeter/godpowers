@@ -1,0 +1,116 @@
+{
+  "agents/god-orchestrator.md": [
+    "P-MUST-01"
+  ],
+  "lib/state.js": [
+    "P-MUST-02"
+  ],
+  "lib/multi-repo-detector.js": [
+    "P-MUST-03"
+  ],
+  "agents/god-pm.md": [
+    "P-MUST-04"
+  ],
+  "agents/god-architect.md": [
+    "P-MUST-05"
+  ],
+  "agents/god-roadmapper.md": [
+    "P-MUST-06"
+  ],
+  "agents/god-stack-selector.md": [
+    "P-MUST-07"
+  ],
+  "agents/god-repo-scaffolder.md": [
+    "P-MUST-08"
+  ],
+  "agents/god-executor.md": [
+    "P-MUST-09"
+  ],
+  "agents/god-planner.md": [
+    "P-MUST-09"
+  ],
+  "agents/god-spec-reviewer.md": [
+    "P-MUST-10"
+  ],
+  "agents/god-quality-reviewer.md": [
+    "P-MUST-10"
+  ],
+  "lib/have-nots-validator.js": [
+    "P-MUST-11"
+  ],
+  "lib/artifact-linter.js": [
+    "P-MUST-12"
+  ],
+  "lib/linkage.js": [
+    "P-MUST-13"
+  ],
+  "lib/reverse-sync.js": [
+    "P-MUST-14"
+  ],
+  "lib/code-scanner.js": [
+    "P-MUST-14"
+  ],
+  "lib/drift-detector.js": [
+    "P-MUST-15"
+  ],
+  "lib/dashboard.js": [
+    "P-MUST-16"
+  ],
+  "lib/recipes.js": [
+    "P-MUST-17"
+  ],
+  "lib/router.js": [
+    "P-MUST-18"
+  ],
+  "lib/requirements.js": [
+    "P-MUST-19"
+  ],
+  "skills/god-progress.md": [
+    "P-MUST-19"
+  ],
+  "lib/checkpoint.js": [
+    "P-MUST-20"
+  ],
+  "lib/installer-core.js": [
+    "P-MUST-21"
+  ],
+  "bin/install.js": [
+    "P-MUST-21"
+  ],
+  "agents/god-harden-auditor.md": [
+    "P-MUST-22"
+  ],
+  "agents/god-deploy-engineer.md": [
+    "P-SHOULD-01"
+  ],
+  "agents/god-observability-engineer.md": [
+    "P-SHOULD-02"
+  ],
+  "agents/god-launch-strategist.md": [
+    "P-SHOULD-03"
+  ],
+  "agents/god-updater.md": [
+    "P-SHOULD-04"
+  ],
+  "lib/host-capabilities.js": [
+    "P-SHOULD-05"
+  ],
+  "lib/runtime-test.js": [
+    "P-SHOULD-06"
+  ],
+  "lib/source-sync.js": [
+    "P-SHOULD-07"
+  ],
+  "agents/god-coordinator.md": [
+    "P-COULD-01"
+  ],
+  "agents/god-automation-engineer.md": [
+    "P-COULD-02"
+  ],
+  "lib/otel-exporter.js": [
+    "P-COULD-03"
+  ],
+  "agents/god-spike-runner.md": [
+    "P-COULD-04"
+  ]
+}

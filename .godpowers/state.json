@@ -48,7 +48,10 @@
     },
     "tier-1": {
       "prd": {
-        "status": "pending"
+        "status": "done",
+        "artifact": "prd/PRD.md",
+        "artifact-hash": "sha256:152534e86df733176ada4ebb3d9681f0c204332fd5aad566333d80c02aad05e7",
+        "updated": "2026-05-30T12:36:39.545Z"
       },
       "design": {
         "status": "not-required"
@@ -60,7 +63,10 @@
         "status": "pending"
       },
       "roadmap": {
-        "status": "pending"
+        "status": "done",
+        "artifact": "roadmap/ROADMAP.md",
+        "artifact-hash": "sha256:6a521060977f174d0445aae12a2929ca4934968fc0ea555f87877c18982ac685",
+        "updated": "2026-05-30T12:36:39.545Z"
       },
       "stack": {
         "status": "pending"
@@ -91,11 +97,129 @@
   },
   "lifecycle-phase": "in-arc",
   "linkage": {
-    "coverage-pct": 0,
+    "coverage-pct": 100,
     "orphan-count": 0,
     "drift-count": 0,
     "review-required-items": 0
   },
   "yolo-decisions": [],
-  "lock": null
+  "lock": null,
+  "deliverables": {
+    "updated": "2026-05-30T12:36:39.544Z",
+    "source": "PRD + ROADMAP + linkage + build state",
+    "requirements": {
+      "total": 33,
+      "done": 32,
+      "in-progress": 1,
+      "untouched": 0,
+      "percent": 97
+    },
+    "increments": [
+      {
+        "id": "M-orchestration",
+        "name": "Autonomous orchestration",
+        "horizon": "now",
+        "status": "done",
+        "done": 4,
+        "total": 4
+      },
+      {
+        "id": "M-planning",
+        "name": "Planning artifacts",
+        "horizon": "now",
+        "status": "done",
+        "done": 4,
+        "total": 4
+      },
+      {
+        "id": "M-build-review",
+        "name": "Build and review",
+        "horizon": "now",
+        "status": "done",
+        "done": 3,
+        "total": 3
+      },
+      {
+        "id": "M-quality-gates",
+        "name": "Quality gates",
+        "horizon": "now",
+        "status": "done",
+        "done": 2,
+        "total": 2
+      },
+      {
+        "id": "M-traceability",
+        "name": "Traceability",
+        "horizon": "now",
+        "status": "done",
+        "done": 3,
+        "total": 3
+      },
+      {
+        "id": "M-status-routing",
+        "name": "Status and routing",
+        "horizon": "now",
+        "status": "done",
+        "done": 3,
+        "total": 3
+      },
+      {
+        "id": "M-deliverable-progress",
+        "name": "Deliverable progress",
+        "horizon": "now",
+        "status": "building",
+        "done": 0,
+        "total": 1
+      },
+      {
+        "id": "M-multi-tool",
+        "name": "Multi-tool reach",
+        "horizon": "now",
+        "status": "done",
+        "done": 1,
+        "total": 1
+      },
+      {
+        "id": "M-hardening",
+        "name": "Security hardening",
+        "horizon": "now",
+        "status": "done",
+        "done": 1,
+        "total": 1
+      },
+      {
+        "id": "M-shipping",
+        "name": "Shipping pipeline",
+        "horizon": "next",
+        "status": "done",
+        "done": 3,
+        "total": 3
+      },
+      {
+        "id": "M-steady-state",
+        "name": "Steady-state operations",
+        "horizon": "next",
+        "status": "done",
+        "done": 4,
+        "total": 4
+      },
+      {
+        "id": "M-advanced",
+        "name": "Advanced capabilities",
+        "horizon": "next",
+        "status": "done",
+        "done": 4,
+        "total": 4
+      },
+      {
+        "id": "M-deeper-traceability-and-ecosystem",
+        "name": "Deeper traceability and ecosystem",
+        "horizon": "later",
+        "status": "pending",
+        "done": 0,
+        "total": 0
+      }
+    ],
+    "gaps": 0
+  }
 }
