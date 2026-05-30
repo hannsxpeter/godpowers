@@ -1,0 +1,28 @@
+apiVersion: godpowers/v1
+kind: Recipe
+metadata:
+  name: whats-done
+  category: meta
+  description: "See how much of the product is built (requirements and increments)"
+
+triggers:
+  intent-keywords:
+    - "how far along"
+    - "how far along are we"
+    - "whats done"
+    - "what is done"
+    - "whats left"
+    - "what is left"
+    - "requirements status"
+    - "deliverable progress"
+    - "show the checklist"
+    - "how much is built"
+
+sequences:
+  default:
+    description: "See which requirements and increments are done, in progress, or not started"
+    steps:
+      - command: "/god-progress"
+        why: "Derives requirement and increment status from disk and refreshes .godpowers/REQUIREMENTS.md"
+
+default-sequence: default
