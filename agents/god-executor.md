@@ -44,6 +44,22 @@ For every behavior in this slice:
 2. Run the full test suite
 3. All tests must still pass
 
+## Requirement traceability (load-bearing)
+
+The slice plan lists the PRD requirement ids this slice delivers (its
+`Requirements:` field). Stamp them into the code so the linkage map,
+reverse-sync, and the deliverable ledger (`/god-progress`) can trace each
+requirement to its implementation. Without this, the ledger shows the
+requirement as "not started" even after you ship it.
+
+- Put a `// Implements: P-MUST-01` annotation near the top of the primary
+  file(s) you create or modify for the slice. Use the file's comment syntax
+  (`#`, `/* */`, `<!-- -->`). Combine ids when one file serves several:
+  `// Implements: P-MUST-01, P-MUST-02`.
+- Prefer naming at least one test with the id, e.g.
+  `describe('P-MUST-01: user can sign in', ...)`; the scanner reads these too.
+- Use the exact ids from the slice plan. Do not invent ids.
+
 ## Rules (non-negotiable)
 
 - **Code before test**: VIOLATION. Delete the implementation. Write the test first.
@@ -102,6 +118,7 @@ happen.
   demanded by the slice
 - Drive-by formatting, renaming, refactoring, or dead-code deletion unrelated
   to the slice
+- A requirement id from the slice plan is not annotated in the code (`// Implements: P-...`)
 
 ## Repair Mode
 
