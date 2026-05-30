@@ -83,7 +83,7 @@
 
 ### Delivery Increment 7: Deliverable progress
 - **ID**: M-deliverable-progress
-- **Status**: building
+- **Status**: done
 - **Goal**: The user can see which requirements and increments are done, in progress, or not started, and open one checklist file.
 - **Completion gate**: `/god-progress` writes a REQUIREMENTS.md ledger derived from the linkage map; shipped in a tagged release.
 - **Size**: M

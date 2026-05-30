@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-05-30
-> Current shipped: v2.2.0
+> Current shipped: v2.2.1
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 2.0 public adoption window. Everything user-facing remains slash-command based.
@@ -12,7 +12,7 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v2.2.0)
+### Current surface (v2.2.1)
 
 What works today:
 - **111 slash commands** as thin orchestrators (front door, lifecycle, planning,

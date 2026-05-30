@@ -5,19 +5,19 @@
 > `/god-progress`, `/god-status`, or `/god-sync`. Do not hand-edit statuses;
 > they are recomputed from disk.
 
-Updated: 2026-05-30T12:36:39.544Z
+Updated: 2026-05-30T22:07:46.390Z
 Source: PRD + ROADMAP + linkage forward map + build state
-Progress: [###################-] 32/33 done (97%) | 1 in progress | 0 not started
+Progress: [####################] 33/33 done (100%) | 0 in progress | 0 not started
 
 ## By priority
 
 | Priority | Done | In progress | Not started | Total |
 |----------|------|-------------|-------------|-------|
-| MUST | 21 | 1 | 0 | 22 |
+| MUST | 22 | 0 | 0 | 22 |
 | SHOULD | 7 | 0 | 0 | 7 |
 | COULD | 4 | 0 | 0 | 4 |
 
-## Done (32)
+## Done (33)
 
 - [x] **P-MUST-01** Run a full idea-to-production project autonomously through tiered specialist agents _(increment: M-orchestration)_ - agents/god-orchestrator.md
 - [x] **P-MUST-02** Hold project state on disk and re-derive it every turn, never from agent memory _(increment: M-orchestration)_ - lib/state.js
@@ -37,6 +37,7 @@ Progress: [###################-] 32/33 done (97%) | 1 in progress | 0 not starte
 - [x] **P-MUST-16** Render a disk-derived dashboard of phase, progress, and the single next action _(increment: M-status-routing)_ - lib/dashboard.js
 - [x] **P-MUST-17** Route free-text intent to the right command sequence via recipes _(increment: M-status-routing)_ - lib/recipes.js
 - [x] **P-MUST-18** Suggest the next command from disk state with a one-line reason _(increment: M-status-routing)_ - lib/router.js
+- [x] **P-MUST-19** Report deliverable progress: which requirements and increments are done, in progress, or not started _(increment: M-deliverable-progress)_ - lib/requirements.js, skills/god-progress.md
 - [x] **P-MUST-20** Pause and resume work across sessions without losing context _(increment: M-orchestration)_ - lib/checkpoint.js
 - [x] **P-MUST-21** Install across Claude Code, Codex, Cursor, Windsurf, Gemini, and other agent tools _(increment: M-multi-tool)_ - bin/install.js, lib/installer-core.js
 - [x] **P-MUST-22** Run an adversarial security review against the OWASP Top 10 before launch _(increment: M-hardening)_ - agents/god-harden-auditor.md
@@ -52,9 +53,9 @@ Progress: [###################-] 32/33 done (97%) | 1 in progress | 0 not starte
 - [x] **P-COULD-03** Export traces and metrics through an OpenTelemetry-compatible pipeline. _(increment: M-advanced)_ - lib/otel-exporter.js
 - [x] **P-COULD-04** Run time-boxed research spikes that build a minimal proof and then stop. _(increment: M-advanced)_ - agents/god-spike-runner.md
 
-## In progress (1)
+## In progress (0)
 
-- [~] **P-MUST-19** Report deliverable progress: which requirements and increments are done, in progress, or not started _(increment: M-deliverable-progress)_ - lib/requirements.js, skills/god-progress.md
+- (none)
 
 ## Not started (0)
 
@@ -68,11 +69,10 @@ Progress: [###################-] 32/33 done (97%) | 1 in progress | 0 not starte
 - [x] **M-quality-gates**: Quality gates _[now]_ - done - 2/2 requirements done
 - [x] **M-traceability**: Traceability _[now]_ - done - 3/3 requirements done
 - [x] **M-status-routing**: Status and routing _[now]_ - done - 3/3 requirements done
-- [~] **M-deliverable-progress**: Deliverable progress _[now]_ - building - 0/1 requirements done
+- [x] **M-deliverable-progress**: Deliverable progress _[now]_ - done - 1/1 requirements done
 - [x] **M-multi-tool**: Multi-tool reach _[now]_ - done - 1/1 requirements done
 - [x] **M-hardening**: Security hardening _[now]_ - done - 1/1 requirements done
 - [x] **M-shipping**: Shipping pipeline _[next]_ - done - 3/3 requirements done
 - [x] **M-steady-state**: Steady-state operations _[next]_ - done - 4/4 requirements done
 - [x] **M-advanced**: Advanced capabilities _[next]_ - done - 4/4 requirements done
 - [ ] **M-deeper-traceability-and-ecosystem**: Deeper traceability and ecosystem _[later]_ - pending - 0/0 requirements done
-

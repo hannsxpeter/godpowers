@@ -65,8 +65,8 @@
       "roadmap": {
         "status": "done",
         "artifact": "roadmap/ROADMAP.md",
-        "artifact-hash": "sha256:6a521060977f174d0445aae12a2929ca4934968fc0ea555f87877c18982ac685",
-        "updated": "2026-05-30T12:36:39.545Z"
+        "artifact-hash": "sha256:1cd186bdfeb8d78d2bc147712f9ba44c4a0e9b8a16d4df4415051957bcd985aa",
+        "updated": "2026-05-30T22:07:46.391Z"
       },
       "stack": {
         "status": "pending"
@@ -105,14 +105,14 @@
   "yolo-decisions": [],
   "lock": null,
   "deliverables": {
-    "updated": "2026-05-30T12:36:39.544Z",
+    "updated": "2026-05-30T22:07:46.390Z",
     "source": "PRD + ROADMAP + linkage + build state",
     "requirements": {
       "total": 33,
-      "done": 32,
-      "in-progress": 1,
+      "done": 33,
+      "in-progress": 0,
       "untouched": 0,
-      "percent": 97
+      "percent": 100
     },
     "increments": [
       {
@@ -167,8 +167,8 @@
         "id": "M-deliverable-progress",
         "name": "Deliverable progress",
         "horizon": "now",
-        "status": "building",
-        "done": 0,
+        "status": "done",
+        "done": 1,
         "total": 1
       },
       {

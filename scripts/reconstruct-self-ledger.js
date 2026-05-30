@@ -67,6 +67,16 @@ function fail(msg) {
   process.exit(1);
 }
 
+function stableArtifactStep(current, patch, now) {
+  const next = { ...(current || {}), ...patch };
+  const sameArtifact = current &&
+    current.status === next.status &&
+    current.artifact === next.artifact &&
+    current['artifact-hash'] === next['artifact-hash'];
+  next.updated = sameArtifact && current.updated ? current.updated : now;
+  return next;
+}
+
 // 1. Validate: every declared PRD requirement is mapped, every mapped file exists.
 const declared = requirements.parsePrdRequirements(ROOT).map(r => r.id);
 if (declared.length === 0) fail('no requirements found in .godpowers/prd/PRD.md');
@@ -102,21 +112,17 @@ if (s) {
   const now = new Date().toISOString();
   s.tiers = s.tiers || {};
   s.tiers['tier-1'] = s.tiers['tier-1'] || {};
-  s.tiers['tier-1'].prd = {
-    ...(s.tiers['tier-1'].prd || {}),
+  s.tiers['tier-1'].prd = stableArtifactStep(s.tiers['tier-1'].prd, {
     status: 'done',
     artifact: 'prd/PRD.md',
-    'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/prd/PRD.md')),
-    updated: now
-  };
-  s.tiers['tier-1'].roadmap = {
-    ...(s.tiers['tier-1'].roadmap || {}),
+    'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/prd/PRD.md'))
+  }, now);
+  s.tiers['tier-1'].roadmap = stableArtifactStep(s.tiers['tier-1'].roadmap, {
     status: 'done',
     artifact: 'roadmap/ROADMAP.md',
-    'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/roadmap/ROADMAP.md')),
-    updated: now
-  };
-  s.deliverables = requirements.summarizeForState(derived);
+    'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/roadmap/ROADMAP.md'))
+  }, now);
+  s.deliverables = requirements.summarizeForState(derived, s.deliverables);
   const coveragePct = Math.round(linkage.coverage(ROOT, declared) * 100);
   s.linkage = {
     ...(s.linkage || {}),

@@ -10,6 +10,7 @@ const os = require('os');
 const linkage = require('../lib/linkage');
 const reverseSync = require('../lib/reverse-sync');
 const reviewRequired = require('../lib/review-required');
+const state = require('../lib/state');
 const { test, report } = require('./test-harness');
 
 
@@ -176,6 +177,49 @@ test('run populates linkage map and PRD footer', () => {
   const prd = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.md'), 'utf8');
   if (!prd.includes('P-MUST-01')) throw new Error('PRD footer not appended');
   if (!prd.includes('user content here.')) throw new Error('user content lost');
+});
+
+test('run caches deliverable summary in state.json when requirements exist', () => {
+  const tmp = mkProject();
+  state.init(tmp, 'reverse-sync-deliverables');
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.md'), [
+    '# PRD',
+    '',
+    '## Functional Requirements',
+    '',
+    '### MUST',
+    '- P-MUST-01 [DECISION] User can log in -- Acceptance: token returned',
+    ''
+  ].join('\n'));
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'roadmap', 'ROADMAP.md'), [
+    '# Roadmap',
+    '',
+    '## Now',
+    '',
+    '### Delivery Increment 1: Auth',
+    '- **ID**: M-auth',
+    '- **Status**: done',
+    '- **Features (from PRD)**:',
+    '  - P-MUST-01',
+    ''
+  ].join('\n'));
+  fs.mkdirSync(path.join(tmp, 'src'), { recursive: true });
+  fs.writeFileSync(path.join(tmp, 'src/login.ts'),
+    '// Implements: P-MUST-01\nexport function login() {}');
+
+  const r = reverseSync.run(tmp, { runImpeccable: false, runSourceSync: false });
+  if (!r.requirements) throw new Error('requirements summary missing');
+
+  const s = state.read(tmp);
+  if (!s.deliverables) throw new Error('state deliverables missing');
+  if (s.deliverables.requirements.total !== 1) throw new Error('wrong total');
+  if (s.deliverables.requirements.done !== 1) throw new Error('wrong done count');
+
+  const stateFile = path.join(tmp, '.godpowers', 'state.json');
+  const firstState = fs.readFileSync(stateFile, 'utf8');
+  reverseSync.run(tmp, { runImpeccable: false, runSourceSync: false });
+  const secondState = fs.readFileSync(stateFile, 'utf8');
+  if (firstState !== secondState) throw new Error('state cache changed on no-op run');
 });
 
 test('run surfaces drift findings to REVIEW-REQUIRED.md', () => {

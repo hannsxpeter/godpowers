@@ -1,11 +1,11 @@
-# Godpowers 2.2.0 Release
+# Godpowers 2.2.1 Release
 
 > Status: Ready for release
 > Date: 2026-05-30
 
-Godpowers 2.2.0 adds deliverable progress tracking on top of the 2.1.1
-documentation and off-switch safety patch. It keeps the public slash-command
-surface stable and backward compatible.
+Godpowers 2.2.1 is a patch release for the 2.2 deliverable-progress line. It
+keeps the public slash-command surface stable and fixes ledger persistence,
+idempotence, and release-state reconciliation.
 
 ## What's in this release
 
@@ -16,23 +16,15 @@ surface stable and backward compatible.
 
 ## Highlights
 
-- Deliverable progress tracking: the new `/god-progress` command and the
-  `.godpowers/REQUIREMENTS.md` ledger report which PRD requirements and roadmap
-  increments are done, in progress, or not started. Status is derived from the
-  linkage map by `lib/requirements.js`, so it cannot drift from the code that is
-  actually implemented.
-- Stable requirement and increment ids: PRD requirements carry
-  `P-MUST-NN`/`P-SHOULD-NN`/`P-COULD-NN`, and ROADMAP increments carry `M-slug`
-  ids with a per-increment `Status` and member requirement ids.
-- The build chain populates the ledger during real runs: `god-planner` names the
-  requirement ids each slice delivers, `god-executor` stamps `// Implements: P-...`
-  annotations, and the spec and quality reviewers verify them.
-- The dashboard (`/god-status`, `/god-next`, `/god-mode` closeout) gains a
-  `Deliverable progress` section, and a `whats-done` recipe routes natural
-  language like "how far along are we" to `/god-progress`.
-- Documentation reconciled with the shipped surface and version: accurate
-  counts and `/god-progress`/`REQUIREMENTS.md` awareness across README,
-  ARCHITECTURE, reference, linkage, recipes, and the artifact inventories.
+- `.godpowers/REQUIREMENTS.md` no longer rewrites on timestamp-only no-op
+  regenerations, and the generated ledger no longer carries an extra blank line
+  at EOF.
+- `lib/reverse-sync.js` now persists deliverable summaries into
+  `state.json.deliverables`, matching the documented `/god-sync` behavior.
+- The Godpowers self-ledger now reports the shipped deliverable-progress feature
+  as done across roadmap, requirements ledger, and state cache.
+- Regression tests cover no-op ledger writes, state-cache persistence, and
+  no-op reverse-sync stability.
 
 ## Validation
 
@@ -42,14 +34,14 @@ surface stable and backward compatible.
 
 ## Upgrade
 
-- `npm install -g godpowers@2.2.0` or `npx godpowers@2.2.0`
+- `npm install -g godpowers@2.2.1` or `npx godpowers@2.2.1`
 - Re-run `/god-context` in each project to refresh installed runtime metadata
 - No breaking changes; existing `.godpowers/` state is compatible. Projects gain
   a `REQUIREMENTS.md` ledger the next time `/god-progress` or `/god-sync` runs.
 
 ## Notes
 
-- GitHub release creation for `v2.2.0`
+- GitHub release creation for `v2.2.1`
 - The tag should match the npm package version
-- The `v2.2.0` tag should point to the release commit that matches the npm
-  `godpowers@2.2.0` package.
+- The `v2.2.1` tag should point to the release commit that matches the npm
+  `godpowers@2.2.1` package.

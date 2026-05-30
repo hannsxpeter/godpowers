@@ -240,6 +240,51 @@ test('writeLedger writes the ledger file and summarizeForState caches counts', (
   assert(typeof cache.requirements.percent === 'number', 'cache percent');
 });
 
+test('renderLedger does not end with an extra blank line', () => {
+  const root = initProject('gp-req-no-blank-eof-');
+  writeRel(root, reqs.PRD_PATH, PRD_WITH_IDS);
+  writeRel(root, reqs.ROADMAP_PATH, roadmap('building'));
+  const md = reqs.renderLedger(reqs.derive(root));
+  assert(!md.endsWith('\n'), 'render should not include final newline');
+  assert(!/\n\n$/.test(md), 'render should not include final blank line');
+});
+
+test('writeLedger is stable when only the generated timestamp changes', () => {
+  const root = initProject('gp-req-stable-write-');
+  writeRel(root, reqs.PRD_PATH, PRD_WITH_IDS);
+  writeRel(root, reqs.ROADMAP_PATH, roadmap('building'));
+
+  const firstDerived = reqs.derive(root);
+  firstDerived.updated = '2026-01-01T00:00:00.000Z';
+  reqs.writeLedger(root, firstDerived);
+
+  const fs = require('fs');
+  const path = require('path');
+  const file = path.join(root, reqs.LEDGER_PATH);
+  const first = fs.readFileSync(file, 'utf8');
+
+  const secondDerived = reqs.derive(root);
+  secondDerived.updated = '2026-01-02T00:00:00.000Z';
+  reqs.writeLedger(root, secondDerived);
+  const second = fs.readFileSync(file, 'utf8');
+
+  assert(first === second, 'ledger rewrote when only timestamp changed');
+});
+
+test('summarizeForState preserves updated when only the timestamp changes', () => {
+  const root = initProject('gp-req-stable-summary-');
+  writeRel(root, reqs.PRD_PATH, PRD_WITH_IDS);
+  const firstDerived = reqs.derive(root);
+  firstDerived.updated = '2026-01-01T00:00:00.000Z';
+  const first = reqs.summarizeForState(firstDerived);
+
+  const secondDerived = reqs.derive(root);
+  secondDerived.updated = '2026-01-02T00:00:00.000Z';
+  const second = reqs.summarizeForState(secondDerived, first);
+
+  assert(second.updated === first.updated, 'updated timestamp should be stable');
+});
+
 test('renderProgressLines degrades gracefully with no requirements', () => {
   const root = initProject('gp-req-empty-');
   const d = reqs.derive(root);

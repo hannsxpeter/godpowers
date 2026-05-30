@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-05-30
+
+### Fixed
+- Made `.godpowers/REQUIREMENTS.md` stable on no-op regenerations by ignoring
+  generated timestamp-only changes and removing the extra blank line at EOF.
+- Persisted reverse-sync deliverable summaries into `state.json.deliverables`,
+  matching the documented `/god-sync` and reverse-sync behavior.
+- Reconciled the Godpowers self-ledger so the shipped deliverable-progress
+  feature is marked done in `.godpowers/roadmap/ROADMAP.md`,
+  `.godpowers/REQUIREMENTS.md`, and `.godpowers/state.json`.
+
 ## [2.2.0] - 2026-05-30
 
 ### Added
