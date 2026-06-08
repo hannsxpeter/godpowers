@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.4.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.1-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -13,18 +13,19 @@ tool** (Claude Code, Codex, Cursor, etc.) that orchestrate **specialist agents**
 in fresh contexts to do the work.
 
 Want the short proof first? Start with [Quick Proof](docs/quick-proof.md) to
-run `npx godpowers quick-proof --project=.`, see transcript excerpts, pick a
-starter command set, and understand runtime expectations before reading the
-full reference.
+run `npx godpowers quick-proof --project=. --brief`, see outcome metrics, pick
+a starter command set, and understand runtime expectations before reading the
+full reference. The [First 10 Minute Proof Case Study](docs/case-studies/first-10-minute-proof.md)
+shows the same evidence as a before-and-after adoption story.
 
 Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 2.4.0 keeps every leaf command available while making the command
-surface easier to navigate. `/god`, `/god-help`, `/god-next`, and route
-metadata now share command families, decision ladders, typed route outcomes,
-and workflow helper groups so users see clearer paths without losing power.
+Version 2.4.1 keeps the 2.4 command-family UX and adds a clearer first trust
+step: Quick Proof outcome metrics, a First 10 Minute Proof case study,
+profile-first onboarding, and surface-discipline guidance for future command
+growth.
 
 Maintainer hardening continues on the 2.x line with small, audited public
 surface updates when they close real workflow gaps. The 2.1.0 patch closes a command-injection vector in the
@@ -46,6 +47,20 @@ The dashboard now starts with an action brief and a host guarantee line: the
 next command, why it is recommended, whether the project is ready, the first
 blockers that need attention, and whether the current host can provide full,
 degraded, or unknown runtime guarantees.
+
+### Ten Minute Proof Path
+
+Run this before deciding whether Godpowers is worth a full project arc:
+
+```bash
+npx godpowers quick-proof --project=. --brief
+npx godpowers status --project=. --brief
+npx godpowers next --project=. --brief
+```
+
+The first command should produce disk-state evidence, missing-artifact
+visibility, a next command, host guarantees, and outcome metrics. The next two
+commands show what Godpowers can infer from your current project.
 
 It fuses four disciplines into one unified workflow:
 
@@ -80,7 +95,7 @@ should prove:
 ## Install
 
 ```bash
-npx godpowers --claude --global
+npx godpowers --claude --global --profile=core
 ```
 
 Other targets: `--codex`, `--cursor`, `--windsurf`, `--opencode`, `--gemini`,
@@ -94,7 +109,8 @@ The installer copies:
 - Codex agent metadata to `<runtime>/agents/*.toml`
 - SessionStart hook (Claude Code only) to `<runtime>/hooks/`
 
-Installer profiles keep the visible command surface calm:
+Installer profiles keep the visible command surface calm. Start with `core` or
+`builder` unless you already know you need the full maintainer surface:
 
 ```bash
 npx godpowers --claude --global --profile=core
@@ -206,6 +222,21 @@ commands remain direct shortcuts.
 | Ship a release | `/god-sync`, `/god-docs`, `/god-version`, `/god-automation-setup`, `npm run release:check` |
 | Maintain project health | `/god-hygiene`, `/god-update-deps`, `/god-docs`, `/god-check-todos` |
 | Extend Godpowers | `/god-extension-scaffold --name=@godpowers/my-pack --output=.`, `/god-test-extension`, `/god-extension-add`, `/god-extension-list` |
+
+### Outcome Metrics
+
+Godpowers reports adoption and run signals separately from narrative claims:
+
+| Metric | Where it appears |
+|---|---|
+| Commands to first signal | `quick-proof` outcome metrics |
+| Next command and reason | `quick-proof`, `status`, `next`, `/god-next` |
+| Missing artifacts | dashboard planning visibility |
+| Host gaps | host guarantee line |
+| Run duration, pauses, retries, cost | `/god-metrics`, `/god-trace`, `/god-cost` |
+
+New public command surface should be added only when existing families,
+ladders, profiles, recipes, and docs cannot express a proven user need.
 
 The same status engine is available from the installer CLI for humans, CI,
 Codex, Claude, Cursor, Gemini, OpenCode, Windsurf, Antigravity, and any host
@@ -509,6 +540,7 @@ Pi. T3 Code inherits from the underlying agent (Codex / Claude / OpenCode).
 
 - [Getting Started](docs/getting-started.md)
 - [Quick Proof](docs/quick-proof.md)
+- [First 10 Minute Proof Case Study](docs/case-studies/first-10-minute-proof.md)
 - [Concepts](docs/concepts.md)
 - [Command reference (all 112 skills + 40 agents)](docs/reference.md)
 - [Feature awareness](docs/feature-awareness.md)

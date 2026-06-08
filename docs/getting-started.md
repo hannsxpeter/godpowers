@@ -2,16 +2,18 @@
 
 Want proof before the full walkthrough? Read [Quick Proof](quick-proof.md) for
 the runnable fixture command, transcript excerpts, starter command sets, and
-runtime expectations.
+runtime expectations. The [First 10 Minute Proof Case Study](case-studies/first-10-minute-proof.md)
+shows the same flow as a compact before-and-after story.
 
 ## Install
 
 ```bash
-npx godpowers --claude --global
+npx godpowers --claude --global --profile=core
 ```
 
-That's it. No config files. No accounts. The installer copies skills, agents,
-hooks, templates, references, and workflows into `~/.claude/`.
+That installs the smallest first-run command surface. No accounts are required.
+The installer copies skills, agents, hooks, templates, references, and
+workflows into `~/.claude/`.
 
 For other AI tools: `--codex`, `--cursor`, `--windsurf`, `--gemini`,
 `--opencode`, `--copilot`, `--augment`, `--trae`, `--cline`, `--kilo`,
@@ -72,6 +74,12 @@ github.com/VoltAgent/awesome-design-md is used via lazy fetch when you
 run `/god-design from <site>`.
 
 ## Your first project (5 minutes)
+
+Before a full project run, get one local proof signal:
+
+```bash
+npx godpowers quick-proof --project=. --brief
+```
 
 Open Claude Code in an empty directory. Type:
 

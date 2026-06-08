@@ -22,19 +22,17 @@ accountable.
 Run these from a project directory after installing Godpowers.
 
 ```bash
-npx godpowers quick-proof --project=.
-```
-
-That command reads a shipped fixture at `fixtures/quick-proof/project`, computes
-the next command from its `.godpowers/state.json`, and reports host guarantees
-from your current environment.
-
-For live project status, run:
-
-```bash
+npx godpowers quick-proof --project=. --brief
 npx godpowers status --project=. --brief
 npx godpowers next --project=. --brief
 ```
+
+The first command reads a shipped fixture at `fixtures/quick-proof/project`, computes
+the next command from its `.godpowers/state.json`, and reports host guarantees
+from your current environment.
+
+The next two commands render live project status and the recommended next
+action for the current directory.
 
 If the project has no `.godpowers/` directory yet, start with the smallest
 state-producing path inside your AI coding tool:
@@ -53,6 +51,16 @@ find .godpowers -maxdepth 2 -type f | sort
 The proof is not that every command already ran. The proof is that Godpowers
 can name what exists, what is missing, what the host can guarantee, and the
 single next move.
+
+## Outcome Metrics
+
+- [DECISION] Quick Proof reports commands to first signal, state source,
+  tracked steps, missing planning artifacts, next command, host level, and host
+  gap count.
+- [DECISION] These metrics separate observable adoption evidence from broader
+  claims about a full autonomous project run.
+- [DECISION] A useful first run should produce at least one next command, one
+  host guarantee, and one inspectable disk-state path.
 
 ## Before And After
 
@@ -185,6 +193,8 @@ model.
 ## What To Inspect Next
 
 - [Getting Started](getting-started.md) explains install and first project flow.
+- [First 10 Minute Proof Case Study](case-studies/first-10-minute-proof.md)
+  explains the local proof as a public case study.
 - [Reference](reference.md) lists every slash command.
 - [Validation](validation.md) explains static, linkage, and runtime checks.
 - [Proof Transcript](proof-transcript.md) captures the runnable quick-proof

@@ -24,6 +24,7 @@ const REQUIRED_FILES = [
   'templates/PRD.md',
   'references/HAVE-NOTS.md',
   'references/planning/PRD-ANATOMY.md',
+  'lib/adoption-metrics.js',
   'lib/command-families.js',
   'lib/workflow-runner.js',
   'lib/workflow-helper-groups.js',

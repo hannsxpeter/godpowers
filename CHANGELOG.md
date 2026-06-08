@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.1] - 2026-06-08
+
+### Added
+- Added adoption-proof outcome metrics for Quick Proof and Adoption Canary
+  reports, covering commands to first signal, disk-state source, missing
+  artifacts, next command, host level, and host gaps.
+- Added the First 10 Minute Proof case study as a repo-verifiable public proof
+  artifact before the first external repository canary.
+
+### Changed
+- Updated README and Getting Started to lead with `--profile=core` and the
+  brief Quick Proof path before full autonomy.
+- Updated Quick Proof, Adoption Canary, Reference, Roadmap, and Proof
+  Transcript docs to separate observable adoption evidence from broader product
+  claims.
+- Added surface-discipline guidance so new public commands require adoption
+  evidence before expanding the command surface.
+
+### Fixed
+- Package guardrails now require the adoption metrics runtime helper so the
+  published package keeps Quick Proof and canary metrics available.
+
 ## [2.4.0] - 2026-06-08
 
 ### Added

@@ -1,12 +1,11 @@
-# Godpowers 2.4.0 Release
+# Godpowers 2.4.1 Release
 
 > Status: Ready for package verification
 > Date: 2026-06-08
 
-Godpowers 2.4.0 is a UX flow consolidation release for the 2.x line. It keeps
-the complete 112-command surface intact while making the primary paths easier
-to understand through command families, decision ladders, typed route outcomes,
-and auditable workflow helper groups.
+Godpowers 2.4.1 is an adoption-proof patch for the 2.4 line. It keeps the
+2.4.0 command-family UX intact while making the first trust step smaller,
+measurable, and easier to inspect before a user commits to a full project arc.
 
 ## What's in this release
 
@@ -17,43 +16,38 @@ and auditable workflow helper groups.
 
 ## Highlights
 
-- `/god-help` now presents command families first, then ladders and the full
-  catalog.
-- `/god` and `/god-next` now share command-family helpers for capture, work
-  sizing, verification, and overlapping trigger phrases.
-- `/god-status` is documented as the continue-family hub, with `/god-progress`,
-  `/god-lifecycle`, `/god-locate`, and `/god-next` as direct views.
-- Every shipped route now carries command family metadata.
-- Flexible route exits now carry typed `success-path.outcome` metadata so
-  contextual, verdict-based, steady-state, session-end, and selection outcomes
-  can be explained to users.
-- Workflow YAML can now use named helper groups, while generated plans still
-  expand the exact local helper list for visibility.
-- Recipes now split simple existing-repo onboarding from deeper inheritance
-  flows, and clarify workstream versus suite collaboration paths.
-- Extension journey docs now describe current extension-pack-required flows
-  instead of old release annotations.
-- Release guardrails now require the command-family runtime files, helper group
-  runtime files, and command-family regression test.
+- Quick Proof now reports outcome metrics: commands to first signal,
+  disk-state source, tracked steps, missing planning artifacts, next command,
+  host level, and host gaps.
+- Adoption Canary reports now include CLI-verifiable outcome metrics for
+  quick-proof, status, and next signals.
+- README and Getting Started now lead with `--profile=core` and the brief Quick
+  Proof path before full autonomy.
+- The First 10 Minute Proof case study documents the local before-and-after
+  proof while clearly naming what still requires an external repository canary.
+- Reference and Roadmap docs now include surface-discipline guidance: try
+  families, ladders, profiles, recipes, typed route outcomes, and docs before
+  adding new public commands.
+- Package guardrails now require `lib/adoption-metrics.js`.
 
 ## Validation
 
 - `npm test` green across the full suite
 - `npm run test:audit` green
 - `npm run pack:check` green
-- `npm pack` creates a local `godpowers-2.4.0.tgz` tarball for package
+- `npm pack` creates a local `godpowers-2.4.1.tgz` tarball for package
   inspection
 
 ## Upgrade
 
-- `npm install -g godpowers@2.4.0` or `npx godpowers@2.4.0`
+- `npm install -g godpowers@2.4.1` or `npx godpowers@2.4.1`
 - Re-run `/god-context` in each project to refresh installed runtime metadata
 - No breaking changes; existing `.godpowers/` state is compatible. Users who
   want a compact install can run `npx godpowers --profile=core`.
 
 ## Notes
 
-- GitHub release creation for `v2.4.0`
+- GitHub release creation for `v2.4.1`
 - The tag should match the npm package version
-- The `v2.4.0` tag should point to the release commit that matches the npm
-  `godpowers@2.4.0` package.
+- The `v2.4.1` tag should point to the release commit that matches the npm
+  `godpowers@2.4.1` package.

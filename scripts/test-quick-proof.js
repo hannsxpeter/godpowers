@@ -13,6 +13,7 @@ const cp = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const quickProof = require('../lib/quick-proof');
+const adoptionMetrics = require('../lib/adoption-metrics');
 const router = require('../lib/router');
 const recipes = require('../lib/recipes');
 const { test, report, assert } = require('./test-harness');
@@ -156,6 +157,7 @@ test('quick proof covers proof, transcripts, starters, and runtime expectations'
     '# Quick Proof',
     '## What This Proves',
     '## Ten Minute Path',
+    '## Outcome Metrics',
     '## Before And After',
     '## Transcript Excerpts',
     '## Starter Paths',
@@ -197,6 +199,10 @@ test('quick proof fixture computes /god-prd as next command', () => {
   assert(rendered.includes('Godpowers Quick Proof'), 'render missing title');
   assert(rendered.includes('Next: /god-prd'), rendered);
   assert(rendered.includes('Host guarantees: degraded on test'), rendered);
+  assert(rendered.includes('Outcome metrics:'), rendered);
+  assert(rendered.includes('Commands to first signal: 1'), rendered);
+  assert(proof.metrics.nextCommand === '/god-prd', JSON.stringify(proof.metrics));
+  assert(proof.metrics.missingPlanningArtifacts === 2, JSON.stringify(proof.metrics));
 });
 
 test('quick proof renders dot for the user project when fixture root was passed', () => {
@@ -233,6 +239,8 @@ test('CLI quick-proof renders the fixture proof', () => {
   assert(out.includes('Godpowers Quick Proof'), out);
   assert(out.includes('Next: /god-prd'), out);
   assert(out.includes('State on disk: fixtures/quick-proof/project/.godpowers/state.json'), out);
+  assert(out.includes('Outcome metrics:'), out);
+  assert(out.includes('Host gaps:'), out);
 });
 
 test('quick proof names the accountable outputs', () => {
@@ -269,6 +277,7 @@ test('adoption canary defines pass and failure criteria', () => {
   assertIncludes('docs/adoption-canary.md', '# Adoption Canary');
   assertIncludes('docs/adoption-canary.md', 'node scripts/run-adoption-canary.js <git-url> --output=.godpowers-canary/report.md');
   assertIncludes('docs/adoption-canary.md', '## Canary Runbook');
+  assertIncludes('docs/adoption-canary.md', 'commands to first signal');
   assertIncludes('docs/adoption-canary.md', '## Pass Criteria');
   assertIncludes('docs/adoption-canary.md', '## Failure Criteria');
   assertIncludes('docs/adoption-canary.md', '## Feedback Targets');
@@ -279,6 +288,21 @@ test('adoption canary harness captures CLI-verifiable proof signals', () => {
   assertIncludes('scripts/run-adoption-canary.js', 'status');
   assertIncludes('scripts/run-adoption-canary.js', 'next');
   assertIncludes('scripts/run-adoption-canary.js', 'Adoption Canary Report');
+  assertIncludes('scripts/run-adoption-canary.js', 'Outcome Metrics');
+});
+
+test('adoption metrics summarize quick proof and canary outputs', () => {
+  const metrics = adoptionMetrics.canaryMetrics({
+    quickProof: 'Next: /god-prd',
+    status: 'Godpowers Dashboard\nCurrent status:',
+    next: 'Suggested next command:\n  /god-prd'
+  });
+  assert(metrics.cliSignalsCaptured === 3, JSON.stringify(metrics));
+  assert(metrics.quickProofHasNext === true, JSON.stringify(metrics));
+  assert(metrics.statusHasDashboard === true, JSON.stringify(metrics));
+  assert(metrics.nextHasRecommendation === true, JSON.stringify(metrics));
+  const rendered = adoptionMetrics.renderCanary(metrics);
+  assert(rendered.includes('CLI signals captured: 3 of 3.'), rendered);
 });
 
 test('proof transcript captures the runnable quick-proof output', () => {
@@ -286,10 +310,32 @@ test('proof transcript captures the runnable quick-proof output', () => {
   assertIncludes('docs/proof-transcript.md', 'node bin/install.js quick-proof --project=. --brief');
   assertIncludes('docs/proof-transcript.md', 'Next: /god-prd');
   assertIncludes('docs/proof-transcript.md', 'State on disk: fixtures/quick-proof/project/.godpowers/state.json');
+  assertIncludes('docs/proof-transcript.md', 'Outcome metrics:');
+});
+
+test('first proof case study is linked and keeps claims scoped', () => {
+  assertIncludes('README.md', '[First 10 Minute Proof Case Study](docs/case-studies/first-10-minute-proof.md)');
+  assertIncludes('docs/quick-proof.md', '[First 10 Minute Proof Case Study](case-studies/first-10-minute-proof.md)');
+  assertIncludes('docs/adoption-canary.md', '[First 10 Minute Proof Case Study](case-studies/first-10-minute-proof.md)');
+  assertIncludes('docs/case-studies/first-10-minute-proof.md', '# First 10 Minute Proof Case Study');
+  assertIncludes('docs/case-studies/first-10-minute-proof.md', '## What This Does Not Prove');
+  assertIncludes('docs/case-studies/first-10-minute-proof.md', 'The first external repository case study is still needed');
+});
+
+test('surface discipline and profile-first onboarding stay visible', () => {
+  assertIncludes('README.md', 'npx godpowers --claude --global --profile=core');
+  assertIncludes('README.md', 'New public command surface should be added only when existing families');
+  assertIncludes('docs/reference.md', '### Surface discipline');
+  assertIncludes('docs/ROADMAP.md', 'Surface discipline: do not add public commands');
 });
 
 test('proof docs local links resolve', () => {
-  for (const relPath of ['docs/quick-proof.md', 'docs/adoption-canary.md', 'docs/proof-transcript.md']) {
+  for (const relPath of [
+    'docs/quick-proof.md',
+    'docs/adoption-canary.md',
+    'docs/proof-transcript.md',
+    'docs/case-studies/first-10-minute-proof.md'
+  ]) {
     const baseDir = path.dirname(relPath);
     for (const target of markdownLinks(read(relPath))) {
       if (isExternal(target)) continue;
@@ -304,7 +350,8 @@ test('proof docs local links resolve', () => {
 test('new proof docs do not contain banned dash characters or decorative emoji', () => {
   const targets = [
     'docs/quick-proof.md',
-    'docs/adoption-canary.md'
+    'docs/adoption-canary.md',
+    'docs/case-studies/first-10-minute-proof.md'
   ];
   for (const relPath of targets) {
     const text = read(relPath);

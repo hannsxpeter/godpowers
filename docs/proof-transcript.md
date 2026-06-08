@@ -26,6 +26,15 @@ Evidence:
   Fixture: fixtures/quick-proof/project
   PRD: missing
   Roadmap: missing
+
+Outcome metrics:
+  Commands to first signal: 1
+  State source: fixtures/quick-proof/project/.godpowers/state.json
+  Tracked steps: 3 of 13
+  Missing planning artifacts: 2
+  Next command: /god-prd
+  Host level: full
+  Host gaps: 0
 ```
 
 ## What The Transcript Shows
@@ -36,6 +45,8 @@ Evidence:
   artifacts.
 - [DECISION] The next command is `/god-prd` because the PRD is pending.
 - [DECISION] Host guarantees are reported separately from fixture state.
+- [DECISION] Outcome metrics make the first proof measurable before any full
+  project arc runs.
 
 ## Validation
 
@@ -46,5 +57,5 @@ npm run test:quick-proof
 Expected result:
 
 ```text
-Results: 14 passed, 0 failed
+Results: passed, 0 failed
 ```

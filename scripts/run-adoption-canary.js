@@ -14,6 +14,7 @@ const cp = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const BIN = path.join(ROOT, 'bin', 'install.js');
+const adoptionMetrics = require('../lib/adoption-metrics');
 
 function parseArgs(argv) {
   const opts = {
@@ -59,6 +60,7 @@ function usage() {
 }
 
 function buildReport(opts, cloneDir, outputs) {
+  const metrics = adoptionMetrics.canaryMetrics(outputs);
   return [
     '# Adoption Canary Report',
     '',
@@ -66,6 +68,10 @@ function buildReport(opts, cloneDir, outputs) {
     `- [DECISION] Clone path: ${cloneDir}`,
     '- [DECISION] This report captures CLI-verifiable trust signals only.',
     '- [OPEN QUESTION] Host slash commands such as `/god-preflight`, `/god-audit`, and `/god-reconstruct` still need an AI coding host. Owner: maintainer. Due: before public confidence claim.',
+    '',
+    '## Outcome Metrics',
+    '',
+    adoptionMetrics.renderCanary(metrics),
     '',
     '## Quick Proof',
     '',

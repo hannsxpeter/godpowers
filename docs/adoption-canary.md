@@ -4,6 +4,10 @@ The adoption canary is the real-world proof loop for Godpowers. It exists to
 answer one question before a public confidence claim: can Godpowers make sense
 of a repository that did not grow inside Godpowers assumptions?
 
+Start with the local proof case study first:
+[First 10 Minute Proof Case Study](case-studies/first-10-minute-proof.md).
+That page defines the baseline signals an external canary should improve on.
+
 ## Purpose
 
 - [DECISION] The canary validates first-user trust, not only release plumbing.
@@ -70,6 +74,8 @@ If the repo has an obvious small feature, run the smallest safe feature path:
 
 - [DECISION] Capture the host guarantee line from the first dashboard.
 - [DECISION] Capture the first recommended next action and why it was chosen.
+- [DECISION] Capture commands to first signal, first missing artifact, host gap
+  count, and whether status plus next both rendered recommendations.
 - [DECISION] Capture any term Godpowers added or should have added to
   `.godpowers/domain/GLOSSARY.md`.
 - [DECISION] Capture whether `.godpowers/PROGRESS.md` and `CHECKPOINT.md`
@@ -88,6 +94,8 @@ The canary passes when all of these are true:
 - [DECISION] Godpowers reports host guarantees plainly.
 - [DECISION] The recommended next command is specific and justified by disk
   state.
+- [DECISION] The CLI report includes outcome metrics for quick-proof, status,
+  and next signals.
 - [DECISION] At least one artifact, review finding, or sync finding is
   inspectable on disk.
 - [DECISION] A maintainer can name one improvement to onboarding or runtime

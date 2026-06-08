@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v2.4.0.
+Complete command, agent, and artifact reference for v2.4.1.
 
 ## Slash commands (112 total)
 
@@ -48,6 +48,18 @@ behavior:
 | I maintain Godpowers or mature repos | `maintainer` |
 | I coordinate suites | `suite` |
 | I want everything | `full` |
+
+### Surface discipline
+New commands should not be the default response to a usability gap. First try a
+family card, decision ladder, profile journey, recipe, typed route outcome, or
+documentation change. Add a new public command only when a case study, canary,
+or repeated user journey proves that existing paths cannot express the need.
+
+### Outcome metrics
+Quick Proof and adoption canary reports track commands to first signal, next
+command, missing artifacts, host gaps, and whether status plus next produce
+recommendation signals. Longer runs use `/god-metrics`, `/god-trace`, and
+`/god-cost` for duration, pauses, retries, and cost.
 
 ### Front door
 - `/god` - Free-text intent matcher. Maps to a recipe and proposes the right command.

@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-05-30
-> Current shipped: v2.4.0
+> Current shipped: v2.4.1
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 2.0 public adoption window. Everything user-facing remains slash-command based.
@@ -12,7 +12,7 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v2.4.0)
+### Current surface (v2.4.1)
 
 What works today:
 - **112 slash commands** as thin orchestrators (front door, lifecycle, planning,
@@ -51,6 +51,12 @@ What works today:
 - **Published install verifier**: `node scripts/verify-published-install.js
   godpowers@latest` checks quick proof, status, next, Claude install, and
   Codex metadata install against the registry artifact.
+- **Adoption metrics**: Quick Proof and the adoption canary report commands to
+  first signal, next action, missing artifacts, host gaps, and whether status
+  plus next produce recommendation signals.
+- **First proof case study**: `docs/case-studies/first-10-minute-proof.md`
+  documents the local before-and-after evidence for a new user before the
+  first external repository case study.
 - **Messy-repo dogfooding**: `/god-dogfood` and `npx godpowers dogfood` run
   fixture scenarios for legacy planning migration, sync-back, host capabilities, extension
   authoring, and Mode D suite release dry-runs.
@@ -391,6 +397,9 @@ Deferred to a later release:
 The 1.0 line freezes the public surface. The next work should come from
 adoption evidence:
 
+- **External first-user case study**. Run the Adoption Canary against one
+  small public repository and publish the same metrics used by the local proof
+  case study.
 - **Record/replay integration tests**. Capture a greenfield `/god-mode`
   run end-to-end as a fixture, then replay it to validate that the
   orchestrator behaves the same across model versions.
@@ -404,6 +413,10 @@ adoption evidence:
 - **External extension adoption**. Collect third-party pack examples, publish
   author friction reports, and grow marketplace compatibility cases from real
   use.
+
+Surface discipline: do not add public commands when a command family, decision
+ladder, installer profile, recipe, typed route outcome, or documentation change
+can solve the same user journey. New command surface needs adoption evidence.
 
 ---
 
