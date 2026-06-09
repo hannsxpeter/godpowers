@@ -36,6 +36,22 @@ test('parses arrays of scalars under a key', () => {
   assert(parsed.on[1] === '/god-prd', `second: ${parsed.on[1]}`);
 });
 
+test('parses indented empty array shorthand', () => {
+  const parsed = intent.parseSimpleYaml(`prerequisites:
+  required:
+    []
+execution:
+  writes:
+    []
+`, { strict: true });
+  assert(Array.isArray(parsed.prerequisites.required),
+    `required: ${JSON.stringify(parsed.prerequisites.required)}`);
+  assert(parsed.prerequisites.required.length === 0,
+    `required length: ${parsed.prerequisites.required.length}`);
+  assert(Array.isArray(parsed.execution.writes),
+    `writes: ${JSON.stringify(parsed.execution.writes)}`);
+});
+
 test('parses arrays of objects with sibling fields', () => {
   const parsed = intent.parseSimpleYaml(`jobs:
   - id: plan
@@ -59,6 +75,42 @@ test('folded block scalars collapse internal whitespace', () => {
 `);
   assert(parsed.metadata.description === 'Line one line two',
     `description: ${JSON.stringify(parsed.metadata.description)}`);
+});
+
+test('strict mode reports skipped malformed lines', () => {
+  const parsed = intent.parseSimpleYamlWithDiagnostics(`metadata:
+  name: demo
+  not yaml
+mode: A
+`, { strict: true, source: 'intent.yaml' });
+  assert(parsed.data.metadata.name === 'demo', `name: ${parsed.data.metadata.name}`);
+  assert(parsed.data.mode === 'A', `mode: ${parsed.data.mode}`);
+  assert(parsed.diagnostics.length === 1,
+    `diagnostics: ${JSON.stringify(parsed.diagnostics)}`);
+  assert(parsed.diagnostics[0].line === 3, `line: ${parsed.diagnostics[0].line}`);
+});
+
+test('default mode preserves legacy skipped-line behavior', () => {
+  const parsed = intent.parseSimpleYamlWithDiagnostics('ok: true\nnot yaml\n');
+  assert(parsed.data.ok === true, `ok: ${parsed.data.ok}`);
+  assert(parsed.diagnostics.length === 0,
+    `diagnostics: ${JSON.stringify(parsed.diagnostics)}`);
+});
+
+test('rejects unsafe prototype-pollution keys', () => {
+  const parsed = intent.parseSimpleYamlWithDiagnostics(`safe: value
+__proto__:
+  polluted: true
+constructor: bad
+`, { strict: true, unsafeKeySeverity: 'error' });
+  assert(parsed.data.safe === 'value', `safe: ${parsed.data.safe}`);
+  assert(!Object.prototype.polluted, 'Object prototype polluted');
+  assert(!parsed.data.__proto__.polluted, 'parsed prototype polluted');
+  assert(parsed.data.constructor !== 'bad', `constructor: ${parsed.data.constructor}`);
+  assert(parsed.diagnostics.length === 2,
+    `diagnostics: ${JSON.stringify(parsed.diagnostics)}`);
+  assert(parsed.diagnostics.every((diagnostic) => diagnostic.severity === 'error'),
+    `severities: ${JSON.stringify(parsed.diagnostics)}`);
 });
 
 report('YAML parser behavioral tests');

@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.4.1-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.2-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -22,10 +22,10 @@ Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 2.4.1 keeps the 2.4 command-family UX and adds a clearer first trust
-step: Quick Proof outcome metrics, a First 10 Minute Proof case study,
-profile-first onboarding, and surface-discipline guidance for future command
-growth.
+Version 2.4.2 keeps the 2.4 command-family UX and hardens the release-facing
+runtime: strict YAML diagnostics for routing, recipes, workflows, and extension
+manifests; shared markdown frontmatter parsing; dev-only coverage tooling; and
+clean package hygiene before publish.
 
 Maintainer hardening continues on the 2.x line with small, audited public
 surface updates when they close real workflow gaps. The 2.1.0 patch closes a command-injection vector in the

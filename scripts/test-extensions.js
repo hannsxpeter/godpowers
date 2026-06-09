@@ -89,6 +89,29 @@ test('parseManifest reads a valid manifest', () => {
   assert(manifest.metadata.name === '@org/p', `name: ${manifest.metadata.name}`);
 });
 
+test('parseManifest rejects malformed YAML lines', () => {
+  const src = mkPackSource('@org/p', '1.0.0', '>=0.13.0', {
+    extraManifest: ['  not yaml']
+  });
+  const text = fs.readFileSync(path.join(src, 'manifest.yaml'), 'utf8');
+  const { manifest, errors } = ext.parseManifest(text);
+  assert(manifest === null, `manifest: ${JSON.stringify(manifest)}`);
+  assert(errors.some((error) => /Unparseable YAML line/.test(error)),
+    `errors: ${JSON.stringify(errors)}`);
+});
+
+test('parseManifest rejects unsafe keys', () => {
+  const src = mkPackSource('@org/p', '1.0.0', '>=0.13.0', {
+    extraManifest: ['__proto__:', '  polluted: true']
+  });
+  const text = fs.readFileSync(path.join(src, 'manifest.yaml'), 'utf8');
+  const { manifest, errors } = ext.parseManifest(text);
+  assert(manifest === null, `manifest: ${JSON.stringify(manifest)}`);
+  assert(!Object.prototype.polluted, 'Object prototype polluted');
+  assert(errors.some((error) => /Unsafe YAML key rejected/.test(error)),
+    `errors: ${JSON.stringify(errors)}`);
+});
+
 test('validateManifest accepts a well-formed manifest', () => {
   const src = mkPackSource('@org/p', '1.0.0', '>=0.13.0');
   const text = fs.readFileSync(path.join(src, 'manifest.yaml'), 'utf8');

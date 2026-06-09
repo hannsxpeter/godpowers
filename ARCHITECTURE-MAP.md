@@ -639,7 +639,7 @@ godpowers/
 ├── README.md, CHANGELOG.md, LICENSE, CONTRIBUTING.md, SECURITY.md, USERS.md
 ├── ARCHITECTURE.md                <- Design doc
 ├── ARCHITECTURE-MAP.md            <- This file
-├── package.json (v2.4.1)
+├── package.json (v2.4.2)
 ├── .github/workflows/              <- CI + npm publish workflows
 │
 ├── bin/install.js                 <- CLI installer (15 runtimes)
@@ -672,7 +672,7 @@ godpowers/
 │   ├── events.v1.json
 │   └── workflow.v1.json
 │
-├── lib/                           <- Real JS runtime (74 modules)
+├── lib/                           <- Real JS runtime (76 modules)
 │   ├── state.js                   <- state model + drift detection
 │   ├── events.js                  <- OTel-shape event log + hash chain
 │   ├── router.js                  <- command routing
@@ -735,7 +735,7 @@ godpowers/
 
 ---
 
-## Numbers (as of v2.4.1)
+## Numbers (as of v2.4.2)
 
 | Component | Count |
 |-----------|-------|

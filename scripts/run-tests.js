@@ -16,6 +16,7 @@ const TEST_COMMANDS = [
   ['bash', ['scripts/smoke.sh']],
   [node, ['scripts/test-runtime.js']],
   [node, ['scripts/test-yaml-parser.js']],
+  [node, ['scripts/test-frontmatter.js']],
   [node, ['scripts/test-agent-refs.js']],
   [node, ['scripts/test-router.js']],
   [node, ['scripts/test-recipes.js']],

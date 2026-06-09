@@ -75,6 +75,9 @@ test('full test runner includes YAML parser coverage', () => {
   if (!commands.some(command => command.includes('scripts/test-yaml-parser.js'))) {
     throw new Error('scripts/test-yaml-parser.js is missing from TEST_COMMANDS');
   }
+  if (!commands.some(command => command.includes('scripts/test-frontmatter.js'))) {
+    throw new Error('scripts/test-frontmatter.js is missing from TEST_COMMANDS');
+  }
   if (!commands.some(command => command.includes('scripts/test-agent-refs.js'))) {
     throw new Error('scripts/test-agent-refs.js is missing from TEST_COMMANDS');
   }
@@ -93,6 +96,20 @@ test('install file helpers stay outside bin/install.js', () => {
   }
   if (installer.split('\n').length > 350) {
     throw new Error('bin/install.js should remain a thin CLI entry point');
+  }
+});
+
+test('frontmatter parsing stays in shared helper', () => {
+  const offenders = jsFiles
+    .filter(file => path.relative(ROOT, file) !== 'lib/frontmatter.js')
+    .filter(file => {
+      const text = fs.readFileSync(file, 'utf8');
+      return /function\s+parse(?:Agent)?Frontmatter\s*\(/.test(text) ||
+        /const\s+parse(?:Agent)?Frontmatter\s*=\s*\([^)]*\)\s*=>\s*\{/.test(text) ||
+        /match\(\s*\/\^---\\n\(\[\\s\\S\]\*\?\)\\n---\//.test(text);
+    });
+  if (offenders.length > 0) {
+    throw new Error(`inline frontmatter parsers in ${offenders.map(file => path.relative(ROOT, file)).join(', ')}`);
   }
 });
 

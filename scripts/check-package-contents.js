@@ -26,6 +26,7 @@ const REQUIRED_FILES = [
   'references/planning/PRD-ANATOMY.md',
   'lib/adoption-metrics.js',
   'lib/command-families.js',
+  'lib/frontmatter.js',
   'lib/workflow-runner.js',
   'lib/workflow-helper-groups.js',
   'lib/artifact-linter.js',

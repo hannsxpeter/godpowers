@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-05-30
-> Current shipped: v2.4.1
+> Current shipped: v2.4.2
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 2.0 public adoption window. Everything user-facing remains slash-command based.
@@ -12,7 +12,7 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v2.4.1)
+### Current surface (v2.4.2)
 
 What works today:
 - **112 slash commands** as thin orchestrators (front door, lifecycle, planning,
@@ -57,6 +57,9 @@ What works today:
 - **First proof case study**: `docs/case-studies/first-10-minute-proof.md`
   documents the local before-and-after evidence for a new user before the
   first external repository case study.
+- **Parser and frontmatter hardening**: strict YAML diagnostics surface
+  malformed routing, recipe, workflow, and extension manifest lines, while
+  `lib/frontmatter.js` keeps markdown contract metadata on one shared parser.
 - **Messy-repo dogfooding**: `/god-dogfood` and `npx godpowers dogfood` run
   fixture scenarios for legacy planning migration, sync-back, host capabilities, extension
   authoring, and Mode D suite release dry-runs.

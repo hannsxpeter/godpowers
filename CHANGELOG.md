@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.2] - 2026-06-09
+
+### Added
+- Added strict YAML diagnostics for the dependency-free parser, covering
+  skipped malformed lines, unsafe prototype-pollution keys, and legacy empty
+  array shorthand.
+- Added shared markdown frontmatter parsing through `lib/frontmatter.js` and a
+  static check that blocks new inline parser drift.
+- Added dev-only coverage tooling through `c8` and `npm run coverage`.
+
+### Changed
+- Routing, recipe, and workflow loaders now surface strict YAML warnings with
+  file and line context.
+- Installer metadata, Pillars, skill validation, agent validation, checkpoint
+  reads, context budgets, skill surface metadata, and DESIGN.md parsing now use
+  the shared frontmatter helper.
+
+### Fixed
+- Extension manifests now fail closed on malformed YAML lines and unsafe keys
+  instead of accepting partially parsed manifests.
+- Removed stale root tarballs and `.DS_Store` package clutter before release.
+
 ## [2.4.1] - 2026-06-08
 
 ### Added

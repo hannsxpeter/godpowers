@@ -15,7 +15,7 @@ see_also: [arch, quality, deploy]
 ## Context
 
 - [DECISION] Godpowers is an AI-powered development system delivered as slash commands and specialist agents inside AI coding tools.
-- [DECISION] The package name is `godpowers`, and the current repository version is `2.4.1`.
+- [DECISION] The package name is `godpowers`, and the current repository version is `2.4.2`.
 - [DECISION] The primary audience is solo founders and small engineering teams using AI coding tools who need accountable production workflow discipline without enterprise process.
 - [DECISION] The product promise is one slash-command arc from idea to hardened, observable, launch-ready software with traceable artifacts on disk.
 - [DECISION] Godpowers uses a pure-skill model where `npx godpowers` installs runtime files and in-tool slash commands perform work.
@@ -36,7 +36,7 @@ see_also: [arch, quality, deploy]
 
 ## Gaps
 
-- [OPEN QUESTION] Which external messy repository should become the first full host-run adoption case study after `2.4.1`? Owner: maintainer. Due: before the next public release.
+- [OPEN QUESTION] Which external messy repository should become the first full host-run adoption case study after `2.4.2`? Owner: maintainer. Due: before the next public release.
 
 <!-- godpowers:pillar-sync:begin -->
 ## Godpowers artifact sources

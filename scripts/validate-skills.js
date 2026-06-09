@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const frontmatter = require('../lib/frontmatter');
 
 const SKILLS_DIR = path.join(__dirname, '..', 'skills');
 const REQUIRED_FIELDS = ['name', 'description'];
@@ -26,34 +27,6 @@ function fail(msg) {
   failed++;
 }
 
-function parseFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return null;
-
-  const fm = {};
-  const lines = match[1].split('\n');
-  let currentKey = null;
-  let currentValue = '';
-
-  for (const line of lines) {
-    const keyMatch = line.match(/^(\w+):\s*(.*)/);
-    if (keyMatch) {
-      if (currentKey) {
-        fm[currentKey] = currentValue.trim();
-      }
-      currentKey = keyMatch[1];
-      currentValue = keyMatch[2];
-    } else if (currentKey && (line.startsWith('  ') || line.startsWith('\t'))) {
-      currentValue += '\n' + line.trim();
-    }
-  }
-  if (currentKey) {
-    fm[currentKey] = currentValue.trim();
-  }
-
-  return fm;
-}
-
 console.log('\n  Skill Validation\n');
 
 const files = fs.readdirSync(SKILLS_DIR).filter(f => f.endsWith('.md'));
@@ -63,10 +36,14 @@ for (const file of files) {
   const content = fs.readFileSync(filePath, 'utf8');
 
   // Check frontmatter exists
-  const fm = parseFrontmatter(content);
+  const parsed = frontmatter.split(content, { strict: true, source: file, require: true });
+  const fm = parsed.frontmatter;
   if (!fm) {
     fail(`${file}: missing frontmatter`);
     continue;
+  }
+  for (const diagnostic of parsed.diagnostics) {
+    fail(`${file}: frontmatter ${diagnostic.message}`);
   }
 
   // Check required fields
