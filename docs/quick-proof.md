@@ -62,6 +62,18 @@ single next move.
 - [DECISION] A useful first run should produce at least one next command, one
   host guarantee, and one inspectable disk-state path.
 
+## External CLI Canaries
+
+- [DECISION] Three external repositories now have CLI-verifiable canary
+  reports: [sindresorhus/is](case-studies/sindresorhus-is-adoption-canary.md),
+  [expressjs/cors](case-studies/expressjs-cors-adoption-canary.md), and
+  [tinyhttp/tinyhttp](case-studies/tinyhttp-adoption-canary.md).
+- [DECISION] These canaries prove first-contact status and next-action signals
+  against real cloned repositories.
+- [OPEN QUESTION] They do not yet prove host slash-command execution inside
+  those repositories. Owner: maintainer. Due: before broad product proof
+  claims.
+
 ## Before And After
 
 ### Unguided AI Prompt

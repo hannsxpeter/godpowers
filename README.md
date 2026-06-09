@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.4.2-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.3-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -16,16 +16,19 @@ Want the short proof first? Start with [Quick Proof](docs/quick-proof.md) to
 run `npx godpowers quick-proof --project=. --brief`, see outcome metrics, pick
 a starter command set, and understand runtime expectations before reading the
 full reference. The [First 10 Minute Proof Case Study](docs/case-studies/first-10-minute-proof.md)
-shows the same evidence as a before-and-after adoption story.
+shows the same evidence as a before-and-after adoption story. External
+CLI-verifiable canaries now cover [sindresorhus/is](docs/case-studies/sindresorhus-is-adoption-canary.md),
+[expressjs/cors](docs/case-studies/expressjs-cors-adoption-canary.md), and
+[tinyhttp/tinyhttp](docs/case-studies/tinyhttp-adoption-canary.md), with host
+slash-command gaps called out rather than hidden.
 
 Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 2.4.2 keeps the 2.4 command-family UX and hardens the release-facing
-runtime: strict YAML diagnostics for routing, recipes, workflows, and extension
-manifests; shared markdown frontmatter parsing; dev-only coverage tooling; and
-clean package hygiene before publish.
+Version 2.4.3 keeps the 2.4 command-family UX and adds external CLI canary
+evidence, prompt-size guardrails, legacy command quarantine, lib coverage
+gating, and temp-directory package verification before publish.
 
 Maintainer hardening continues on the 2.x line with small, audited public
 surface updates when they close real workflow gaps. The 2.1.0 patch closes a command-injection vector in the

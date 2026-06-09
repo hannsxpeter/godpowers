@@ -8,6 +8,8 @@ Cross-tier reference content used by multiple agents.
 - [ORCHESTRATORS.md](ORCHESTRATORS.md): composition patterns with other AI
   coding workflow systems, including migration and managed sync-back.
 - [GLOSSARY.md](GLOSSARY.md): standardized vocabulary across tiers.
+- [DASHBOARD-CONTRACT.md](DASHBOARD-CONTRACT.md): shared dashboard and proposition output contract.
+- [LOCKING.md](LOCKING.md): shared state-lock contract for mutating commands.
 
 ## Planned content
 

@@ -8,6 +8,11 @@ Start with the local proof case study first:
 [First 10 Minute Proof Case Study](case-studies/first-10-minute-proof.md).
 That page defines the baseline signals an external canary should improve on.
 
+The first CLI-verifiable external canary set is captured in:
+[sindresorhus/is](case-studies/sindresorhus-is-adoption-canary.md),
+[expressjs/cors](case-studies/expressjs-cors-adoption-canary.md), and
+[tinyhttp/tinyhttp](case-studies/tinyhttp-adoption-canary.md).
+
 ## Purpose
 
 - [DECISION] The canary validates first-user trust, not only release plumbing.
@@ -128,5 +133,6 @@ Route canary findings to the smallest matching surface:
 
 ## Open Decision
 
-- [OPEN QUESTION] Which external repository should be the first public canary?
-  Owner: maintainer. Due: before the next public release.
+- [OPEN QUESTION] Which external repository should receive the first host-run
+  canary with `/god-init` or `/god-preflight` executed inside an AI coding
+  host? Owner: maintainer. Due: before the next broad product proof claim.

@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-05-30
-> Current shipped: v2.4.2
+> Current shipped: v2.4.3
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 2.0 public adoption window. Everything user-facing remains slash-command based.
@@ -12,7 +12,7 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v2.4.2)
+### Current surface (v2.4.3)
 
 What works today:
 - **112 slash commands** as thin orchestrators (front door, lifecycle, planning,
@@ -57,9 +57,19 @@ What works today:
 - **First proof case study**: `docs/case-studies/first-10-minute-proof.md`
   documents the local before-and-after evidence for a new user before the
   first external repository case study.
+- **External CLI canary case studies**: `docs/case-studies/` captures
+  sindresorhus/is, expressjs/cors, and tinyhttp/tinyhttp first-contact runs
+  with commit hashes, elapsed time, cost, pause count, and explicit host-run
+  gaps.
 - **Parser and frontmatter hardening**: strict YAML diagnostics surface
   malformed routing, recipe, workflow, and extension manifest lines, while
   `lib/frontmatter.js` keeps markdown contract metadata on one shared parser.
+- **Prompt-size guardrails**: the god-orchestrator, god-next, god-status, and
+  repeated locking contracts delegate long-form content into references, with
+  `scripts/static-check.js` enforcing prompt and locking boundaries.
+- **Coverage and packaging gates**: `npm run release:check` runs the full suite
+  under `c8` with a 90 percent line floor for `lib/`, and package checks pack
+  into a temp directory so release verification leaves no root tarball.
 - **Messy-repo dogfooding**: `/god-dogfood` and `npx godpowers dogfood` run
   fixture scenarios for legacy planning migration, sync-back, host capabilities, extension
   authoring, and Mode D suite release dry-runs.

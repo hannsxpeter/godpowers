@@ -1,13 +1,13 @@
 # Users and Community
 
-Godpowers is at v2.4.2. Stable release.
+Godpowers is at v2.4.3. Stable release.
 
 ## Track record
 
 Currently zero recorded production users. Be honest. The 2.4 line adds UX
 flow clarity on top of the executable proof path, accountability hardening,
-and deliverable progress tracking. Real users will reveal which gaps actually
-matter.
+deliverable progress tracking, and three external CLI-verifiable adoption
+canaries. Real users will reveal which gaps actually matter.
 
 ## Proof needed during freeze
 
@@ -48,7 +48,12 @@ If you use Godpowers on a real project:
 
 ## Case studies
 
-(none yet)
+- [sindresorhus/is CLI adoption canary](docs/case-studies/sindresorhus-is-adoption-canary.md)
+- [expressjs/cors CLI adoption canary](docs/case-studies/expressjs-cors-adoption-canary.md)
+- [tinyhttp/tinyhttp CLI adoption canary](docs/case-studies/tinyhttp-adoption-canary.md)
+
+These are not production-user studies. They prove first-contact CLI signals
+against real cloned repositories and keep the host-run gap explicit.
 
 If you ship something with Godpowers, write it up. We'll feature you here.
 

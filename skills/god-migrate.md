@@ -141,6 +141,4 @@ Suggested next:
 
 ## Locking
 
-Acquire the state lock with scope `migration.source-systems` before writing
-`.godpowers/prep/IMPORTED-CONTEXT.md`, seed artifacts, source-system companion
-files, or `state.json`.
+See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

@@ -37,6 +37,18 @@ test('selectedSkillNames includes extension authoring in maintainer surface', ()
   assert(selected.has('god-extension-add'), 'maintainer missing god-extension-add');
 });
 
+test('deprecated roadmap check stays out of non-full profiles', () => {
+  const names = fs.readdirSync(path.join(ROOT, 'skills'))
+    .filter(file => file.endsWith('.md'))
+    .map(file => path.basename(file, '.md'));
+  for (const profile of ['core', 'builder', 'maintainer', 'suite']) {
+    const selected = profiles.selectedSkillNames(profile, names);
+    assert(!selected.has('god-roadmap-check'), `${profile} should not install deprecated roadmap check`);
+  }
+  assert(profiles.selectedSkillNames('full', names).has('god-roadmap-check'),
+    'full profile should retain deprecated roadmap check for compatibility');
+});
+
 test('installer profile core installs fewer commands and writes marker', () => {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-profile-core-'));
   execFileSync('node', [INSTALLER, '--codex', '--global', '--profile=core'], {

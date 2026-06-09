@@ -187,25 +187,20 @@ function runExtensionScaffoldCommand(opts) {
   }
 }
 
+const COMMAND_RUNNERS = {
+  status: runDashboardCommand,
+  next: runDashboardCommand,
+  'quick-proof': runQuickProofCommand,
+  'automation-status': runAutomationCommand,
+  'automation-setup': runAutomationCommand,
+  dogfood: runDogfoodCommand,
+  'extension-scaffold': runExtensionScaffoldCommand
+};
+
 function runCommand(opts) {
-  if (opts.command === 'status' || opts.command === 'next') {
-    runDashboardCommand(opts);
-    return true;
-  }
-  if (opts.command === 'quick-proof') {
-    runQuickProofCommand(opts);
-    return true;
-  }
-  if (opts.command === 'automation-status' || opts.command === 'automation-setup') {
-    runAutomationCommand(opts);
-    return true;
-  }
-  if (opts.command === 'dogfood') {
-    runDogfoodCommand(opts);
-    return true;
-  }
-  if (opts.command === 'extension-scaffold') {
-    runExtensionScaffoldCommand(opts);
+  const runner = COMMAND_RUNNERS[opts.command];
+  if (runner) {
+    runner(opts);
     return true;
   }
   return false;
@@ -299,11 +294,19 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
 
 module.exports = {
   showHelp,
+  COMMAND_RUNNERS,
   runCommand,
+  runAutomationCommand,
+  runDashboardCommand,
+  runDogfoodCommand,
+  runQuickProofCommand,
+  runExtensionScaffoldCommand,
   applyDefaultRuntimeSelection,
   runInstall,
   runUninstall,

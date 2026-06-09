@@ -1,6 +1,6 @@
 {
   "name": "godpowers",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "AI-powered development system: 112 slash commands and 40 specialist agents that take a project from raw idea to hardened production. Runs inside Claude Code, Codex, Cursor, Windsurf, Gemini, and 10+ other AI coding tools.",
   "bin": {
     "godpowers": "./bin/install.js"
@@ -23,9 +23,10 @@
     "test:diff": "node scripts/test-artifact-diff.js",
     "test:e2e": "node tests/integration/full-arc.test.js",
     "coverage": "c8 --reporter=text --reporter=lcov node scripts/run-tests.js",
+    "coverage:lib": "c8 --include=lib/**/*.js --check-coverage --lines 90 --reporter=text node scripts/run-tests.js",
     "test:audit": "npm audit --omit=dev && git diff --check && npm run test:surface",
     "pack:check": "node scripts/check-package-contents.js",
-    "release:check": "npm test && npm run test:audit && npm run pack:check",
+    "release:check": "npm run coverage:lib && npm run test:audit && npm run pack:check",
     "lint": "node scripts/static-check.js"
   },
   "keywords": [

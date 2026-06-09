@@ -1,12 +1,12 @@
-# Godpowers 2.4.2 Release
+# Godpowers 2.4.3 Release
 
 > Status: Ready for package verification
 > Date: 2026-06-09
 
-Godpowers 2.4.2 is a release-hardening patch for the 2.4 line. It keeps the
-2.4 command-family UX intact while making parser failures, frontmatter
-metadata, coverage visibility, and package hygiene more accountable before
-publish.
+Godpowers 2.4.3 is a review-followup release for the 2.4 line. It keeps the
+2.4 command-family UX intact while adding external CLI proof, prompt-size
+guardrails, legacy surface quarantine, lib coverage gating, and clean package
+verification before publish.
 
 ## What's in this release
 
@@ -17,42 +17,42 @@ publish.
 
 ## Highlights
 
-- YAML parsing now exposes strict diagnostics for malformed skipped lines and
-  unsafe prototype-pollution keys while preserving default legacy reads.
-- Routing, recipe, and workflow YAML loaders now surface warnings with file and
-  line context.
-- Extension manifests now fail closed on malformed YAML lines and unsafe keys.
-- Markdown frontmatter parsing is centralized in `lib/frontmatter.js` and
-  enforced by `scripts/static-check.js`.
-- Installer metadata, Pillars, skill validation, agent validation,
-  checkpoints, context budgets, skill surface metadata, and DESIGN.md parsing
-  now share the same frontmatter path.
-- `npm run coverage` is available through dev-only `c8` tooling.
-- Stale root package tarballs and `.DS_Store` clutter were removed before
-  release.
+- Three external CLI adoption canary case studies now cover sindresorhus/is,
+  expressjs/cors, and tinyhttp/tinyhttp, including commit hashes, elapsed time,
+  zero-dollar local CLI cost, pause counts, and explicit host-run gaps.
+- `agents/god-orchestrator.md`, `skills/god-next.md`, and
+  `skills/god-status.md` are now concise dispatch contracts that delegate
+  detailed runbook content to `references/`.
+- Repeated skill locking boilerplate now points to
+  `references/shared/LOCKING.md`.
+- `/god-roadmap-check` is deprecated, kept for full-profile compatibility, and
+  excluded from non-full installer profiles by regression test.
+- `npm run coverage:lib` enforces a 90 percent line coverage floor for
+  `lib/**/*.js`.
+- `npm run release:check` runs the full suite under the lib coverage floor
+  before audit and package verification.
+- Package verification now creates the npm tarball in a temporary directory and
+  removes it automatically.
 
 ## Validation
 
-- `node scripts/test-yaml-parser.js` green
-- `node scripts/test-frontmatter.js` green
-- `node scripts/test-extensions.js` green
-- `node scripts/test-router.js` green
-- `node scripts/test-recipes.js` green
-- `node scripts/test-install-smoke.js` green
+- `node scripts/static-check.js` green
+- `node scripts/test-cli-dispatch.js` green
+- `node scripts/test-installer-profiles.js` green
+- `node scripts/run-adoption-canary.js https://github.com/sindresorhus/is.git --output=docs/case-studies/sindresorhus-is-adoption-canary.md` green
+- `node scripts/run-adoption-canary.js https://github.com/expressjs/cors.git --output=docs/case-studies/expressjs-cors-adoption-canary.md` green
+- `node scripts/run-adoption-canary.js https://github.com/tinyhttp/tinyhttp.git --output=docs/case-studies/tinyhttp-adoption-canary.md` green
 - `npm run release:check` required before publish
-- `npm pack` creates a local `godpowers-2.4.2.tgz` tarball for package
-  inspection
 
 ## Upgrade
 
-- `npm install -g godpowers@2.4.2` or `npx godpowers@2.4.2`
+- `npm install -g godpowers@2.4.3` or `npx godpowers@2.4.3`
 - Re-run `/god-context` in each project to refresh installed runtime metadata
-- No breaking changes for valid `.godpowers/` state. Invalid extension
-  manifests that were previously partially accepted now fail with parse errors.
+- No breaking changes for valid `.godpowers/` state.
 
 ## Notes
 
-- GitHub release creation for `v2.4.2`
-- The tag should match the npm package version
-- The `v2.4.2` tag should point to the release commit that matches the npm
-  `godpowers@2.4.2` package.
+- GitHub release creation for `v2.4.3`
+- The tag should match the npm package version.
+- The `v2.4.3` tag should point to the release commit that matches the npm
+  `godpowers@2.4.3` package.

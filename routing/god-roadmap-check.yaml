@@ -4,7 +4,7 @@ metadata:
   command: /god-roadmap-check
   description: Reconcile intent against ROADMAP.md before feature work
   tier: 1
-  family: maintain
+  family: compatibility
 
 prerequisites:
   required:

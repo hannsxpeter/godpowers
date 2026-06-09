@@ -205,8 +205,8 @@ if [ -f "$ROOT/hooks/pre-tool-use.sh" ]; then
   fi
 fi
 
-# 11. god-mode autonomous routing: orchestrator references every tier's agent
-ORCH="$ROOT/agents/god-orchestrator.md"
+# 11. god-mode autonomous routing: orchestrator runbook references every tier's agent
+ORCH="$ROOT/references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md"
 for required_agent in god-pm god-architect god-roadmapper god-stack-selector god-repo-scaffolder god-planner god-executor god-spec-reviewer god-quality-reviewer god-deploy-engineer god-observability-engineer god-harden-auditor god-launch-strategist; do
   if grep -q "$required_agent" "$ORCH"; then
     pass "orchestrator routes to $required_agent"
@@ -215,7 +215,7 @@ for required_agent in god-pm god-architect god-roadmapper god-stack-selector god
   fi
 done
 
-# 12. Build phase orchestration: orchestrator documents the 4-agent build chain
+# 12. Build phase orchestration: orchestrator runbook documents the 4-agent build chain
 if grep -qi "build phase orchestration" "$ORCH"; then
   pass "orchestrator documents Build phase multi-agent chain"
 else

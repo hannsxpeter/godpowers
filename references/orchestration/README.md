@@ -5,6 +5,12 @@ god-orchestrator and related agents.
 
 ## Files
 
+- [GOD-MODE-RUNBOOK.md](GOD-MODE-RUNBOOK.md): `/god-mode` transcript,
+  flags, final sync, and completion contracts.
+- [GOD-NEXT-RUNBOOK.md](GOD-NEXT-RUNBOOK.md): `/god-next` invocation modes,
+  route detail, and edge cases.
+- [GOD-ORCHESTRATOR-RUNBOOK.md](GOD-ORCHESTRATOR-RUNBOOK.md): detailed
+  god-orchestrator operating contracts delegated out of the agent prompt.
 - [MODE-DETECTION.md](MODE-DETECTION.md): Mode A/B/C/E detection, plus Mode D
   suite membership.
 - [SCALE-DETECTION.md](SCALE-DETECTION.md): scale rubric and calibration.

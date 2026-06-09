@@ -1,5 +1,7 @@
 ---
 name: god-roadmap-check
+deprecated: true
+replacement: god-reconcile
 description: |
   Check if user intent overlaps with the existing ROADMAP.md before doing
   feature work. Returns: already-done, in-progress, enhancement,
@@ -11,6 +13,9 @@ description: |
 ---
 
 # /god-roadmap-check
+
+Deprecated: prefer `/god-reconcile` for new workflows. This command remains in
+the full profile for backward compatibility with existing route references.
 
 Reconcile intent against ROADMAP.md before adding work.
 

@@ -5,6 +5,8 @@
  */
 
 const { execFileSync } = require('child_process');
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
 
 const REQUIRED_FILES = [
@@ -75,15 +77,24 @@ const FORBIDDEN_FILES = [
 ];
 
 function main() {
-  const raw = execFileSync('npm', ['pack', '--dry-run', '--json'], {
-    cwd: path.join(__dirname, '..'),
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe']
-  });
-  const packs = JSON.parse(raw);
-  const pack = packs[0];
-  if (!pack || !Array.isArray(pack.files)) {
-    throw new Error('npm pack did not return a file list');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-pack-check-'));
+  let pack;
+  try {
+    const raw = execFileSync('npm', ['pack', '--json', '--pack-destination', tmp], {
+      cwd: path.join(__dirname, '..'),
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
+    const packs = JSON.parse(raw);
+    pack = packs[0];
+    if (!pack || !Array.isArray(pack.files)) {
+      throw new Error('npm pack did not return a file list');
+    }
+    if (pack.filename && !fs.existsSync(path.join(tmp, pack.filename))) {
+      throw new Error(`npm pack did not write ${pack.filename} to the temp directory`);
+    }
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
   }
 
   const files = new Set(pack.files.map(file => file.path));

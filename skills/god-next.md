@@ -12,429 +12,53 @@ description: |
 
 # /god-next
 
-The unified decision engine. Routes between commands based on disk state,
-routing definitions, and user intent.
+The unified decision engine. Route between commands based on disk state,
+routing definitions, recipes, command families, and user intent.
 
 ## Runtime module resolution
 
-Before reading routing data or calling runtime modules, resolve the Godpowers runtime root:
-
 1. If `<projectRoot>/lib/router.js` exists, use the repository checkout runtime at `<projectRoot>`.
-2. Otherwise use the installed bundle at `<tool-config-dir>/godpowers-runtime`, where `<tool-config-dir>` is the directory that contains this installed skill, such as `~/.claude`, `~/.codex`, `~/.cursor`, `~/.windsurf`, or `~/.gemini`.
+2. Otherwise use the installed bundle at `<tool-config-dir>/godpowers-runtime`.
 3. Read routing definitions from `<runtimeRoot>/routing/*.yaml` and recipes from `<runtimeRoot>/routing/recipes/*.yaml`.
-4. Load `<runtimeRoot>/lib/command-families.js` for work size, verification,
-   capture, and trigger precedence hints.
-5. For status output, load `<runtimeRoot>/lib/dashboard.js` and call
-   `dashboard.compute(projectRoot)`. Use `dashboard.render(result)` for the
-   shared dashboard section before adding route-specific detail.
-6. If the checkout runtime and installed runtime differ, say which runtime root
-   was used. Only call the output a manual disk scan when `lib/dashboard.js`
-   cannot be loaded at all.
+4. Load `<runtimeRoot>/lib/command-families.js` before resolving broad intent.
+5. Load `<runtimeRoot>/lib/dashboard.js` and render the shared dashboard before route-specific detail.
+6. If no dashboard module is available, say `Dashboard engine: unavailable, manual scan used`.
 
-## Three modes of invocation
+## Required references
 
-### Mode 1: After a command (post-completion routing)
-The completing skill calls /god-next to determine what's next.
-Reads `<runtimeRoot>/routing/<just-completed>.yaml`, gets `success-path.next-recommended`,
-suggests it.
+Read these references before producing a route recommendation:
 
-### Mode 2: Before a command (pre-flight)
-User wants to run /god-X. /god-next checks prerequisites first.
-Reads `<runtimeRoot>/routing/<X>.yaml`, evaluates prerequisites, proposes auto-completion
-if any are missing.
+- `<runtimeRoot>/references/orchestration/GOD-NEXT-RUNBOOK.md` for invocation modes, route detail, and edge cases.
+- `<runtimeRoot>/references/shared/DASHBOARD-CONTRACT.md` for the shared status and proposition shape.
 
-### Mode 3: Standalone (state-driven)
-User just ran /god-next. Auto-detects current project phase and suggests
-the next logical command.
+## Invocation modes
 
-Before suggesting, read `.godpowers/prep/INITIAL-FINDINGS.md` and
-`.godpowers/prep/IMPORTED-CONTEXT.md` if present. Use them to explain why the
-next step is safe or why a migration-aware step such as `/god-prd`,
-`/god-map-codebase`, or `/god-mode` is better. Prep artifacts are context only;
-state.json and completed Godpowers artifacts remain authoritative.
+- Post-completion: after a command finishes, read its routing file and announce the next gate.
+- Pre-flight: before a target command runs, evaluate prerequisites and offer auto-completion when available.
+- Standalone: when the user asks what is next, derive the recommendation from disk state.
+- Intent-based: when the user uses fuzzy text, match recipes and command families before raw route order.
 
-If PRD is complete, DESIGN is missing, and initial findings, imported context,
-the PRD, or the codebase show UI or product-experience signals, suggest
-`/god-design` before `/god-arch`. DESIGN.md is early preparation for visible
-workflows, not a replacement for architecture.
+## Decision rules
 
-## Process for Mode 1 (post-completion)
+- Disk state beats chat memory.
+- state.json and completed artifacts beat prep artifacts.
+- INITIAL-FINDINGS.md and IMPORTED-CONTEXT.md explain context but do not override completed Godpowers artifacts.
+- If PRD is complete, DESIGN is missing, and UI or product-experience signals exist, suggest `/god-design` before `/god-arch`.
+- Safe sync blockers route to `/god-reconcile Release Truth And Safe Sync` before release-facing work.
+- Unresolved Critical harden findings block `/god-launch` in default mode and under `--yolo`.
+- Missing prerequisites should name the prerequisite, the route that can create it, and the smallest user decision needed.
+- Standards failures should suggest `/god-redo` with feedback or `/god-skip` with a reason, then stop.
 
-```
-A skill completes (e.g., /god-prd just finished)
-   |
-   v
-Skill calls: /god-next --after=/god-prd
-   |
-   v
-Read <runtimeRoot>/routing/god-prd.yaml
-   |
-   v
-Get success-path.next-recommended (e.g., "/god-arch"), then apply any
-conditional-next rule such as UI-detected -> "/god-design"
-   |
-   v
-Read success-path.outcome when present. Use it to label contextual,
-verdict-based, steady-state, session-end, and selection outcomes before
-showing allowed next commands.
-   |
-   v
-Display: "PRD complete: .godpowers/prd/PRD.md
-          Suggested next: /god-arch (design the architecture)"
-```
+## Output contract
 
-If standards-check is configured at the gate:
-```
-   |
-   v
-Spawn god-standards-check on the produced artifact
-   |
-   v
-If standards FAIL:
-   - Display failures with line refs and suggested fixes
-   - Suggest /god-redo with feedback OR /god-skip with reason
-   - Do NOT auto-progress
-   |
-If standards PASS:
-   - Update state.json: tier.sub-step.status = done
-   - Display "Suggested next: /god-arch"
-```
+Render this sequence:
 
-## Process for Mode 2 (pre-flight)
+1. `Godpowers Next` heading.
+2. Shared Godpowers Dashboard from `DASHBOARD-CONTRACT.md`.
+3. Suggested next command and one-line reason.
+4. Optional three-line path ahead when state allows it.
+5. Optional pre-flight, standards, or blocker detail.
+6. Proactive checks using the shared labels.
+7. Proposition block unless the selected command already launched.
 
-```
-User types: /god-arch
-   |
-   v
-The /god-arch skill calls: /god-next --before=/god-arch
-   |
-   v
-Read <runtimeRoot>/routing/god-arch.yaml
-   |
-   v
-For each prerequisite in prerequisites.required:
-   - Evaluate the check predicate
-   - If false: prerequisite is missing
-   |
-   v
-If all prereqs satisfied: proceed with /god-arch
-   |
-If some prereqs missing AND auto-completable:
-   - Display:
-     "/god-arch requires PRD to be complete (prereq missing).
-      The routing has auto-complete: /god-prd
-      Run /god-prd first? (yes/no)"
-   - If yes: invoke /god-prd, then return to /god-arch
-   - If no: abort or show what user needs to do manually
-   |
-If prereqs missing and NOT auto-completable:
-   - Display what's needed
-   - Show how to fix manually
-   - Suggest /god-doctor for diagnosis
-```
-
-## Process for Mode 3 (standalone)
-
-When the user asks a broad next-step question, use the family helpers before
-falling back to raw route order:
-
-- Capture intent routes through the capture ladder.
-- Implementation intent routes through the work size ladder.
-- Check or audit intent routes through the verification ladder.
-- Duplicate trigger phrases use `resolveTrigger` so `continue`, `think through`,
-  `what happened`, `what's done`, and `where am i` pick the context-aware
-  command.
-
-```
-User types: /god-next
-   |
-   v
-Read .godpowers/state.json (or PROGRESS.md as fallback)
-   |
-   v
-Use <runtimeRoot>/lib/router.js suggestNext(projectRoot)  <- structural next
-   |
-   v
-For each tier in order:
-   - Find first non-done sub-step
-   - That's the suggested next command
-   - Before Tier 3, honor red gates such as unresolved safe sync
-   |
-   v
-If all tiers done:
-   - Use <runtimeRoot>/lib/recipes.js suggestForState(projectRoot)  <- scenario-aware
-   - Returns recipes matching current lifecycle phase
-   |
-   v
-Display: "Suggested next: /god-arch
-          Why: PRD is complete; architecture is the next gate"
-```
-
-When the suggestion is based on state.json, also show the immediate route:
-
-```
-Path ahead:
-  1. Current: <tier>/<substep> - <status>
-  2. Next: /god-X - <why>
-  3. Then: /god-Y - <next gate, if known>
-```
-
-Keep the route to 3 lines unless the user asks for the full plan.
-
-Also show planning visibility when the artifacts exist or are expected:
-
-```
-Planning visibility:
-  PRD: <done | pending | missing> <path when present>
-  Roadmap: <done | pending | missing> <path when present>
-  Current milestone: <roadmap milestone, tier, or next planning gate>
-  Completion: <pct>% <basis from state.json or PROGRESS.md>
-```
-
-## Proactive Sweep
-
-Before returning a suggestion, run the proactive auto-invoke policy from the
-master skill against disk state. This is read-only unless a Level 2 local helper
-has a direct trigger.
-
-Check these signals:
-- `.godpowers/CHECKPOINT.md` missing, stale, or conflicting with `state.json`
-- `.godpowers/REVIEW-REQUIRED.md` contains pending entries
-- `.godpowers/SYNC-LOG.md` missing after code or artifact edits
-- docs changed after code changed, or code changed after docs that claim
-  current behavior
-- frontend-visible files changed and a known local, preview, staging, or
-  production URL is evidenced
-- security-sensitive files changed
-- dependency files changed
-- full project run completed and hygiene has not run recently
-
-Display the result:
-
-```text
-Proactive checks:
-  Checkpoint: <fresh | refreshed | stale, suggest /god-locate>
-  Reviews: <none | N pending, suggest /god-review-changes>
-  Sync: <fresh | suggest /god-sync | local linkage scan ran>
-  Docs: <fresh | suggest /god-docs | drift-check spawned>
-  Runtime: <not-applicable | suggest /god-test-runtime | browser test spawned>
-  Security: <clear | suggest /god-harden>
-  Dependencies: <clear | suggest /god-update-deps>
-  Hygiene: <fresh | suggest /god-hygiene>
-```
-
-Do not auto-run Level 3 agents from standalone `/god-next` unless the user
-explicitly asked it to continue work. In standalone mode, Level 3 items become
-the recommended command or a proposition option.
-
-## Process for Mode 4 (intent-based)
-
-```
-User says: "I need to add a new feature mid-development"
-   |
-   v
-/god-next consults <runtimeRoot>/lib/recipes.js matchIntent(text, projectRoot)
-   |
-   v
-Returns ranked recipes matching:
-   - Intent keywords ("add new feature", "mid-development")
-   - State conditions (lifecycle-phase == in-arc)
-   |
-   v
-Display top match with the recipe's sequence:
-   "Best match: add-feature-mid-arc-pause
-    Sequence:
-      1. /god-pause-work  (Save current /god-mode project-run state)
-      2. /god-feature     (Run feature workflow)
-      3. /god-resume-work (Restore project run)
-    
-    Run this sequence? Or see other matches?"
-```
-
-This is the recipe-driven decision support: agents consult `<runtimeRoot>/routing/recipes/`
-when user intent is fuzzy or doesn't map to a single command.
-
-## Routing data
-
-Routing definitions live in `<runtimeRoot>/routing/*.yaml`. Each command has a file:
-- `<runtimeRoot>/routing/god-prd.yaml`
-- `<runtimeRoot>/routing/god-arch.yaml`
-- ...
-
-These define prerequisites, execution, success-path, failure-path, and
-endoff for each command.
-
-The `<runtimeRoot>/lib/router.js` JS module provides programmatic queries:
-- `getRouting(command)` - load a command's routing
-- `checkPrerequisites(command, projectRoot)` - prereq check
-- `getNextCommand(command)` - get success-path next
-- `getStandards(command)` - get standards checks
-- `suggestNext(projectRoot)` - state-driven suggestion
-
-## Decision Tree
-
-```
-                    /god-next invoked
-                          |
-                          v
-              ┌────── What flag? ──────┐
-              |                          |
-              v                          v
-          --before=X              --after=X        (no flag)
-              |                          |              |
-              v                          v              v
-        Check X's prereqs       Get X's next      Use suggestNext
-              |                          |              |
-              v                          v              |
-        Pass: proceed           Standards check        |
-        Fail+autocomp:            on artifact          |
-        offer to run                   |                |
-        prereq cmd                Pass: announce next  |
-        Fail no autocomp:        Fail: pause           |
-        explain                                         |
-              |                          |              |
-              └──────────────┬───────────┴──────────────┘
-                             v
-                 Display suggestion + why
-```
-
-## Edge cases
-
-### User wants to skip a prereq
-`/god-arch --skip-prereqs` (advanced flag)
-- Logs the skip with reason in events.jsonl
-- Proceeds anyway
-- Marks state as `re-invoked` flag if upstream artifacts are stale
-
-### Multiple non-done sub-steps (parallel-safe)
-e.g., after /god-arch, both /god-roadmap and /god-stack are eligible.
-Display both with: "Run in any order. /god-roadmap is critical-path."
-
-### State drift (artifact missing but state says done)
-Detected by lib/state.detectDrift(). Suggest /god-repair.
-
-### Safe sync blocks deploy
-If `.godpowers/sync/SAFE-SYNC-PLAN.md` exists, or `.godpowers/CHECKPOINT.md`
-states that safe sync is a blocking red gate, suggest
-`/god-reconcile Release Truth And Safe Sync` before `/god-deploy`,
-`/god-observe`, `/god-harden`, or `/god-launch`.
-
-The blocker is cleared when `.godpowers/sync/SAFE-SYNC-DONE.md` or
-`.godpowers/sync/SAFE-SYNC-RESOLVED.md` exists.
-
-### Critical harden findings block launch
-If `.godpowers/harden/FINDINGS.md` says the launch gate is blocked, or lists
-unresolved Critical findings, `/god-launch` prerequisites fail through
-`no-critical-findings`. This applies in default mode and `--yolo`.
-
-### Steady state with multiple workflow options
-If lifecycle-phase = steady-state-active, route by user intent if provided
-(use the User Intent Map below).
-
-## Steady-state User Intent Map
-
-When in steady state, match keywords to workflows:
-
-| Keyword | Suggest |
-|---------|---------|
-| feature, add, new functionality | /god-feature |
-| production down, urgent, p0 | /god-hotfix |
-| bug, broken, doesn't work | /god-debug |
-| refactor, clean up, rename | /god-refactor |
-| POC, prototype, spike, research | /god-spike |
-| postmortem, RCA, incident review | /god-postmortem |
-| upgrade, migrate, bump major | /god-upgrade |
-| docs, documentation, README | /god-docs |
-| deps, dependencies, audit | /god-update-deps |
-| preflight, intake, audit before project run readiness, audit before pillars | /god-preflight |
-| audit, score, quality check | /god-audit |
-| health check, hygiene | /god-hygiene |
-
-If mode detection indicates brownfield or bluefield and
-`.godpowers/preflight/PREFLIGHT.md` is missing, prefer `/god-preflight` before
-recommending archaeology, reconstruction, project-run readiness, pillars, or refactor work.
-
-## Output Format
-
-`/god-next` must emit the same Godpowers Dashboard shape used by
-`/god-status`, then add routing detail and the proposition block.
-Prefer the executable `lib/dashboard.js` output over manually recomputing the
-same fields. If the module is unavailable, say
-`Dashboard engine: unavailable, manual scan used`.
-
-```text
-Godpowers Next
-
-Godpowers Dashboard
-
-Source: runtime dashboard (lib/dashboard.js)
-
-Current status:
-  State: proposal
-  Phase: [plain-language phase] (tier [human ordinal] of [human total])
-  Step: [current step label] (step [n] of [total steps])
-  Progress: [pct]% workflow progress ([done] of [total] tracked steps complete)
-  Worktree: [clean | modified files unstaged | staged changes | mixed]
-  Index: [untouched | staged files listed]
-
-Planning visibility:
-  PRD: [done | pending | missing | deferred] [path when present]
-  Roadmap: [done | pending | missing | deferred] [path when present]
-  Current milestone: [roadmap milestone, phase, tier, or next planning gate]
-  Completion basis: [state.json, PROGRESS.md, artifacts, or audit score source]
-
-Suggested next: [/god-X]
-
-Why: [one-line reason]
-
-Path ahead:
-  1. Current: [tier/substep] - [status]
-  2. Next: [/god-X] - [why]
-  3. Then: [/god-Y or "recompute after gate"]
-
-[If prereqs missing]:
-Pre-flight: missing [prereq]
-Auto-complete available: /god-Y
-Run /god-Y first? (yes/no/manual-info)
-
-[If standards-check on previous tier failed]:
-Previous tier had standards failures. Address before proceeding:
-  - [failure 1]
-  - [failure 2]
-Suggested: /god-redo [tier] OR /god-skip [tier] --reason="..."
-
-Proactive checks:
-  Checkpoint: [fresh | refreshed | missing | stale]
-  Reviews: [none | N pending, suggest /god-review-changes]
-  Sync: [fresh | missing | stale | local helper ran | suggest /god-sync]
-  Docs: [fresh | possible drift, suggest /god-docs]
-  Runtime: [not-applicable | known URL, suggest /god-test-runtime | no known URL, defer deployed verification]
-  Security: [clear | sensitive files changed, suggest /god-harden]
-  Dependencies: [clear | dependency files changed, suggest /god-update-deps]
-  Hygiene: [fresh | stale, suggest /god-hygiene]
-
-Open items:
-  1. [missing prerequisite, blocker, pending review, or none]
-
-Next:
-  Recommended: [/god-X or exact user decision]
-  Why: [one sentence tied to disk state]
-```
-
-## Proposition Closeout
-
-Every `/god-next` response must end with a proposition block unless it already
-launched the selected command:
-
-```
-Proposition:
-  1. Implement partial: [single suggested command]
-  2. Implement complete: [recipe sequence or /god-mode when safe]
-  3. Discuss more: /god-discuss [routing ambiguity or missing prerequisite]
-  4. Inspect status: /god-status or /god-locate
-Recommended: [one option and why]
-```
-
-For missing prerequisites, the partial option is the auto-completable
-prerequisite. For standards failures, the partial option is `/god-redo` with
-feedback and the complete option is blocked until the gate passes.
+Keep the route preview to three lines unless the user asks for the full plan.

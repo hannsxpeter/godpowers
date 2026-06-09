@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v2.4.2.
+Complete command, agent, and artifact reference for v2.4.3.
 
 ## Slash commands (112 total)
 
@@ -36,6 +36,9 @@ For common ambiguous intents, Godpowers chooses the smallest fitting command:
 
 `/god-status` is the continue hub. `/god-progress`, `/god-lifecycle`,
 `/god-locate`, and `/god-next` remain direct shortcuts for narrower views.
+`/god-lifecycle` stays separate for phase-only workflow fit checks.
+`/god-locate` stays separate for fresh-session resume from checkpoint,
+handoff, and disk evidence.
 
 ### Installer profile journeys
 Profiles reduce the installed command surface without changing runtime
@@ -209,7 +212,7 @@ diff churn that cannot be traced to the request or slice plan.
 - `/god-workstream` - Parallel workspace management.
 
 ### Roadmap maintenance
-- `/god-roadmap-check` - Check if intent overlaps existing roadmap.
+- `/god-roadmap-check` - Deprecated compatibility command in the full profile only. Prefer `/god-reconcile`.
 - `/god-roadmap-update` - Update roadmap after feature work.
 
 ### Context + configuration

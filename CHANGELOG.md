@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.3] - 2026-06-09
+
+### Added
+- Added three external CLI adoption canary case studies for sindresorhus/is,
+  expressjs/cors, and tinyhttp/tinyhttp with commit hashes, elapsed time,
+  zero-dollar local CLI cost, pause counts, and explicit host-run gaps.
+- Added a shared Godpowers Dashboard contract and shared locking contract under
+  `references/shared/`.
+- Added detailed runbook references for `god-orchestrator` and `/god-next`.
+- Added CLI dispatch tests for status, next, quick-proof, automation, dogfood,
+  extension scaffold, and unknown-command branches.
+- Added `npm run coverage:lib`, enforcing a 90 percent line coverage floor for
+  `lib/**/*.js` through c8.
+
+### Changed
+- Slimmed `agents/god-orchestrator.md`, `skills/god-next.md`, and
+  `skills/god-status.md` into concise dispatch contracts that delegate
+  long-form operational detail to references.
+- Replaced repeated skill locking boilerplate with one-line pointers to the
+  shared locking reference.
+- Updated `npm run release:check` to run the full suite under the lib coverage
+  floor before audit and package checks.
+- Updated package verification to pack into a temporary directory and clean the
+  generated tarball automatically.
+- Marked `/god-roadmap-check` deprecated, removed it from the command-family
+  presentation, and locked non-full install profiles against installing it.
+
+### Fixed
+- Removed ignored root tarball and `.DS_Store` clutter before release.
+
 ## [2.4.2] - 2026-06-09
 
 ### Added

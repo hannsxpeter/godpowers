@@ -1,14 +1,14 @@
 # Godpowers Architecture (v2 Design Target)
 
-> Status: STABLE v2.4.2 (pure-skill model plus executable proof, adoption metrics, dogfood, host guarantees, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, and parser hardening)
+> Status: STABLE v2.4.3 (pure-skill model plus executable proof, adoption metrics, dogfood, host guarantees, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, prompt-size guardrails, and coverage gating)
 > Authors: Godpowers Team
 > Last updated: 2026-06-09
 
 This document is the canonical design for Godpowers as a coherent product.
-v2.4.2 keeps the public slash-command surface coherent and strengthens the
-release-facing runtime: strict YAML diagnostics, fail-closed extension
-manifest parsing, shared markdown frontmatter metadata, dev-only coverage
-visibility, and package hygiene on top of the 2.4 command-family UX.
+v2.4.3 keeps the public slash-command surface coherent and strengthens the
+release-facing runtime: external CLI canary evidence, prompt-size delegation,
+legacy command quarantine, lib coverage gating, and temp-directory package
+verification on top of the 2.4 command-family UX.
 Auto-invoked commands, spawned agents, local runtime helpers, platform-specific
 spawning limits, migration imports, sync-back writes, feature-awareness
 refreshes, repo documentation sync, repo surface sync, quick proof runs,
