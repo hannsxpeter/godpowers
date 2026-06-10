@@ -1,6 +1,6 @@
 # Godpowers 2.7.0 Release
 
-> Status: Release candidate
+> Status: Published
 > Date: 2026-06-10
 
 [DECISION] Godpowers 2.7.0 is the Phase 4 one-directional state release.
@@ -45,7 +45,12 @@
 - [DECISION] Repo documentation sync, repo surface sync, and release surface sync were fresh.
 - [DECISION] Changed-file banned character scans passed.
 - [DECISION] `npm run release:check` passed with `coverage:lib` at 92.78 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.7.0, root package contents verified at 538 files, and `@godpowers/mcp` package contents verified at 8 files.
-- [DECISION] The final publish result must be recorded in `docs/BRIDGE-PLAN.md` after the tag-triggered GitHub workflow completes.
+- [DECISION] PR #40 CI passed `Test (Node 18)`, `Test (Node 20)`, `Test (Node 22)`, and `Package check`.
+- [DECISION] Main CI run `27303847386` passed on merge commit `026f7f609548278a823ab14ff6a76cc291bdb5d4`.
+- [DECISION] Clean-clone `bash scripts/release.sh 2.7.0` passed its release gate before pushing tag `v2.7.0`.
+- [DECISION] Tag publish workflow `27304053692` passed with `Release gate`, root package publish, and companion package publish steps green.
+- [DECISION] `npm run verify:published-install` passed after publish and resolved `godpowers@latest` to version 2.7.0.
+- [DECISION] `npm exec --package @godpowers/mcp@2.7.0 -- godpowers-mcp --help` passed after publish.
 
 ## Upgrade
 
@@ -57,7 +62,8 @@
 
 ## Notes
 
-- [DECISION] The npm `godpowers@2.7.0` package must be published through the tag-triggered GitHub workflow with provenance.
-- [DECISION] The npm `@godpowers/mcp@2.7.0` package must be published through the same workflow with provenance.
-- [DECISION] The `v2.7.0` tag must match the npm package version.
+- [DECISION] The npm `godpowers@2.7.0` package is published with provenance.
+- [DECISION] The npm `@godpowers/mcp@2.7.0` package is published with provenance.
+- [DECISION] GitHub release `v2.7.0` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.7.0`.
+- [DECISION] The `v2.7.0` tag matches the npm package version and points to merge commit `026f7f609548278a823ab14ff6a76cc291bdb5d4`.
 - [DECISION] The next bridge-plan phase after 2.7.0 publish verification is Phase 5: Surface Contraction.
