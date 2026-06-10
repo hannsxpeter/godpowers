@@ -61,7 +61,7 @@ Each command has:
 **Trigger phrases**: "god prd", "/god-prd", "write the prd", "product requirements"
 
 **Prerequisites (REQUIRED)**:
-- `file:.godpowers/PROGRESS.md` must exist
+- [DECISION] `state:initialized` must pass from `.godpowers/state.json`.
   - Auto-complete: `/god-init`
   - Human-required: yes (asks before running)
 
@@ -295,8 +295,8 @@ Each command has:
 ## /god-mode (Tier 0: Composite Orchestrator)
 
 **Prerequisites**: any of:
-- `file:.godpowers/PROGRESS.md`
-- `mode-A-greenfield` (no .godpowers/ yet)
+- [DECISION] `state:initialized` passes from `.godpowers/state.json`.
+- [DECISION] `mode-A-greenfield` passes when no `.godpowers/` directory exists yet.
 
 Auto-complete: `/god-init`
 
@@ -488,7 +488,7 @@ Auto-complete: `/god-init`
 
 ## /god-audit (Tier 0: Audit-only)
 
-**Prerequisites**: `file:.godpowers/PROGRESS.md`
+**Prerequisites**: [DECISION] `state:initialized` passes from `.godpowers/state.json`.
 
 **Execution**:
 - `god-auditor` (mode=full-audit)
