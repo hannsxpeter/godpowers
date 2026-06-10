@@ -365,7 +365,7 @@ Spawn these agents only when the trigger is direct and scope is bounded:
 - `god-docs-writer` when repo-doc-sync reports narrative drift in
   `CHANGELOG.md`, `RELEASE.md`, `CONTRIBUTING.md`, `SECURITY.md`, or
   `SUPPORT.md` after local mechanical sync has finished.
-- `god-auditor`, `god-roadmap-reconciler`, or `god-coordinator` when
+- `god-auditor`, `god-reconciler`, or `god-coordinator` when
   repo-surface-sync reports structural drift that needs agent contract,
   lifecycle graph, or extension-pack judgment.
 - `god-browser-tester` when frontend-visible files changed and a known local,

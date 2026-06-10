@@ -43,7 +43,7 @@ User runs `/god-sync` after manual changes. Useful for:
    payload, agent handoffs, workflow metadata, recipe routes, extension packs,
    route quality, recipe coverage, release surfaces, and release policy are
    checked before sync closes. Structural drift should recommend scoped agents
-   such as `god-auditor`, `god-roadmap-reconciler`, `god-coordinator`, or
+   such as `god-auditor`, `god-reconciler`, `god-coordinator`, or
    `god-docs-writer`.
 6. If repo documentation changed durable project truth, plan or apply Pillars
    updates through `lib/pillars.planArtifactSync` or
@@ -94,7 +94,7 @@ Sync status:
     + repo-doc-sync: <refreshed README badges/counts, recommended god-docs-writer, or no-op>
     + repo-surface-sync: <checked routes/package/agents/workflows/extensions, recommended scoped agents, or no-op>
     + route-quality-sync: <checked atomic spawns and typed route outcomes, no-op, or recommended god-auditor>
-    + recipe-coverage-sync: <checked high-frequency intent recipes, no-op, or recommended god-roadmap-reconciler>
+    + recipe-coverage-sync: <checked high-frequency intent recipes, no-op, or recommended god-reconciler>
     + release-surface-sync: <checked badges/changelog/release/package guards, no-op, or recommended god-docs-writer>
     + pillars-sync: <updated N pillar files, no-op, or proposed>
     + checkpoint-sync: <CHECKPOINT.md updated or skipped>

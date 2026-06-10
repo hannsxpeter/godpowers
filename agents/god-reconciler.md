@@ -72,7 +72,7 @@ For each artifact below, check (in parallel where possible):
 
 #### ROADMAP (`.godpowers/roadmap/ROADMAP.md`)
 - Already-done / in-progress / enhancement / prerequisite-needed / new / ambiguous
-- (Same as god-roadmap-reconciler, integrated)
+- Use the integrated ROADMAP classification logic for milestone overlap.
 
 #### STACK (`.godpowers/stack/DECISION.md`)
 - Does the feature require a new dependency category? (e.g., adding a queue when none exists)

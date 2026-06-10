@@ -88,7 +88,7 @@ Each agent has these fields:
 | **Triggers** | `/god-roadmap`, `/god-mode`, `/god-roadmap-update` (legacy) |
 | **Inputs** | `.godpowers/prd/PRD.md`, `.godpowers/arch/ARCH.md`, optional `.godpowers/domain/GLOSSARY.md`, optional `.godpowers/prep/INITIAL-FINDINGS.md`, optional `.godpowers/prep/IMPORTED-CONTEXT.md`, `templates/ROADMAP.md` |
 | **Outputs** | `.godpowers/roadmap/ROADMAP.md` |
-| **Downstream consumers** | god-planner, god-roadmap-reconciler, god-reconciler |
+| **Downstream consumers** | god-planner, god-reconciler |
 | **Artifact awareness** | PRD requirements, ARCH dependency edges, domain glossary, imported milestones and stories as supporting evidence |
 | **Handoff** | Returns when ROADMAP passes have-nots R-01..R-10. Pauses on capacity unknown, ambiguous ordering. |
 | **Standards check** | YES |
@@ -429,16 +429,16 @@ Each agent has these fields:
 | **Handoff** | Returns when all touched artifacts pass have-nots, local sync surfaces are reported, and SYNC-LOG.md is appended |
 | **Standards check** | YES (per-artifact, per-tier) |
 
-### god-roadmap-reconciler (legacy, narrower scope)
+### god-roadmap-reconciler (legacy compatibility adapter)
 
 | Field | Value |
 |---|---|
-| **Triggers** | `/god-roadmap-check` (legacy; superseded by /god-reconcile) |
+| **Triggers** | Older installed `/god-roadmap-check` copies only; current routing spawns `god-reconciler` |
 | **Inputs** | `.godpowers/roadmap/ROADMAP.md`, optional PRD |
-| **Outputs** | 6-status verdict (returned to caller) |
+| **Outputs** | ROADMAP portion of the `god-reconciler` verdict |
 | **Downstream consumers** | Calling skill |
-| **Artifact awareness** | Just ROADMAP.md (narrow scope) |
-| **Handoff** | Same as god-reconciler but for roadmap only |
+| **Artifact awareness** | Delegated to `god-reconciler` |
+| **Handoff** | Spawns `god-reconciler` with ROADMAP-focused output |
 | **Standards check** | YES |
 
 ### god-roadmap-updater (legacy, narrower scope)
@@ -635,7 +635,7 @@ Examples: god-orchestrator (the workflow runner), /god-sync (god-updater calls g
 
 ### Shape 7: Reconciliation
 Agent reads multiple artifacts in parallel, returns multi-dimensional verdict.
-Examples: god-reconciler (all 14), god-roadmap-reconciler (just ROADMAP).
+Examples: god-reconciler, with god-roadmap-reconciler retained only as a compatibility adapter.
 
 ---
 

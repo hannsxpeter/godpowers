@@ -97,6 +97,13 @@ test('getSpawnedAgents includes primary for /god-prd', () => {
   if (!agents.includes('god-pm')) throw new Error('should include god-pm');
 });
 
+test('deprecated roadmap check delegates to god-reconciler', () => {
+  router.clearCache();
+  const agents = router.getSpawnedAgents('/god-roadmap-check');
+  if (!agents.includes('god-reconciler')) throw new Error('should include god-reconciler');
+  if (agents.includes('god-roadmap-reconciler')) throw new Error('legacy roadmap reconciler should not be routed');
+});
+
 test('getSpawnedAgents includes secondary spawns for /god-build', () => {
   router.clearCache();
   const agents = router.getSpawnedAgents('/god-build');

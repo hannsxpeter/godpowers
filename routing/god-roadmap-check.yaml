@@ -2,7 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-roadmap-check
-  description: Reconcile intent against ROADMAP.md before feature work
+  description: Legacy roadmap-only alias for /god-reconcile
   tier: 1
   family: compatibility
 
@@ -13,7 +13,7 @@ prerequisites:
       human-required: true
 
 execution:
-  spawns: [god-roadmap-reconciler]
+  spawns: [god-reconciler]
   context: fresh
   reads:
     - .godpowers/roadmap/ROADMAP.md

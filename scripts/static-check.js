@@ -475,6 +475,34 @@ test('specialist agents expose structured contract frontmatter', () => {
   }
 });
 
+test('legacy roadmap reconciliation delegates to god-reconciler', () => {
+  const routing = fs.readFileSync(path.join(ROOT, 'routing', 'god-roadmap-check.yaml'), 'utf8');
+  if (!routing.includes('spawns: [god-reconciler]')) {
+    throw new Error('/god-roadmap-check must spawn god-reconciler');
+  }
+
+  const adapter = fs.readFileSync(path.join(ROOT, 'agents', 'god-roadmap-reconciler.md'), 'utf8');
+  if (!adapter.includes('compatibility adapter') || !adapter.includes('god-reconciler')) {
+    throw new Error('god-roadmap-reconciler must remain a compatibility adapter');
+  }
+
+  const activeFiles = [
+    'SKILL.md',
+    'skills/god-roadmap-check.md',
+    'skills/god-sync.md',
+    'lib/repo-doc-sync.js',
+    'lib/repo-surface-sync.js',
+    'lib/route-quality-sync.js',
+    'lib/recipe-coverage-sync.js'
+  ];
+  for (const rel of activeFiles) {
+    const text = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    if (text.includes('god-roadmap-reconciler')) {
+      throw new Error(`${rel} should point active reconciliation to god-reconciler`);
+    }
+  }
+});
+
 test('dashboard contract stays shared between status and next', () => {
   const contract = path.join(ROOT, 'references', 'shared', 'DASHBOARD-CONTRACT.md');
   if (!fs.existsSync(contract)) {

@@ -97,8 +97,8 @@ Recommended: [one option and why]
 |---|---|---|
 | Scope | ROADMAP only | Core artifacts plus runtime and repository surfaces |
 | Use | Quick check | Comprehensive |
-| Auto-invoked | by feature-addition recipes (legacy) | by feature-addition recipes (preferred) |
-| Replaces | -- | /god-roadmap-check (kept for back-compat) |
+| Auto-invoked | legacy compatibility only | by feature-addition recipes |
+| Replaces | delegated to /god-reconcile | primary command |
 
-For new projects, prefer /god-reconcile. /god-roadmap-check remains a
-narrower tool for when you only care about milestone overlap.
+For new projects, use /god-reconcile. /god-roadmap-check remains a
+compatibility alias that asks `god-reconciler` for ROADMAP-focused output.

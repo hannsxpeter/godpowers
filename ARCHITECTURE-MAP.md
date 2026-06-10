@@ -328,7 +328,7 @@ supplement keeps every current core slash command visible for drift audits.
 /god-preflight         -> god-auditor (read-only intake audit)
 /god-reconcile         -> god-reconciler
 /god-reconstruct       -> god-reconstructor
-/god-roadmap-check     -> god-roadmap-reconciler
+/god-roadmap-check     -> god-reconciler (legacy alias)
 /god-roadmap-update    -> god-roadmap-updater
 /god-tech-debt         -> god-debt-assessor
 ```

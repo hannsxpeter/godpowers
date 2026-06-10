@@ -32,7 +32,7 @@
 
 - [DECISION] Local structural checks report `Agent: none, local runtime only`.
 - [DECISION] Missing or ambiguous agent handoffs recommend `god-auditor`.
-- [DECISION] Workflow or recipe lifecycle ambiguity recommends `god-roadmap-reconciler`.
+- [DECISION] Workflow or recipe lifecycle ambiguity recommends `god-reconciler`.
 - [DECISION] Extension pack drift recommends `god-coordinator`.
 - [DECISION] Mode D suite readiness drift recommends `god-coordinator`.
 - [DECISION] Release prose drift recommends `god-docs-writer`.

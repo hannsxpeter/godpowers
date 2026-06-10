@@ -327,7 +327,7 @@ First-party packs on npm:
 - `god-standards-check` - Artifact discipline gate.
 - `god-updater` - Reverse-sync runner.
 - `god-context-writer` - AI-tool context fenced section manager.
-- `god-roadmap-reconciler` - Roadmap overlap detection.
+- `god-roadmap-reconciler` - Legacy compatibility adapter for roadmap overlap checks.
 - `god-roadmap-updater` - Roadmap update after work.
 
 ## Native Pillars context
