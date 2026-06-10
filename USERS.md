@@ -1,14 +1,14 @@
 # Users and Community
 
-Godpowers is at v2.5.0. Stable release.
+Godpowers is at v2.5.1. Stable release.
 
 ## Track record
 
 Currently zero recorded production users. Be honest. The 2.5 line adds
-executable tier gates on top of the 2.4 UX flow clarity, executable proof path,
-accountability hardening, deliverable progress tracking, and three external
-CLI-verifiable adoption canaries. Real users will reveal which gaps actually
-matter.
+executable tier gates and three Codex host-run proof studies on top of the 2.4
+UX flow clarity, executable proof path, accountability hardening, deliverable
+progress tracking, and three external CLI-verifiable adoption canaries. Real
+users will reveal which gaps actually matter.
 
 - [DECISION] The Phase 2 host proof campaign has selected three current repository slots and completed Slot A for local and CI-verifiable host-proof scope.
 - [DECISION] Slot A does not prove production usage, deployed smoke, or token-dollar accounting because no staging origin or `cost.recorded` events were captured.
@@ -56,12 +56,13 @@ If you use Godpowers on a real project:
 - [sindresorhus/is CLI adoption canary](docs/case-studies/sindresorhus-is-adoption-canary.md)
 - [expressjs/cors CLI adoption canary](docs/case-studies/expressjs-cors-adoption-canary.md)
 - [tinyhttp/tinyhttp CLI adoption canary](docs/case-studies/tinyhttp-adoption-canary.md)
-- [Phase 2 Run A local host proof record](docs/case-studies/run-a.md)
-- [Phase 2 Run B selected slot](docs/case-studies/run-b.md)
-- [Phase 2 Run C selected slot](docs/case-studies/run-c.md)
+- [Run A slugify-cli Codex host proof](docs/case-studies/run-a.md)
+- [Run B Countdown Codex host proof](docs/case-studies/run-b.md)
+- [Run C react-github-readme-button blocked host proof](docs/case-studies/run-c.md)
 
-- [DECISION] These are not production-user studies.
-- [DECISION] They prove first-contact CLI signals against real cloned repositories and one local host-proof record while keeping production-user, deployed-smoke, and cost-accounting gaps explicit.
+- [DECISION] The CLI canaries are not production-user studies.
+- [DECISION] The CLI canaries prove first-contact CLI signals against real cloned repositories and keep narrow proof limits explicit.
+- [DECISION] The Codex host studies are host-run evidence, but they are still not production user adoption.
 
 If you ship something with Godpowers, write it up. We'll feature you here.
 

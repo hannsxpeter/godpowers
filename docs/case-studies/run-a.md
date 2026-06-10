@@ -51,3 +51,4 @@
 - [DECISION] No blocker prevents local or CI-verifiable Slot A host-proof closure.
 - [DECISION] Blocker: deployed smoke remains deferred until an upstream maintainer or repository configuration provides `STAGING_APP_URL=<deployed staging origin>`.
 - [DECISION] Blocker: token and dollar cost remain unclaimable because the host run did not emit `cost.recorded` events.
+

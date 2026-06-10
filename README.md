@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.5.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.5.1-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -21,15 +21,19 @@ CLI-verifiable canaries now cover [sindresorhus/is](docs/case-studies/sindresorh
 [expressjs/cors](docs/case-studies/expressjs-cors-adoption-canary.md), and
 [tinyhttp/tinyhttp](docs/case-studies/tinyhttp-adoption-canary.md), with host
 slash-command gaps called out rather than hidden.
+Host-run proof studies now cover [slugify-cli](docs/case-studies/run-a.md),
+[Countdown](docs/case-studies/run-b.md), and
+[react-github-readme-button](docs/case-studies/run-c.md), including one
+blocked harden run recorded as evidence instead of hidden as success.
 
 Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 2.5.0 adds executable tier gates through `npx godpowers gate` while
-keeping the 2.4 command-family UX, external CLI canary evidence, prompt-size
-guardrails, legacy command quarantine, lib coverage gating, and package
-verification before publish.
+Version 2.5.1 adds three Codex host-run proof studies on top of the 2.5.0
+executable tier gates, while keeping the 2.4 command-family UX, external CLI
+canary evidence, prompt-size guardrails, legacy command quarantine, lib
+coverage gating, and package verification before publish.
 
 Maintainer hardening continues on the 2.x line with small, audited public
 surface updates when they close real workflow gaps. The 2.1.0 patch closes a command-injection vector in the

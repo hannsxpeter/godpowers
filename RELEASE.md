@@ -1,12 +1,12 @@
-# Godpowers 2.5.0 Release
+# Godpowers 2.5.1 Release
 
-> Status: Published
+> Status: Release candidate
 > Date: 2026-06-10
 
-Godpowers 2.5.0 ships executable tier gates for the code-first kernel
-migration. It keeps the slash-command workflow intact while giving command
-capable hosts a stable JSON gate contract and non-zero exit codes for blocked
-tier transitions.
+Godpowers 2.5.1 ships the Phase 2 host proof campaign as a docs patch release.
+It keeps the 2.5.0 executable tier gates intact while adding Codex host-run
+evidence for a CLI package, a browser app, and a TODO-backed React component
+project.
 
 ## What's in this release
 
@@ -18,37 +18,35 @@ tier transitions.
 
 ## Highlights
 
-- `npx godpowers gate --tier=<tier> --project=.` checks PRD, design,
-  architecture, roadmap, stack, repo, build, and harden artifacts.
-- Gate JSON returns `{tier, verdict, artifacts, checks, findings, summary}` for
-  host-visible evidence.
-- Build gates require `.godpowers/build/STATE.md` to record exact verification
-  commands that passed.
-- Harden gates fail unresolved Critical findings and blocked launch gates.
-- `/god-mode` now runs executable gates between tier transitions.
-- Tier routes declare `standards.gate-command`, and static checks enforce the
-  skill and route metadata.
-- CLI command dispatch now lives in `lib/cli-dispatch.js`, keeping
-  `bin/install.js` thin.
+- Run A completed a Codex host proof on slugify-cli with 13 of 13 workflow steps
+  complete, 16 of 16 requirements done, passing tests, passing production
+  audit, passing pack dry run, and no tracked source diff.
+- Run B completed a Codex host proof on Countdown with local browser evidence,
+  6 of 7 requirements done, dependency audit repair, and deployed-origin proof
+  deferred pending a staging URL.
+- Run C completed a documented failed Codex host proof on
+  react-github-readme-button, with local tests, lint, build, browser smoke, and
+  production audit passing before the run blocked on Critical dev-tooling audit
+  findings.
+- The host proof campaign captured command usage, gate failures, repairs,
+  blocker files, cost availability, and proof limits in `docs/case-studies/`.
 
 ## Validation
 
-- `node scripts/test-gate.js` green
-- `node scripts/test-cli-dispatch.js` green
-- `node scripts/static-check.js` green
-- `npm run release:check` passed before publish
-- GitHub Publish to npm workflow `27282180092` passed
-- `npm run verify:published-install` passed against `godpowers@latest`
+- `npm run test:e2e` passed.
+- `node scripts/test-runtime-verification.js` passed.
+- `node scripts/test-agent-browser.js` passed.
+- `npm run release:check` passed before publish.
 
 ## Upgrade
 
-- `npm install -g godpowers@2.5.0` or `npx godpowers@2.5.0`
+- `npm install -g godpowers@2.5.1` or `npx godpowers@2.5.1`
 - Re-run `/god-context` in each project to refresh installed runtime metadata.
 - Existing `.godpowers/` state remains compatible.
 
 ## Notes
 
-- GitHub release created for `v2.5.0`.
+- GitHub release created for `v2.5.1`.
 - The tag matches the npm package version.
-- The `v2.5.0` tag points to the release commit that matches the npm
-  `godpowers@2.5.0` package.
+- The `v2.5.1` tag points to the release commit that matches the npm
+  `godpowers@2.5.1` package.
