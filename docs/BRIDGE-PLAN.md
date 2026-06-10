@@ -84,6 +84,21 @@
 - [DECISION] Exit criteria are three published host-run case studies, captured defect backlog, exact repository identity for each run, and command-usage data on disk.
 - [HYPOTHESIS] Phase 2 takes about two weeks including triage between runs.
 
+### Phase 2 Run Status
+
+- [DECISION] Status: blocked for the 2026-06-10 automation run.
+- [DECISION] Completed work: loaded `AGENTS.md`, required Pillars, `USERS.md`, `docs/adoption-canary.md`, and the current case-study inventory before changing docs.
+- [DECISION] Completed work: verified that `docs/case-studies/run-a.md`, `docs/case-studies/run-b.md`, and `docs/case-studies/run-c.md` do not exist, and that current public evidence remains limited to CLI adoption canaries.
+- [DECISION] Verification result: `npm run test:e2e` passed.
+- [DECISION] Verification result: `node scripts/test-runtime-verification.js` passed.
+- [DECISION] Verification result: `node scripts/test-agent-browser.js` passed.
+- [DECISION] Verification result: `npm run test:quick-proof` passed.
+- [DECISION] Verification result: the first `npm run release:check` attempt stopped before test execution because `c8` was absent from local `node_modules`; `npm ci` installed 55 packages and reported 0 vulnerabilities.
+- [DECISION] Verification result: the rerun `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.0, and package contents verified at 534 files.
+- [DECISION] Release result: no package release or npm publish was attempted because Phase 2 exit criteria require three host-run case studies and command-usage data that are absent on disk.
+- [DECISION] Blockers: Phase 2 cannot be completed truthfully until `/god-mode` host runs have been executed for the three selected repository slots and the resulting transcripts, defect backlog, and command usage are captured.
+- [DECISION] Next phase to run remains Phase 2: Host Proof Campaign, starting with repository slot selection and an actual host-run execution for Slot A.
+
 ## Phase 3: MCP Companion Package (target release 2.6.0)
 
 - [DECISION] Ship MCP as a first-party companion package named `@godpowers/mcp`, not as a production dependency of the main `godpowers` package.
