@@ -118,14 +118,17 @@
 - [DECISION] Verification result: initial `npm run release:check` failed before tests because `c8` was absent from `node_modules`.
 - [DECISION] Verification result: `npm ci` installed locked dependencies with 0 vulnerabilities.
 - [DECISION] Verification result: rerun `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.0, and package contents verified at 534 files.
+- [DECISION] Verification result: GitHub CI run `27286969057` for PR #9 completed successfully.
 - [DECISION] Release result: no docs patch release, package metadata update, changelog entry, npm publish, or external package release was attempted because Phase 2 exit criteria are not met.
 - [DECISION] Release result: branch `codex/bridge-phase-2-slot-a-host-proof-continuation` was pushed to `origin`.
 - [DECISION] Release result: PR creation was attempted through `gh pr create` and failed with `HTTP 401: Requires authentication`.
 - [DECISION] Release result: GitHub connector PR creation succeeded and opened PR #9 at `https://github.com/aihxp/godpowers/pull/9`.
+- [DECISION] Release result: PR #9 merge was attempted after CI success and failed because the GitHub app connection requires reauthentication.
 - [DECISION] Blockers: Slot A deployed smoke remains deferred until an upstream maintainer or repository configuration provides `STAGING_APP_URL=<deployed staging origin>`.
 - [DECISION] Blockers: Slot A token and dollar cost remain unclaimable because the host run did not emit `cost.recorded` events.
 - [DECISION] Blockers: Slot B and Slot C have not started.
 - [DECISION] Blockers: GitHub CLI PR creation remains unavailable until `gh` authentication is refreshed, but the connector-created PR keeps the protected path open.
+- [DECISION] Blockers: protected-path merge is blocked until the GitHub app connection is reauthenticated.
 - [DECISION] Next phase to run remains Phase 2: Host Proof Campaign, starting Slot B against a copied `template-react` target from `https://github.com/vitejs/create-vite-app.git`.
 
 ## Phase 3: MCP Companion Package (target release 2.6.0)
