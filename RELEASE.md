@@ -57,3 +57,4 @@
 - [DECISION] GitHub release `v2.6.0` should be created only after the release gate passes on the merged branch.
 - [DECISION] The tag should match the npm package version.
 - [DECISION] The companion package should publish as `@godpowers/mcp@2.6.0` after the release gate passes.
+- [DECISION] The `v2.6.0` tag is not pushed yet because the current tag workflow publishes only the root `godpowers` package and does not publish `@godpowers/mcp`.

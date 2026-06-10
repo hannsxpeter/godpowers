@@ -190,7 +190,7 @@
 
 ### Phase 3 Run Status
 
-- [DECISION] Status: complete on branch `codex/bridge-phase-3-mcp` for the 2026-06-10 automation run.
+- [DECISION] Status: implementation complete and release blocked on branch `codex/bridge-phase-3-mcp` for the 2026-06-10 automation run.
 - [DECISION] Completed work: added the `@godpowers/mcp` companion workspace package with a CommonJS stdio MCP server, five read-only tools, and an explicit Codex setup writer guarded by `--write`.
 - [DECISION] Completed work: exposed MCP tools named `status`, `next`, `gate_check`, `lint_artifact`, and `trace_requirement`, all wrapping existing Godpowers `lib/` runtime modules without adding production dependencies to the main `godpowers` package.
 - [DECISION] Completed work: added `godpowers mcp-info --project=.` as a read-only main CLI helper that prints MCP setup instructions without requiring the MCP SDK.
@@ -207,10 +207,12 @@
 - [DECISION] Verification result: `npm run release:check` passed with `coverage:lib` at 92.85 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.6.0, root package contents verified at 535 files, and `@godpowers/mcp` package contents verified at 8 files.
 - [DECISION] Verification result: after merging latest `origin/main`, `npm --workspace @godpowers/mcp test`, `npm --workspace @godpowers/mcp run pack:check`, `node scripts/test-gate.js`, `node scripts/test-install-smoke.js`, `node scripts/static-check.js`, `npm run test:e2e`, `node scripts/test-runtime-verification.js`, and `node scripts/test-agent-browser.js` passed.
 - [DECISION] Verification result: after merging latest `origin/main`, `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.6.0, root package contents verified at 535 files, and `@godpowers/mcp` package contents verified at 8 files.
-- [DECISION] Release result: local release gate passed after the latest `origin/main` merge; PR merge, tag, npm publish, companion publish, and published-install verification are still pending.
+- [DECISION] Release result: PR #18 merged through the protected GitHub path on 2026-06-10 at merge commit `f026ce8ab5e2a25168f9c1d34a3dded233e897fb`.
+- [DECISION] Release result: local release gate passed after the latest `origin/main` merge; tag, npm publish, companion publish, and published-install verification are still pending.
 - [DECISION] Blockers: no Phase 3 implementation blocker remains.
-- [DECISION] Blockers: publishing is blocked until the branch is committed, pushed, merged through the protected path, tag-triggered release hooks permit publish, and npm credentials are available to the release workflow.
-- [DECISION] Next phase to run is Phase 4: One-Directional State.
+- [DECISION] Blockers: publishing is blocked because `.github/workflows/publish.yml` publishes only the root `godpowers` package on a version tag and does not publish the new `@godpowers/mcp` companion package required by Phase 3.
+- [DECISION] Blockers: no `v2.6.0` tag was pushed, so npm `godpowers@latest` remains `2.5.2` and `@godpowers/mcp` remains unpublished.
+- [DECISION] Next phase to run is Phase 3 release hook patch: add a companion publish path, rerun `npm run release:check`, tag `v2.6.0`, verify the GitHub publish workflow, verify both npm packages, then move to Phase 4.
 
 ## Phase 4: One-Directional State (target release 2.7.0)
 
