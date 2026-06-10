@@ -1,6 +1,6 @@
 # Godpowers 2.6.0 Release
 
-> Status: Release candidate
+> Status: Published
 > Date: 2026-06-10
 
 [DECISION] Godpowers 2.6.0 is the Phase 3 MCP companion package release.
@@ -51,10 +51,8 @@
 
 ## Notes
 
-- [DECISION] The npm `godpowers@2.5.2` package is published with provenance.
-- [DECISION] GitHub release `v2.5.2` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.5.2`.
-- [DECISION] The 2.5.2 release-status closeout confirmed GitHub workflow `27289417888`, npm `latest` version 2.5.2, published-install verification, `npm run lint`, and `npm run release:check`.
-- [DECISION] GitHub release `v2.6.0` should be created only after the release gate passes on the merged branch.
-- [DECISION] The tag should match the npm package version.
-- [DECISION] The companion package should publish as `@godpowers/mcp@2.6.0` after the release gate passes.
-- [DECISION] The `v2.6.0` tag is not pushed yet because the current tag workflow publishes only the root `godpowers` package and does not publish `@godpowers/mcp`.
+- [DECISION] The npm `godpowers@2.6.0` package is published with provenance.
+- [DECISION] The npm `@godpowers/mcp@2.6.0` package is published with provenance.
+- [DECISION] GitHub release `v2.6.0` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.6.0`.
+- [DECISION] The 2.6.0 release closeout confirmed GitHub workflow `27291159615`, npm `latest` version 2.6.0 for both packages, published-install verification, and companion CLI install verification.
+- [DECISION] The `v2.6.0` tag matches the npm package version.
