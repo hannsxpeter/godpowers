@@ -41,10 +41,15 @@
 - [DECISION] Post-merge 2.6.0 `node scripts/test-runtime-verification.js` passed.
 - [DECISION] Post-merge 2.6.0 `node scripts/test-agent-browser.js` passed.
 - [DECISION] Post-merge 2.6.0 `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.6.0, root package contents verified at 535 files, and MCP package contents verified at 8 files.
+- [DECISION] PR #23 CI passed `Test (Node 18)`, `Test (Node 20)`, `Test (Node 22)`, and `Package check`.
+- [DECISION] Final pre-tag 2.6.0 `npm run release:check` passed at merge commit `84f5ae16f9d07367874ff0abbf597b201453e2ad` with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, root package contents verified at 535 files, and MCP package contents verified at 8 files.
+- [DECISION] GitHub Publish to npm workflow `27291159615` passed.
+- [DECISION] `npm run verify:published-install` passed after publish against `godpowers@latest` version 2.6.0.
+- [DECISION] `npm exec --package @godpowers/mcp@2.6.0 -- godpowers-mcp --help` passed after publish.
 
 ## Upgrade
 
-- [DECISION] Use `npm install -g godpowers@2.6.0` or `npx godpowers@2.6.0` after the package is published.
+- [DECISION] Use `npm install -g godpowers@2.6.0` or `npx godpowers@2.6.0`.
 - [DECISION] Use optional MCP package install `npm install -g godpowers @godpowers/mcp` when the host can register MCP servers.
 - [DECISION] Re-run `/god-context` in each project to refresh installed runtime metadata.
 - [DECISION] Existing `.godpowers/` state remains compatible.
@@ -56,3 +61,5 @@
 - [DECISION] GitHub release `v2.6.0` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.6.0`.
 - [DECISION] The 2.6.0 release closeout confirmed GitHub workflow `27291159615`, npm `latest` version 2.6.0 for both packages, published-install verification, and companion CLI install verification.
 - [DECISION] The `v2.6.0` tag matches the npm package version.
+- [DECISION] The `v2.6.0` tag points to merge commit `84f5ae16f9d07367874ff0abbf597b201453e2ad`.
+- [DECISION] The next bridge-plan phase is Phase 4: One-Directional State.
