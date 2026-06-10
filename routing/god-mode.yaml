@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - check: file:.godpowers/PROGRESS.md OR mode-A-greenfield
+    - check: state:initialized == true OR mode-A-greenfield
       auto-complete: /god-init
       human-required: true
     - check: safe-sync-clear

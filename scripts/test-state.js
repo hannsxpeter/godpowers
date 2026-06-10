@@ -46,6 +46,7 @@ test('read returns null on uninitialized project', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-state-empty-'));
   const s = state.read(tmp);
   assert(s === null, `expected null, got: ${JSON.stringify(s)}`);
+  assert(state.isInitialized(tmp) === false, 'empty project should not be initialized');
 });
 
 test('read round-trips written state', () => {
@@ -54,6 +55,8 @@ test('read round-trips written state', () => {
   const got = state.read(tmp);
   assert(got.project.name === 'roundtrip', 'roundtrip name mismatch');
   assert(got.$schema === original.$schema, 'roundtrip schema mismatch');
+  assert(state.isInitialized(tmp) === true, 'state.json should mark project initialized');
+  assert(state.valueAtPath(got, 'initialized') === true, 'computed initialized path should be true');
 });
 
 asyncTest('async read/write round-trips written state', async () => {

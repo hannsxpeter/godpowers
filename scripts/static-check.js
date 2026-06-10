@@ -185,6 +185,27 @@ test('tier routes declare executable gate commands', () => {
   }
 });
 
+test('routing prerequisites use state initialized predicate instead of PROGRESS.md file checks', () => {
+  const routingDir = path.join(ROOT, 'routing');
+  const recipeDir = path.join(routingDir, 'recipes');
+  const targets = [
+    ...fs.readdirSync(routingDir)
+      .filter(file => file.endsWith('.yaml') || file.endsWith('.yml'))
+      .map(file => path.join(routingDir, file)),
+    ...fs.readdirSync(recipeDir)
+      .filter(file => file.endsWith('.yaml') || file.endsWith('.yml'))
+      .map(file => path.join(recipeDir, file)),
+    path.join(ROOT, 'scripts', 'gen-routing.js'),
+    path.join(ROOT, 'scripts', 'gen-recipes.js')
+  ];
+  const offenders = targets.filter(file => (
+    fs.readFileSync(file, 'utf8').includes('file:.godpowers/PROGRESS.md')
+  ));
+  if (offenders.length > 0) {
+    throw new Error(`PROGRESS.md file route predicates in ${offenders.map(file => path.relative(ROOT, file)).join(', ')}`);
+  }
+});
+
 test('public runtime modules expose JSDoc type contracts', () => {
   const modules = [
     'lib/state.js',

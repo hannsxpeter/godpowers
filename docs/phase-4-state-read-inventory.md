@@ -18,7 +18,7 @@
 
 | Surface | Classification | Verified references | Migration action |
 |---|---|---|---|
-| Root progress ledger route prerequisites | [DECISION] decision-read | `lib/router.js:107`, `routing/god-prd.yaml:11`, `routing/god-design.yaml:11`, `routing/god-audit.yaml:11`, `routing/god-context.yaml:11`, `routing/god-reconcile.yaml:11`, `routing/god-sync.yaml:11`, `routing/god-mode.yaml:11`, `scripts/gen-routing.js:162`, `scripts/gen-routing.js:189`, `scripts/gen-recipes.js:74`, `routing/recipes/returning-after-break.yaml:18` | [DECISION] Replace `file:.godpowers/PROGRESS.md` checks with a `state.json` backed initialized-project predicate while preserving the `mode-A-greenfield` escape hatch for new projects. |
+| Root progress ledger route prerequisites | [DECISION] decision-read | `lib/state.js:110`, `lib/state.js:126`, `lib/router.js:122`, `lib/recipes.js:120`, `routing/god-prd.yaml:11`, `routing/god-design.yaml:11`, `routing/god-audit.yaml:11`, `routing/god-context.yaml:11`, `routing/god-reconcile.yaml:11`, `routing/god-sync.yaml:11`, `routing/god-mode.yaml:11`, `scripts/gen-routing.js:162`, `scripts/gen-routing.js:189`, `scripts/gen-recipes.js:74`, `routing/recipes/returning-after-break.yaml:18`, `scripts/static-check.js:188`, `scripts/test-router.js:342`, `scripts/test-recipes.js:146` | [DECISION] Completed: replaced `file:.godpowers/PROGRESS.md` checks with the `state:initialized == true` predicate, kept the `mode-A-greenfield` escape hatch for new projects, and added a static check against regressions. |
 | Root progress ledger orchestration entry points | [DECISION] decision-read | `SKILL.md:436`, `SKILL.md:765`, `skills/god-init.md:21`, `skills/god-mode.md:21`, `skills/god-mode.md:44`, `skills/god-mode.md:81`, `skills/god-prd.md:16`, `skills/god-prd.md:19`, `skills/god-pause-work.md:18`, `skills/god-resume-work.md:5`, `skills/god-resume-work.md:27`, `skills/god-lifecycle.md:20`, `skills/god-status.md:31`, `skills/god-status.md:35`, `skills/god-story.md:26`, `skills/god-standards.md:25` | [DECISION] Move resume, project-description, lifecycle, status, story, pause, and standards decisions to `state.json`, with generated `PROGRESS.md` used only as a human view or migration fallback. |
 | Root progress ledger writer instructions | [DECISION] decision-read | `SKILL.md:440`, `SKILL.md:504`, `SKILL.md:539`, `SKILL.md:572`, `SKILL.md:595`, `SKILL.md:616`, `SKILL.md:640`, `skills/god-build.md:81`, `skills/god-deploy.md:32`, `skills/god-observe.md:31`, `skills/god-launch.md:32`, `skills/god-harden.md:26`, `skills/god-harden.md:27`, `skills/god-skip.md:35`, `skills/god-rollback.md:41` | [DECISION] Replace direct `PROGRESS.md` updates with `godpowers state advance --step=<s> --status=<status> --project=.` or an owning command wrapper that regenerates the view. |
 | Design state gate | [DECISION] decision-read | `lib/artifact-map.js:12`, `lib/gate.js:52`, `skills/god-design.md:99`, `routing/god-design.yaml:40`, `scripts/test-gate.js:52` | [DECISION] Add `state.json` fields for design tier status, design lint status, design command history, and generated view checksum before making `.godpowers/design/STATE.md` a generated view. |
@@ -39,7 +39,7 @@
 
 ## State Schema Gaps
 
-- [DECISION] `state.json` needs an initialized-project predicate so route prerequisites do not depend on `.godpowers/PROGRESS.md` existence.
+- [DECISION] The initialized-project predicate gap is closed by computed `state:initialized == true`, which treats project identity plus `tiers` in `state.json` as the route authority.
 - [DECISION] `state.json` needs generated-view metadata per root progress view and per-tier state view: path, checksum, generated-at, source-version, and dirty-view warning state.
 - [DECISION] `state.json` needs build verification evidence that can represent exact command, status, exit code, run time, and failure diagnostics.
 - [DECISION] `state.json` needs design state evidence for lint status, design-review verdict, PRODUCT.md presence, and bridge command history.
@@ -48,12 +48,12 @@
 
 ## Static Check Plan
 
-- [DECISION] Add a static check that rejects new `file:.godpowers/PROGRESS.md` route prerequisites outside a named migration exception list.
+- [DECISION] Completed: `scripts/static-check.js` rejects new `file:.godpowers/PROGRESS.md` route prerequisites in checked-in routing files, recipe files, and their generators.
 - [DECISION] Add a static check that rejects direct skill instructions to update `PROGRESS.md` except through `godpowers state advance` or an owning command wrapper.
 - [DECISION] Add a static check that rejects direct reads from Godpowers-owned per-tier `STATE.md` in `lib/`, `scripts/`, `routing/`, `workflows/`, `skills/`, and `agents/` unless the read goes through `lib/state-views.js`.
 - [DECISION] Add a static check exception for `.planning/STATE.md` and other source-system state files listed by `lib/planning-systems.js`.
 
 ## Next Task
 
-- [DECISION] The next Phase 4 task should implement `lib/state-views.js`, generated checksummed `PROGRESS.md`, and generated checksummed per-tier state views before moving route and skill decisions off markdown state.
-- [DECISION] The first code migration should start with route prerequisites and `lib/gate.js` because those are executable decision points covered by focused tests.
+- [DECISION] The next Phase 4 task should migrate per-tier gate decision reads in `lib/gate.js`, `lib/artifact-map.js`, and focused gate tests from Godpowers-owned `STATE.md` files to `state.json`.
+- [DECISION] Generated checksummed per-tier state views should follow the gate migration so design, build, deploy, observe, and launch views can become non-authoritative outputs.

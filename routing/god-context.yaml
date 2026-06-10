@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - check: file:.godpowers/PROGRESS.md
+    - check: state:initialized == true
       reason: "/god-context needs an initialized project"
       auto-complete: /god-init
 
