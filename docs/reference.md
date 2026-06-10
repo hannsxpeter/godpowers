@@ -57,6 +57,8 @@ New commands should not be the default response to a usability gap. First try a
 family card, decision ladder, profile journey, recipe, typed route outcome, or
 documentation change. Add a new public command only when a case study, canary,
 or repeated user journey proves that existing paths cannot express the need.
+[DECISION] Phase 5 uses [Surface Contraction Evidence](surface-contraction.md)
+to map proof-campaign command usage before installer defaults change.
 
 ### Outcome metrics
 Quick Proof and adoption canary reports track commands to first signal, next
