@@ -14,7 +14,8 @@ The first CLI-verifiable external canary set is captured in:
 [tinyhttp/tinyhttp](case-studies/tinyhttp-adoption-canary.md).
 
 - [DECISION] The Phase 2 host proof campaign has selected current slots in [Run A](case-studies/run-a.md), [Run B](case-studies/run-b.md), and [Run C](case-studies/run-c.md).
-- [DECISION] Those records are not completed host-run case studies until durable `.godpowers` artifacts and shipped or blocked outcomes exist on disk.
+- [DECISION] Run A has a completed local and CI-verifiable host proof with durable `.godpowers` artifacts on disk.
+- [DECISION] Runs B and C remain selected but not started as host proofs.
 
 ## Purpose
 
@@ -136,6 +137,4 @@ Route canary findings to the smallest matching surface:
 
 ## Open Decision
 
-- [OPEN QUESTION] Should the next Phase 2 run continue Slot A until it writes
-  durable preflight artifacts or reaches a real pause? Owner: maintainer. Due:
-  before the next broad product proof claim.
+- [OPEN QUESTION] Should Slot B target the repository root or a copied template directory as the host proof project root? Owner: maintainer. Due: before starting Slot B.

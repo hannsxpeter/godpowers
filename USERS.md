@@ -10,7 +10,7 @@ accountability hardening, deliverable progress tracking, and three external
 CLI-verifiable adoption canaries. Real users will reveal which gaps actually
 matter.
 
-- [DECISION] The Phase 2 host proof campaign has selected three current repository slots, but it has not produced a completed host-run case study yet.
+- [DECISION] The Phase 2 host proof campaign has completed Slot A for local and CI-verifiable scope, with deployed smoke testing deferred until a staging origin exists.
 - [DECISION] Current evidence and blockers are recorded in [Run A](docs/case-studies/run-a.md), [Run B](docs/case-studies/run-b.md), and [Run C](docs/case-studies/run-c.md).
 
 ## Proof needed during freeze
@@ -55,12 +55,12 @@ If you use Godpowers on a real project:
 - [sindresorhus/is CLI adoption canary](docs/case-studies/sindresorhus-is-adoption-canary.md)
 - [expressjs/cors CLI adoption canary](docs/case-studies/expressjs-cors-adoption-canary.md)
 - [tinyhttp/tinyhttp CLI adoption canary](docs/case-studies/tinyhttp-adoption-canary.md)
-- [Phase 2 Run A host proof attempt](docs/case-studies/run-a.md)
+- [Phase 2 Run A local host proof](docs/case-studies/run-a.md)
 - [Phase 2 Run B selected slot](docs/case-studies/run-b.md)
 - [Phase 2 Run C selected slot](docs/case-studies/run-c.md)
 
 - [DECISION] These are not production-user studies.
-- [DECISION] They prove first-contact CLI signals against real cloned repositories or record selected host-proof slots while keeping the host-run gap explicit.
+- [DECISION] They prove first-contact CLI signals against real cloned repositories, plus one Slot A local host proof with deployed verification deferred.
 
 If you ship something with Godpowers, write it up. We'll feature you here.
 

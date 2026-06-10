@@ -86,30 +86,34 @@
 
 ### Phase 2 Run Status
 
-- [DECISION] Status: blocked on branch `codex/bridge-phase-2-host-proof` for the 2026-06-10 automation run.
+- [DECISION] Status: in progress on branch `codex/bridge-phase-2-slot-a-proof` for the 2026-06-10 automation continuation.
 - [DECISION] Completed work: loaded `AGENTS.md`, required Pillars, `USERS.md`, `docs/adoption-canary.md`, and the current case-study inventory before changing docs.
 - [DECISION] Completed work: selected and verified current repository identities for Slot A, Slot B, and Slot C in `docs/case-studies/run-a.md`, `docs/case-studies/run-b.md`, and `docs/case-studies/run-c.md`.
 - [DECISION] Completed work: Slot A is `https://github.com/sindresorhus/slugify-cli.git` at `9d7cc5e95668085d73dd4229d8bb0365f4f32144`, MIT license, with 70 measured JavaScript source lines across `cli.js` and `test.js`.
 - [DECISION] Completed work: Slot B is `https://github.com/vitejs/create-vite-app.git` at `7b1c46dab57d14abd5f36941fe867a3d45e7c6af`, MIT license, with `template-react` exposing `dev` and `build` scripts.
 - [DECISION] Completed work: Slot C is `https://github.com/tastejs/todomvc.git` at `ff43b02e59dfa604386bb382034b2cd07c2bcd8a`, MIT license, with TODO evidence in `examples/cujo/TODO.md` and `cypress/e2e/spec.cy.js`.
 - [DECISION] Completed work: ran the CLI-verifiable canary harness for all three selected repositories and wrote temporary reports under `/tmp/godpowers-phase2/`.
-- [DECISION] Completed work: attempted Slot A `/god-mode --brownfield --yolo` through the Codex `god-orchestrator` host subagent.
+- [DECISION] Completed work: continued Slot A `/god-mode --brownfield --yolo` through the Codex `god-orchestrator` host subagent until durable `.godpowers` artifacts existed.
+- [DECISION] Completed work: Slot A now has durable state, checkpoint, progress, PRD, architecture, roadmap, stack, repo audit, build state, deploy state, observe state, harden findings, launch state, run summary, and deployed-staging TODO artifacts under `/tmp/godpowers-phase2/slugify-cli/.godpowers/`.
+- [DECISION] Completed work: updated `docs/case-studies/run-a.md`, `docs/adoption-canary.md`, and `USERS.md` to record Slot A local and CI-verifiable host proof closure without claiming production use or deployed smoke coverage.
+- [DECISION] Verification result: Slot A host run `npm test` passed with XO and 5 AVA tests.
+- [DECISION] Verification result: Slot A host run `npm audit --omit=dev --json` passed with 0 production vulnerabilities.
+- [DECISION] Verification result: Slot A gates for `prd`, `arch`, `roadmap`, `stack`, `repo`, `build`, and `harden` passed through `node /Users/hprincivil/.codex/worktrees/a60e/godpowers/bin/install.js gate`.
+- [DECISION] Verification result: `npm run test:e2e` passed.
+- [DECISION] Verification result: `node scripts/test-runtime-verification.js` passed with 21 passed and 0 failed.
+- [DECISION] Verification result: `node scripts/test-agent-browser.js` passed with 14 passed and 0 failed.
 - [DECISION] Verification result: `node bin/install.js quick-proof --project=. --brief` passed.
 - [DECISION] Verification result: `node bin/install.js dogfood` passed with 5 of 5 scenarios.
-- [DECISION] Verification result: Slot A CLI canary passed.
-- [DECISION] Verification result: Slot B CLI canary passed.
-- [DECISION] Verification result: Slot C CLI canary passed.
-- [DECISION] Verification result: `npm run test:e2e` passed.
-- [DECISION] Verification result: `node scripts/test-runtime-verification.js` passed.
-- [DECISION] Verification result: `node scripts/test-agent-browser.js` passed.
-- [DECISION] Verification result: `npm run test:quick-proof` passed.
+- [DECISION] Verification result: Slot A CLI canary passed and wrote `/tmp/godpowers-phase2/slugify-cli-canary.md`.
+- [DECISION] Verification result: `npm run test:quick-proof` passed with 21 passed and 0 failed.
+- [DECISION] Verification result: `npm run lint` passed with 16 passed and 0 failed.
 - [DECISION] Verification result: initial `npm run release:check` failed before tests because `c8` was absent from `node_modules`.
 - [DECISION] Verification result: `npm ci` installed locked dependencies with 0 vulnerabilities.
 - [DECISION] Verification result: rerun `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.0, and package contents verified at 534 files.
 - [DECISION] Release result: no docs patch release, package metadata update, changelog entry, npm publish, or external package release was attempted because Phase 2 exit criteria are not met.
-- [DECISION] Blockers: Slot A host attempt produced validation observations but no durable `.godpowers` host-run artifact before interruption.
-- [DECISION] Blockers: Slot B and Slot C were not started because the Phase 2 sequence requires triage after Slot A.
-- [DECISION] Next phase to run remains Phase 2: Host Proof Campaign, starting by continuing Slot A until it writes durable preflight artifacts or reaches a real pause.
+- [DECISION] Blockers: Slot A deployed smoke testing remains deferred until a `STAGING_APP_URL` exists, but this does not block local or CI-verifiable Slot A proof closure.
+- [DECISION] Blockers: Slot B and Slot C were not started because Phase 2 sequence runs one host proof slot at a time.
+- [DECISION] Next phase to run remains Phase 2: Host Proof Campaign, starting with Slot B target-root selection and host proof execution.
 
 ## Phase 3: MCP Companion Package (target release 2.6.0)
 
