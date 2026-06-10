@@ -13,7 +13,9 @@
 
 - [DECISION] Host invocation was not started for Slot B in this run.
 - [DECISION] Phase 2 sequencing requires triage after Slot A before repeating the host proof for Slot B.
-- [DECISION] Slot A did not produce durable host-run artifacts before interruption, so Slot B remains selected but unrun.
+- [DECISION] Slot A now has local and CI-verifiable durable host-proof artifacts, with deployed smoke and token cost still unclaimable.
+- [DECISION] Slot B remains selected but unrun.
+- [DECISION] Slot B should target a copied `template-react` project directory because that directory exposes the runnable local `dev` and `build` workflow selected for this slot.
 - [DECISION] Case-study claim: this is not a completed published host-run case study.
 
 ## Evidence Protocol
@@ -24,5 +26,4 @@
 
 ## Blocker
 
-- [DECISION] Blocker: Slot B is waiting on a completed or genuinely failed Slot A host-run artifact.
-- [OPEN QUESTION] Should Slot B use the repository root or one copied template directory as the target project root? Owner: maintainer. Due: before starting Slot B.
+- [DECISION] Blocker: Slot B is waiting on the next Phase 2 automation run to start the copied `template-react` target.
