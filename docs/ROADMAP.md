@@ -67,6 +67,9 @@ What works today:
   `docs/case-studies/run-b.md`, and `docs/case-studies/run-c.md` capture
   slugify-cli, Countdown, and react-github-readme-button host runs with exact
   repository identity, validation, gate failures, repairs, and blockers.
+- **Phase 2 blocker fixes**: installed runtime bundles include the `bin/`
+  command surface, and build gates fail closed when build state records failed
+  verification commands.
 - **Parser and frontmatter hardening**: strict YAML diagnostics surface
   malformed routing, recipe, workflow, and extension manifest lines, while
   `lib/frontmatter.js` keeps markdown contract metadata on one shared parser.

@@ -3,49 +3,56 @@
 > Status: Release candidate
 > Date: 2026-06-10
 
-Godpowers 2.6.0 ships the Phase 3 MCP companion package. It keeps the main
-`godpowers` package dependency-free while adding an optional `@godpowers/mcp`
-package for MCP-capable hosts.
+[DECISION] Godpowers 2.6.0 is the Phase 3 MCP companion package release.
+[DECISION] This release keeps the main `godpowers` package dependency-free while adding an optional `@godpowers/mcp` package for MCP-capable hosts.
+[DECISION] This release preserves the 2.5.2 installed-runtime gate command fix and build-gate false-pass fix.
 
 ## What's in this release
 
-- 112 slash commands
-- 40 specialist agents
-- 13 executable workflows
-- 42 intent recipes
-- 9 installer CLI helpers
-- 5 read-only MCP tools in `@godpowers/mcp`
+- [DECISION] 112 slash commands.
+- [DECISION] 40 specialist agents.
+- [DECISION] 13 executable workflows.
+- [DECISION] 42 intent recipes.
+- [DECISION] 9 installer CLI helpers.
+- [DECISION] 5 read-only MCP tools in `@godpowers/mcp`.
 
 ## Highlights
 
-- `@godpowers/mcp` exposes `status`, `next`, `gate_check`, `lint_artifact`,
-  and `trace_requirement` over stdio.
-- `godpowers mcp-info --project=.` prints setup instructions without requiring
-  or loading the MCP SDK in the main package.
-- `godpowers-mcp setup --host=codex --project=. --write` writes a managed
-  Codex MCP registration only after the user explicitly asks for it.
-- Dashboard and Quick Proof host guarantee lines now include MCP availability.
-- The main `godpowers` package still has no production dependencies.
+- [DECISION] `@godpowers/mcp` exposes `status`, `next`, `gate_check`, `lint_artifact`, and `trace_requirement` over stdio.
+- [DECISION] `godpowers mcp-info --project=.` prints setup instructions without requiring or loading the MCP SDK in the main package.
+- [DECISION] `godpowers-mcp setup --host=codex --project=. --write` writes a managed Codex MCP registration only after the user explicitly asks for it.
+- [DECISION] Dashboard and Quick Proof host guarantee lines now include MCP availability.
+- [DECISION] The main `godpowers` package still has no production dependencies.
 
 ## Validation
 
-- `npm --workspace @godpowers/mcp test` passed.
-- `npm --workspace @godpowers/mcp run pack:check` passed.
-- `npm run test:e2e` passed.
-- `node scripts/test-runtime-verification.js` passed.
-- `node scripts/test-agent-browser.js` passed.
-- `npm run release:check` passed before publish.
+- [DECISION] `npm --workspace @godpowers/mcp test` passed before the latest `main` merge.
+- [DECISION] `npm --workspace @godpowers/mcp run pack:check` passed before the latest `main` merge.
+- [DECISION] `npm run test:e2e` passed before the latest `main` merge.
+- [DECISION] `node scripts/test-runtime-verification.js` passed before the latest `main` merge.
+- [DECISION] `node scripts/test-agent-browser.js` passed before the latest `main` merge.
+- [DECISION] `npm run release:check` passed before the latest `main` merge with `coverage:lib` at 92.85 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.6.0, root package contents verified at 535 files, and MCP package contents verified at 8 files.
+- [DECISION] Post-merge 2.6.0 `npm --workspace @godpowers/mcp test` passed.
+- [DECISION] Post-merge 2.6.0 `npm --workspace @godpowers/mcp run pack:check` passed.
+- [DECISION] Post-merge 2.6.0 `node scripts/test-gate.js` passed.
+- [DECISION] Post-merge 2.6.0 `node scripts/test-install-smoke.js` passed.
+- [DECISION] Post-merge 2.6.0 `node scripts/static-check.js` passed.
+- [DECISION] Post-merge 2.6.0 `npm run test:e2e` passed.
+- [DECISION] Post-merge 2.6.0 `node scripts/test-runtime-verification.js` passed.
+- [DECISION] Post-merge 2.6.0 `node scripts/test-agent-browser.js` passed.
+- [DECISION] Post-merge 2.6.0 `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.6.0, root package contents verified at 535 files, and MCP package contents verified at 8 files.
 
 ## Upgrade
 
-- `npm install -g godpowers@2.6.0` or `npx godpowers@2.6.0`
-- Optional MCP package: `npm install -g godpowers @godpowers/mcp`
-- Re-run `/god-context` in each project to refresh installed runtime metadata.
-- Existing `.godpowers/` state remains compatible.
+- [DECISION] Use `npm install -g godpowers@2.6.0` or `npx godpowers@2.6.0` after the package is published.
+- [DECISION] Use optional MCP package install `npm install -g godpowers @godpowers/mcp` when the host can register MCP servers.
+- [DECISION] Re-run `/god-context` in each project to refresh installed runtime metadata.
+- [DECISION] Existing `.godpowers/` state remains compatible.
 
 ## Notes
 
-- GitHub release should be created for `v2.6.0`.
-- The tag should match the npm package version.
-- The companion package should publish as `@godpowers/mcp@2.6.0` after the
-  release gate passes.
+- [DECISION] The npm `godpowers@2.5.2` package is published with provenance.
+- [DECISION] GitHub release `v2.5.2` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.5.2`.
+- [DECISION] GitHub release `v2.6.0` should be created only after the release gate passes on the merged branch.
+- [DECISION] The tag should match the npm package version.
+- [DECISION] The companion package should publish as `@godpowers/mcp@2.6.0` after the release gate passes.

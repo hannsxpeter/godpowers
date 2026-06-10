@@ -22,6 +22,7 @@ const { test, report } = require('./test-harness');
 
 const ROOT = path.resolve(__dirname, '..');
 const INSTALLER = path.join(ROOT, 'bin', 'install.js');
+const EXAMPLE = path.join(ROOT, 'examples', 'saas-mrr-tracker');
 
 
 function assert(cond, msg) {
@@ -212,10 +213,34 @@ test('installer wrote godpowers-references/ with HAVE-NOTS.md', () => {
 
 test('installer wrote runtime bundle with lib next to workflow data', () => {
   const runtimeDir = path.join(installedDir, 'godpowers-runtime');
+  assert(fs.existsSync(path.join(runtimeDir, 'bin', 'install.js')), 'runtime bin/install.js missing');
   assert(fs.existsSync(path.join(runtimeDir, 'lib', 'router.js')), 'runtime lib/router.js missing');
   assert(fs.existsSync(path.join(runtimeDir, 'routing', 'god-mode.yaml')), 'runtime routing missing');
   assert(fs.existsSync(path.join(runtimeDir, 'workflows', 'full-arc.yaml')), 'runtime workflow missing');
   assert(fs.existsSync(path.join(runtimeDir, 'package.json')), 'runtime package.json missing');
+});
+
+test('runtime bundle works as a local package for gate commands', () => {
+  const runtimeDir = path.join(installedDir, 'godpowers-runtime');
+  const out = execFileSync('npm', [
+    'exec',
+    '--yes',
+    '--package',
+    runtimeDir,
+    '--',
+    'godpowers',
+    'gate',
+    '--tier=prd',
+    `--project=${EXAMPLE}`,
+    '--json'
+  ], {
+    cwd: ROOT,
+    env: { ...process.env, HOME: fakeHome },
+    encoding: 'utf8',
+    timeout: 30_000
+  });
+  const parsed = JSON.parse(out);
+  assert(parsed.verdict === 'pass', `runtime gate verdict: ${parsed.verdict}`);
 });
 
 test('copyRecursive preserves symlinks without dereferencing them', () => {

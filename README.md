@@ -32,9 +32,10 @@ only one output. The project memory and proof trail matter too.
 
 Version 2.6.0 adds the optional `@godpowers/mcp` companion package with
 read-only MCP tools for status, next-route, gate, artifact lint, and requirement
-trace workflows. It keeps the 2.5 host proof studies, executable tier gates,
-2.4 command-family UX, external CLI canary evidence, prompt-size guardrails,
-legacy command quarantine, lib coverage gating, and package verification before
+trace workflows. It keeps the 2.5.2 installed-runtime gate and build-gate
+fixes, the 2.5.1 Codex host proof studies, executable tier gates, 2.4
+command-family UX, external CLI canary evidence, prompt-size guardrails, legacy
+command quarantine, lib coverage gating, and package verification before
 publish.
 
 Maintainer hardening continues on the 2.x line with small, audited public

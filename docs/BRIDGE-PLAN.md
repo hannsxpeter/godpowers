@@ -102,11 +102,56 @@
 - [DECISION] Verification result: `node scripts/test-agent-browser.js` passed.
 - [DECISION] Verification result: `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.1, and package contents verified at 534 files.
 - [DECISION] Verification result: `npm pack --dry-run` passed for `godpowers@2.5.1` with 534 files.
-- [DECISION] Release result: local release gate passed; PR merge, tag, npm publish, and published-install verification are still pending.
+- [DECISION] Verification result: GitHub CI run `27288459252` passed for PR #11 before merge.
+- [DECISION] Release result: PR #11 merged through the protected GitHub path on 2026-06-10 at merge commit `7803cafaf19f7117ce0762db1ffb645f6652433c`.
+- [DECISION] Release result: `v2.5.1` was tagged and pushed to trigger the repository publish workflow.
+- [DECISION] Release result: GitHub Publish to npm workflow `27288648503` passed, and npm published `godpowers@2.5.1` with provenance.
+- [DECISION] Release result: `npm run verify:published-install` passed after publish and resolved npm `godpowers@latest` to version 2.5.1.
+- [DECISION] Release result: GitHub release `v2.5.1` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.5.1`.
 - [DECISION] Blockers: no Phase 2 deliverable blocker remains.
 - [DECISION] Blockers: Run A deployed smoke remains deferred until an upstream maintainer or repository configuration provides `STAGING_APP_URL=<deployed staging origin>`.
 - [DECISION] Blockers: Run C has an external project blocker, `CRITICAL-DEV-TOOLING-AUDIT`, intentionally left for that project maintainer because clearing it requires development-tooling strategy expansion outside the selected host-proof slice.
 - [DECISION] Next phase to run is Phase 3: MCP Companion Package.
+
+### Phase 2 Blocker Patch Status
+
+- [DECISION] Status: complete on branch `codex/bridge-phase-2-host-proof-run-a-56e6` after the 2026-06-10 blocker patch release.
+- [DECISION] Completed work: preserved the merged 2.5.1 Slot A, Slot B, and Slot C evidence while keeping the code fixes from this blocker patch branch.
+- [DECISION] Completed work: `lib/installer-files.js` now copies `bin/` into `godpowers-runtime`, and `scripts/test-install-smoke.js` verifies `npm exec --package <runtime> -- godpowers gate` works against an installed runtime bundle.
+- [DECISION] Completed work: `lib/gate.js` now fails build gates when `.godpowers/build/STATE.md` records failed verification commands, and `scripts/test-gate.js` covers that false-pass evidence shape.
+- [DECISION] Verification result: `node scripts/test-gate.js` passed before merge resolution.
+- [DECISION] Verification result: `node scripts/test-install-smoke.js` passed before merge resolution.
+- [DECISION] Verification result: `npm run test:e2e` passed before merge resolution.
+- [DECISION] Verification result: `node scripts/test-runtime-verification.js` passed before merge resolution.
+- [DECISION] Verification result: `node scripts/test-agent-browser.js` passed before merge resolution.
+- [DECISION] Verification result: `node scripts/static-check.js` passed before merge resolution.
+- [DECISION] Verification result: patched `lib/gate.js` failed the captured build artifact because a failed verification command was present.
+- [DECISION] Verification result: a temp local Codex install successfully ran `npm exec --package <runtime> -- godpowers gate --tier=prd --project=<example> --json`.
+- [DECISION] Verification result: pre-latest-main `npm run release:check` passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.1, and package contents verified at 534 files.
+- [DECISION] Verification result: post-merge `node scripts/test-gate.js` passed.
+- [DECISION] Verification result: post-merge `node scripts/test-install-smoke.js` passed.
+- [DECISION] Verification result: post-merge `node scripts/static-check.js` passed.
+- [DECISION] Verification result: post-merge `npm run test:e2e` passed.
+- [DECISION] Verification result: post-merge `node scripts/test-runtime-verification.js` passed.
+- [DECISION] Verification result: post-merge `node scripts/test-agent-browser.js` passed.
+- [DECISION] Verification result: post-merge `npm run release:check` passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.1, and package contents verified at 534 files.
+- [DECISION] Verification result: post-latest-main 2.5.2 `npm run test:surface` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-gate.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-install-smoke.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/static-check.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `npm run test:e2e` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-runtime-verification.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-agent-browser.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `npm run release:check` passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.2, and package contents verified at 534 files.
+- [DECISION] Verification result: clean release-clone `bash scripts/release.sh 2.5.2` passed its release gate before tagging.
+- [DECISION] Release result: PR #12 merged through the protected GitHub path on 2026-06-10 at merge commit `6a09a6117bfc83f7bca29402a75b2e2cf732aa1a`.
+- [DECISION] Release result: `v2.5.2` was tagged and pushed to trigger the repository publish workflow.
+- [DECISION] Release result: GitHub Publish to npm workflow `27289417888` passed, and npm published `godpowers@2.5.2` with provenance.
+- [DECISION] Release result: `npm run verify:published-install` passed after publish and resolved npm `godpowers@latest` to version 2.5.2.
+- [DECISION] Release result: GitHub release `v2.5.2` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.5.2`.
+- [DECISION] Blockers: no Phase 2 deliverable blocker remains.
+- [DECISION] Blockers: no 2.5.2 release blocker remains.
+- [DECISION] Next phase to run after this blocker patch is Phase 3: MCP Companion Package.
 
 ## Phase 3: MCP Companion Package (target release 2.6.0)
 
@@ -140,7 +185,9 @@
 - [DECISION] Verification result: repo documentation sync and repo surface sync were fresh after updating `SECURITY.md` to the 2.6.x support series.
 - [DECISION] Verification result: changed files contained no em dashes, en dashes, or emoji characters.
 - [DECISION] Verification result: `npm run release:check` passed with `coverage:lib` at 92.85 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.6.0, root package contents verified at 535 files, and `@godpowers/mcp` package contents verified at 8 files.
-- [DECISION] Release result: local release gate passed; PR merge, tag, npm publish, companion publish, and published-install verification are still pending.
+- [DECISION] Verification result: after merging latest `origin/main`, `npm --workspace @godpowers/mcp test`, `npm --workspace @godpowers/mcp run pack:check`, `node scripts/test-gate.js`, `node scripts/test-install-smoke.js`, `node scripts/static-check.js`, `npm run test:e2e`, `node scripts/test-runtime-verification.js`, and `node scripts/test-agent-browser.js` passed.
+- [DECISION] Verification result: after merging latest `origin/main`, `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.6.0, root package contents verified at 535 files, and `@godpowers/mcp` package contents verified at 8 files.
+- [DECISION] Release result: local release gate passed after the latest `origin/main` merge; PR merge, tag, npm publish, companion publish, and published-install verification are still pending.
 - [DECISION] Blockers: no Phase 3 implementation blocker remains.
 - [DECISION] Blockers: publishing is blocked until the branch is committed, pushed, merged through the protected path, tag-triggered release hooks permit publish, and npm credentials are available to the release workflow.
 - [DECISION] Next phase to run is Phase 4: One-Directional State.

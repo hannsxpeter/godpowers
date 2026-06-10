@@ -25,6 +25,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated release checks to verify the companion package protocol and package
   contents while keeping the main `godpowers` package dependency-free.
 
+## [2.5.2] - 2026-06-10
+
+### Added
+- Added regression coverage proving an installed `godpowers-runtime` bundle can
+  be used as a local npm package for `godpowers gate`.
+- Added regression coverage proving build gates fail when build state records a
+  failed verification command.
+
+### Fixed
+- Fixed installed runtime bundles so `godpowers-runtime` includes `bin/` next
+  to `package.json`, allowing host workflows to call the documented
+  `godpowers gate` command from the installed runtime package.
+- Fixed the build gate so `.godpowers/build/STATE.md` fails closed when any
+  verification command is recorded as failed, instead of passing because a
+  different command passed.
+
 ## [2.5.1] - 2026-06-10
 
 ### Added
