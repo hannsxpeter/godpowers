@@ -20,7 +20,8 @@
 
 | Timestamp UTC | Agent | Scope | Branch or worktree | Status | Next action |
 |---|---|---|---|---|---|
-| 2026-06-10T16:33:08Z | Codex e273 | Phase 3 release and publish closeout | `codex/bridge-phase-3-release-closeout-e273` in `/Users/hprincivil/.codex/worktrees/e273/godpowers` | active | Verify release gates, package outputs, tag or record publish blocker. |
+| 2026-06-10T16:49:00Z | Codex 46d1 | Phase 3 companion registry verification | `codex/bridge-phase-3-registry-blocker-46d1` in `/Users/hprincivil/.codex/worktrees/46d1/godpowers` | done | Verification: `gh run view 27291159615`, `npm view godpowers version dist-tags`, `npm view @godpowers/mcp version dist-tags`, `npm run verify:published-install`, `npm install --package-lock-only --ignore-scripts @godpowers/mcp@2.6.0`, `npm exec --package @godpowers/mcp@2.6.0 -- godpowers-mcp --help`, `gh release view v2.6.0`, `npm run lint`, and `npm run test:surface`; release: npm `godpowers@2.6.0`, npm `@godpowers/mcp@2.6.0`, and GitHub release `v2.6.0` are published; remaining work: none for Phase 3; next action: start Phase 4. |
+| 2026-06-10T16:33:08Z | Codex e273 | Phase 3 release and publish closeout | `codex/bridge-phase-3-release-closeout-e273` in `/Users/hprincivil/.codex/worktrees/e273/godpowers` | done | PR #23 merged and workflow `27291159615` succeeded; closeout completed by Codex 46d1 ledger row after npm and GitHub release verification. |
 | 2026-06-10T16:12:38Z | Codex da7c | Phase 2 blocker patch release-status closeout | `codex/bridge-phase-2-release-closeout-da7c` in `/Users/hprincivil/.codex/worktrees/da7c/godpowers` | done | Verification: `gh run view 27289417888`, `npm view godpowers version dist-tags`, `npm run verify:published-install`, `gh release view v2.5.2`, `npm run lint`, and `npm run release:check`; release: npm `2.5.2` and GitHub release published; remaining work: none; next action: start Phase 3. |
 
 ## Baseline At v2.4.3
@@ -191,7 +192,7 @@
 
 ### Phase 3 Run Status
 
-- [DECISION] Status: implementation complete and release blocked on branch `codex/bridge-phase-3-mcp` for the 2026-06-10 automation run.
+- [DECISION] Status: complete after release closeout on branch `codex/bridge-phase-3-registry-blocker-46d1` for the 2026-06-10 automation run.
 - [DECISION] Completed work: added the `@godpowers/mcp` companion workspace package with a CommonJS stdio MCP server, five read-only tools, and an explicit Codex setup writer guarded by `--write`.
 - [DECISION] Completed work: exposed MCP tools named `status`, `next`, `gate_check`, `lint_artifact`, and `trace_requirement`, all wrapping existing Godpowers `lib/` runtime modules without adding production dependencies to the main `godpowers` package.
 - [DECISION] Completed work: added `godpowers mcp-info --project=.` as a read-only main CLI helper that prints MCP setup instructions without requiring the MCP SDK.
@@ -209,11 +210,19 @@
 - [DECISION] Verification result: after merging latest `origin/main`, `npm --workspace @godpowers/mcp test`, `npm --workspace @godpowers/mcp run pack:check`, `node scripts/test-gate.js`, `node scripts/test-install-smoke.js`, `node scripts/static-check.js`, `npm run test:e2e`, `node scripts/test-runtime-verification.js`, and `node scripts/test-agent-browser.js` passed.
 - [DECISION] Verification result: after merging latest `origin/main`, `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.6.0, root package contents verified at 535 files, and `@godpowers/mcp` package contents verified at 8 files.
 - [DECISION] Release result: PR #18 merged through the protected GitHub path on 2026-06-10 at merge commit `f026ce8ab5e2a25168f9c1d34a3dded233e897fb`.
-- [DECISION] Release result: local release gate passed after the latest `origin/main` merge; tag, npm publish, companion publish, and published-install verification are still pending.
+- [DECISION] Release result: PR #23 merged through the protected GitHub path on 2026-06-10 at merge commit `84f5ae16f9d07367874ff0abbf597b201453e2ad`.
+- [DECISION] Release result: `v2.6.0` was tagged on merge commit `84f5ae16f9d07367874ff0abbf597b201453e2ad` and pushed to trigger the repository publish workflow.
+- [DECISION] Release result: GitHub Publish to npm workflow `27291159615` succeeded for tag `v2.6.0` with `npm run release:check`, root package publish, and companion package publish steps all green.
+- [DECISION] Release result: `npm view godpowers version dist-tags --json` resolved `latest` to `2.6.0`.
+- [DECISION] Release result: `npm run verify:published-install` passed after publish and resolved npm `godpowers@latest` to version `2.6.0`.
+- [DECISION] Release result: `npm access get status @godpowers/mcp --registry https://registry.npmjs.org/` returned `public`.
+- [DECISION] Release result: `npm view @godpowers/mcp version dist-tags --registry https://registry.npmjs.org/ --json` resolved `latest` to `2.6.0`.
+- [DECISION] Release result: `npm install --package-lock-only --ignore-scripts @godpowers/mcp@2.6.0 --registry https://registry.npmjs.org/` passed from `/tmp`.
+- [DECISION] Release result: `npm exec --package @godpowers/mcp@2.6.0 -- godpowers-mcp --help` passed from `/tmp`.
+- [DECISION] Release result: GitHub release `v2.6.0` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.6.0`.
 - [DECISION] Blockers: no Phase 3 implementation blocker remains.
-- [DECISION] Blockers: publishing is blocked because `.github/workflows/publish.yml` publishes only the root `godpowers` package on a version tag and does not publish the new `@godpowers/mcp` companion package required by Phase 3.
-- [DECISION] Blockers: no `v2.6.0` tag was pushed, so npm `godpowers@latest` remains `2.5.2` and `@godpowers/mcp` remains unpublished.
-- [DECISION] Next phase to run is Phase 3 release hook patch: add a companion publish path, rerun `npm run release:check`, tag `v2.6.0`, verify the GitHub publish workflow, verify both npm packages, then move to Phase 4.
+- [DECISION] Blockers: no Phase 3 release blocker remains.
+- [DECISION] Next phase to run is Phase 4: One-Directional State.
 
 ## Phase 4: One-Directional State (target release 2.7.0)
 
