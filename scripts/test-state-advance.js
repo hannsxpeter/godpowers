@@ -16,6 +16,10 @@ function progressFile(root) {
   return path.join(root, stateViews.PROGRESS_VIEW_PATH);
 }
 
+function stateViewFile(root, relPath) {
+  return path.join(root, relPath);
+}
+
 console.log('\n  State advance behavioral tests\n');
 
 test('advance updates a named step through state.json and refreshes PROGRESS.md', () => {
@@ -55,6 +59,9 @@ test('advance accepts explicit tier step syntax', () => {
   assert(result.step.tierKey === 'tier-2', `tierKey: ${result.step.tierKey}`);
   assert(result.step.subStepKey === 'build', `subStepKey: ${result.step.subStepKey}`);
   assert(current.tiers['tier-2'].build.status === 'in-flight', 'build status not updated');
+  assert(result.summary.views.includes('.godpowers/build/STATE.md'), 'summary should include build state view');
+  const buildView = fs.readFileSync(stateViewFile(tmp, '.godpowers/build/STATE.md'), 'utf8');
+  assert(buildView.includes('| Status | `in-flight` |'), 'build state view was not refreshed');
 });
 
 test('advance returns fail results for invalid requests', () => {

@@ -57,4 +57,5 @@
 ## Next Task
 
 - [DECISION] Completed: per-tier gate decision reads in `lib/gate.js`, `lib/artifact-map.js`, and focused gate tests now use `state.json` for design and build gate authority instead of Godpowers-owned `STATE.md` files.
-- [DECISION] The next Phase 4 task should add generated checksummed per-tier state views so design, build, deploy, observe, and launch views become non-authoritative outputs.
+- [DECISION] Completed: `lib/state-views.js` now generates checksummed design, build, deploy, observe, and launch `STATE.md` views from `state.json`, and state mutations refresh those views with checksum warnings for hand-edited managed fences.
+- [DECISION] The next Phase 4 task should add broader static checks that reject Godpowers-owned per-tier `STATE.md` decision reads outside `lib/state-views.js`.

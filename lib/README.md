@@ -9,7 +9,7 @@ package-level integrations.
 | Module | Purpose |
 |--------|---------|
 | `state.js` | Read, initialize, validate, and write `.godpowers/state.json`. |
-| `state-views.js` | Generate managed markdown views such as `.godpowers/PROGRESS.md` from `state.json`. |
+| `state-views.js` | Generate managed markdown views such as `.godpowers/PROGRESS.md` and per-tier `STATE.md` files from `state.json`. |
 | `state-advance.js` | Mutate one tracked state step through locking and generated state view refresh. |
 | `state-lock.js` | Coordinate state writes with a lock file. |
 | `intent.js` | Read and validate `intent.yaml` from project roots or `.godpowers/`. |
