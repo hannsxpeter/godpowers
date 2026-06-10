@@ -28,11 +28,11 @@ proactive checks, blockers, planning visibility, and the next action first.
 
 ## Process
 
-1. Check whether `.godpowers/PROGRESS.md` or `.godpowers/state.json` exists. If neither exists, report that no Godpowers project was found and suggest `/god-init`.
+1. Check whether `.godpowers/state.json` or `.godpowers/PROGRESS.md` exists. If neither exists, report that no Godpowers project was found and suggest `/god-init`.
 2. Resolve the runtime root and load `<runtimeRoot>/lib/dashboard.js`.
 3. Call `dashboard.compute(projectRoot)` and render with `dashboard.render(result)`.
 4. Prefer the MCP `status` tool when it is available, and fall back to the CLI or runtime module when it is not.
-5. Use PROGRESS.md only as fallback or legacy explanation when state.json is missing.
+5. Use `.godpowers/PROGRESS.md` only as fallback or legacy explanation when `state.json` is missing.
 6. Scan canonical artifact paths for PRD, design, architecture, roadmap, stack, repo, build, deploy, observe, launch, harden, sync, checkpoint, and requirements evidence.
 7. Compare disk state to recorded state and flag phantom resume or untracked work.
 8. Offer `/god-repair` when recorded state and disk evidence conflict.

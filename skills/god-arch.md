@@ -27,7 +27,7 @@ After god-architect returns:
 1. Verify ARCH.md and ADRs exist on disk
 2. Spawn god-auditor to verify have-nots pass
 3. Run `npx godpowers gate --tier=arch --project=.` and do not proceed on a non-zero exit
-4. Update `.godpowers/PROGRESS.md`: Architecture status = done
+4. Run `npx godpowers state advance --step=arch --status=done --project=.`
 
 ## Pause Format
 

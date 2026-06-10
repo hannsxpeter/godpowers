@@ -321,8 +321,7 @@ Run or apply these by default in every relevant closeout:
 
 #### Level 2: Auto-run local helpers, visible and logged
 Run these local runtime helpers automatically when their trigger is present:
-- `lib/checkpoint.syncFromState` after every `state.json` or
-  `PROGRESS.md` mutation.
+- `lib/checkpoint.syncFromState` after every `state.json` mutation.
 - Lightweight reverse-sync or linkage scan after code or artifact edits.
 - Pillars sync planning after durable artifact truth changes.
 - `lib/planning-systems.importPlanningContext` when legacy planning, BMAD, or
@@ -405,7 +404,7 @@ Never auto-run these from inference alone:
   reports success
 
 Every auto-invoke decision must be explainable from one of these inputs:
-changed files, Godpowers artifacts, `state.json`, `PROGRESS.md`,
+changed files, Godpowers artifacts, `state.json`, generated progress views,
 `CHECKPOINT.md`, `SYNC-LOG.md`, `REVIEW-REQUIRED.md`, routing YAML, recipe YAML,
 or explicit user intent.
 
@@ -433,11 +432,13 @@ coordination plan.
 ## Tier 0: Orchestration
 
 ### On every invocation:
-1. Read `.godpowers/PROGRESS.md` if it exists
+1. Read `.godpowers/state.json` if it exists. Use `.godpowers/PROGRESS.md`
+   only as a legacy fallback when `state.json` is missing.
 2. Scan for existing artifacts at all canonical paths
 3. Detect operating mode (A/B/C/D)
 4. Detect project scale (trivial / small / medium / large / enterprise)
-5. Record mode and scale in PROGRESS.md
+5. Record mode and scale in `.godpowers/state.json`; let the generated
+   progress view refresh from state
 6. Route to the appropriate tier and sub-step
 
 ### Scale Detection
@@ -450,7 +451,7 @@ Assess the project description against these criteria:
 
 Scale determines which personas activate and how deep the planning goes.
 
-### Progress Ledger (.godpowers/PROGRESS.md)
+### Generated Progress View (.godpowers/PROGRESS.md)
 ```markdown
 # Godpowers Progress
 
@@ -475,7 +476,8 @@ Started: 2026-05-09T14:30:00Z
 ```
 
 Valid statuses: pending, in-flight, done, skipped, imported, failed, re-invoked.
-Silence is not a status. Every tier must have an explicit entry.
+Silence is not a status. Every tier must have an explicit entry in
+`.godpowers/state.json`, and `.godpowers/PROGRESS.md` is regenerated from it.
 
 ---
 
@@ -501,7 +503,7 @@ Silence is not a status. Every tier must have an explicit entry.
 3. Run substitution test on every claim
 4. Run three-label test on every sentence
 5. Write to `.godpowers/prd/PRD.md`
-6. Update PROGRESS.md
+6. Run `npx godpowers state advance --step=prd --status=done --project=.`
 
 **Have-nots (PRD fails if any are true)**:
 - Problem statement passes substitution test (reads the same for any product)
@@ -536,7 +538,7 @@ Silence is not a status. Every tier must have an explicit entry.
    - Data model (entities, relationships, ownership)
 4. Run have-nots check
 5. Write to `.godpowers/arch/ARCH.md`
-6. Update PROGRESS.md
+6. Run `npx godpowers state advance --step=arch --status=done --project=.`
 
 **Have-nots (Architecture fails if any are true)**:
 - A box in the diagram has no clear responsibility
@@ -569,7 +571,7 @@ Silence is not a status. Every tier must have an explicit entry.
    - Dependency list
    - Estimated scope (T-shirt size, not fake precision)
 6. Write to `.godpowers/roadmap/ROADMAP.md`
-7. Update PROGRESS.md
+7. Run `npx godpowers state advance --step=roadmap --status=done --project=.`
 
 **Have-nots (Roadmap fails if any are true)**:
 - Milestone goal passes substitution test
@@ -592,7 +594,7 @@ Silence is not a status. Every tier must have an explicit entry.
    - Document the flip point (when would you reverse this choice?)
    - Document the lock-in cost
 3. Write to `.godpowers/stack/DECISION.md`
-4. Update PROGRESS.md
+4. Run `npx godpowers state advance --step=stack --status=done --project=.`
 
 **Pause conditions**:
 - Two candidates score within 10% and the flip point is a human constraint
@@ -613,7 +615,7 @@ Silence is not a status. Every tier must have an explicit entry.
 5. .gitignore, .editorconfig
 6. Run repo audit
 7. Write audit to `.godpowers/repo/AUDIT.md`
-8. Update PROGRESS.md
+8. Run `npx godpowers state advance --step=repo --status=done --project=.`
 
 ### 2.2 Build (god build)
 
@@ -637,7 +639,7 @@ Silence is not a status. Every tier must have an explicit entry.
    - Two-stage review: spec compliance, then code quality
    - Atomic commit on pass
 7. Update `.godpowers/build/STATE.md`
-8. Update PROGRESS.md
+8. Run `npx godpowers state advance --step=build --status=done --project=.`
 
 **TDD Enforcement**:
 - If a subagent writes implementation before tests, flag the violation
@@ -750,7 +752,8 @@ God Mode pauses ONLY when:
 God Mode NEVER pauses to:
 - Ask permission to proceed to the next tier
 - Confirm it should write a file
-- Report progress (PROGRESS.md does that)
+- Report progress for permissionless pauses. The dashboard and generated
+  progress view do that from `state.json`.
 - Ask "is this okay?" without specific options
 
 ### Pause Format
@@ -762,7 +765,8 @@ Every pause includes:
 
 ### Resume Protocol
 On resume:
-1. Read `.godpowers/PROGRESS.md`
+1. Read `.godpowers/state.json`; use `.godpowers/PROGRESS.md` only as a
+   legacy fallback when `state.json` is missing
 2. Scan all artifact paths
 3. Verify artifact integrity (have-nots check on existing artifacts)
 4. Pick up at the first non-done tier
@@ -786,8 +790,8 @@ grep-testable against the produced artifact.
 - **AI-slop**: Output passes substitution test (reads generic)
 - **Phantom resume**: Agent claims done, artifact not on disk
 - **Ghost handoff**: Tier invoked before upstream artifact exists
-- **Rubber-stamp**: PROGRESS.md says done with no artifact
-- **Silence as skip**: Tier absent from PROGRESS.md
+- **Rubber-stamp**: `state.json` says done with no artifact
+- **Silence as skip**: Tier absent from `state.json`
 - **Paper artifact**: Document exists but mechanism does not
 - **Theater**: Sentences that are neither decision, hypothesis, nor open question
 
@@ -815,7 +819,8 @@ See individual tier sections above.
 
 ```
 .godpowers/
-  PROGRESS.md          # Cross-tier progress ledger
+  state.json           # Cross-tier project state
+  PROGRESS.md          # Generated human progress view
   prd/
     PRD.md             # Product Requirements Document
   domain/

@@ -230,6 +230,32 @@ test('state-backed gates do not require markdown STATE.md artifacts', () => {
   }
 });
 
+test('skill progress writer instructions use state advance or generated views', () => {
+  const skillDir = path.join(ROOT, 'skills');
+  const targets = [
+    path.join(ROOT, 'SKILL.md'),
+    ...fs.readdirSync(skillDir)
+      .filter(file => file.endsWith('.md'))
+      .map(file => path.join(skillDir, file))
+  ];
+  const writerPattern = /\b(?:update|write|record|append|sync|syncs|mark|annotate|report)\b.*\bPROGRESS\.md\b|\bPROGRESS\.md\b.*\b(?:updates|status\s*=|created|written)\b/i;
+  const allowedPattern = /\b(?:generated|legacy fallback|human-readable view|workstreams\/<name>|repair .* from state\.json|state advance|progress view refreshes|progress view)\b/i;
+  const offenders = [];
+  for (const file of targets) {
+    const rel = path.relative(ROOT, file);
+    const lines = fs.readFileSync(file, 'utf8').split(/\r?\n/);
+    lines.forEach((line, index) => {
+      if (!line.includes('PROGRESS.md')) return;
+      if (!writerPattern.test(line)) return;
+      if (allowedPattern.test(line)) return;
+      offenders.push(`${rel}:${index + 1}`);
+    });
+  }
+  if (offenders.length > 0) {
+    throw new Error(`direct PROGRESS.md writer instructions in ${offenders.join(', ')}`);
+  }
+});
+
 test('public runtime modules expose JSDoc type contracts', () => {
   const modules = [
     'lib/state.js',

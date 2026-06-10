@@ -64,7 +64,7 @@ Action items: [N], with owners and due dates
 
 Suggested next:
   - Schedule a blameless review meeting if multi-person team
-  - /god-status to see action items in PROGRESS.md
+  - /god-status to see action items from state and disk
   - /god-feature to prioritize the highest-priority action item
 ```
 

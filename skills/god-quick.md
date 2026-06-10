@@ -39,7 +39,7 @@ workflow.
 
 - Planning tier (PRD/ARCH/ROADMAP/STACK)
 - Build planning into waves (single slice only)
-- PROGRESS.md updates if no `.godpowers/` exists
+- Project state updates when no `.godpowers/` exists
 
 ## On Completion
 

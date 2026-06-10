@@ -22,7 +22,7 @@ Run quality gate check on an artifact.
 
 ## Process
 
-1. Identify the artifact to check (user provides, or auto-detect from PROGRESS.md)
+1. Identify the artifact to check (user provides, or auto-detect from `state.json` and canonical artifact paths)
 2. Resolve the Godpowers runtime root: use `<projectRoot>` when `<projectRoot>/lib/router.js` exists, otherwise use the installed bundle at `<tool-config-dir>/godpowers-runtime`
 3. Look up the routing for the relevant tier (`<runtimeRoot>/lib/router.js` getStandards)
 4. Spawn god-standards-check in fresh context with:

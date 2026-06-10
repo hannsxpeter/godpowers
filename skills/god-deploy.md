@@ -29,10 +29,12 @@ After god-deploy-engineer returns:
      commands
    - local/CI deploy readiness complete with deployed staging verification
      deferred in `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md`
-4. Update `.godpowers/PROGRESS.md`: Deploy status can be done when a tested
-   real target or tested local staging harness exists. If deployed staging is
-   deferred, annotate Deploy as done-local with the waiting artifact path and
-   do not pause unless the user explicitly requested staging.
+4. Record deploy evidence and any waiting artifact path in `.godpowers/state.json`.
+   Run `npx godpowers state advance --step=deploy --status=done --project=.`
+   when a tested real target or tested local staging harness exists. If
+   deployed staging is deferred, leave the step `in-flight` unless local
+   readiness is the verified scope and do not pause unless the user explicitly
+   requested staging.
 
 ## On Completion
 

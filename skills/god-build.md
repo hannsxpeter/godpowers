@@ -79,7 +79,7 @@ After all waves:
 5. Record the exact verification commands that passed in `.godpowers/state.json`
    under `tiers.tier-2.build.verification-commands`
 6. Run `npx godpowers gate --tier=build --project=.` and do not proceed on a non-zero exit
-7. Update PROGRESS.md: Build status = done
+7. Run `npx godpowers state advance --step=build --status=done --project=.`
 8. If the build plan or implementation establishes durable conventions, plan
    pillar updates through `lib/pillars.planArtifactSync`. Under
    `/god-mode --yolo`, apply those updates immediately and log the decision.

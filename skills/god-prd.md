@@ -13,11 +13,12 @@ Spawn the **god-pm** agent in a fresh context via the host platform's native age
 
 ## Setup
 
-1. If `.godpowers/PROGRESS.md` does not exist: tell the user to run `/god-init` first
+1. If `.godpowers/state.json` does not exist: tell the user to run `/god-init` first
 2. Read `.godpowers/prep/INITIAL-FINDINGS.md` if present.
 3. Read `.godpowers/prep/IMPORTED-CONTEXT.md` if present.
-4. Spawn god-pm with the user's project description from PROGRESS.md plus any
-   prep artifacts. Prep artifacts are context, not source of truth.
+4. Spawn god-pm with the user's project description from `state.json`,
+   `intent.yaml`, or prep artifacts. Prep artifacts are context, not source
+   of truth.
 5. The agent writes `.godpowers/prd/PRD.md`
 6. The agent runs have-nots checks before declaring done
 7. If god-pm pauses for a human question: relay to user using pause format
@@ -31,7 +32,7 @@ After god-pm returns:
 1. Verify `.godpowers/prd/PRD.md` exists on disk
 2. Spawn god-auditor briefly to verify have-nots pass
 3. Run `npx godpowers gate --tier=prd --project=.` and do not proceed on a non-zero exit
-4. Update `.godpowers/PROGRESS.md`: PRD status = done
+4. Run `npx godpowers state advance --step=prd --status=done --project=.`
 
 ## Pause Format
 

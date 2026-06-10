@@ -44,7 +44,8 @@ observe, launch, harden, org policy, or user commitments.
 
 After approval, the greenfieldifier updates all affected artifacts thoroughly:
 PRD, DESIGN, PRODUCT, ARCH, ROADMAP, STACK, REPO, BUILD, DEPLOY, OBSERVE,
-LAUNCH, and HARDEN. It then syncs PROGRESS.md, state.json, and SYNC-LOG.md.
+LAUNCH, and HARDEN. It then syncs `state.json`, generated progress views, and
+SYNC-LOG.md.
 
 ## Verification
 

@@ -23,8 +23,8 @@ After god-harden-auditor returns:
 1. Verify FINDINGS.md exists on disk
 2. Run `npx godpowers gate --tier=harden --project=.` and do not proceed on a non-zero exit
 3. Read findings classification:
-   - If any Critical: PROGRESS.md status = failed, launch is BLOCKED
-   - If only High/Medium/Low: PROGRESS.md status = done
+   - If any Critical: run `npx godpowers state advance --step=harden --status=failed --project=.` and block launch
+   - If only High/Medium/Low: run `npx godpowers state advance --step=harden --status=done --project=.`
 
 ## Have-Nots
 

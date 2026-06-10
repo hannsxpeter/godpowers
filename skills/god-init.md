@@ -3,7 +3,8 @@ name: god-init
 description: |
   Initialize a Godpowers project. Detects operating mode (greenfield, gap-fill,
   audit, multi-repo) and project scale. Creates native Pillars project context
-  plus the .godpowers/ workflow state directory with PROGRESS.md.
+  plus the .godpowers/ workflow state directory with state.json and a
+  generated PROGRESS.md view.
 
   Triggers on: "god init", "start a project", "new project", "initialize"
 ---
@@ -18,9 +19,10 @@ This skill is a thin wrapper. Detection happens automatically; user never
 needs to specify a mode.
 
 1. Check if `.godpowers/` already exists:
-   - If yes: read PROGRESS.md, call `lib/pillars.pillarizeExisting(projectRoot)`
+   - If yes: read `state.json`, call `lib/pillars.pillarizeExisting(projectRoot)`
      to ensure the existing Godpowers project is also Pillar-ized, report
-     current state, ask if user wants to reset or resume
+     current state, ask if user wants to reset or resume. Use `PROGRESS.md`
+     only as a legacy fallback when `state.json` is missing.
    - If no: proceed with initialization
 
 2. **Auto-detect what kind of project this is** (background, no user prompt):
@@ -124,7 +126,8 @@ needs to specify a mode.
    - For brownfield: schedule preflight before archaeology + reconstruction
    - For bluefield: load org-context, then schedule preflight as constraint intake
    - Create directory structure
-   - Write PROGRESS.md with mode, scale, timestamp, tier states
+   - Write `state.json` with mode, scale, timestamp, and tier states. The
+     generated `PROGRESS.md` view refreshes from `state.json`.
    - Return mode/scale/announcement to this skill
 
 8. Detect scale by analyzing the description:
@@ -167,7 +170,8 @@ needs to specify a mode.
      harden/
    ```
 
-10. Write PROGRESS.md with mode, scale, timestamp, all tiers set to `pending`
+10. Write `state.json` with mode, scale, timestamp, and all tiers set to
+    `pending`; let the generated `PROGRESS.md` view refresh from `state.json`
 
 11. Report to the user:
    - Detected mode and scale
@@ -186,7 +190,8 @@ needs to specify a mode.
 
 ## Output
 
-`.godpowers/PROGRESS.md` created with initial state.
+`.godpowers/state.json` created with initial state and `.godpowers/PROGRESS.md`
+generated as the human-readable view.
 
 Always create `.godpowers/prep/INITIAL-FINDINGS.md`. This is Godpowers'
 durable answer to "what did init find in this codebase?" It captures codebase
@@ -201,7 +206,7 @@ as hypothesis-level input only.
 
 ## Native Pillars context and AI-tool context
 
-After PROGRESS.md is written, Pillars context is already present. Every
+After `state.json` is written, Pillars context is already present. Every
 Godpowers project uses `AGENTS.md` plus `agents/*.md` as its native project
 truth layer.
 
@@ -243,7 +248,7 @@ If the user later wants to enable it manually, they run `/god-context on`.
 
 ## Mode D detection (multi-repo workspace)
 
-After PROGRESS.md is written, also check whether this directory is
+After `state.json` is written, also check whether this directory is
 part of a multi-repo suite:
 
 1. Call `lib/multi-repo-detector.detect(projectRoot)`.

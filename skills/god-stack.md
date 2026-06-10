@@ -22,7 +22,7 @@ Spawn the **god-stack-selector** agent in a fresh context via the host platform'
 After god-stack-selector returns:
 1. Verify DECISION.md exists on disk
 2. Run `npx godpowers gate --tier=stack --project=.` and do not proceed on a non-zero exit
-3. Update `.godpowers/PROGRESS.md`: Stack status = done
+3. Run `npx godpowers state advance --step=stack --status=done --project=.`
 
 ## On Completion
 

@@ -38,7 +38,7 @@ Examples:
 5. Mark each tier `status: pending` in state.json.
 6. Append a `op:rollback` event to the reflog with the full closure.
 7. Truncate the linkage map entries belonging to rolled-back artifacts.
-8. Update PROGRESS.md.
+8. Let the generated `PROGRESS.md` view refresh from `state.json`.
 
 ## Difference from /god-undo
 

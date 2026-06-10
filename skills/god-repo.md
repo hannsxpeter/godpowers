@@ -23,7 +23,7 @@ After god-repo-scaffolder returns:
 1. Verify AUDIT.md exists on disk
 2. Verify CI passes on the empty scaffold
 3. Run `npx godpowers gate --tier=repo --project=.` and do not proceed on a non-zero exit
-4. Update `.godpowers/PROGRESS.md`: Repo status = done
+4. Run `npx godpowers state advance --step=repo --status=done --project=.`
 
 ## On Completion
 

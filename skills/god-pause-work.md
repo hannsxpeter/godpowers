@@ -15,7 +15,9 @@ Create a context handoff so you can resume cleanly later.
 
 ## Process
 
-1. Read `.godpowers/PROGRESS.md` to capture current state
+1. Read `.godpowers/state.json` to capture current state. Use
+   `.godpowers/PROGRESS.md` only as a legacy fallback when `state.json` is
+   missing.
 2. Identify what was actively being worked on:
    - Which slice? Which agent was running?
    - What was the next step?
@@ -53,7 +55,8 @@ Paused: [timestamp]
 `/god-resume-work` to load this context, then continue.
 ```
 
-5. Update PROGRESS.md to mark current sub-step as `in-flight` if not already
+5. Run `npx godpowers state advance --step=<current-step> --status=in-flight --project=.`
+   if the current sub-step is not already active.
 
 ## On Completion
 
