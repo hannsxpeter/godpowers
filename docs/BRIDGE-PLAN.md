@@ -102,7 +102,12 @@
 - [DECISION] Verification result: `node scripts/test-agent-browser.js` passed.
 - [DECISION] Verification result: `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.1, and package contents verified at 534 files.
 - [DECISION] Verification result: `npm pack --dry-run` passed for `godpowers@2.5.1` with 534 files.
-- [DECISION] Release result: local release gate passed; PR merge, tag, npm publish, and published-install verification are still pending.
+- [DECISION] Verification result: GitHub CI run `27288459252` passed for PR #11 before merge.
+- [DECISION] Release result: PR #11 merged through the protected GitHub path on 2026-06-10 at merge commit `7803cafaf19f7117ce0762db1ffb645f6652433c`.
+- [DECISION] Release result: `v2.5.1` was tagged and pushed to trigger the repository publish workflow.
+- [DECISION] Release result: GitHub Publish to npm workflow `27288648503` passed, and npm published `godpowers@2.5.1` with provenance.
+- [DECISION] Release result: `npm run verify:published-install` passed after publish and resolved npm `godpowers@latest` to version 2.5.1.
+- [DECISION] Release result: GitHub release `v2.5.1` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.5.1`.
 - [DECISION] Blockers: no Phase 2 deliverable blocker remains.
 - [DECISION] Blockers: Run A deployed smoke remains deferred until an upstream maintainer or repository configuration provides `STAGING_APP_URL=<deployed staging origin>`.
 - [DECISION] Blockers: Run C has an external project blocker, `CRITICAL-DEV-TOOLING-AUDIT`, intentionally left for that project maintainer because clearing it requires development-tooling strategy expansion outside the selected host-proof slice.

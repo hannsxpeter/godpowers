@@ -1,6 +1,6 @@
 # Godpowers 2.5.1 Release
 
-> Status: Release candidate
+> Status: Published
 > Date: 2026-06-10
 
 Godpowers 2.5.1 ships the Phase 2 host proof campaign as a docs patch release.
