@@ -1,6 +1,6 @@
 # Godpowers 3.0.0 Release
 
-> Status: Prepared
+> Status: Published
 > Date: 2026-06-10
 
 [DECISION] Godpowers 3.0.0 is the Phase 5 surface contraction release.
@@ -55,7 +55,11 @@
 - [DECISION] `npm run lint` passed.
 - [DECISION] `npm run test:audit` passed with `npm audit --omit=dev`, `git diff --check`, and public surface checks green.
 - [DECISION] `npm run release:check` passed with `coverage:lib` at 92.79 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 3.0.0, root package contents verified at 548 files, and `@godpowers/mcp` package contents verified at 8 files.
-- [DECISION] Publish status remains pending until branch review, protected merge, registry credentials, and release hooks are all green.
+- [DECISION] Clean-clone `bash scripts/release.sh 3.0.0` passed and pushed tag `v3.0.0`.
+- [DECISION] Publish workflow `27308383323` passed and published `godpowers@3.0.0` plus `@godpowers/mcp@3.0.0` with provenance.
+- [DECISION] `npm run verify:published-install` passed against `godpowers@latest`.
+- [DECISION] `npm exec --yes --package @godpowers/mcp@3.0.0 -- godpowers-mcp --help` passed.
+- [DECISION] `gh release view v3.0.0 --repo aihxp/godpowers` passed.
 
 ## Upgrade
 
@@ -67,6 +71,7 @@
 
 ## Notes
 
-- [DECISION] No npm publish has been attempted from this prepared release note.
-- [DECISION] No GitHub release has been created from this prepared release note.
-- [DECISION] The next bridge-plan action is protected review and merge for the Phase 5 behavior slice.
+- [DECISION] npm `godpowers@3.0.0` is published as `latest`.
+- [DECISION] npm `@godpowers/mcp@3.0.0` is published as `latest`.
+- [DECISION] GitHub release `https://github.com/aihxp/godpowers/releases/tag/v3.0.0` is published.
+- [DECISION] The next bridge-plan action is Phase 6 prompt diet completion and agent contracts.
