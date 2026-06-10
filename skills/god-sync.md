@@ -154,6 +154,4 @@ Both bookends run automatically in feature-addition recipes. Both can be
 invoked manually for spot-checks.
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

@@ -72,6 +72,4 @@ Writes via `lib/reverse-sync.js` (for linkage truncation) and standard
 fs operations (for artifact move).
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

@@ -39,6 +39,4 @@ Add a new story under `.godpowers/stories/<feature-slug>/`.
 - `/god-stories` to see all stories
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

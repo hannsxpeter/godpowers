@@ -62,6 +62,4 @@ Reverse a previous skip. Marks the sub-step `pending` again.
 Built-in. Reads and writes `state.json`, regenerates the managed progress view, and appends to reflog.
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

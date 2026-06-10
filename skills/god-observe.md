@@ -79,6 +79,4 @@ The reflog records every god-observe invocation as `op:god-observe` for `/god-un
   for `/god-repair` review. Re-running picks up cleanly.
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

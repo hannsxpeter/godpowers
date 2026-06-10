@@ -91,6 +91,4 @@ The reflog records every god-harden invocation as `op:god-harden` for `/god-undo
   for `/god-repair` review. Re-running picks up cleanly.
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

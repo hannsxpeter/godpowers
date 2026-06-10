@@ -139,6 +139,4 @@ Suggested next:
   /god-audit to score imported seeds before treating them as authoritative.
 ```
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

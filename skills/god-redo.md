@@ -57,6 +57,4 @@ that originally produced the artifact. Updates the linkage map via
 `/god-scan` after the artifact is rewritten.
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
