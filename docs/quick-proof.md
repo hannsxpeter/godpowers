@@ -109,6 +109,7 @@ User: A SaaS for solo founders to track MRR breakdown by new, expansion, and chu
 Godpowers routes the work through project state and artifacts:
 
 ```text
+.godpowers/state.json
 .godpowers/PROGRESS.md
 .godpowers/prd/PRD.md
 .godpowers/arch/ARCH.md

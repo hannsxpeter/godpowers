@@ -253,6 +253,7 @@ test('quick proof names the accountable outputs', () => {
     'validation gates',
     'host guarantees',
     'next action',
+    '.godpowers/state.json',
     '.godpowers/PROGRESS.md',
     '.godpowers/harden/FINDINGS.md'
   ]) {

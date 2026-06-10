@@ -7,8 +7,8 @@ Four things to understand: the Quarterback, tiers, agents, and quality gates.
 There is exactly one orchestrator: `god-orchestrator`. Think of it as the
 quarterback. It reads the defense (mode + scale detection), calls the play
 (spawns the right specialist for each tier sub-step), owns the playbook
-(state.json, PROGRESS.md, intent.yaml, events.jsonl), and manages the clock
-(mandatory final sync at end of arc).
+(`state.json`, generated `PROGRESS.md` view, `intent.yaml`, `events.jsonl`),
+and manages the clock (mandatory final sync at end of project run).
 
 Three skills sit on the sideline and read the same playbook without calling
 plays:
@@ -63,9 +63,9 @@ A skill is the user-facing slash command. An agent is the specialist that
 does the work. Skills are thin; agents are deep.
 
 - `/god-prd` is a skill. It spawns `god-pm` (the agent) in a fresh context.
-- `god-pm` reads PROGRESS.md and writes PRD.md.
+- `god-pm` reads state.json, intent.yaml, and prep artifacts, then writes PRD.md.
 - The agent has its own context window, instructions, and have-nots checks.
-- The skill verifies the agent's output and updates state.
+- The skill verifies the agent's output and updates state through `godpowers state advance` or an owning command wrapper.
 
 Why fresh contexts? It defeats context rot. Each agent gets a clean 200K
 window with only what it needs. The orchestrator stays thin.

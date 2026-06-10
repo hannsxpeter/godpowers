@@ -345,10 +345,10 @@ available.
 
 ```
 .godpowers/
-  PROGRESS.md              Tier status
+  state.json               Machine-readable project state
+  PROGRESS.md              Generated tier status view
   REQUIREMENTS.md          Deliverable ledger (requirements done / in progress / not started, from /god-progress)
   intent.yaml              Project intent
-  state.json               Project state
   links/                   Requirement-to-code linkage map
   prep/INITIAL-FINDINGS.md Godpowers init scan and suggested next rationale
   prep/IMPORTED-CONTEXT.md Optional legacy planning / Superpowers / BMAD preparation context

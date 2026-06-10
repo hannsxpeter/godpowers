@@ -211,9 +211,10 @@ You can also ask any time:
 /god-next
 ```
 
-This reads `.godpowers/PROGRESS.md`, scans disk, reconciles any drift, and
-suggests the next logical command with a compact action brief. The SessionStart
-hook does the same thing when you open a new session in a Godpowers project.
+This reads `.godpowers/state.json`, treats `.godpowers/PROGRESS.md` as a
+generated human view, scans disk, reconciles any drift, and suggests the next
+logical command with a compact action brief. The SessionStart hook does the
+same thing when you open a new session in a Godpowers project.
 
 ### Start With A Path
 
@@ -479,10 +480,10 @@ It spawns the right specialist agent in a **fresh context** to do the work.
 You type:        /god-prd
 Skill loads:     skills/god-prd.md
 Skill spawns:    god-pm agent (fresh 200K context)
-Agent reads:     .godpowers/PROGRESS.md
+Agent reads:     .godpowers/state.json + .godpowers/intent.yaml
 Agent writes:    .godpowers/prd/PRD.md
 Skill verifies:  artifact exists, have-nots pass
-Skill updates:   PROGRESS.md
+Skill updates:   state.json via godpowers state advance
 ```
 
 ### The Four Tiers
@@ -497,7 +498,8 @@ Skill updates:   PROGRESS.md
 ### Artifact Paths
 
 ```
-.godpowers/PROGRESS.md         Cross-tier progress ledger
+.godpowers/state.json          Machine-readable project state
+.godpowers/PROGRESS.md         Generated cross-tier progress view
 .godpowers/REQUIREMENTS.md     Requirement checklist (done / in progress / not started)
 .godpowers/prd/PRD.md          Product Requirements Document
 .godpowers/domain/GLOSSARY.md  Domain vocabulary and resolved ambiguities

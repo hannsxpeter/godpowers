@@ -98,7 +98,7 @@ After god-designer and god-design-reviewer return:
 1. Verify `DESIGN.md` exists on disk
 2. Verify `.godpowers/design/STATE.md` exists on disk
 3. Run `npx godpowers gate --tier=design --project=.` and do not proceed on a non-zero exit
-4. Update `.godpowers/PROGRESS.md`: Design status = done when the project requires design
+4. Run `npx godpowers state advance --step=design --status=done --project=.` when the project requires design, or `npx godpowers state advance --step=design --status=not-required --project=.` when design is explicitly not required.
 
 ## Output
 
