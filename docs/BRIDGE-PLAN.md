@@ -84,7 +84,7 @@
 - [DECISION] Exit criteria are three published host-run case studies, captured defect backlog, exact repository identity for each run, and command-usage data on disk.
 - [HYPOTHESIS] Phase 2 takes about two weeks including triage between runs.
 
-### Phase 2 Run Status
+### Phase 2 Run Status, Initial Blocked Run
 
 - [DECISION] Status: blocked for the 2026-06-10 automation run.
 - [DECISION] Completed work: loaded `AGENTS.md`, required Pillars, `USERS.md`, `docs/adoption-canary.md`, and the current case-study inventory before changing docs.
@@ -98,6 +98,38 @@
 - [DECISION] Release result: no package release or npm publish was attempted because Phase 2 exit criteria require three host-run case studies and command-usage data that are absent on disk.
 - [DECISION] Blockers: Phase 2 cannot be completed truthfully until `/god-mode` host runs have been executed for the three selected repository slots and the resulting transcripts, defect backlog, and command usage are captured.
 - [DECISION] Next phase to run remains Phase 2: Host Proof Campaign, starting with repository slot selection and an actual host-run execution for Slot A.
+
+### Phase 2 Run Status, Slot A Host Proof
+
+- [DECISION] Status: in progress for the 2026-06-10 Slot A host-proof automation run.
+- [DECISION] Completed work: loaded `AGENTS.md`, required Pillars, `USERS.md`, `docs/adoption-canary.md`, current case studies, and `/god-mode` skill instructions before selecting Slot A.
+- [DECISION] Completed work: selected `https://github.com/lirantal/licenseye.git` as Slot A because it is a permissively licensed small Node.js CLI with no known maintainer relationship.
+- [DECISION] Completed work: verified run-start commit `22e1b6428cfe9534e433abda09d6906af4bcbf61`, MIT license text, `licenseye` bin metadata, and 257 counted JavaScript, JSON, and Markdown lines.
+- [DECISION] Completed work: created `docs/case-studies/run-a.md` with exact repository identity, host-run command sequence, pause log, gate results, validation commands, host guarantee level, cost evidence, target-repository findings, and Godpowers product findings.
+- [DECISION] Host-run result: Codex app spawned the `god-orchestrator` agent for `/god-mode --brownfield --conservative` against `/tmp/godpowers-slot-a-CpoZk9/licenseye`.
+- [DECISION] Host-run result: the run reached 63 percent progress with 12 of 19 tracked steps complete.
+- [DECISION] Host-run result: preflight, archaeology, reconstruction, technical debt, greenfield simulation, and greenfieldify plan gates passed.
+- [DECISION] Host-run result: generated external artifacts included preflight, archaeology, reconstructed PRD, ARCH, ROADMAP, STACK, REQUIREMENTS, tech debt, greenfield simulation, greenfieldify plan, checkpoint, progress, state, event log, and host-run findings.
+- [DECISION] Host-run result: no target source files, dependency files, lockfiles, workflow files, or tracked repository files were changed.
+- [DECISION] Host-run result: the run paused at greenfieldification approval because 11 of 13 findings require stakeholder approval before canonical artifact rewrites.
+- [DECISION] Host-run result: target repository P0 debt includes a vulnerable locked dependency graph, missing CLI behavior tests, and absent packed `dist.js` smoke verification.
+- [DECISION] Host-run result: Godpowers product findings include dashboard next-route drift for brownfield checkpoints, `/god-cost` aggregation gaps for `tokens_total` events, host proof runtime-version clarity, pillar trigger over-selection, and target `.npmrc` influence on proof sidecar `npx` commands.
+- [DECISION] Verification result: `npm_config_min_release_age=0 npx --yes godpowers@2.5.0 quick-proof --project=. --brief` passed in the Slot A clone.
+- [DECISION] Verification result: `npm_config_min_release_age=0 npx --yes godpowers@2.5.0 dogfood` passed with 5 of 5 scenarios passing.
+- [DECISION] Verification result: `node scripts/run-adoption-canary.js https://github.com/lirantal/licenseye.git` passed and wrote an external report with quick-proof, status, and next signals.
+- [DECISION] Verification result: `node bin/install.js status --project=/tmp/godpowers-slot-a-CpoZk9/licenseye --brief` passed but recommended `/god-prd`, which conflicts with the active greenfieldification approval checkpoint and is recorded as a product finding.
+- [DECISION] Verification result: `node bin/install.js next --project=/tmp/godpowers-slot-a-CpoZk9/licenseye --brief` passed but recommended `/god-prd`, which conflicts with the active greenfieldification approval checkpoint and is recorded as a product finding.
+- [DECISION] Verification result: manual event parsing found `tokens_total` of 775,778 across six estimated `gpt-5.5` model-call events, while `/god-cost` style aggregation did not price those events because input and output token fields were absent.
+- [DECISION] Verification result: `npm run test:e2e` passed.
+- [DECISION] Verification result: `node scripts/test-runtime-verification.js` passed.
+- [DECISION] Verification result: `node scripts/test-agent-browser.js` passed.
+- [DECISION] Verification result: `npm run test:quick-proof` passed.
+- [DECISION] Verification result: the first `npm run release:check` attempt stopped before test execution because `c8` was absent from local `node_modules`; `npm ci` installed 55 packages and reported 0 vulnerabilities.
+- [DECISION] Verification result: the rerun `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.0, and package contents verified at 534 files.
+- [DECISION] Release result: no package release, npm publish, or docs patch release was attempted because Phase 2 exit criteria require three host-run case studies and only Slot A exists.
+- [DECISION] Blockers: Slot A is paused until a maintainer chooses approve, revise, or preserve for `.godpowers/audit/GREENFIELDIFY-PLAN.md`.
+- [DECISION] Blockers: Phase 2 cannot complete until Slot B and Slot C host-run case studies exist and command-usage evidence is captured.
+- [DECISION] Next phase to run remains Phase 2: Host Proof Campaign, starting with either resolving the Slot A greenfieldify pause or selecting and running Slot B.
 
 ## Phase 3: MCP Companion Package (target release 2.6.0)
 
