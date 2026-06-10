@@ -90,6 +90,9 @@ test('full test runner includes YAML parser coverage', () => {
   if (!commands.some(command => command.includes('scripts/test-gate.js'))) {
     throw new Error('scripts/test-gate.js is missing from TEST_COMMANDS');
   }
+  if (!commands.some(command => command.includes('scripts/test-state-views.js'))) {
+    throw new Error('scripts/test-state-views.js is missing from TEST_COMMANDS');
+  }
   if (!commands.some(command => command.includes('--workspace @godpowers/mcp test'))) {
     throw new Error('@godpowers/mcp protocol test is missing from TEST_COMMANDS');
   }

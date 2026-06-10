@@ -59,6 +59,7 @@ const TEST_COMMANDS = [
   [node, ['scripts/test-agent-validator.js']],
   [node, ['scripts/test-story-validator.js']],
   [node, ['scripts/test-state.js']],
+  [node, ['scripts/test-state-views.js']],
   [node, ['scripts/test-dashboard.js']],
   [node, ['scripts/test-automation-providers.js']],
   [node, ['scripts/test-intent.js']],
