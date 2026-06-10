@@ -53,8 +53,8 @@ The lint layer. Mechanical checks against the catalog of failure modes.
   without running arbitrary project commands.
 - [DECISION] Gate JSON has `{tier, verdict, artifacts, checks, findings,
   summary}` so hosts can quote exact check ids and reasons.
-- [DECISION] Build gates require `.godpowers/build/STATE.md` to record exact
-  verification commands that passed.
+- [DECISION] Build gates require `.godpowers/state.json` to record exact
+  verification commands that passed under `tiers.tier-2.build`.
 - [DECISION] Harden gates fail unresolved Critical findings and blocked launch
   gates in `.godpowers/harden/FINDINGS.md`.
 - [DECISION] `/god-mode` runs the matching gate after each tier skill returns

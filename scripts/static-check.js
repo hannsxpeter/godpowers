@@ -206,6 +206,29 @@ test('routing prerequisites use state initialized predicate instead of PROGRESS.
   }
 });
 
+test('tier gate decisions use state json instead of generated STATE views', () => {
+  const targets = [
+    path.join(ROOT, 'lib', 'artifact-map.js'),
+    path.join(ROOT, 'lib', 'gate.js')
+  ];
+  const blocked = [
+    '.godpowers/design/STATE.md',
+    '.godpowers/build/STATE.md'
+  ];
+  const offenders = [];
+  for (const file of targets) {
+    const text = fs.readFileSync(file, 'utf8');
+    for (const needle of blocked) {
+      if (text.includes(needle)) {
+        offenders.push(`${path.relative(ROOT, file)} contains ${needle}`);
+      }
+    }
+  }
+  if (offenders.length > 0) {
+    throw new Error(offenders.join('; '));
+  }
+});
+
 test('public runtime modules expose JSDoc type contracts', () => {
   const modules = [
     'lib/state.js',

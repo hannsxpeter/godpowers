@@ -1,0 +1,29 @@
+{
+  "$schema": "https://godpowers.dev/schema/state.v1.json",
+  "version": "1.0.0",
+  "project": {
+    "name": "gate-build-pass",
+    "started": "2026-06-10T18:12:29Z"
+  },
+  "tiers": {
+    "tier-2": {
+      "build": {
+        "status": "done",
+        "verification-commands": [
+          {
+            "command": "npm test",
+            "status": "pass",
+            "exit-code": 0,
+            "ran-at": "2026-06-10T18:12:29Z"
+          },
+          {
+            "command": "npm run lint",
+            "status": "pass",
+            "exit-code": 0,
+            "ran-at": "2026-06-10T18:12:29Z"
+          }
+        ]
+      }
+    }
+  }
+}
