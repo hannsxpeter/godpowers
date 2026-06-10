@@ -1,6 +1,6 @@
 # Godpowers 2.5.2 Release
 
-> Status: Ready for protected merge
+> Status: Published to npm
 > Date: 2026-06-10
 
 [DECISION] Godpowers 2.5.2 is a Phase 2 blocker patch after the 2.5.1 host-proof docs release.
@@ -38,6 +38,8 @@
 - [DECISION] Post-merge 2.5.2 `node scripts/test-runtime-verification.js` passed.
 - [DECISION] Post-merge 2.5.2 `node scripts/test-agent-browser.js` passed.
 - [DECISION] Post-merge 2.5.2 `npm run release:check` passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.2, and package contents verified at 534 files.
+- [DECISION] Release-status closeout `npm run lint` passed after npm publication.
+- [DECISION] Release-status closeout `npm run release:check` passed after npm publication with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.2, and package contents verified at 534 files.
 
 ## Upgrade
 
@@ -48,4 +50,8 @@
 ## Notes
 
 - [DECISION] The npm `godpowers@2.5.1` package is already published.
-- [DECISION] Publishing 2.5.2 remains pending until protected merge, tag, and npm provenance publish complete.
+- [DECISION] Git tag `v2.5.2` points to merge commit `6a09a6117bfc83f7bca29402a75b2e2cf732aa1a`.
+- [DECISION] GitHub Publish to npm workflow `27289417888` passed for tag `v2.5.2`.
+- [DECISION] Npm published `godpowers@2.5.2` and now resolves `godpowers@latest` to version `2.5.2`.
+- [DECISION] `npm run verify:published-install` passed after publish and resolved npm `godpowers@latest` to version `2.5.2`.
+- [DECISION] GitHub release `v2.5.2` was published at `https://github.com/aihxp/godpowers/releases/tag/v2.5.2`.
