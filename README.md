@@ -290,8 +290,9 @@ npx godpowers gate --tier=build --project=.
 npx godpowers gate --tier=harden --project=.
 ```
 
-The gate reads disk artifacts, runs the shared artifact linter, checks build
-verification evidence, and blocks unresolved Critical harden findings.
+The gate reads disk artifacts, runs the shared artifact linter, checks
+structured `state.json` evidence for design and build gates, and blocks
+unresolved Critical harden findings.
 
 The main `godpowers` runtime remains dependency-free. The optional
 `@godpowers/mcp` companion package owns the MCP SDK dependency and exposes

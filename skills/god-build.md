@@ -76,7 +76,8 @@ After all waves:
    decompose, prune, or escalate. Pass the exact failing diagnostics, rerun the
    command, and repeat until green or until the same root failure exhausts the
    repair budget.
-5. Record the exact verification commands that passed in `.godpowers/build/STATE.md`
+5. Record the exact verification commands that passed in `.godpowers/state.json`
+   under `tiers.tier-2.build.verification-commands`
 6. Run `npx godpowers gate --tier=build --project=.` and do not proceed on a non-zero exit
 7. Update PROGRESS.md: Build status = done
 8. If the build plan or implementation establishes durable conventions, plan
