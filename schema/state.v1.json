@@ -298,96 +298,34 @@
           "type": "string",
           "description": "Free-form for skip reason, failure detail, etc."
         },
-        "design-lint": {
+        "verification": {
           "type": "object",
-          "description": "Structured design lint evidence used by the design gate.",
+          "description": "Structured verification evidence used by executable gates instead of markdown STATE.md parsing.",
           "properties": {
-            "status": { "$ref": "#/$defs/EvidenceStatus" },
-            "errors": { "type": "integer", "minimum": 0 },
-            "warnings": { "type": "integer", "minimum": 0 },
-            "infos": { "type": "integer", "minimum": 0 },
-            "ran-at": { "type": "string", "format": "date-time" }
-          },
-          "additionalProperties": true
-        },
-        "design-review": {
-          "type": "object",
-          "description": "Structured design review evidence used by the design gate.",
-          "properties": {
-            "verdict": {
-              "type": "string",
-              "enum": ["PASS", "WARN", "BLOCK", "pass", "warn", "block"]
-            },
-            "status": { "$ref": "#/$defs/EvidenceStatus" },
-            "reviewer": { "type": "string" },
-            "ran-at": { "type": "string", "format": "date-time" }
-          },
-          "additionalProperties": true
-        },
-        "command-history": {
-          "type": "array",
-          "description": "Structured command history for bridge-backed tier work.",
-          "items": {
-            "type": "object",
-            "properties": {
-              "command": { "type": "string" },
-              "status": { "$ref": "#/$defs/EvidenceStatus" },
-              "ran-at": { "type": "string", "format": "date-time" }
-            },
-            "additionalProperties": true
-          }
-        },
-        "verification-commands": {
-          "type": "array",
-          "description": "Exact project verification commands recorded for build gate evidence.",
-          "items": {
-            "type": "object",
-            "required": ["command", "status"],
-            "properties": {
-              "command": { "type": "string" },
-              "status": { "$ref": "#/$defs/EvidenceStatus" },
-              "exit-code": { "type": "integer" },
-              "ran-at": { "type": "string", "format": "date-time" },
-              "diagnostics": { "type": "string" }
-            },
-            "additionalProperties": true
-          }
-        },
-        "generated-view": {
-          "type": "object",
-          "description": "Generated markdown view metadata for this sub-step.",
-          "properties": {
-            "path": { "type": "string" },
-            "checksum": {
-              "type": "string",
-              "pattern": "^sha256:[a-f0-9]{64}$"
-            },
-            "generated-at": { "type": "string", "format": "date-time" },
-            "source-version": { "type": "string" },
-            "dirty": { "type": "boolean" },
-            "warning": { "type": "string" }
+            "commands": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/VerificationCommand" }
+            }
           },
           "additionalProperties": true
         }
       }
     },
-    "EvidenceStatus": {
-      "type": "string",
-      "enum": [
-        "pass",
-        "passed",
-        "green",
-        "success",
-        "succeeded",
-        "ok",
-        "fail",
-        "failed",
-        "red",
-        "error",
-        "blocked",
-        "warn",
-        "warning"
-      ]
+    "VerificationCommand": {
+      "type": "object",
+      "required": ["command", "status"],
+      "properties": {
+        "command": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["pass", "passed", "green", "success", "succeeded", "ok", "fail", "failed", "red", "error", "skipped"]
+        },
+        "exitCode": { "type": "integer" },
+        "ranAt": { "type": "string", "format": "date-time" },
+        "durationMs": { "type": "integer", "minimum": 0 },
+        "diagnostics": { "type": "string" }
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": false

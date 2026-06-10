@@ -3,31 +3,24 @@
   "version": "1.0.0",
   "project": {
     "name": "saas-mrr-tracker",
-    "started": "2026-06-10T18:12:29Z"
+    "started": "2026-06-10T00:00:00.000Z"
   },
   "tiers": {
     "tier-1": {
       "design": {
         "status": "done",
-        "design-lint": {
-          "status": "pass",
-          "errors": 0,
-          "warnings": 0,
-          "infos": 0,
-          "ran-at": "2026-06-10T18:12:29Z"
-        },
-        "design-review": {
-          "verdict": "PASS",
-          "reviewer": "god-design-reviewer",
-          "ran-at": "2026-06-10T18:12:29Z"
-        },
-        "command-history": [
-          {
-            "command": "/god-design",
-            "status": "pass",
-            "ran-at": "2026-06-10T18:12:29Z"
-          }
-        ]
+        "updated": "2026-06-10T18:08:00.000Z",
+        "artifact": "design/STATE.md",
+        "verification": {
+          "commands": [
+            {
+              "command": "npx godpowers gate --tier=design --project=.",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-06-10T18:08:00.000Z"
+            }
+          ]
+        }
       }
     }
   }

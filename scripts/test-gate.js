@@ -6,7 +6,7 @@ const { spawnSync } = require('child_process');
 
 const gate = require('../lib/gate');
 const artifactMap = require('../lib/artifact-map');
-const stateStore = require('../lib/state');
+const state = require('../lib/state');
 const { test, asyncTest, assert, mkProject, writeRel, report } = require('./test-harness');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -20,25 +20,11 @@ function errorSummary(result) {
   return JSON.stringify(result.findings.filter((finding) => finding.severity === 'error'));
 }
 
-function writeDesignState(projectRoot, overrides = {}) {
-  const currentState = stateStore.init(projectRoot, 'gate-design');
-  currentState.tiers['tier-1'].design = {
-    status: 'done',
-    'design-lint': { status: 'pass', errors: 0, warnings: 0, infos: 0 },
-    'design-review': { verdict: 'PASS', reviewer: 'god-design-reviewer' },
-    'command-history': [],
-    ...overrides
-  };
-  stateStore.write(projectRoot, currentState);
-}
-
-function writeBuildState(projectRoot, commands) {
-  const currentState = stateStore.init(projectRoot, 'gate-build');
-  currentState.tiers['tier-2'].build = {
-    status: 'done',
-    'verification-commands': commands
-  };
-  stateStore.write(projectRoot, currentState);
+function initState(project, mutate) {
+  const current = state.init(project, 'gate-state-project');
+  mutate(current);
+  state.write(project, current, { refreshViews: false });
+  return current;
 }
 
 test('green planning gates pass against example artifacts', () => {
@@ -59,7 +45,15 @@ test('artifact map normalizes command names and reports required artifacts', () 
   const required = artifactMap.requiredArtifactsForTier('design');
   assert(required.length === 2, `design should have 2 required artifacts, got ${required.length}`);
   assert(required.some((artifact) => artifact.path === '.godpowers/state.json'),
-    'design should require structured state evidence');
+    'design gate should require state.json evidence');
+  assert(!required.some((artifact) => artifact.path === '.godpowers/design/STATE.md'),
+    'design gate should not require markdown state');
+  const buildArtifacts = artifactMap.requiredArtifactsForTier('build');
+  assert(buildArtifacts.length === 1 && buildArtifacts[0].path === '.godpowers/state.json',
+    `build gate should require only state.json evidence, got ${JSON.stringify(buildArtifacts)}`);
+  const buildStep = artifactMap.stateStepForTier('build');
+  assert(buildStep.tierKey === 'tier-2' && buildStep.subStepKey === 'build',
+    `unexpected build state step: ${JSON.stringify(buildStep)}`);
 });
 
 test('design gate passes when optional PRODUCT artifact is absent', () => {
@@ -73,48 +67,24 @@ test('design gate passes when optional PRODUCT artifact is absent', () => {
     '',
     '[DECISION] Gate Design exists only to prove optional PRODUCT handling.'
   ].join('\n'));
-  writeDesignState(project);
+  writeRel(project, '.godpowers/design/STATE.md', [
+    '# Design State',
+    '',
+    '[DECISION] This markdown state view is present but not gate-authoritative.'
+  ].join('\n'));
+  initState(project, (current) => {
+    current.tiers['tier-1'].design = {
+      status: 'done',
+      artifact: 'design/STATE.md',
+      updated: '2026-06-10T18:05:00.000Z'
+    };
+  });
   const result = gateResult('design', project);
   assert(result.verdict === 'pass', `design gate should pass: ${errorSummary(result)}`);
   assert(result.checks.some((check) => check.status === 'skipped' && check.artifact === 'PRODUCT.md'),
     'optional PRODUCT.md should be skipped');
-});
-
-test('design gate fails when state evidence is missing', () => {
-  const project = mkProject('godpowers-gate-design-state-missing-');
-  writeRel(project, 'DESIGN.md', [
-    '---',
-    'name: Gate Design',
-    '---',
-    '',
-    '## Overview',
-    '',
-    '[DECISION] Gate Design exists without state evidence.'
-  ].join('\n'));
-  const result = gateResult('design', project);
-  assert(result.verdict === 'fail', 'missing design state evidence should fail');
-  assert(result.findings.some((finding) => finding.id === 'design-state-evidence'),
-    'design state evidence finding absent');
-});
-
-test('design gate fails when review evidence is blocked', () => {
-  const project = mkProject('godpowers-gate-design-review-blocked-');
-  writeRel(project, 'DESIGN.md', [
-    '---',
-    'name: Gate Design',
-    '---',
-    '',
-    '## Overview',
-    '',
-    '[DECISION] Gate Design exists with blocked review evidence.'
-  ].join('\n'));
-  writeDesignState(project, {
-    'design-review': { verdict: 'BLOCK', reviewer: 'god-design-reviewer' }
-  });
-  const result = gateResult('design', project);
-  assert(result.verdict === 'fail', 'blocked design review should fail');
-  assert(result.findings.some((finding) => finding.id === 'design-review-state'),
-    'design review state finding absent');
+  assert(result.checks.some((check) => check.id === 'state:design:status' && check.status === 'pass'),
+    'design state status check should pass');
 });
 
 test('repo build and harden gates pass against fixture projects', () => {
@@ -179,20 +149,39 @@ test('harden gate fails unresolved Critical findings', () => {
 
 test('build gate fails without passed command evidence', () => {
   const project = mkProject('godpowers-gate-build-');
-  writeBuildState(project, []);
+  initState(project, (current) => {
+    current.tiers['tier-2'].build = {
+      status: 'done',
+      updated: '2026-06-10T18:06:00.000Z',
+      verification: { commands: [] }
+    };
+  });
   const result = gateResult('build', project);
   assert(result.verdict === 'fail', 'missing build command evidence should fail');
   assert(result.findings.some((finding) => finding.id === 'build-verification-evidence'),
     'build evidence finding absent');
 });
 
-test('build gate fails when any verification command is recorded as failed', () => {
+test('build gate ignores markdown state and fails from state.json failed command evidence', () => {
   const project = mkProject('godpowers-gate-build-failed-command-');
-  writeBuildState(project, [
-    { command: 'npm install', status: 'pass', 'exit-code': 0 },
-    { command: 'npm test', status: 'fail', 'exit-code': 1 },
-    { command: 'node --check cli.js', status: 'pass', 'exit-code': 0 }
-  ]);
+  writeRel(project, '.godpowers/build/STATE.md', [
+    '# Build State',
+    '',
+    '[DECISION] This markdown view claims every verification command passed.'
+  ].join('\n'));
+  initState(project, (current) => {
+    current.tiers['tier-2'].build = {
+      status: 'done',
+      updated: '2026-06-10T18:07:00.000Z',
+      verification: {
+        commands: [
+          { command: 'npm install', status: 'pass', exitCode: 0, ranAt: '2026-06-10T18:06:00.000Z' },
+          { command: 'npm test', status: 'fail', exitCode: 1, ranAt: '2026-06-10T18:06:30.000Z', diagnostics: 'unit failure' },
+          { command: 'node --check cli.js', status: 'pass', exitCode: 0, ranAt: '2026-06-10T18:07:00.000Z' }
+        ]
+      }
+    };
+  });
   const result = gateResult('build', project);
   assert(result.verdict === 'fail', 'failed command should fail build gate');
   assert(result.findings.some((finding) => finding.id === 'build-verification-failed-command'),

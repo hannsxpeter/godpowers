@@ -206,26 +206,27 @@ test('routing prerequisites use state initialized predicate instead of PROGRESS.
   }
 });
 
-test('tier gate decisions use state json instead of generated STATE views', () => {
-  const targets = [
-    path.join(ROOT, 'lib', 'artifact-map.js'),
-    path.join(ROOT, 'lib', 'gate.js')
-  ];
-  const blocked = [
-    '.godpowers/design/STATE.md',
-    '.godpowers/build/STATE.md'
-  ];
+test('state-backed gates do not require markdown STATE.md artifacts', () => {
+  const artifactMap = require('../lib/artifact-map');
+  const expected = {
+    design: { tierKey: 'tier-1', subStepKey: 'design' },
+    build: { tierKey: 'tier-2', subStepKey: 'build' }
+  };
   const offenders = [];
-  for (const file of targets) {
-    const text = fs.readFileSync(file, 'utf8');
-    for (const needle of blocked) {
-      if (text.includes(needle)) {
-        offenders.push(`${path.relative(ROOT, file)} contains ${needle}`);
+  for (const [tier, step] of Object.entries(expected)) {
+    const artifacts = artifactMap.requiredArtifactsForTier(tier) || [];
+    for (const artifact of artifacts) {
+      if (/\.godpowers\/[^/]+\/STATE\.md$/.test(artifact.path)) {
+        offenders.push(`${tier}:${artifact.path}`);
       }
+    }
+    const actual = artifactMap.stateStepForTier(tier);
+    if (!actual || actual.tierKey !== step.tierKey || actual.subStepKey !== step.subStepKey) {
+      offenders.push(`${tier}:missing-state-step`);
     }
   }
   if (offenders.length > 0) {
-    throw new Error(offenders.join('; '));
+    throw new Error(`markdown state gate authority in ${offenders.join(', ')}`);
   }
 });
 
