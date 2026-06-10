@@ -133,6 +133,35 @@ test('build gate fails without passed command evidence', () => {
     'build evidence finding absent');
 });
 
+test('build gate fails when any verification command is recorded as failed', () => {
+  const project = mkProject('godpowers-gate-build-failed-command-');
+  writeRel(project, '.godpowers/build/STATE.md', [
+    '# [DECISION] Build State: Wave 1 Verification',
+    '',
+    '## [DECISION] Command Results',
+    '',
+    '- [DECISION] Exact executed command: `npm install`.',
+    '- [DECISION] Status: PASS with exit code 0.',
+    '',
+    '- [DECISION] Exact executed command: `npm test`.',
+    '- [DECISION] Status: FAIL with exit code 1.',
+    '',
+    '- [DECISION] Exact executed command: `node --check cli.js`.',
+    '- [DECISION] Status: PASS with exit code 0.',
+    '',
+    '## [DECISION] Gate Status',
+    '',
+    '- [DECISION] Gate status: FAIL.',
+    '- [DECISION] The Wave 1 verification gate fails because `npm test` exited with code 1.'
+  ].join('\n'));
+  const result = gateResult('build', project);
+  assert(result.verdict === 'fail', 'failed command should fail build gate');
+  assert(result.findings.some((finding) => finding.id === 'build-verification-failed-command'),
+    'failed command finding absent');
+  assert(result.summary.buildVerificationFailedCommands.includes('npm test'),
+    'npm test should be recorded as failed');
+});
+
 test('JSON shape remains stable', () => {
   const result = gateResult('stack', EXAMPLE);
   for (const key of ['tier', 'verdict', 'artifacts', 'checks', 'findings', 'summary']) {
@@ -154,6 +183,12 @@ test('unknown tier produces stable failure and render output', () => {
 test('render covers passing gates and labeled command evidence', () => {
   const commands = gate.extractPassedCommands('command: npm test status: passed\n`npm run lint`: green\n`npm test`: passed');
   assert(commands.length === 2, `expected deduped commands, got ${commands.join(',')}`);
+  const failed = gate.extractFailedCommands([
+    '- [DECISION] Exact executed command: `npm test`.',
+    '- [DECISION] Status: FAIL with exit code 1.'
+  ].join('\n'));
+  assert(failed.length === 1 && failed[0] === 'npm test',
+    `expected failed npm test command, got ${failed.join(',')}`);
   const result = gateResult('build', path.join(ROOT, 'fixtures', 'gate', 'build-pass'));
   assert(gate.exitCode(result) === 0, 'passing gate exit code should be 0');
   const rendered = gate.render(result);

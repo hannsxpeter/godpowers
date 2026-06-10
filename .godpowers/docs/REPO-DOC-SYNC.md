@@ -63,3 +63,14 @@
 - [DECISION] Refreshed docs/ROADMAP.md for roadmap-version.
 - [DECISION] Refreshed docs/reference.md for reference-version.
 - [HYPOTHESIS] god-docs-writer should review CHANGELOG.md, RELEASE.md.
+
+## 2026-06-10T15:48:59.216Z
+
+- [DECISION] Repo documentation sync status before apply was stale.
+- [DECISION] Repo documentation sync status after apply is stale.
+- [DECISION] Refreshed README.md for readme-version-badge.
+- [DECISION] Refreshed USERS.md for users-version.
+- [DECISION] Refreshed ARCHITECTURE.md for architecture-version.
+- [DECISION] Refreshed docs/ROADMAP.md for roadmap-version.
+- [DECISION] Refreshed docs/reference.md for reference-version.
+- [HYPOTHESIS] god-docs-writer should review CHANGELOG.md, RELEASE.md.

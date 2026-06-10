@@ -1,15 +1,14 @@
 # Godpowers Architecture (v2 Design Target)
 
-> Status: STABLE v2.5.1 (pure-skill model plus executable tier gates, executable proof, adoption metrics, dogfood, host guarantees, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, Codex host proof studies, prompt-size guardrails, and coverage gating)
+> Status: STABLE v2.5.2 (pure-skill model plus executable tier gates, executable proof, adoption metrics, dogfood, host guarantees, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, Codex host proof studies, prompt-size guardrails, coverage gating, and Phase 2 blocker fixes)
 > Authors: Godpowers Team
 > Last updated: 2026-06-10
 
 This document is the canonical design for Godpowers as a coherent product.
-v2.5.1 keeps the public slash-command surface coherent and adds Codex host-run
-proof studies on top of the release-facing runtime: executable tier gates,
-external CLI canary evidence, prompt-size delegation, legacy command
-quarantine, lib coverage gating, and package verification on top of the 2.4
-command-family UX.
+v2.5.2 keeps the public slash-command surface coherent after the Codex
+host-run proof studies and patches the release-facing runtime so installed
+host bundles expose the documented gate command and build gates fail closed
+when verification evidence is red.
 Auto-invoked commands, spawned agents, local runtime helpers, platform-specific
 spawning limits, migration imports, sync-back writes, feature-awareness
 refreshes, repo documentation sync, repo surface sync, quick proof runs,

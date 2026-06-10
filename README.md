@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.5.1-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.5.2-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -30,10 +30,9 @@ Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 2.5.1 adds three Codex host-run proof studies on top of the 2.5.0
-executable tier gates, while keeping the 2.4 command-family UX, external CLI
-canary evidence, prompt-size guardrails, legacy command quarantine, lib
-coverage gating, and package verification before publish.
+Version 2.5.2 keeps the 2.5.1 Codex host-run proof studies and patches two
+Phase 2 blocker defects: installed runtime gate command access and build-gate
+false passes when verification evidence is red.
 
 Maintainer hardening continues on the 2.x line with small, audited public
 surface updates when they close real workflow gaps. The 2.1.0 patch closes a command-injection vector in the

@@ -113,6 +113,41 @@
 - [DECISION] Blockers: Run C has an external project blocker, `CRITICAL-DEV-TOOLING-AUDIT`, intentionally left for that project maintainer because clearing it requires development-tooling strategy expansion outside the selected host-proof slice.
 - [DECISION] Next phase to run is Phase 3: MCP Companion Package.
 
+### Phase 2 Blocker Patch Status
+
+- [DECISION] Status: in progress on branch `codex/bridge-phase-2-host-proof-run-a-56e6` after merging latest `origin/main` for the 2026-06-10 automation run.
+- [DECISION] Completed work: preserved the merged 2.5.1 Slot A, Slot B, and Slot C evidence while keeping the code fixes from this blocker patch branch.
+- [DECISION] Completed work: `lib/installer-files.js` now copies `bin/` into `godpowers-runtime`, and `scripts/test-install-smoke.js` verifies `npm exec --package <runtime> -- godpowers gate` works against an installed runtime bundle.
+- [DECISION] Completed work: `lib/gate.js` now fails build gates when `.godpowers/build/STATE.md` records failed verification commands, and `scripts/test-gate.js` covers that false-pass evidence shape.
+- [DECISION] Verification result: `node scripts/test-gate.js` passed before merge resolution.
+- [DECISION] Verification result: `node scripts/test-install-smoke.js` passed before merge resolution.
+- [DECISION] Verification result: `npm run test:e2e` passed before merge resolution.
+- [DECISION] Verification result: `node scripts/test-runtime-verification.js` passed before merge resolution.
+- [DECISION] Verification result: `node scripts/test-agent-browser.js` passed before merge resolution.
+- [DECISION] Verification result: `node scripts/static-check.js` passed before merge resolution.
+- [DECISION] Verification result: patched `lib/gate.js` failed the captured build artifact because a failed verification command was present.
+- [DECISION] Verification result: a temp local Codex install successfully ran `npm exec --package <runtime> -- godpowers gate --tier=prd --project=<example> --json`.
+- [DECISION] Verification result: pre-latest-main `npm run release:check` passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.1, and package contents verified at 534 files.
+- [DECISION] Verification result: post-merge `node scripts/test-gate.js` passed.
+- [DECISION] Verification result: post-merge `node scripts/test-install-smoke.js` passed.
+- [DECISION] Verification result: post-merge `node scripts/static-check.js` passed.
+- [DECISION] Verification result: post-merge `npm run test:e2e` passed.
+- [DECISION] Verification result: post-merge `node scripts/test-runtime-verification.js` passed.
+- [DECISION] Verification result: post-merge `node scripts/test-agent-browser.js` passed.
+- [DECISION] Verification result: post-merge `npm run release:check` passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.1, and package contents verified at 534 files.
+- [DECISION] Verification result: post-latest-main 2.5.2 `npm run test:surface` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-gate.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-install-smoke.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/static-check.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `npm run test:e2e` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-runtime-verification.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-agent-browser.js` passed.
+- [DECISION] Verification result: post-latest-main 2.5.2 `npm run release:check` passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.2, and package contents verified at 534 files.
+- [DECISION] Release result: `godpowers@2.5.1` is already published, so this blocker patch is now prepared as version `2.5.2`; protected merge, tag, publish workflow, and npm publication are pending.
+- [DECISION] Blockers: no Phase 2 deliverable blocker remains.
+- [DECISION] Blockers: 2.5.2 publish remains pending until protected merge and npm provenance publish complete.
+- [DECISION] Next phase to run after this blocker patch is Phase 3: MCP Companion Package.
+
 ## Phase 3: MCP Companion Package (target release 2.6.0)
 
 - [DECISION] Ship MCP as a first-party companion package named `@godpowers/mcp`, not as a production dependency of the main `godpowers` package.
