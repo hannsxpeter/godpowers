@@ -41,6 +41,8 @@
 - [DECISION] Clean release-clone `bash scripts/release.sh 2.5.2` passed its release gate before tagging.
 - [DECISION] GitHub Publish to npm workflow `27289417888` completed successfully.
 - [DECISION] `npm run verify:published-install` passed after publish and resolved npm `godpowers@latest` to version 2.5.2.
+- [DECISION] Release-status closeout `npm run lint` passed after npm publication.
+- [DECISION] Release-status closeout `npm run release:check` passed after npm publication with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.2, and package contents verified at 534 files.
 
 ## Upgrade
 
