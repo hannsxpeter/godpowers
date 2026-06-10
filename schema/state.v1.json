@@ -297,8 +297,35 @@
         "notes": {
           "type": "string",
           "description": "Free-form for skip reason, failure detail, etc."
+        },
+        "verification": {
+          "type": "object",
+          "description": "Structured verification evidence used by executable gates instead of markdown STATE.md parsing.",
+          "properties": {
+            "commands": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/VerificationCommand" }
+            }
+          },
+          "additionalProperties": true
         }
       }
+    },
+    "VerificationCommand": {
+      "type": "object",
+      "required": ["command", "status"],
+      "properties": {
+        "command": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["pass", "passed", "green", "success", "succeeded", "ok", "fail", "failed", "red", "error", "skipped"]
+        },
+        "exitCode": { "type": "integer" },
+        "ranAt": { "type": "string", "format": "date-time" },
+        "durationMs": { "type": "integer", "minimum": 0 },
+        "diagnostics": { "type": "string" }
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": false

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://godpowers.dev/schema/state.v1.json",
+  "version": "1.0.0",
+  "project": {
+    "name": "build-pass",
+    "started": "2026-06-10T00:00:00.000Z"
+  },
+  "tiers": {
+    "tier-2": {
+      "build": {
+        "status": "done",
+        "updated": "2026-06-10T18:08:00.000Z",
+        "artifact": "build/STATE.md",
+        "verification": {
+          "commands": [
+            {
+              "command": "npm test",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-06-10T18:07:00.000Z"
+            },
+            {
+              "command": "npm run lint",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-06-10T18:07:30.000Z"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -206,6 +206,30 @@ test('routing prerequisites use state initialized predicate instead of PROGRESS.
   }
 });
 
+test('state-backed gates do not require markdown STATE.md artifacts', () => {
+  const artifactMap = require('../lib/artifact-map');
+  const expected = {
+    design: { tierKey: 'tier-1', subStepKey: 'design' },
+    build: { tierKey: 'tier-2', subStepKey: 'build' }
+  };
+  const offenders = [];
+  for (const [tier, step] of Object.entries(expected)) {
+    const artifacts = artifactMap.requiredArtifactsForTier(tier) || [];
+    for (const artifact of artifacts) {
+      if (/\.godpowers\/[^/]+\/STATE\.md$/.test(artifact.path)) {
+        offenders.push(`${tier}:${artifact.path}`);
+      }
+    }
+    const actual = artifactMap.stateStepForTier(tier);
+    if (!actual || actual.tierKey !== step.tierKey || actual.subStepKey !== step.subStepKey) {
+      offenders.push(`${tier}:missing-state-step`);
+    }
+  }
+  if (offenders.length > 0) {
+    throw new Error(`markdown state gate authority in ${offenders.join(', ')}`);
+  }
+});
+
 test('public runtime modules expose JSDoc type contracts', () => {
   const modules = [
     'lib/state.js',
