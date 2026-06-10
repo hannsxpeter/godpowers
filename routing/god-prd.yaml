@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - check: state:initialized
+    - check: state:initialized == true
       auto-complete: /god-init
       human-required: true
   recommended:

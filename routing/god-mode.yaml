@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - check: state:initialized OR mode-A-greenfield
+    - check: state:initialized == true OR mode-A-greenfield
       auto-complete: /god-init
       human-required: true
     - check: safe-sync-clear

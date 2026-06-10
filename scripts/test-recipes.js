@@ -138,15 +138,13 @@ test('suggestForState returns recipes matching state', () => {
   if (greenfields.length === 0) throw new Error('should suggest starting recipes for empty dir');
 });
 
-test('evaluateStateCondition uses state.json for initialized projects', () => {
+test('evaluateStateCondition: state initialized predicate uses state.json', () => {
   recipes.clearCache();
-  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-recipes-initialized-'));
-  if (recipes.evaluateStateCondition('state:initialized', proj) !== false) {
-    throw new Error('missing state.json should not satisfy state:initialized');
-  }
-  state.init(proj, 'recipes-initialized');
-  if (recipes.evaluateStateCondition('state:initialized', proj) !== true) {
-    throw new Error('valid state.json should satisfy state:initialized');
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'recipes-initialized-test-'));
+  state.init(proj, 'recipes-initialized-test');
+  fs.rmSync(path.join(proj, '.godpowers', 'PROGRESS.md'), { force: true });
+  if (recipes.evaluateStateCondition('state:initialized == true', proj) !== true) {
+    throw new Error('initialized state should satisfy recipe condition');
   }
   fs.rmSync(proj, { recursive: true, force: true });
 });

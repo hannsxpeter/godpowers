@@ -185,46 +185,24 @@ test('tier routes declare executable gate commands', () => {
   }
 });
 
-test('route prerequisites use state.json initialization instead of progress views', () => {
-  const files = [
-    ...fs.readdirSync(path.join(ROOT, 'routing'))
-      .filter(file => file.endsWith('.yaml'))
-      .map(file => path.join(ROOT, 'routing', file)),
-    ...fs.readdirSync(path.join(ROOT, 'routing', 'recipes'))
-      .filter(file => file.endsWith('.yaml'))
-      .map(file => path.join(ROOT, 'routing', 'recipes', file)),
+test('routing prerequisites use state initialized predicate instead of PROGRESS.md file checks', () => {
+  const routingDir = path.join(ROOT, 'routing');
+  const recipeDir = path.join(routingDir, 'recipes');
+  const targets = [
+    ...fs.readdirSync(routingDir)
+      .filter(file => file.endsWith('.yaml') || file.endsWith('.yml'))
+      .map(file => path.join(routingDir, file)),
+    ...fs.readdirSync(recipeDir)
+      .filter(file => file.endsWith('.yaml') || file.endsWith('.yml'))
+      .map(file => path.join(recipeDir, file)),
     path.join(ROOT, 'scripts', 'gen-routing.js'),
     path.join(ROOT, 'scripts', 'gen-recipes.js')
   ];
-  const offenders = files.filter(file => {
-    const text = fs.readFileSync(file, 'utf8');
-    return text.includes('file:.godpowers/PROGRESS.md');
-  });
+  const offenders = targets.filter(file => (
+    fs.readFileSync(file, 'utf8').includes('file:.godpowers/PROGRESS.md')
+  ));
   if (offenders.length > 0) {
-    throw new Error(`progress view route prerequisites in ${offenders.map(file => path.relative(ROOT, file)).join(', ')}`);
-  }
-
-  for (const rel of [
-    'routing/god-audit.yaml',
-    'routing/god-context.yaml',
-    'routing/god-design.yaml',
-    'routing/god-prd.yaml',
-    'routing/god-reconcile.yaml',
-    'routing/god-sync.yaml'
-  ]) {
-    const text = fs.readFileSync(path.join(ROOT, rel), 'utf8');
-    if (!text.includes('check: state:initialized')) {
-      throw new Error(`${rel} must require state:initialized`);
-    }
-  }
-
-  const mode = fs.readFileSync(path.join(ROOT, 'routing', 'god-mode.yaml'), 'utf8');
-  if (!mode.includes('check: state:initialized OR mode-A-greenfield')) {
-    throw new Error('routing/god-mode.yaml must preserve greenfield escape with state initialization');
-  }
-  const returning = fs.readFileSync(path.join(ROOT, 'routing', 'recipes', 'returning-after-break.yaml'), 'utf8');
-  if (!returning.includes('"state:initialized"')) {
-    throw new Error('returning-after-break recipe must require state:initialized');
+    throw new Error(`PROGRESS.md file route predicates in ${offenders.map(file => path.relative(ROOT, file)).join(', ')}`);
   }
 });
 

@@ -15,7 +15,7 @@ triggers:
     - "back after a week"
     - "coming back"
   state-conditions:
-    - "state:initialized"
+    - "state:initialized == true"
 
 sequences:
   default:
