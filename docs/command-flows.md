@@ -35,8 +35,8 @@ Each command has:
   asks once before quiet spawning for generic init triggers
 - Reads: user intent from chat
 - Writes:
-  - `.godpowers/PROGRESS.md`
   - `.godpowers/state.json`
+  - `.godpowers/PROGRESS.md` as a generated managed view
   - `.godpowers/intent.yaml`
   - `.godpowers/prep/INITIAL-FINDINGS.md`
   - `.godpowers/prep/IMPORTED-CONTEXT.md` when legacy planning, Superpowers, BMAD, or

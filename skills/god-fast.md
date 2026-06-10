@@ -3,7 +3,7 @@ name: god-fast
 description: |
   Make a quick inline edit without full Godpowers planning overhead. For trivial
   changes: typo fixes, config tweaks, single-line updates. No agents, no plans,
-  no PROGRESS.md updates.
+  no state mutation.
 
   Triggers on: "god fast", "/god-fast", "quick fix", "trivial change", "tiny tweak"
 ---
@@ -36,7 +36,7 @@ Skip the full pipeline. Make a small edit inline.
 
 - If running tests reveals regressions: STOP. Switch to /god-build or /god-debug.
 - If the change touches more than 3 lines: STOP. Switch to /god-build.
-- Skip PROGRESS.md updates (this is below the planning threshold).
+- Skip state mutation and generated progress view refreshes because this is below the planning threshold.
 
 ## On Completion
 

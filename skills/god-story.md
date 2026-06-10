@@ -23,7 +23,7 @@ Add a new story under `.godpowers/stories/<feature-slug>/`.
 
 ## Process
 
-1. Verify `.godpowers/PROGRESS.md` exists. If not: `/god-init` first.
+1. Verify `.godpowers/state.json` exists. If not: `/god-init` first.
 2. Spawn `god-storyteller` agent in fresh context.
 3. Storyteller reads PRD/ARCH for context, validates user-story format,
    writes the file.

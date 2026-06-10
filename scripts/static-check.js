@@ -206,6 +206,47 @@ test('routing prerequisites use state initialized predicate instead of PROGRESS.
   }
 });
 
+test('command skills do not mutate PROGRESS.md directly', () => {
+  const skillsDir = path.join(ROOT, 'skills');
+  const writerPatterns = [
+    /\b(?:Update|update|Record|record|Mark|mark|Write|write|Append|append|Truncate|truncate)\s+`?(?:\.godpowers\/)?PROGRESS\.md`?/,
+    /`?(?:\.godpowers\/)?PROGRESS\.md`?\s+(?:updates?|writes?|mutations?|status\s*=|status\b)/i,
+    /\bwrites?\s+[^.\n]*\bPROGRESS\.md\b/i
+  ];
+  const offenders = [];
+  for (const file of fs.readdirSync(skillsDir).filter(name => name.endsWith('.md')).sort()) {
+    const full = path.join(skillsDir, file);
+    const lines = fs.readFileSync(full, 'utf8').split(/\r?\n/);
+    lines.forEach((line, index) => {
+      if (writerPatterns.some(pattern => pattern.test(line))) {
+        offenders.push(`skills/${file}:${index + 1}`);
+      }
+    });
+  }
+  if (offenders.length > 0) {
+    throw new Error(`direct PROGRESS.md writer instructions in ${offenders.join(', ')}`);
+  }
+});
+
+test('command skills treat PROGRESS.md as generated or legacy fallback only', () => {
+  const skillsDir = path.join(ROOT, 'skills');
+  const readPattern = /\b(?:Read|read|Check|check|Verify|verify|Detect|detect|derive|derives|re-derive|re-derives|re-derived|auto-detect|auto-detects)\b.*`?(?:\.godpowers\/)?PROGRESS\.md`?/;
+  const allowedContext = /\b(?:fallback|legacy|generated|human-readable view|human view|migration|migrate|import|view)\b/i;
+  const offenders = [];
+  for (const file of fs.readdirSync(skillsDir).filter(name => name.endsWith('.md')).sort()) {
+    const full = path.join(skillsDir, file);
+    const lines = fs.readFileSync(full, 'utf8').split(/\r?\n/);
+    lines.forEach((line, index) => {
+      if (readPattern.test(line) && !allowedContext.test(line)) {
+        offenders.push(`skills/${file}:${index + 1}`);
+      }
+    });
+  }
+  if (offenders.length > 0) {
+    throw new Error(`PROGRESS.md authority reads in ${offenders.join(', ')}`);
+  }
+});
+
 test('state-backed gates do not require markdown STATE.md artifacts', () => {
   const artifactMap = require('../lib/artifact-map');
   const expected = {

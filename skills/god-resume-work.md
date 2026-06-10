@@ -2,8 +2,9 @@
 name: god-resume-work
 description: |
   Resume work from a previous session. Reads .godpowers/HANDOFF.md if it
-  exists, otherwise re-derives state from PROGRESS.md and disk. Continues
-  from the last incomplete sub-step.
+  exists, otherwise re-derives state from state.json and disk, with
+  PROGRESS.md as a generated legacy fallback. Continues from the last
+  incomplete sub-step.
 
   Triggers on: "god resume", "/god-resume-work", "resume work", "continue",
   "pick up where I left off"
@@ -24,9 +25,9 @@ Load context and continue.
    - Confirm with user: "Pick up here?"
    - If yes: route to the specific next action
 
-3. If only PROGRESS.md exists:
+3. If only generated legacy PROGRESS.md exists:
    - Run the same logic as /god-next
-   - Suggest the next command based on state
+   - Suggest the next command based on re-derived state
 
 4. After resuming, archive HANDOFF.md:
    - Move to `.godpowers/archive/HANDOFF-[timestamp].md` so the trail is preserved

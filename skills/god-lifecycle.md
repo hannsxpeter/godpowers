@@ -17,7 +17,8 @@ Show project phase and contextually appropriate workflows.
 
 1. Detect lifecycle phase from disk:
    - **No `.godpowers/`** -> Pre-init
-   - **`.godpowers/PROGRESS.md` exists, not all tiers done** -> In progress
+   - **`.godpowers/state.json` exists, not all tracked steps done** -> In progress
+   - **Only generated legacy `.godpowers/PROGRESS.md` exists** -> In progress after re-deriving state from disk
    - **All tiers done, no special markers** -> Steady state
    - **`.godpowers/postmortems/<id>/` exists with no POSTMORTEM.md** -> Post-incident pending
    - **`.godpowers/migrations/<slug>/MIGRATION.md` exists, status != complete** -> In-migration

@@ -43,7 +43,7 @@ Agent updates the roadmap and re-validates have-nots.
 After god-roadmap-updater returns:
 1. Verify ROADMAP.md still passes have-nots (R-01 through R-07)
 2. Verify Roadmap Changelog section is appended
-3. Update PROGRESS.md if applicable
+3. If the update changes tracked roadmap completion, run `npx godpowers state advance --step=roadmap --status=done --project=.` or the owning command wrapper.
 
 ## On Completion
 

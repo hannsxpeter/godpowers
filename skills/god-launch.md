@@ -29,9 +29,11 @@ After god-launch-strategist returns:
    - launch target is live and smoke checked
    - local launch-readiness harness passed and external access bundle is the
      only missing item
-5. Update `.godpowers/PROGRESS.md`: Launch status = done only when live launch
-   or explicit local launch-readiness scope is complete. If external access is
-   missing, mark Launch = waiting-for-external-access.
+5. Run `npx godpowers state advance --step=launch --status=done --project=.`
+   only when live launch or explicit local launch-readiness scope is complete.
+   If external access is missing, record the waiting artifact path in launch
+   state through the owning command wrapper rather than editing the generated
+   progress view.
 
 ## Pause Conditions
 

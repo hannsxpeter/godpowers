@@ -28,9 +28,11 @@ After god-observability-engineer returns:
    - provider-neutral definitions as code created and locally checked
    - missing dashboard/API credentials appended to the single external access
      bundle
-5. Update `.godpowers/PROGRESS.md`: Observe status = done only for verified
-   real provider config or local definitions as code. If external access is
-   missing, mark Observe = waiting-for-external-access.
+5. Run `npx godpowers state advance --step=observe --status=done --project=.`
+   only for verified real provider config or local definitions as code. If
+   external access is missing, record the missing access bundle in deploy or
+   observe state through the owning command wrapper rather than editing the
+   generated progress view.
 
 ## On Completion
 

@@ -32,7 +32,7 @@ The reason is required. Skips without reason are rejected.
    mandatory; e.g. /god-mode rejects skipping the final /god-sync).
 3. Mark the sub-step `status: skipped` in state.json with `skipped-reason`.
 4. Append a `op:skip` event to the reflog.
-5. Update PROGRESS.md so the user sees the skip annotated.
+5. Regenerate the managed progress view from `state.json` so the user sees the skip annotated.
 
 ## What skip does NOT do
 
@@ -59,7 +59,7 @@ Reverse a previous skip. Marks the sub-step `pending` again.
 
 ## Implementation
 
-Built-in. Reads + writes `state.json` and PROGRESS.md. Appends to reflog.
+Built-in. Reads and writes `state.json`, regenerates the managed progress view, and appends to reflog.
 
 
 ## Locking

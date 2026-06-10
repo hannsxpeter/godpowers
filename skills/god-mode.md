@@ -19,8 +19,9 @@ workflow.
 
 1. Resolve whether this is a new project run or a resume:
    - If `.godpowers/state.json`, `.godpowers/PROGRESS.md`, or
-     `.godpowers/CHECKPOINT.md` exists, this is a resume. Do not ask the user
-     to describe the project again. Call
+     `.godpowers/CHECKPOINT.md` exists, this is a resume. Treat `state.json`
+     as the source of truth and `PROGRESS.md` as a generated legacy fallback.
+     Do not ask the user to describe the project again. Call
      `lib/pillars.pillarizeExisting(projectRoot)` first, then rehydrate intent
      from disk and continue.
    - If no durable Godpowers state exists and no project description was
@@ -41,7 +42,7 @@ workflow.
      starting with `agents/context.md` and `agents/repo.md`
    - `.godpowers/CHECKPOINT.md` first, when present
    - `.godpowers/state.json`
-   - `.godpowers/PROGRESS.md`
+   - `.godpowers/PROGRESS.md` only as a generated legacy fallback when state is missing
    - `.godpowers/intent.yaml`, when present
    - `.godpowers/prep/INITIAL-FINDINGS.md`, when present
    - `.godpowers/prep/IMPORTED-CONTEXT.md`, when present
@@ -78,7 +79,7 @@ workflow.
      - The detected mode (A/B/C/E)
      - The active flags
      - Instruction that existing `.godpowers` state means resume, not prompt
-     - Instruction to read `.godpowers/PROGRESS.md` from disk if it exists
+     - Instruction to read `.godpowers/state.json` from disk, using `.godpowers/PROGRESS.md` only as generated legacy fallback when state is missing
      - Instruction to read `.godpowers/prep/INITIAL-FINDINGS.md` and
        `.godpowers/prep/IMPORTED-CONTEXT.md` if present before choosing the
        first planning or build step

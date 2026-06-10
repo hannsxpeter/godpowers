@@ -77,9 +77,9 @@ After all waves:
    command, and repeat until green or until the same root failure exhausts the
    repair budget.
 5. Record the exact verification commands that passed in `.godpowers/state.json`
-   under `tiers.tier-2.build.verification-commands`
+   under `tiers.tier-2.build.verification.commands`
 6. Run `npx godpowers gate --tier=build --project=.` and do not proceed on a non-zero exit
-7. Update PROGRESS.md: Build status = done
+7. Run `npx godpowers state advance --step=build --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.md`.
 8. If the build plan or implementation establishes durable conventions, plan
    pillar updates through `lib/pillars.planArtifactSync`. Under
    `/god-mode --yolo`, apply those updates immediately and log the decision.
