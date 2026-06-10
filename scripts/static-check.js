@@ -443,21 +443,56 @@ test('dashboard contract stays shared between status and next', () => {
   }
 });
 
-test('mutating skills use shared locking pointer', () => {
+test('skills and agents use shared locking pointer without inline sections', () => {
   const locking = path.join(ROOT, 'references', 'shared', 'LOCKING.md');
   if (!fs.existsSync(locking)) {
     throw new Error('shared locking reference missing');
   }
-  const offenders = fs.readdirSync(path.join(ROOT, 'skills'))
-    .filter(file => file.endsWith('.md'))
+
+  const markdownFiles = ['skills', 'agents']
+    .flatMap(dir => walkMatching(path.join(ROOT, dir), file => file.endsWith('.md')));
+  const sectionOffenders = markdownFiles.filter(file => /^#{2,}\s+Locking\b/m.test(fs.readFileSync(file, 'utf8')));
+  if (sectionOffenders.length > 0) {
+    throw new Error(`inline locking sections in ${sectionOffenders.map(file => path.relative(ROOT, file)).join(', ')}`);
+  }
+
+  const pointer = 'Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.';
+  const mutatingSkills = [
+    'god-arch.md',
+    'god-build.md',
+    'god-deploy.md',
+    'god-design.md',
+    'god-feature.md',
+    'god-harden.md',
+    'god-hotfix.md',
+    'god-launch.md',
+    'god-link.md',
+    'god-migrate.md',
+    'god-observe.md',
+    'god-prd.md',
+    'god-redo.md',
+    'god-refactor.md',
+    'god-repair.md',
+    'god-repo.md',
+    'god-restore.md',
+    'god-roadmap.md',
+    'god-rollback.md',
+    'god-scan.md',
+    'god-skip.md',
+    'god-stack.md',
+    'god-story-build.md',
+    'god-story-close.md',
+    'god-story.md',
+    'god-sync.md',
+    'god-undo.md',
+    'god-update-deps.md',
+    'god-upgrade.md'
+  ];
+  const missingPointers = mutatingSkills
     .map(file => path.join(ROOT, 'skills', file))
-    .filter(file => {
-      const text = fs.readFileSync(file, 'utf8');
-      const match = text.match(/## Locking\n\n([\s\S]*?)(?=\n## |\n# |\s*$)/);
-      return match && match[1].trim() !== 'See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.';
-    });
-  if (offenders.length > 0) {
-    throw new Error(`inline locking blocks in ${offenders.map(file => path.relative(ROOT, file)).join(', ')}`);
+    .filter(file => !fs.readFileSync(file, 'utf8').includes(pointer));
+  if (missingPointers.length > 0) {
+    throw new Error(`missing shared locking pointer in ${missingPointers.map(file => path.relative(ROOT, file)).join(', ')}`);
   }
 });
 

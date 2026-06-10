@@ -108,6 +108,4 @@ increment before moving to Tier 3 unless the user explicitly asked to stop
 after the current increment.
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

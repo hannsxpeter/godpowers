@@ -66,6 +66,4 @@ Built-in. Reads + writes:
 Calls into `lib/drift-detector.js`, `lib/code-scanner.js`, `lib/reverse-sync.js`.
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

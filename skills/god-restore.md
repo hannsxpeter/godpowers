@@ -75,6 +75,4 @@ files back via standard fs operations. Calls `/god-scan` after restore
 to refresh linkage map.
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

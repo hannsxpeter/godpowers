@@ -34,6 +34,4 @@ Suggested next: /god-build (start building the first milestone)
 ```
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.

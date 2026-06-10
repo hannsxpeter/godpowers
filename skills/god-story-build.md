@@ -60,6 +60,4 @@ Reverse-sync writes Implementation Linkage footer to ROADMAP.md
   still fires)
 
 
-## Locking
-
-See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
+Locking: See `<runtimeRoot>/references/shared/LOCKING.md` for the shared state-lock contract.
