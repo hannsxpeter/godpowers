@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - check: file:.godpowers/PROGRESS.md
+    - check: state:initialized
       auto-complete: /god-init
       human-required: true
 

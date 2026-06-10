@@ -138,6 +138,19 @@ test('suggestForState returns recipes matching state', () => {
   if (greenfields.length === 0) throw new Error('should suggest starting recipes for empty dir');
 });
 
+test('evaluateStateCondition uses state.json for initialized projects', () => {
+  recipes.clearCache();
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-recipes-initialized-'));
+  if (recipes.evaluateStateCondition('state:initialized', proj) !== false) {
+    throw new Error('missing state.json should not satisfy state:initialized');
+  }
+  state.init(proj, 'recipes-initialized');
+  if (recipes.evaluateStateCondition('state:initialized', proj) !== true) {
+    throw new Error('valid state.json should satisfy state:initialized');
+  }
+  fs.rmSync(proj, { recursive: true, force: true });
+});
+
 test('suggestForState changes when state changes', () => {
   recipes.clearCache();
   // Init the project

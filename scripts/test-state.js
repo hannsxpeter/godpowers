@@ -48,6 +48,17 @@ test('read returns null on uninitialized project', () => {
   assert(s === null, `expected null, got: ${JSON.stringify(s)}`);
 });
 
+test('isInitialized returns false before state.json exists', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-state-empty-'));
+  assert(state.isInitialized(tmp) === false, 'empty project should not be initialized');
+});
+
+test('isInitialized returns true after init writes state.json', () => {
+  const tmp = mkProject();
+  state.init(tmp, 'initialized');
+  assert(state.isInitialized(tmp) === true, 'initialized project should be true');
+});
+
 test('read round-trips written state', () => {
   const tmp = mkProject();
   const original = state.init(tmp, 'roundtrip');

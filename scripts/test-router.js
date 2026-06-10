@@ -93,12 +93,15 @@ test('checkPrerequisites: /god-init has no prereqs', () => {
   if (!result.satisfied) throw new Error('should be satisfied');
 });
 
-test('checkPrerequisites: /god-prd needs PROGRESS.md', () => {
+test('checkPrerequisites: /god-prd needs initialized state.json', () => {
   router.clearCache();
-  // tmp has no .godpowers/, so prereq fails
+  // tmp has no .godpowers/state.json, so prereq fails.
   const result = router.checkPrerequisites('/god-prd', tmp);
   if (result.satisfied) throw new Error('should not be satisfied');
   if (result.missing.length === 0) throw new Error('should have missing');
+  if (!result.missing.includes('state:initialized')) {
+    throw new Error(`expected state:initialized missing, got ${result.missing.join(',')}`);
+  }
   if (result.autoCompletable.length === 0) throw new Error('should have auto-completable');
   if (result.autoCompletable[0].autoCompleteCommand !== '/god-init') {
     throw new Error('auto-complete should be /god-init');
@@ -192,7 +195,6 @@ test('checkPrerequisites: safe sync blocks direct Tier 3 and god-mode routes', (
   router.clearCache();
   const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-safe-sync-test-'));
   markTier3Ready(proj);
-  fs.writeFileSync(path.join(proj, '.godpowers', 'PROGRESS.md'), '# Progress\n');
   writeSafeSyncPlan(proj);
 
   for (const command of ['/god-deploy', '/god-observe', '/god-harden', '/god-launch', '/god-mode']) {
@@ -326,10 +328,35 @@ test('evaluateCheck: state:tier-1.prd.status == done', () => {
   }
 });
 
-test('evaluateCheck: OR handles mixed file and greenfield predicates', () => {
+test('evaluateCheck: state:initialized reflects state.json presence', () => {
+  router.clearCache();
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-initialized-test-'));
+  if (router.evaluateCheck('state:initialized', proj) !== false) {
+    throw new Error('missing state.json should not be initialized');
+  }
+  state.init(proj, 'router-initialized-test');
+  if (router.evaluateCheck('state:initialized', proj) !== true) {
+    throw new Error('valid state.json should be initialized');
+  }
+  fs.rmSync(proj, { recursive: true, force: true });
+});
+
+test('evaluateCheck: state root paths are resolved before tier paths', () => {
+  router.clearCache();
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-root-state-test-'));
+  state.init(proj, 'router-root-state-test');
+  const s = state.read(proj);
+  s['lifecycle-phase'] = 'steady-state-active';
+  state.write(proj, s);
+  const ok = router.evaluateCheck('state:lifecycle-phase == steady-state-active', proj);
+  if (ok !== true) throw new Error('root lifecycle-phase should pass');
+  fs.rmSync(proj, { recursive: true, force: true });
+});
+
+test('evaluateCheck: OR handles mixed state initialization and greenfield predicates', () => {
   router.clearCache();
   const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-or-test-'));
-  const ok = router.evaluateCheck('file:.godpowers/PROGRESS.md OR mode-A-greenfield', proj);
+  const ok = router.evaluateCheck('state:initialized OR mode-A-greenfield', proj);
   if (ok !== true) throw new Error('greenfield OR branch should pass');
 });
 

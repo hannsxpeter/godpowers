@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - check: file:.godpowers/PROGRESS.md
+    - check: state:initialized
       reason: "/god-design needs an initialized project"
       auto-complete: /god-init
     - check: file:.godpowers/prd/PRD.md

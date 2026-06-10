@@ -159,7 +159,7 @@ const commands = [
   },
   {
     cmd: '/god-audit', tier: 0, agent: 'god-auditor', desc: 'Score artifacts against have-nots',
-    prereq: ['file:.godpowers/PROGRESS.md'],
+    prereq: ['state:initialized'],
     autoCompletePrereq: '/god-init',
     writes: ['.godpowers/AUDIT-REPORT.md'],
     next: '/god-status',
@@ -186,7 +186,7 @@ const commands = [
   },
   {
     cmd: '/god-mode', tier: 0, agent: 'god-orchestrator', desc: 'Full autonomous project run',
-    prereq: ['file:.godpowers/PROGRESS.md OR mode-A-greenfield'],
+    prereq: ['state:initialized OR mode-A-greenfield'],
     extraPrereq: [SAFE_SYNC_PREREQ],
     autoCompletePrereq: '/god-init',
     secondarySpawns: ['god-auditor', 'god-pm', 'god-architect', 'god-roadmapper', 'god-stack-selector', 'god-repo-scaffolder', 'god-planner', 'god-executor', 'god-spec-reviewer', 'god-quality-reviewer', 'god-deploy-engineer', 'god-observability-engineer', 'god-harden-auditor', 'god-launch-strategist'],

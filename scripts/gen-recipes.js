@@ -71,7 +71,7 @@ const recipes = [
     category: 'starting',
     description: 'Returning to a project after a long break',
     keywords: ['returning', 'after break', 'pick up where left', 'resume project', 'coming back after a week', 'back after a week', 'coming back'],
-    stateConditions: ['file:.godpowers/PROGRESS.md'],
+    stateConditions: ['state:initialized'],
     sequence: [
       { cmd: '/god-resume-work', why: 'If HANDOFF.md exists, restore context', skipWhen: 'no-handoff' },
       { cmd: '/god-status', why: 'Current state from disk' },
