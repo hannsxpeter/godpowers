@@ -86,7 +86,7 @@
 
 ### Phase 2 Run Status
 
-- [DECISION] Status: in progress on branch `codex/bridge-phase-2-slot-a-host-proof-continuation` for the 2026-06-10 automation run.
+- [DECISION] Status: in progress on `main` after PR #9 merge for the 2026-06-10 automation run.
 - [DECISION] Completed work: loaded `AGENTS.md`, required Pillars, `USERS.md`, `docs/adoption-canary.md`, and the current case-study inventory before changing docs.
 - [DECISION] Completed work: selected and verified current repository identities for Slot A, Slot B, and Slot C in `docs/case-studies/run-a.md`, `docs/case-studies/run-b.md`, and `docs/case-studies/run-c.md`.
 - [DECISION] Completed work: Slot A is `https://github.com/sindresorhus/slugify-cli.git` at `9d7cc5e95668085d73dd4229d8bb0365f4f32144`, MIT license, with 70 measured JavaScript source lines across `cli.js` and `test.js`.
@@ -118,17 +118,17 @@
 - [DECISION] Verification result: initial `npm run release:check` failed before tests because `c8` was absent from `node_modules`.
 - [DECISION] Verification result: `npm ci` installed locked dependencies with 0 vulnerabilities.
 - [DECISION] Verification result: rerun `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.0, and package contents verified at 534 files.
-- [DECISION] Verification result: GitHub CI run `27286969057` for PR #9 head `5dc6191` completed successfully before the final merge-blocker note was added.
+- [DECISION] Verification result: GitHub CI run `27286969057` for PR #9 head `5dc6191` completed successfully before the final merge-status note was added.
+- [DECISION] Verification result: GitHub CI run `27287260869` for PR #9 head `fc783b4` completed successfully before merge.
 - [DECISION] Release result: no docs patch release, package metadata update, changelog entry, npm publish, or external package release was attempted because Phase 2 exit criteria are not met.
 - [DECISION] Release result: branch `codex/bridge-phase-2-slot-a-host-proof-continuation` was pushed to `origin`.
 - [DECISION] Release result: PR creation was attempted through `gh pr create` and failed with `HTTP 401: Requires authentication`.
 - [DECISION] Release result: GitHub connector PR creation succeeded and opened PR #9 at `https://github.com/aihxp/godpowers/pull/9`.
-- [DECISION] Release result: PR #9 merge was attempted after CI success and failed because the GitHub app connection requires reauthentication.
+- [DECISION] Release result: the first PR #9 merge attempt failed because the GitHub app connection required reauthentication.
+- [DECISION] Release result: the second PR #9 merge attempt succeeded through the GitHub connector at merge commit `295744aadfa7671f819fbeb6cbd7c8aa6a48813a`.
 - [DECISION] Blockers: Slot A deployed smoke remains deferred until an upstream maintainer or repository configuration provides `STAGING_APP_URL=<deployed staging origin>`.
 - [DECISION] Blockers: Slot A token and dollar cost remain unclaimable because the host run did not emit `cost.recorded` events.
 - [DECISION] Blockers: Slot B and Slot C have not started.
-- [DECISION] Blockers: GitHub CLI PR creation remains unavailable until `gh` authentication is refreshed, but the connector-created PR keeps the protected path open.
-- [DECISION] Blockers: protected-path merge is blocked until the GitHub app connection is reauthenticated.
 - [DECISION] Next phase to run remains Phase 2: Host Proof Campaign, starting Slot B against a copied `template-react` target from `https://github.com/vitejs/create-vite-app.git`.
 
 ## Phase 3: MCP Companion Package (target release 2.6.0)
