@@ -10,8 +10,9 @@ accountability hardening, deliverable progress tracking, and three external
 CLI-verifiable adoption canaries. Real users will reveal which gaps actually
 matter.
 
-- [DECISION] The Phase 2 host proof campaign has selected three current repository slots and completed Slot A for local and CI-verifiable host-proof scope.
-- [DECISION] Slot A does not prove production usage, deployed smoke, or token-dollar accounting because no staging origin or `cost.recorded` events were captured.
+- [DECISION] The Phase 2 host proof campaign has selected three current repository slots and completed Slots A and B for local and CI-verifiable host-proof scope.
+- [DECISION] Slots A and B do not prove production usage, deployed smoke, or token-dollar accounting because no staging origin or `cost.recorded` events were captured.
+- [DECISION] Slot B also keeps Vite dev-tooling modernization explicit because the copied template has 6 High and 4 Moderate dev audit findings with 0 Critical findings.
 - [DECISION] Current evidence and blockers are recorded in [Run A](docs/case-studies/run-a.md), [Run B](docs/case-studies/run-b.md), and [Run C](docs/case-studies/run-c.md).
 
 ## Proof needed during freeze
@@ -57,11 +58,11 @@ If you use Godpowers on a real project:
 - [expressjs/cors CLI adoption canary](docs/case-studies/expressjs-cors-adoption-canary.md)
 - [tinyhttp/tinyhttp CLI adoption canary](docs/case-studies/tinyhttp-adoption-canary.md)
 - [Phase 2 Run A local host proof record](docs/case-studies/run-a.md)
-- [Phase 2 Run B selected slot](docs/case-studies/run-b.md)
+- [Phase 2 Run B local host proof record](docs/case-studies/run-b.md)
 - [Phase 2 Run C selected slot](docs/case-studies/run-c.md)
 
 - [DECISION] These are not production-user studies.
-- [DECISION] They prove first-contact CLI signals against real cloned repositories and one local host-proof record while keeping production-user, deployed-smoke, and cost-accounting gaps explicit.
+- [DECISION] They prove first-contact CLI signals against real cloned repositories and two local host-proof records while keeping production-user, deployed-smoke, and cost-accounting gaps explicit.
 
 If you ship something with Godpowers, write it up. We'll feature you here.
 

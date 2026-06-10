@@ -14,6 +14,7 @@
 - [DECISION] Host invocation was not started for Slot C in this run.
 - [DECISION] Phase 2 sequencing requires triage after Slots A and B before repeating the host proof for Slot C.
 - [DECISION] Slot A now has local and CI-verifiable durable host-proof artifacts, with deployed smoke and token cost still unclaimable.
+- [DECISION] Slot B now has local and CI-verifiable durable host-proof artifacts, with deployed smoke, token cost, and dev-tooling modernization still deferred.
 - [DECISION] Slot C remains selected but unrun.
 - [DECISION] Slot C should target `examples/cujo` because that slice contains the selected TODO evidence and keeps the host proof focused on the incomplete side-project surface.
 - [DECISION] Case-study claim: this is not a completed published host-run case study.
@@ -26,4 +27,4 @@
 
 ## Blocker
 
-- [DECISION] Blocker: Slot C is waiting on a completed or genuinely failed Slot B host-run artifact.
+- [DECISION] Blocker: Slot C is waiting on the next Phase 2 automation run to start the `examples/cujo` target.
