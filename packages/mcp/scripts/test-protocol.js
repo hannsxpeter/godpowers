@@ -8,6 +8,7 @@ const path = require('path');
 const { Client } = require('@modelcontextprotocol/sdk/client/index.js');
 const { StdioClientTransport } = require('@modelcontextprotocol/sdk/client/stdio.js');
 const setup = require('../lib/setup');
+const mcpPackage = require('../package.json');
 
 const ROOT = path.resolve(__dirname, '..', '..', '..');
 const PROJECT = path.join(ROOT, 'fixtures', 'quick-proof', 'project');
@@ -26,7 +27,7 @@ function assertSetupPath() {
     host: 'codex',
     projectRoot: PROJECT,
     homeDir: home,
-    version: '2.6.0'
+    version: mcpPackage.version
   });
   assert(plan.writes === false, 'setup plan should be read-only by default');
   assert(!fs.existsSync(plan.codexConfigPath), 'setup plan should not write config');
@@ -34,7 +35,7 @@ function assertSetupPath() {
   assert(written.writes === true, 'setup write result should mark writes true');
   const config = fs.readFileSync(written.codexConfigPath, 'utf8');
   assert(config.includes('[mcp_servers.godpowers]'), 'codex config missing MCP table');
-  assert(config.includes('@godpowers/mcp@2.6.0'), 'codex config missing companion package');
+  assert(config.includes(`@godpowers/mcp@${mcpPackage.version}`), 'codex config missing companion package');
   const second = setup.writeRegistration(plan);
   const rewritten = fs.readFileSync(second.codexConfigPath, 'utf8');
   assert(rewritten.indexOf(setup.BEGIN) === rewritten.lastIndexOf(setup.BEGIN), 'managed block should be replaced, not duplicated');

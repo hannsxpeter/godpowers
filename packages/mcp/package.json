@@ -1,6 +1,6 @@
 {
   "name": "@godpowers/mcp",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "Read-only MCP server for Godpowers runtime status, routing, gates, artifact linting, and requirement tracing.",
   "bin": {
     "godpowers-mcp": "./bin/godpowers-mcp.js"
@@ -42,7 +42,7 @@
     "zod": "^4.1.13"
   },
   "peerDependencies": {
-    "godpowers": ">=2.6.0"
+    "godpowers": ">=2.7.0"
   },
   "peerDependenciesMeta": {
     "godpowers": {

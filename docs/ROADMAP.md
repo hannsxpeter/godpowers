@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-05-30
-> Current shipped: v2.6.0
+> Current shipped: v2.7.0
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 2.0 public adoption window. Everything user-facing remains slash-command based.
@@ -12,7 +12,7 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v2.6.0)
+### Current surface (v2.7.0)
 
 What works today:
 - **112 slash commands** as thin orchestrators (front door, lifecycle, planning,
@@ -23,6 +23,12 @@ What works today:
 - **13 executable workflows** and **42 intent recipes**
 - Optional `@godpowers/mcp` companion package with five read-only tools:
   `status`, `next`, `gate_check`, `lint_artifact`, and `trace_requirement`
+- **One-directional state authority**: `.godpowers/state.json` is the
+  Godpowers decision source, while `.godpowers/PROGRESS.md` and
+  Godpowers-owned per-tier `STATE.md` files are generated human views.
+- **Locked state mutation helper**: `godpowers state advance --step=<step>
+  --status=<status> --project=.` updates tracked steps and regenerates managed
+  state views.
 - **Deliverable progress tracking**: `/god-progress` and the
   `.godpowers/REQUIREMENTS.md` ledger report which requirements and roadmap
   increments are done, in progress, or not started, derived from the linkage map
