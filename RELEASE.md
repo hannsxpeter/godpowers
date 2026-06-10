@@ -53,6 +53,7 @@
 
 - [DECISION] The npm `godpowers@2.5.2` package is published with provenance.
 - [DECISION] GitHub release `v2.5.2` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.5.2`.
+- [DECISION] The 2.5.2 release-status closeout confirmed GitHub workflow `27289417888`, npm `latest` version 2.5.2, published-install verification, `npm run lint`, and `npm run release:check`.
 - [DECISION] GitHub release `v2.6.0` should be created only after the release gate passes on the merged branch.
 - [DECISION] The tag should match the npm package version.
 - [DECISION] The companion package should publish as `@godpowers/mcp@2.6.0` after the release gate passes.

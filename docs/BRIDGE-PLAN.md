@@ -8,6 +8,20 @@
 - [DECISION] The bridge is now scoped as a 10 to 12 part-time week migration for a solo maintainer, with Phase 4 treated as the highest-risk phase.
 - [DECISION] No open questions remain in this plan; new uncertainty must be captured as a follow-up issue or replacement proposal.
 
+## Automation Coordination
+
+- [DECISION] Automation runs must claim exactly one phase or one independent phase-scoped task in the Coordination Ledger before implementation edits begin.
+- [DECISION] A claim newer than two hours blocks overlapping work unless the entry is marked `done`, `blocked`, `waiting`, or `stale`.
+- [DECISION] If the next incomplete phase is actively claimed, another automation may choose an unclaimed independent task from the same phase only when it does not touch the same files.
+- [DECISION] If no independent task is available, the automation must add a `waiting` ledger entry and stop before editing implementation files.
+- [DECISION] Closeout must update the same ledger entry with final status, verification commands, release or publish result, remaining work, and next action.
+
+## Coordination Ledger
+
+| Timestamp UTC | Agent | Scope | Branch or worktree | Status | Next action |
+|---|---|---|---|---|---|
+| 2026-06-10T16:12:38Z | Codex da7c | Phase 2 blocker patch release-status closeout | `codex/bridge-phase-2-release-closeout-da7c` in `/Users/hprincivil/.codex/worktrees/da7c/godpowers` | done | Verification: `gh run view 27289417888`, `npm view godpowers version dist-tags`, `npm run verify:published-install`, `gh release view v2.5.2`, `npm run lint`, and `npm run release:check`; release: npm `2.5.2` and GitHub release published; remaining work: none; next action: start Phase 3. |
+
 ## Baseline At v2.4.3
 
 - [DECISION] `lib/` is the kernel: `state.js`, `dashboard.js`, `router.js`, `artifact-linter.js`, `have-nots-validator.js`, and `requirements.js` are covered by the 90 percent line ratchet in `coverage:lib`.
@@ -115,7 +129,7 @@
 
 ### Phase 2 Blocker Patch Status
 
-- [DECISION] Status: complete on branch `codex/bridge-phase-2-host-proof-run-a-56e6` after the 2026-06-10 blocker patch release.
+- [DECISION] Status: complete on branch `codex/bridge-phase-2-host-proof-run-a-56e6` for the 2026-06-10 automation run, with release-status closeout recorded on branch `codex/bridge-phase-2-release-closeout-da7c`.
 - [DECISION] Completed work: preserved the merged 2.5.1 Slot A, Slot B, and Slot C evidence while keeping the code fixes from this blocker patch branch.
 - [DECISION] Completed work: `lib/installer-files.js` now copies `bin/` into `godpowers-runtime`, and `scripts/test-install-smoke.js` verifies `npm exec --package <runtime> -- godpowers gate` works against an installed runtime bundle.
 - [DECISION] Completed work: `lib/gate.js` now fails build gates when `.godpowers/build/STATE.md` records failed verification commands, and `scripts/test-gate.js` covers that false-pass evidence shape.
@@ -144,6 +158,12 @@
 - [DECISION] Verification result: post-latest-main 2.5.2 `node scripts/test-agent-browser.js` passed.
 - [DECISION] Verification result: post-latest-main 2.5.2 `npm run release:check` passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.2, and package contents verified at 534 files.
 - [DECISION] Verification result: clean release-clone `bash scripts/release.sh 2.5.2` passed its release gate before tagging.
+- [DECISION] Verification result: release-status closeout confirmed GitHub Publish to npm workflow `27289417888` completed successfully for tag `v2.5.2`.
+- [DECISION] Verification result: release-status closeout confirmed `npm view godpowers version dist-tags` resolved `latest` to `2.5.2`.
+- [DECISION] Verification result: release-status closeout ran `npm run verify:published-install` after publish and passed against npm `godpowers@latest` version `2.5.2`.
+- [DECISION] Verification result: release-status closeout confirmed GitHub release `v2.5.2` exists at `https://github.com/aihxp/godpowers/releases/tag/v2.5.2`.
+- [DECISION] Verification result: release-status closeout ran `npm run lint` and passed.
+- [DECISION] Verification result: release-status closeout ran `npm run release:check` after `npm ci` installed local dependencies and passed with `coverage:lib` at 92.9 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.2, and package contents verified at 534 files.
 - [DECISION] Release result: PR #12 merged through the protected GitHub path on 2026-06-10 at merge commit `6a09a6117bfc83f7bca29402a75b2e2cf732aa1a`.
 - [DECISION] Release result: `v2.5.2` was tagged and pushed to trigger the repository publish workflow.
 - [DECISION] Release result: GitHub Publish to npm workflow `27289417888` passed, and npm published `godpowers@2.5.2` with provenance.
