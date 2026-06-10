@@ -1,6 +1,6 @@
 # Godpowers 2.5.0 Release
 
-> Status: Ready for package verification
+> Status: Published
 > Date: 2026-06-10
 
 Godpowers 2.5.0 ships executable tier gates for the code-first kernel
@@ -36,7 +36,9 @@ tier transitions.
 - `node scripts/test-gate.js` green
 - `node scripts/test-cli-dispatch.js` green
 - `node scripts/static-check.js` green
-- `npm run release:check` required before publish
+- `npm run release:check` passed before publish
+- GitHub Publish to npm workflow `27282180092` passed
+- `npm run verify:published-install` passed against `godpowers@latest`
 
 ## Upgrade
 
@@ -46,7 +48,7 @@ tier transitions.
 
 ## Notes
 
-- GitHub release creation for `v2.5.0`.
-- The tag should match the npm package version.
-- The `v2.5.0` tag should point to the release commit that matches the npm
+- GitHub release created for `v2.5.0`.
+- The tag matches the npm package version.
+- The `v2.5.0` tag points to the release commit that matches the npm
   `godpowers@2.5.0` package.

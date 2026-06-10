@@ -57,9 +57,14 @@
 - [DECISION] Verification result: `node scripts/test-runtime-verification.js` passed.
 - [DECISION] Verification result: `node scripts/test-agent-browser.js` passed.
 - [DECISION] Verification result: `npm run release:check` passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.0, and package contents verified at 534 files.
-- [DECISION] Release result: package creation and release checks passed, but npm publish is blocked until this branch is merged through the repository protected path and release hooks plus npm credentials are confirmed.
+- [DECISION] Release result: PR #3 merged through the protected GitHub path on 2026-06-10 at merge commit `d19f191802cce7959344284682876747efe5f270`.
+- [DECISION] Release result: `v2.5.0` was tagged and pushed to trigger the repository publish workflow.
+- [DECISION] Release result: GitHub Publish to npm workflow `27282180092` passed, and npm published `godpowers@2.5.0` with provenance.
+- [DECISION] Release result: GitHub release `v2.5.0` was created at `https://github.com/aihxp/godpowers/releases/tag/v2.5.0`.
+- [DECISION] Verification result: the 2026-06-10 release follow-up reran `npm run release:check` locally and passed with `coverage:lib` at 92.88 percent line coverage, `npm audit --omit=dev` reporting 0 vulnerabilities, public surface docs matching version 2.5.0, and package contents verified at 534 files.
+- [DECISION] Verification result: the 2026-06-10 release follow-up ran `npm run verify:published-install` after publish and passed against npm `godpowers@latest`.
 - [DECISION] Blockers: no Phase 1 implementation blocker remains.
-- [DECISION] Blockers: npm publishing remains deferred by protected-merge and credential conditions.
+- [DECISION] Blockers: no Phase 1 release blocker remains.
 - [DECISION] Next phase to run is Phase 2: Host Proof Campaign.
 
 ## Phase 2: Host Proof Campaign (target release 2.5.x docs patch)
