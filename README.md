@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.6.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.7.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -30,13 +30,13 @@ Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 2.6.0 adds the optional `@godpowers/mcp` companion package with
-read-only MCP tools for status, next-route, gate, artifact lint, and requirement
-trace workflows. It keeps the 2.5.2 installed-runtime gate and build-gate
-fixes, the 2.5.1 Codex host proof studies, executable tier gates, 2.4
-command-family UX, external CLI canary evidence, prompt-size guardrails, legacy
-command quarantine, lib coverage gating, and package verification before
-publish.
+Version 2.7.0 makes `.godpowers/state.json` the one-directional state authority,
+adds the locked `godpowers state advance` helper, and generates checksummed
+markdown state views for humans. It keeps the optional `@godpowers/mcp`
+companion package, the 2.5.2 installed-runtime gate and build-gate fixes, the
+2.5.1 Codex host proof studies, executable tier gates, 2.4 command-family UX,
+external CLI canary evidence, prompt-size guardrails, legacy command quarantine,
+lib coverage gating, and package verification before publish.
 
 Maintainer hardening continues on the 2.x line with small, audited public
 surface updates when they close real workflow gaps. The 2.1.0 patch closes a command-injection vector in the
@@ -308,14 +308,14 @@ dependency to the main `godpowers` package:
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@2.6.0 -p @godpowers/mcp@2.6.0 godpowers-mcp serve --project=.
+npx -y -p godpowers@2.7.0 -p @godpowers/mcp@2.7.0 godpowers-mcp serve --project=.
 ```
 
 The companion exposes `status`, `next`, `gate_check`, `lint_artifact`, and
 `trace_requirement`. Host registration is opt-in:
 
 ```bash
-npx -y -p godpowers@2.6.0 -p @godpowers/mcp@2.6.0 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@2.7.0 -p @godpowers/mcp@2.7.0 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 See [MCP Companion](docs/mcp.md) for package boundaries and setup details.

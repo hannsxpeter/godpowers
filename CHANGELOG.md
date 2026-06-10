@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-06-10
+
 ### Added
 - Added `godpowers state advance --step=<step> --status=<status> --project=.`
   as a locked state mutation helper that updates `.godpowers/state.json` and
@@ -14,6 +16,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added generated checksummed state views for Godpowers-owned design, build,
   deploy, observe, and launch `STATE.md` files, all sourced from
   `.godpowers/state.json`.
+
+### Changed
+- Changed route prerequisites, executable gates, workflow handoffs, command
+  prompts, and specialist agent contracts so Godpowers decision reads use
+  `.godpowers/state.json` instead of generated markdown state views.
+- Changed tier completion instructions to use `godpowers state advance` or an
+  owning command wrapper instead of direct edits to `.godpowers/PROGRESS.md`.
+
+### Fixed
+- Fixed state-view drift by regenerating `.godpowers/PROGRESS.md` and
+  Godpowers-owned per-tier `STATE.md` files after state mutations and replacing
+  tampered managed fences on the next mutation.
 
 ## [2.6.0] - 2026-06-10
 

@@ -25,7 +25,7 @@
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@2.6.0 -p @godpowers/mcp@2.6.0 godpowers-mcp serve --project=.
+npx -y -p godpowers@2.7.0 -p @godpowers/mcp@2.7.0 godpowers-mcp serve --project=.
 ```
 
 - [DECISION] `godpowers mcp-info` is read-only and does not load the MCP SDK.
@@ -34,8 +34,8 @@ npx -y -p godpowers@2.6.0 -p @godpowers/mcp@2.6.0 godpowers-mcp serve --project=
 ## Codex Registration
 
 ```bash
-npx -y -p godpowers@2.6.0 -p @godpowers/mcp@2.6.0 godpowers-mcp setup --host=codex --project=.
-npx -y -p godpowers@2.6.0 -p @godpowers/mcp@2.6.0 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@2.7.0 -p @godpowers/mcp@2.7.0 godpowers-mcp setup --host=codex --project=.
+npx -y -p godpowers@2.7.0 -p @godpowers/mcp@2.7.0 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 - [DECISION] The first setup command prints the managed Codex config block without writing files.

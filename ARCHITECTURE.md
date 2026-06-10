@@ -1,16 +1,17 @@
 # Godpowers Architecture (v2 Design Target)
 
-> Status: STABLE v2.6.0 (pure-skill model plus executable tier gates, executable proof, adoption metrics, dogfood, host guarantees, MCP companion tools, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, Codex host proof studies, prompt-size guardrails, coverage gating, and Phase 2 blocker fixes)
+> Status: STABLE v2.7.0 (pure-skill model plus one-directional state authority, generated state views, executable tier gates, executable proof, adoption metrics, dogfood, host guarantees, MCP companion tools, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, Codex host proof studies, prompt-size guardrails, coverage gating, and Phase 2 blocker fixes)
 > Authors: Godpowers Team
 > Last updated: 2026-06-10
 
 This document is the canonical design for Godpowers as a coherent product.
-v2.6.0 keeps the public slash-command surface coherent, preserves the Codex
-host-run proof studies, retains the 2.5.2 installed-runtime gate and build-gate
-fixes, and adds an optional read-only MCP companion package on top of the
-release-facing runtime: executable tier gates, external CLI canary evidence,
-prompt-size delegation, legacy command quarantine, lib coverage gating, and
-package verification on top of the 2.4 command-family UX.
+v2.7.0 keeps the public slash-command surface coherent, makes `.godpowers/state.json`
+the state authority, treats markdown state files as generated human views,
+preserves the Codex host-run proof studies, retains the 2.5.2 installed-runtime
+gate and build-gate fixes, and keeps the optional read-only MCP companion
+package on top of the release-facing runtime: executable tier gates, external
+CLI canary evidence, prompt-size delegation, legacy command quarantine, lib
+coverage gating, and package verification on top of the 2.4 command-family UX.
 Auto-invoked commands, spawned agents, local runtime helpers, platform-specific
 spawning limits, migration imports, sync-back writes, feature-awareness
 refreshes, repo documentation sync, repo surface sync, quick proof runs,
