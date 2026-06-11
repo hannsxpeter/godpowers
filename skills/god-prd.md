@@ -30,7 +30,9 @@ Spawn the **god-pm** agent in a fresh context via the host platform's native age
 After god-pm returns:
 1. Verify `.godpowers/prd/PRD.md` exists on disk
 2. Spawn god-auditor briefly to verify have-nots pass
-3. Update `.godpowers/PROGRESS.md`: PRD status = done
+3. Run `npx godpowers gate --tier=prd --project=.`
+4. If the gate returns a non-zero exit, do not mark PRD complete. Report the gate output and repair the artifact first.
+5. Update `.godpowers/PROGRESS.md`: PRD status = done
 
 ## Pause Format
 

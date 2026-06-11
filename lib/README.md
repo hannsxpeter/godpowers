@@ -57,8 +57,10 @@ package-level integrations.
 
 | Module | Purpose |
 |--------|---------|
+| `artifact-map.js` | Centralize canonical artifact paths for dashboards, gates, and helpers. |
 | `artifact-linter.js` | Check artifacts for required labels, evidence, and domain precision. |
 | `artifact-diff.js` | Compare artifact changes for review and release workflows. |
+| `gate.js` | Run executable artifact gates for Phase 1 tier completion checks. |
 | `have-nots-validator.js` | Check artifacts against known failure modes. |
 | `meta-linter.js` | Validate Godpowers documentation and skill metadata. |
 | `story-validator.js` | Validate story artifacts and story lifecycle state. |
@@ -106,6 +108,7 @@ package-level integrations.
 | `installer-core.js` | Install and uninstall the Godpowers surface for each runtime. |
 | `installer-files.js` | File-copy helpers shared by the installer and its tests. |
 | `installer-args.js` | Parse `bin/install.js` arguments and subcommands. |
+| `cli-dispatch.js` | Dispatch local CLI helper commands such as status, quick-proof, gate, dogfood, and extension-scaffold. |
 | `install-profiles.js` | Select smaller role-specific slash-command install surfaces. |
 | `installer-runtimes.js` | Map supported runtimes to their config directories. |
 | `package-identity.js` | Centralize package name, version, repository, docs, and command identity. |

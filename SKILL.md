@@ -52,6 +52,9 @@ re-derive state from disk. Never rely on conversation memory for progress.
 Each tier gates on a verified artifact from the prior tier. You cannot build
 without architecture. You cannot deploy without a build. You cannot launch with
 unresolved Critical security findings.
+When a tier command has an executable gate, run
+`npx godpowers gate --tier=<tier> --project=.` and block on any non-zero exit
+before marking that tier done.
 
 ### 5. Context Isolation
 Every execution agent gets a fresh context window. The orchestrator is thin; it

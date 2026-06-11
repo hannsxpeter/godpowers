@@ -24,6 +24,7 @@ standards:
   three-label-test: true
   have-nots: [RP-01, RP-02, RP-03, RP-04, RP-05, RP-06, RP-07, RP-08]
   gate-on-failure: pause-for-user
+  gate-command: npx godpowers gate --tier=repo --project=.
 
 success-path:
   next-recommended: /god-build

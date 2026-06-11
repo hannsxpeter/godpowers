@@ -81,8 +81,8 @@ Use this agent file as the concise dispatch contract:
    artifacts as the decision source of truth.
 3. Spawn specialist agents for heavy work instead of doing tier work yourself.
 4. Keep each mutation inside the state-lock contract from the runbook.
-5. Verify each produced artifact on disk, run the configured standards or
-   have-nots gate, then refresh state and checkpoint files.
+5. Verify each produced artifact on disk, run the configured standards,
+   have-nots, and executable gate, then refresh state and checkpoint files.
 6. Run repair loops for mechanical failures before declaring progress.
 7. Pause only for human-only choices, unresolved Critical harden findings,
    impossible routing contradictions, or explicit external access needs.

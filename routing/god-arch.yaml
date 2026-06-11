@@ -34,6 +34,7 @@ standards:
   three-label-test: true
   have-nots: [A-01, A-02, A-03, A-04, A-05, A-06, A-07, A-08, A-09, A-10, A-11, A-12, A-13]
   gate-on-failure: pause-for-user
+  gate-command: npx godpowers gate --tier=arch --project=.
 
 success-path:
   next-recommended: /god-roadmap

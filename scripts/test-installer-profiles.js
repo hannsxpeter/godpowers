@@ -17,6 +17,12 @@ test('parseArgs accepts --profile and --minimal', () => {
   assert(parseArgs(['node', 'bin', '--minimal']).profile === 'core');
 });
 
+test('parseArgs accepts gate command and tier option', () => {
+  const opts = parseArgs(['node', 'bin', 'gate', '--tier=prd', '--project', '.']);
+  assert(opts.command === 'gate', `command: ${opts.command}`);
+  assert(opts.tier === 'prd', `tier: ${opts.tier}`);
+});
+
 test('selectedSkillNames limits core surface', () => {
   const names = fs.readdirSync(path.join(ROOT, 'skills'))
     .filter(file => file.endsWith('.md'))

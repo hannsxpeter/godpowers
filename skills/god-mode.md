@@ -124,6 +124,11 @@ workflow.
      - Instruction that `--yolo` cannot bypass safe sync blockers or
        unresolved Critical harden findings. These are release-truth gates, not
        preference pauses.
+     - Instruction to run `npx godpowers gate --tier=<tier> --project=.` after
+       each completed `god-prd`, `god-design`, `god-arch`, `god-roadmap`,
+       `god-stack`, `god-repo`, `god-build`, and `god-harden` tier skill and
+       before starting the downstream tier. A non-zero exit blocks progress
+       until the artifact is repaired.
 
 6. Spawn the **god-orchestrator** agent via the host platform's native agent spawning mechanism with only a
    display-safe payload:

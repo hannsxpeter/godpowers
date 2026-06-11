@@ -26,7 +26,9 @@ Spawn the **god-architect** agent in a fresh context via the host platform's nat
 After god-architect returns:
 1. Verify ARCH.md and ADRs exist on disk
 2. Spawn god-auditor to verify have-nots pass
-3. Update `.godpowers/PROGRESS.md`: Architecture status = done
+3. Run `npx godpowers gate --tier=arch --project=.`
+4. If the gate returns a non-zero exit, do not mark Architecture complete. Report the gate output and repair the artifact first.
+5. Update `.godpowers/PROGRESS.md`: Architecture status = done
 
 ## Pause Format
 

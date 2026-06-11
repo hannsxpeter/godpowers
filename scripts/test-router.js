@@ -67,6 +67,25 @@ test('getStandards returns checks for /god-prd', () => {
   if (!s['have-nots']) throw new Error('no have-nots');
 });
 
+test('getGateCommand returns executable gate commands for tier routes', () => {
+  router.clearCache();
+  const expected = {
+    '/god-prd': 'prd',
+    '/god-design': 'design',
+    '/god-arch': 'arch',
+    '/god-roadmap': 'roadmap',
+    '/god-stack': 'stack',
+    '/god-repo': 'repo',
+    '/god-build': 'build',
+    '/god-harden': 'harden'
+  };
+  for (const [command, tier] of Object.entries(expected)) {
+    const gateCommand = router.getGateCommand(command);
+    const want = `npx godpowers gate --tier=${tier} --project=.`;
+    if (gateCommand !== want) throw new Error(`${command} expected ${want}, got ${gateCommand}`);
+  }
+});
+
 test('getSpawnedAgents includes primary for /god-prd', () => {
   router.clearCache();
   const agents = router.getSpawnedAgents('/god-prd');

@@ -29,6 +29,7 @@ standards:
   three-label-test: true
   have-nots: [B-01, B-02, B-03, B-04, B-05, B-06, B-07, B-08, B-09, B-10, B-11, B-12]
   gate-on-failure: pause-for-user
+  gate-command: npx godpowers gate --tier=build --project=.
 
 success-path:
   next-recommended: /god-deploy

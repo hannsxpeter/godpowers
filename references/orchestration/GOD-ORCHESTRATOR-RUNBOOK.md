@@ -182,6 +182,7 @@ When deciding what to spawn next, query the routing definition:
 - `execution.spawns` -> primary agent to spawn
 - `execution.secondary-spawns` -> downstream agents (e.g., reviewers)
 - `standards.have-nots` -> which have-nots to verify
+- `standards.gate-command` -> executable artifact gate to run after output exists
 - `success-path.next-recommended` -> what to suggest next
 
 Before spawning a command, evaluate `lib/router.js checkPrerequisites(command,
@@ -196,6 +197,12 @@ Between every tier, run god-standards-check on the produced artifact (if
 the routing config has a `standards` section). Standards check uses fresh
 context, independent of the producing agent, so it catches drift the
 producing agent's own self-check would miss.
+
+When `standards.gate-command` is present, run that exact command from the
+project root after the producing tier skill returns and before any downstream
+tier starts. A non-zero exit means the tier is not complete. Report the gate
+output, repair the artifact, and rerun the gate before updating durable state
+to done.
 
 ## Recipe-Driven Decisions (for fuzzy intent)
 
@@ -217,7 +224,7 @@ with the "why" annotations for each step.
 This is the third layer of decision support:
 1. **Routing** (`<runtimeRoot>/routing/<command>.yaml`): structural prerequisites and gates
 2. **Recipes** (`<runtimeRoot>/routing/recipes/<recipe>.yaml`): scenario-based sequences
-3. **Standards** (god-standards-check): quality gates between stages
+3. **Standards** (god-standards-check plus standards.gate-command): quality gates between stages
 
 ## Proactive Auto-Invoke Matrix
 
@@ -479,7 +486,7 @@ requested or final sign-off begins.
 4. Print the "Next step" card from the Step Narration Protocol
 5. Spawn the appropriate specialist agent in a fresh context
 6. Verify their output exists on disk
-7. Run have-nots check on the artifact
+7. Run have-nots check on the artifact and run `standards.gate-command` when configured
 8. If pass: update PROGRESS.md, sync CHECKPOINT.md, run the proactive
    auto-invoke sweep, print the "Step result" card, then move to next sub-step
 9. If fail and repairable: print the failed result card, then enter the
@@ -1256,4 +1263,6 @@ For preflight auto-routing, append:
 
 The canonical have-nots catalog lives at `references/HAVE-NOTS.md` (115 named
 failure modes). When verifying an artifact, run the relevant tier's have-nots
-against it. When in doubt, spawn god-auditor to do the check.
+against it. When the route has `standards.gate-command`, run that exact command
+after have-nots and block on any non-zero exit. When in doubt, spawn
+god-auditor to do the check.

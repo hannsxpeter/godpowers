@@ -251,6 +251,7 @@ npx godpowers next --project=.
 npx godpowers status --project=. --brief
 npx godpowers status --project=. --json
 npx godpowers quick-proof --project=.
+npx godpowers gate --tier=prd --project=.
 npx godpowers dogfood
 npx godpowers extension-scaffold --name=@godpowers/my-pack --output=.
 ```
@@ -495,6 +496,7 @@ Every artifact passes these mechanical checks before it is treated as complete:
 | Three-label test | Unlabeled assumptions hiding as decisions |
 | Have-nots | Named failure modes, grep-testable per tier |
 | Artifact-on-disk | Phantom resume (agent claims done, file does not exist) |
+| Executable tier gate | Missing required artifacts, artifact lint errors, and tier-specific evidence gaps |
 | Critical-finding gate | Shipping with known security holes |
 | TDD enforcement | Code without tests |
 | Request-trace review | Scope creep, unrelated cleanup, speculative abstraction |

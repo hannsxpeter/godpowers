@@ -25,14 +25,17 @@ Run these from a project directory after installing Godpowers.
 npx godpowers quick-proof --project=. --brief
 npx godpowers status --project=. --brief
 npx godpowers next --project=. --brief
+npx godpowers gate --tier=prd --project=examples/saas-mrr-tracker
 ```
 
 The first command reads a shipped fixture at `fixtures/quick-proof/project`, computes
 the next command from its `.godpowers/state.json`, and reports host guarantees
 from your current environment.
 
-The next two commands render live project status and the recommended next
-action for the current directory.
+The status and next commands render live project status and the recommended
+next action for the current directory. The gate command checks a shipped
+example PRD with the same executable artifact gate used by tier Verification
+sections.
 
 If the project has no `.godpowers/` directory yet, start with the smallest
 state-producing path inside your AI coding tool:

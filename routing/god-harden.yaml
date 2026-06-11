@@ -33,6 +33,7 @@ standards:
   three-label-test: true
   have-nots: [H-01, H-02, H-03, H-04, H-05, H-06, H-07, H-08, H-09, H-10, H-11]
   gate-on-failure: pause-for-user
+  gate-command: npx godpowers gate --tier=harden --project=.
 
 success-path:
   next-recommended: /god-launch

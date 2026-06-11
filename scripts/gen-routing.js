@@ -19,6 +19,7 @@ const commands = [
   // Tier 1 (remaining)
   {
     cmd: '/god-stack', tier: 1, agent: 'god-stack-selector', desc: 'Pick technology stack',
+    gateTier: 'stack',
     prereq: ['state:tier-1.arch.status == done'],
     autoCompletePrereq: '/god-arch',
     template: 'STACK-DECISION.md',
@@ -30,6 +31,7 @@ const commands = [
   // Tier 2
   {
     cmd: '/god-repo', tier: 2, agent: 'god-repo-scaffolder', desc: 'Scaffold the repository',
+    gateTier: 'repo',
     prereq: ['state:tier-1.stack.status == done'],
     autoCompletePrereq: '/god-stack',
     writes: ['.godpowers/repo/AUDIT.md', 'repo source files'],
@@ -39,6 +41,7 @@ const commands = [
   {
     cmd: '/god-build', tier: 2, agent: 'god-planner',
     desc: 'Build slices with TDD enforcement and two-stage review',
+    gateTier: 'build',
     prereq: ['state:tier-1.roadmap.status == done', 'state:tier-2.repo.status == done'],
     autoCompletePrereq: '/god-roadmap',
     secondarySpawns: ['god-executor', 'god-spec-reviewer', 'god-quality-reviewer'],
@@ -69,6 +72,7 @@ const commands = [
   },
   {
     cmd: '/god-harden', tier: 3, agent: 'god-harden-auditor', desc: 'Adversarial security review',
+    gateTier: 'harden',
     prereq: ['state:tier-2.build.status == done'],
     extraPrereq: [SAFE_SYNC_PREREQ],
     autoCompletePrereq: '/god-build',
@@ -221,8 +225,11 @@ function generate(c) {
   const haveNots = c.haveNots && c.haveNots.length
     ? `  have-nots: [${c.haveNots.join(', ')}]\n  gate-on-failure: pause-for-user`
     : '';
+  const gateCommand = c.gateTier
+    ? `\n  gate-command: npx godpowers gate --tier=${c.gateTier} --project=.`
+    : '';
   const standards = c.haveNots && c.haveNots.length
-    ? `\nstandards:\n  substitution-test: true\n  three-label-test: true\n${haveNots}`
+    ? `\nstandards:\n  substitution-test: true\n  three-label-test: true\n${haveNots}${gateCommand}`
     : '';
   const prereqs = [
     ...(c.prereq || []),

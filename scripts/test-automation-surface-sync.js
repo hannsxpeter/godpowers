@@ -33,7 +33,10 @@ function fixture() {
     '- Confirm release-surface-sync is fresh.'
   ].join('\n'));
   writeRel(tmp, 'scripts/check-package-contents.js', [
+    "'lib/artifact-map.js'",
+    "'lib/cli-dispatch.js'",
     "'lib/command-families.js'",
+    "'lib/gate.js'",
     "'lib/workflow-helper-groups.js'",
     "'lib/route-quality-sync.js'",
     "'lib/recipe-coverage-sync.js'",
@@ -123,6 +126,30 @@ test('route quality sync requires typed outcomes for contextual exits', () => {
   ].join('\n'));
   const report = routeQualitySync.detect(tmp);
   assert(report.stale.some((check) => check.id === 'missing-route-outcome--god-next'));
+});
+
+test('route quality sync requires gate commands for executable tier routes', () => {
+  const tmp = fixture();
+  writeRel(tmp, 'routing/god-prd.yaml', [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    '  command: /god-prd',
+    'execution:',
+    '  spawns: [built-in]',
+    '  writes:',
+    '    - .godpowers/prd/PRD.md',
+    'standards:',
+    '  substitution-test: true',
+    '  three-label-test: true',
+    'success-path:',
+    '  next-recommended: /god-arch',
+    'endoff:',
+    '  events: [agent.start, artifact.created, agent.end]'
+  ].join('\n'));
+  const report = routeQualitySync.detect(tmp);
+  assert(report.stale.some((check) => check.id === 'missing-tier-gate-command--god-prd'));
+  assert(report.stale.some((check) => check.id === 'tier-gate-command-policy'));
 });
 
 test('recipe coverage sync finds missing high-frequency recipes', () => {

@@ -50,6 +50,7 @@ standards:
     - "purple-blue gradients" # impeccable anti-pattern
     - "Inter everywhere"      # impeccable anti-pattern
     - "cards in cards"        # impeccable anti-pattern
+  gate-command: npx godpowers gate --tier=design --project=.
 
 success-path:
   next-recommended: /god-arch

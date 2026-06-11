@@ -29,6 +29,7 @@ standards:
   three-label-test: true
   have-nots: [S-01, S-02, S-03, S-04, S-05]
   gate-on-failure: pause-for-user
+  gate-command: npx godpowers gate --tier=stack --project=.
 
 success-path:
   next-recommended: /god-repo

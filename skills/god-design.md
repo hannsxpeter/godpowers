@@ -69,6 +69,14 @@ producing DESIGN.md in the
 6. After god-designer returns: surface any lint findings, suggest
    `/god-design polish` if warnings exist.
 
+## Verification
+
+After god-designer returns:
+1. Verify `DESIGN.md` exists on disk when design was required.
+2. Run `npx godpowers gate --tier=design --project=.`
+3. If the gate returns a non-zero exit, do not mark Design complete. Report the gate output and repair the artifact first.
+4. Update `.godpowers/PROGRESS.md`: Design status = done.
+
 ## Detection-driven behavior
 
 - **UI + impeccable installed**: bridges to impeccable's commands

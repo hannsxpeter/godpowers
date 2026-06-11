@@ -9,6 +9,16 @@ const { spawnSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECK_DIRS = ['bin', 'lib', 'scripts', 'tests'];
+const TIER_GATE_SKILLS = {
+  'skills/god-prd.md': 'prd',
+  'skills/god-design.md': 'design',
+  'skills/god-arch.md': 'arch',
+  'skills/god-roadmap.md': 'roadmap',
+  'skills/god-stack.md': 'stack',
+  'skills/god-repo.md': 'repo',
+  'skills/god-build.md': 'build',
+  'skills/god-harden.md': 'harden'
+};
 
 let passed = 0;
 let failed = 0;
@@ -94,11 +104,41 @@ test('install file helpers stay outside bin/install.js', () => {
   if (!installer.includes("require('../lib/installer-core')")) {
     throw new Error('bin/install.js does not delegate installer core behavior');
   }
+  if (!installer.includes("require('../lib/cli-dispatch')")) {
+    throw new Error('bin/install.js does not delegate local command dispatch');
+  }
   if (/function\s+copyRecursive\s*\(/.test(installer)) {
     throw new Error('copyRecursive should live in lib/installer-files.js');
   }
   if (installer.split('\n').length > 350) {
     throw new Error('bin/install.js should remain a thin CLI entry point');
+  }
+});
+
+test('tier skill verification blocks on executable gates', () => {
+  for (const [rel, tier] of Object.entries(TIER_GATE_SKILLS)) {
+    const text = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    const match = text.match(/## Verification\n\n([\s\S]*?)(?=\n## |\n# |\s*$)/);
+    if (!match) throw new Error(`${rel} missing Verification section`);
+    const section = match[1];
+    const gateCommand = `npx godpowers gate --tier=${tier} --project=.`;
+    if (!section.includes(gateCommand)) {
+      throw new Error(`${rel} Verification does not reference ${gateCommand}`);
+    }
+    if (!/non-zero exit|nonzero exit/i.test(section)) {
+      throw new Error(`${rel} Verification does not block on non-zero exit`);
+    }
+  }
+});
+
+test('tier routing standards declare executable gate commands', () => {
+  for (const [skillRel, tier] of Object.entries(TIER_GATE_SKILLS)) {
+    const routeRel = skillRel.replace('skills/', 'routing/').replace('.md', '.yaml');
+    const text = fs.readFileSync(path.join(ROOT, routeRel), 'utf8');
+    const gateCommand = `gate-command: npx godpowers gate --tier=${tier} --project=.`;
+    if (!text.includes(gateCommand)) {
+      throw new Error(`${routeRel} missing ${gateCommand}`);
+    }
   }
 });
 
