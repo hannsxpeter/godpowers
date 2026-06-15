@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-3.3.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.4.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -30,12 +30,15 @@ Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 3.3.0 adds the `npx godpowers can-close --substep <id>` close-gate check
-and wires it into the orchestrator loop, so a substep cannot be advanced to
-"done" until its evidence supports the close. Together with the 3.1.0 evidence
-producer (`npx godpowers verify`), the 3.1.1 `evidence.canClose` primitive, and
-the 3.2.0 enforced build and harden gates, "done" is now exit-code-backed on
-executable-gated tiers end to end. Other tiers are unchanged. The current 3.x line keeps
+Version 3.4.0 adds the quarterback entry router: `npx godpowers route "<prompt>"`
+classifies a request into a play (recover, resume, feature, trivial, and more),
+refuses to start new work when the latest verdict is red or harden carries an
+unresolved Critical, and right-sizes ceremony so a one-line fix never opens a
+full arc. It composes the existing structural router and intent recipes; it
+never mutates state. This builds on the close-on-evidence path completed in
+3.1.0-3.3.0 (the evidence producer, `evidence.canClose`, the enforced build and
+harden gates, and the `can-close` check the orchestrator consults before closing
+a sub-step). The current 3.x line keeps
 the omitted installer profile on `core`, keeps first-run, demo, and
 surface-control entry points, preserves `--profile=full` for compatibility,
 keeps locate and lifecycle views under `/god-status`, ships the optional
@@ -320,14 +323,14 @@ dependency to the main `godpowers` package:
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@3.3.0 -p @godpowers/mcp@3.3.0 godpowers-mcp serve --project=.
+npx -y -p godpowers@3.4.0 -p @godpowers/mcp@3.4.0 godpowers-mcp serve --project=.
 ```
 
 The companion exposes `status`, `next`, `gate_check`, `lint_artifact`, and
 `trace_requirement`. Host registration is opt-in:
 
 ```bash
-npx -y -p godpowers@3.3.0 -p @godpowers/mcp@3.3.0 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@3.4.0 -p @godpowers/mcp@3.4.0 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 See [MCP Companion](docs/mcp.md) for package boundaries and setup details.

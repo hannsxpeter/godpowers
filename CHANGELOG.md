@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-06-15
+
+### Added
+- Added `lib/quarterback.js`, the entry-level two-layer router (Phase 2 of the
+  fusion design). It composes `router.suggestNext` and `recipes.matchIntent` and
+  adds the two genes Godpowers lacked at entry: refuse-on-red (never start new
+  work when the latest executed verdict is red or harden findings carry an
+  unresolved Critical) and proportional ceremony (a one-line fix routes to
+  `/god-fast`, not an arc). The priority ladder is recover, resume, recovery,
+  brownfield, research, review, full, feature, trivial; first match wins.
+- Added the read-only `npx godpowers route "<prompt>"` CLI subcommand, which
+  returns the chosen play with its next command, ceremony level, verification
+  strategy, and an evidence block (classification, latest verdict, active arc,
+  open findings). `route` never mutates state.
+
+### Notes
+- `route` is read-only and additive; no existing command behavior changed. The
+  quarterback reads the evidence ledger and harden findings to decide refuse-on-red.
+
 ## [3.3.0] - 2026-06-15
 
 ### Added

@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v3.3.0.
+Complete command, agent, and artifact reference for v3.4.0.
 
 ## Slash commands (120 total)
 
@@ -101,6 +101,7 @@ recommendation signals. Longer runs use `/god-metrics`, `/god-trace`, and
 - `godpowers gate --tier=prd --project .` - Check a tier artifact gate and exit non-zero when blocking evidence is missing.
 - `godpowers verify "<cmd>" --substep tier-2.build --claim "<claim>" --project .` - Run a command as executed verification: append an exit-code-backed record to `.godpowers/ledger/verifications.jsonl`, roll the latest verdict into `state.json` `verification.commands[]`, emit `gate.pass`/`gate.fail`, and exit non-zero when the command fails. Use `--attest --claim "<claim>" --evidence "<text>"` to record a self-reported attestation instead.
 - `godpowers can-close --substep tier-2.build --project .` - Read-only check of the strict close gate (`evidence.canClose`): exit zero only when the substep has the evidence to close (executable-gated tiers need a passing executed record since they went in-flight; other tiers accept an attested record). Used by the orchestrator before advancing a substep to done.
+- `godpowers route "<prompt>" --project .` - Quarterback entry router (read-only). Classifies the prompt into a play (recover, resume, recovery, brownfield, research, review, full, feature, or trivial) with a next command, ceremony level, and verification strategy. Refuses new work on a red latest verdict or unresolved Critical findings, and right-sizes ceremony so a one-line fix does not open an arc.
 - `godpowers mcp-info --project .` - Show read-only MCP companion setup instructions without loading the MCP SDK.
 - `godpowers automation-status --project .` - Show automation provider support.
 - `godpowers automation-setup --project .` - Show a reviewed setup and execution plan.
@@ -125,7 +126,7 @@ runtime.
 
 The companion exposes five read-only tools: `status`, `next`, `gate_check`,
 `lint_artifact`, and `trace_requirement`. Mutation tools such as state advance,
-artifact writes, and route edits are intentionally absent through 3.3.0.
+artifact writes, and route edits are intentionally absent through 3.4.0.
 
 Run `godpowers mcp-info --project .` for host setup instructions. Codex
 registration is written only when `godpowers-mcp setup --host=codex --project=. --write` is invoked explicitly.

@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-06-15
-> Current shipped: v3.3.0
+> Current shipped: v3.4.0
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.
@@ -12,14 +12,15 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v3.3.0)
+### Current surface (v3.4.0)
 
-3.3.0 preserves the 3.0.0 runtime surface contraction. It adds the
-`npx godpowers can-close --substep <id>` close-gate check and wires it into the
-orchestrator loop, completing the close-on-evidence path begun in 3.1.0 (the
-evidence producer), 3.1.1 (the `evidence.canClose` primitive), and 3.2.0 (the
-enforced build and harden gates). A sub-step cannot be advanced to "done" until
-its evidence supports the close.
+3.4.0 preserves the 3.0.0 runtime surface contraction. It adds the quarterback
+entry router (`npx godpowers route "<prompt>"`), which classifies a request into
+a play, refuses new work on a red latest verdict or unresolved Critical
+findings, and right-sizes ceremony so a one-line fix does not open an arc. This
+follows the close-on-evidence path completed across 3.1.0-3.3.0 (the evidence
+producer, the `evidence.canClose` primitive, the enforced build and harden
+gates, and the `can-close` check the orchestrator consults before closing).
 
 What works today:
 - **120 slash commands** as thin orchestrators (front door, first-run, demo, surface control, lifecycle, planning,
@@ -50,6 +51,11 @@ What works today:
   for the orchestrator close path, surfaced as `godpowers can-close --substep
   <id>`, which the orchestrator runbook consults before advancing a sub-step to
   done.
+- **Quarterback entry router**: `lib/quarterback.js` and `godpowers route
+  "<prompt>"` compose `router.suggestNext` and `recipes.matchIntent` and add
+  refuse-on-red (no new work when the latest executed verdict is red or harden
+  carries an unresolved Critical) and proportional ceremony (a one-line fix
+  routes to `/god-fast`, not an arc). Read-only: it never mutates state.
 - **Deliverable progress tracking**: `/god-progress` and the
   `.godpowers/REQUIREMENTS.md` ledger report which requirements and roadmap
   increments are done, in progress, or not started, derived from the linkage map
