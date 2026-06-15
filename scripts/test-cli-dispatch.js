@@ -526,6 +526,32 @@ test('route command dispatches through the quarterback', () => {
   assert(text.output.includes('Route: trivial'), `text output: ${text.output}`);
 });
 
+test('parseArgs captures report since and peek', () => {
+  const parsed = parseArgs(['node', 'bin', 'report', '--since', 'all', '--peek', '--project=.'], process.cwd());
+  assert(parsed.command === 'report', `command: ${parsed.command}`);
+  assert(parsed.since === 'all', `since: ${parsed.since}`);
+  assert(parsed.peek === true, 'peek flag missing');
+});
+
+test('report command dispatches through the work report', () => {
+  const project = mkProject('godpowers-cli-report-');
+  state.init(project, 'cli-report');
+  require('../lib/evidence').verify('true', { substep: 'tier-2.build', claim: 'tests', projectRoot: project });
+  const json = capture(() => cliDispatch.runCommand({
+    command: 'report',
+    project,
+    since: 'all',
+    peek: true,
+    json: true
+  }));
+  const parsed = JSON.parse(json.output);
+  assert(json.value === true, 'report did not dispatch');
+  assert(parsed.summary.passed === 1, `passed: ${parsed.summary.passed}`);
+
+  const text = capture(() => cliDispatch.runCommand({ command: 'report', project, since: 'all', peek: true, json: false }));
+  assert(text.output.includes('Godpowers Work Report'), `text output: ${text.output}`);
+});
+
 test('unknown command returns false', () => {
   const result = capture(() => cliDispatch.runCommand({ command: 'unknown' }));
   assert(result.value === false, 'unknown command should not dispatch');

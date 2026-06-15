@@ -56,6 +56,7 @@ function showHelp() {
   log('  verify               Run a command as executed verification evidence');
   log('  can-close            Check whether a substep has the evidence to close');
   log('  route                Classify a prompt into an entry play (quarterback)');
+  log('  report               Show the verification play-by-play since last report');
   log('  mcp-info             Show read-only MCP companion setup instructions');
   log('  quick-proof          Show a runnable proof from the shipped fixture');
   log('  automation-status    Show host automation provider support');
@@ -80,6 +81,8 @@ function showHelp() {
   log('  --timeout=<seconds>  Kill a verify command after this many seconds (default 300)');
   log('  --attest             Record a self-reported attested claim instead of executing');
   log('  --evidence=<text>    Self-reported evidence for verify --attest');
+  log('  --since=<last|all>   Window for report: new records since last, or all');
+  log('  --peek               Show the report without advancing the report cursor');
   log('  --json               Emit JSON for status, next, proof, or automation commands');
   log('  --brief              Render compact output for status, next, or proof');
   log('  --full               Render complete output for status, next, or demo');
@@ -122,6 +125,7 @@ function showHelp() {
   log('  npx godpowers verify "npm test" --substep tier-2.build --claim "build slice tests pass" --project=.');
   log('  npx godpowers can-close --substep tier-2.build --project=.');
   log('  npx godpowers route "add a feature" --project=.');
+  log('  npx godpowers report --since last --project=.');
   log('  npx godpowers mcp-info --project=.');
   log('  npx godpowers quick-proof --project=.');
   log('  npx godpowers automation-status --project=.');
@@ -245,6 +249,7 @@ module.exports = {
   runVerifyCommand: cliDispatch.runVerifyCommand,
   runCanCloseCommand: cliDispatch.runCanCloseCommand,
   runRouteCommand: cliDispatch.runRouteCommand,
+  runReportCommand: cliDispatch.runReportCommand,
   applyDefaultRuntimeSelection,
   runInstall,
   runUninstall,
