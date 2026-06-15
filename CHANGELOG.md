@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.0] - 2026-06-15
+
+### Added
+- Added `evidence.outcome.start/check/stop/status` (Phase 3), rebound from
+  Mythify's `outcomes/<slug>/` store: a bounded retry loop with `goal.json` and
+  `iterations.jsonl` at `.godpowers/ledger/outcomes/<slug>/`. `check` runs the
+  verifier through `evidence.verify` (so the executed verdict is also written to
+  the main verifications ledger and rolled up), appends an iteration, and marks
+  the outcome succeeded, failed when the budget is exhausted, or still active.
+- Added the `npx godpowers outcome start|check|stop|status <name> [--goal ...]
+  [--verify "<cmd>"] [--budget N] [--substep <id>] [--reason ...]` CLI subcommand.
+
+### Notes
+- Outcome state lives under the ledger; `check` is the only path that mutates
+  shared state, and it does so through the existing `evidence.verify` rollup. No
+  existing command behavior changed.
+
 ## [3.8.0] - 2026-06-15
 
 ### Added

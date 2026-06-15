@@ -15,7 +15,7 @@ see_also: [arch, quality, deploy]
 ## Context
 
 - [DECISION] Godpowers is an AI-powered development system delivered as slash commands and specialist agents inside AI coding tools.
-- [DECISION] The package name is `godpowers`, and the current repository version is `3.8.0`.
+- [DECISION] The package name is `godpowers`, and the current repository version is `3.9.0`.
 - [DECISION] The primary audience is solo founders and small engineering teams using AI coding tools who need accountable production workflow discipline without enterprise process.
 - [DECISION] The product promise is one slash-command arc from idea to hardened, observable, launch-ready software with traceable artifacts on disk.
 - [DECISION] Godpowers uses a pure-skill model where `npx godpowers` installs runtime files and in-tool slash commands perform work.
