@@ -487,12 +487,17 @@ requested or final sign-off begins.
 5. Spawn the appropriate specialist agent in a fresh context
 6. Verify their output exists on disk
 7. Run have-nots check on the artifact and run `standards.gate-command` when configured
-8. If pass: update PROGRESS.md, sync CHECKPOINT.md, run the proactive
+8. For an executable-gated sub-step (build, deploy, harden), record executed
+   evidence with `npx godpowers verify "<cmd>" --substep <tier.substep>` and then
+   confirm `npx godpowers can-close --substep <tier.substep> --project=.` exits
+   zero before closing. Never advance the sub-step to done while can-close is red.
+9. If pass and can-close is green: advance the sub-step to done via
+   `npx godpowers state advance`, sync CHECKPOINT.md, run the proactive
    auto-invoke sweep, print the "Step result" card, then move to next sub-step
-9. If fail and repairable: print the failed result card, then enter the
+10. If fail and repairable: print the failed result card, then enter the
    autonomous repair loop
-10. If fail and human-only: pause with the smallest needed question
-11. Repeat until all tiers complete and verification is green
+11. If fail and human-only: pause with the smallest needed question
+12. Repeat until all tiers complete and verification is green
 ```
 
 ## Specialist Agent Routing

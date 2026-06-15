@@ -454,6 +454,48 @@ test('verify --attest records an attested claim through evidence', () => {
   process.exitCode = 0;
 });
 
+test('can-close command reports verdict and exit code through evidence', () => {
+  process.exitCode = 0;
+  const project = mkProject('godpowers-cli-canclose-');
+  state.init(project, 'cli-canclose');
+
+  // No evidence yet -> cannot close, exit 1.
+  const blocked = capture(() => cliDispatch.runCommand({
+    command: 'can-close',
+    project,
+    substep: 'tier-2.build',
+    json: true
+  }));
+  const blockedResult = JSON.parse(blocked.output);
+  assert(blocked.value === true, 'can-close did not dispatch');
+  assert(blockedResult.canClose === false, 'should not close without evidence');
+  assert(process.exitCode === 1, `blocked exit code: ${process.exitCode}`);
+
+  // Record a pass, then it can close, exit 0.
+  process.exitCode = 0;
+  require('../lib/evidence').verify('true', { substep: 'tier-2.build', projectRoot: project });
+  const ok = capture(() => cliDispatch.runCommand({
+    command: 'can-close',
+    project,
+    substep: 'tier-2.build',
+    json: false
+  }));
+  assert(ok.output.includes('Can close: yes'), `text output: ${ok.output}`);
+  assert(process.exitCode === 0, `ok exit code: ${process.exitCode}`);
+  process.exitCode = 0;
+});
+
+test('can-close command requires a substep', () => {
+  process.exitCode = 0;
+  const project = mkProject('godpowers-cli-canclose-missing-');
+  state.init(project, 'cli-canclose-missing');
+  const result = capture(() => cliDispatch.runCommand({ command: 'can-close', project, json: false }));
+  assert(result.value === true, 'can-close missing substep did not dispatch');
+  assert(result.output.includes('can-close requires --substep'), `output: ${result.output}`);
+  assert(process.exitCode === 1, `exit code: ${process.exitCode}`);
+  process.exitCode = 0;
+});
+
 test('unknown command returns false', () => {
   const result = capture(() => cliDispatch.runCommand({ command: 'unknown' }));
   assert(result.value === false, 'unknown command should not dispatch');
