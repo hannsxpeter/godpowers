@@ -1,0 +1,26 @@
+{
+  "$schema": "https://godpowers.dev/schema/state.v1.json",
+  "version": "1.0.0",
+  "project": {
+    "name": "harden-pass",
+    "started": "2026-06-10T00:00:00.000Z"
+  },
+  "tiers": {
+    "tier-3": {
+      "harden": {
+        "status": "done",
+        "updated": "2026-06-10T18:08:00.000Z",
+        "verification": {
+          "commands": [
+            {
+              "command": "npm audit --omit=dev",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-06-10T18:07:00.000Z"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -21,8 +21,11 @@ Spawn the **god-harden-auditor** agent in a fresh context via the host platform'
 
 After god-harden-auditor returns:
 1. Verify FINDINGS.md exists on disk
-2. Run `npx godpowers gate --tier=harden --project=.` and do not proceed on a non-zero exit
-3. Read findings classification:
+2. Record the executed security check as evidence so the gate has a passing
+   verification record, for example:
+   `npx godpowers verify "npm audit --omit=dev" --substep tier-3.harden --claim "dependency audit clean" --project=.`
+3. Run `npx godpowers gate --tier=harden --project=.` and do not proceed on a non-zero exit
+4. Read findings classification:
    - If any Critical: run `npx godpowers state advance --step=harden --status=failed --project=.` and keep launch BLOCKED
    - If only High/Medium/Low: run `npx godpowers state advance --step=harden --status=done --project=.`
 

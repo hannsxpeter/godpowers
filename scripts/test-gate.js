@@ -147,6 +147,65 @@ test('harden gate fails unresolved Critical findings', () => {
     'critical check should fail');
 });
 
+test('harden gate fails without executed verification evidence', () => {
+  const project = mkProject('godpowers-gate-harden-evidence-');
+  // No Critical findings, so only the new executed-evidence requirement blocks.
+  writeRel(project, '.godpowers/harden/FINDINGS.md', [
+    '# Security Findings',
+    '',
+    '[DECISION] The harden run found no unresolved Critical findings.',
+    '',
+    '| Severity | Count |',
+    '|---|---:|',
+    '| Critical | 0 |',
+    '',
+    '[DECISION] Launch gate: PASSED.'
+  ].join('\n'));
+  initState(project, (current) => {
+    current.tiers['tier-3'].harden = {
+      status: 'done',
+      updated: '2026-06-10T18:06:00.000Z',
+      verification: { commands: [] }
+    };
+  });
+  const result = gateResult('harden', project);
+  assert(result.verdict === 'fail', 'harden without executed evidence should fail');
+  assert(result.findings.some((finding) => finding.id === 'harden-verification-evidence'),
+    'harden evidence finding absent');
+  assert(result.checks.some((check) => check.id === 'harden-critical-findings' && check.status === 'pass'),
+    'criticals should pass so the evidence requirement is what blocks');
+});
+
+test('harden gate passes with no criticals and an executed pass', () => {
+  const project = mkProject('godpowers-gate-harden-evidence-pass-');
+  writeRel(project, '.godpowers/harden/FINDINGS.md', [
+    '# Security Findings',
+    '',
+    '[DECISION] The harden run found no unresolved Critical findings.',
+    '',
+    '| Severity | Count |',
+    '|---|---:|',
+    '| Critical | 0 |',
+    '',
+    '[DECISION] Launch gate: PASSED.'
+  ].join('\n'));
+  initState(project, (current) => {
+    current.tiers['tier-3'].harden = {
+      status: 'done',
+      updated: '2026-06-10T18:06:00.000Z',
+      verification: {
+        commands: [
+          { command: 'npm audit --omit=dev', status: 'pass', exitCode: 0, ranAt: '2026-06-10T18:05:00.000Z' }
+        ]
+      }
+    };
+  });
+  const result = gateResult('harden', project);
+  assert(result.verdict === 'pass', `harden with evidence should pass: ${errorSummary(result)}`);
+  assert(result.summary.hardenVerificationCommands.includes('npm audit --omit=dev'),
+    'harden passed commands should be reported');
+});
+
 test('build gate fails without passed command evidence', () => {
   const project = mkProject('godpowers-gate-build-');
   initState(project, (current) => {
