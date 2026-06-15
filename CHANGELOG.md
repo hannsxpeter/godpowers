@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.0] - 2026-06-15
+
+### Added
+- Added three read-only MCP tools to `@godpowers/mcp` (Phase 3, the final fusion
+  slice): `work_report` (wraps `lib/work-report.js`, forced peek so it never
+  advances the cursor), `route` (wraps `lib/quarterback.js`, never mutates
+  state), and `verification_history` (wraps `lib/evidence.js` history). All
+  carry `readOnlyHint:true` via the same `requireRuntime` bridge. The companion
+  now exposes eight read-only tools.
+
+### Notes
+- This release completes the native fusion of Mythify's evidence engine and
+  quarterback into Godpowers across Phases 0-3 (`docs/FUSION-ARCHITECTURE.md`):
+  the evidence producer, enforced close-on-evidence on the build and harden
+  gates, the quarterback entry router, the work report, reflections, memory,
+  lessons, outcome loops, and now the MCP read tools. Mutating verification stays
+  on the CLI and orchestrator path.
+
 ## [3.9.0] - 2026-06-15
 
 ### Added

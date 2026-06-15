@@ -2,8 +2,8 @@
 
 - [DECISION] `@godpowers/mcp` is the first-party read-only MCP companion package for Godpowers.
 - [DECISION] The main `godpowers` package stays dependency-free at runtime, and the MCP SDK dependency lives only in this companion package.
-- [DECISION] Version 3.9.0 exposes eight read-only tools: `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`, `work_report`, `route`, and `verification_history`.
-- [DECISION] Mutation tools are intentionally absent through the 3.9.0 release.
+- [DECISION] Version 3.10.0 exposes eight read-only tools: `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`, `work_report`, `route`, and `verification_history`.
+- [DECISION] Mutation tools are intentionally absent through the 3.10.0 release.
 
 ## Install
 

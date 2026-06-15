@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-06-15
-> Current shipped: v3.9.0
+> Current shipped: v3.10.0
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.
@@ -12,16 +12,14 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v3.9.0)
+### Current surface (v3.10.0)
 
-3.9.0 preserves the 3.0.0 runtime surface contraction. It adds bounded outcome
-retry loops (`npx godpowers outcome start|check|stop|status`), where `check`
-runs a verifier against a goal on a budget, records each iteration, and writes
-every executed verdict to the main ledger. This follows the 3.8.0 lessons store
-(`npx godpowers lesson`), the 3.7.0 memory store (`npx godpowers memory`), the
-3.6.0 structured reflections (`npx godpowers reflect`), the 3.5.0 work report
-(`npx godpowers report`), the 3.4.0 quarterback entry router (`npx godpowers
-route`), and the close-on-evidence path completed across 3.1.0-3.3.0.
+3.10.0 preserves the 3.0.0 runtime surface contraction. It adds three read-only
+MCP tools (`work_report`, `route`, `verification_history`) to the
+`@godpowers/mcp` companion, completing the native fusion of Mythify's evidence
+engine and quarterback into Godpowers across Phases 0-3 (the evidence producer,
+enforced close-on-evidence, the quarterback, the work report, reflections,
+memory, lessons, and outcome loops shipped across 3.1.0-3.9.0).
 
 What works today:
 - **120 slash commands** as thin orchestrators (front door, first-run, demo, surface control, lifecycle, planning,
@@ -30,8 +28,9 @@ What works today:
   automation, migration, extension management, release support)
 - **40 specialist agents** in fresh contexts
 - **13 executable workflows** and **43 intent recipes**
-- Optional `@godpowers/mcp` companion package with five read-only tools:
-  `status`, `next`, `gate_check`, `lint_artifact`, and `trace_requirement`
+- Optional `@godpowers/mcp` companion package with eight read-only tools:
+  `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`,
+  `work_report`, `route`, and `verification_history`
 - **One-directional state authority**: `.godpowers/state.json` is the
   Godpowers decision source, while `.godpowers/PROGRESS.md` and
   Godpowers-owned per-tier `STATE.md` files are generated human views.
@@ -80,6 +79,10 @@ What works today:
   budget at `.godpowers/ledger/outcomes/<slug>/`. `check` runs the verifier
   through `evidence.verify` (writing the executed verdict to the main ledger
   too), appends an iteration, and marks the outcome succeeded, failed, or active.
+- **MCP read tools for the evidence engine**: `@godpowers/mcp` exposes
+  `work_report`, `route`, and `verification_history` (read-only, `readOnlyHint`)
+  alongside the original five, so an MCP host can read the play-by-play, classify
+  a prompt, and inspect the ledger without mutating state.
 - **Deliverable progress tracking**: `/god-progress` and the
   `.godpowers/REQUIREMENTS.md` ledger report which requirements and roadmap
   increments are done, in progress, or not started, derived from the linkage map
