@@ -1,11 +1,11 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v3.2.0 (concierge surface, first-run guidance, sandbox demo, surface control, compact next commands, surface contraction, core default install profile, verb dispatchers, one-directional state authority, generated state views, executable tier gates, executable proof, adoption metrics, dogfood, host guarantees, MCP companion tools, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, Codex host proof studies, prompt-size guardrails, coverage gating, Phase 2 blocker fixes, release documentation cleanup, the evidence producer that writes the verification records the gate consumes, and enforced executed evidence on the build and harden gates)
+> Status: STABLE v3.3.0 (concierge surface, first-run guidance, sandbox demo, surface control, compact next commands, surface contraction, core default install profile, verb dispatchers, one-directional state authority, generated state views, executable tier gates, executable proof, adoption metrics, dogfood, host guarantees, MCP companion tools, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, Codex host proof studies, prompt-size guardrails, coverage gating, Phase 2 blocker fixes, release documentation cleanup, the evidence producer that writes the verification records the gate consumes, enforced executed evidence on the build and harden gates, and the can-close gate the orchestrator consults before closing a sub-step)
 > Authors: Godpowers Team
 > Last updated: 2026-06-15
 
 This document is the canonical design for Godpowers as a coherent product.
-v3.2.0 preserves the v3.0.0 surface contraction: the omitted installer profile
+v3.3.0 preserves the v3.0.0 surface contraction: the omitted installer profile
 is `core`, first-run and demo commands guide safer onboarding, surface control
 can preview or apply runtime profiles after install, verb dispatchers route to
 existing leaf commands,

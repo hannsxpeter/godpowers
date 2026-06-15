@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-06-15
+
+### Added
+- Added the `npx godpowers can-close --substep <id>` CLI subcommand, a read-only
+  face over `evidence.canClose`. It exits zero only when the substep has the
+  evidence to close (executable-gated tiers need a passing executed record since
+  they went in-flight; other tiers accept an attested record), so skills and the
+  orchestrator can shell into the strict close gate the way they already shell
+  `gate` and `state advance`.
+
+### Changed
+- Wired the `GOD-ORCHESTRATOR-RUNBOOK` close loop to record executed evidence and
+  confirm `can-close` is green before advancing an executable-gated sub-step to
+  done. This completes the orchestrator side of the Phase 1 close-on-evidence
+  path (`docs/FUSION-ARCHITECTURE.md`). No existing command behavior changed; the
+  CLI addition is additive and the runbook change is prompt-level guidance.
+
 ## [3.2.0] - 2026-06-15
 
 ### Changed

@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-06-15
-> Current shipped: v3.2.0
+> Current shipped: v3.3.0
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.
@@ -12,13 +12,14 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v3.2.0)
+### Current surface (v3.3.0)
 
-3.2.0 preserves the 3.0.0 runtime surface contraction. It builds on the 3.1.0
-evidence producer and the 3.1.1 `evidence.canClose` primitive, and adds the
-first enforced close-on-evidence behavior change: the harden gate now requires a
-passing, exit-code-backed verification record (like the build gate), so a
-security tier cannot close "done" on assertion alone.
+3.3.0 preserves the 3.0.0 runtime surface contraction. It adds the
+`npx godpowers can-close --substep <id>` close-gate check and wires it into the
+orchestrator loop, completing the close-on-evidence path begun in 3.1.0 (the
+evidence producer), 3.1.1 (the `evidence.canClose` primitive), and 3.2.0 (the
+enforced build and harden gates). A sub-step cannot be advanced to "done" until
+its evidence supports the close.
 
 What works today:
 - **120 slash commands** as thin orchestrators (front door, first-run, demo, surface control, lifecycle, planning,
@@ -46,7 +47,9 @@ What works today:
   passed (and zero failed) verification command in `state.json` for every
   executable-gated tier, driven by `evidence.EXECUTED_REQUIRED_SUBSTEPS`. The
   `evidence.canClose(substep)` primitive applies the same tier-appropriate rule
-  for the orchestrator close path.
+  for the orchestrator close path, surfaced as `godpowers can-close --substep
+  <id>`, which the orchestrator runbook consults before advancing a sub-step to
+  done.
 - **Deliverable progress tracking**: `/god-progress` and the
   `.godpowers/REQUIREMENTS.md` ledger report which requirements and roadmap
   increments are done, in progress, or not started, derived from the linkage map
