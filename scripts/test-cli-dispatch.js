@@ -662,6 +662,46 @@ test('lesson command adds and lists through evidence', () => {
   process.exitCode = 0;
 });
 
+test('parseArgs captures outcome action, slug, verify, budget, and reason', () => {
+  const parsed = parseArgs(['node', 'bin', 'outcome', 'start', 'green-build', '--verify', 'npm test', '--budget', '3', '--substep', 'tier-2.build', '--project=.'], process.cwd());
+  assert(parsed.command === 'outcome', `command: ${parsed.command}`);
+  assert(parsed.outcomeAction === 'start', `action: ${parsed.outcomeAction}`);
+  assert(parsed.outcomeSlug === 'green-build', `slug: ${parsed.outcomeSlug}`);
+  assert(parsed.outcomeVerify === 'npm test', `verify: ${parsed.outcomeVerify}`);
+  assert(parsed.budget === '3', `budget: ${parsed.budget}`);
+  assert(parsed.substep === 'tier-2.build', `substep: ${parsed.substep}`);
+});
+
+test('outcome command starts and checks through evidence', () => {
+  const project = mkProject('godpowers-cli-outcome-');
+  state.init(project, 'cli-outcome');
+  const start = capture(() => cliDispatch.runCommand({
+    command: 'outcome', project, outcomeAction: 'start', outcomeSlug: 'green', outcomeVerify: 'true', budget: '2', substep: 'tier-2.build', json: true
+  }));
+  assert(JSON.parse(start.output).result.status === 'active', 'outcome start did not create active goal');
+
+  const check = capture(() => cliDispatch.runCommand({
+    command: 'outcome', project, outcomeAction: 'check', outcomeSlug: 'green', json: true
+  }));
+  const checkResult = JSON.parse(check.output).result;
+  assert(checkResult.verified === true && checkResult.goal.status === 'succeeded', `check result: ${checkResult.goal.status}`);
+});
+
+test('outcome command rejects a missing action and a missing name', () => {
+  process.exitCode = 0;
+  const project = mkProject('godpowers-cli-outcome-bad-');
+  state.init(project, 'cli-outcome-bad');
+  const noAction = capture(() => cliDispatch.runCommand({ command: 'outcome', project, json: false }));
+  assert(noAction.output.includes('outcome requires an action'), `output: ${noAction.output}`);
+  assert(process.exitCode === 1, 'missing action should set exit code');
+
+  process.exitCode = 0;
+  const noName = capture(() => cliDispatch.runCommand({ command: 'outcome', project, outcomeAction: 'check', json: false }));
+  assert(noName.output.includes('requires a name'), `output: ${noName.output}`);
+  assert(process.exitCode === 1, 'missing name should set exit code');
+  process.exitCode = 0;
+});
+
 test('unknown command returns false', () => {
   const result = capture(() => cliDispatch.runCommand({ command: 'unknown' }));
   assert(result.value === false, 'unknown command should not dispatch');
