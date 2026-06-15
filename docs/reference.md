@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v3.6.0.
+Complete command, agent, and artifact reference for v3.7.0.
 
 ## Slash commands (120 total)
 
@@ -129,7 +129,7 @@ runtime.
 
 The companion exposes five read-only tools: `status`, `next`, `gate_check`,
 `lint_artifact`, and `trace_requirement`. Mutation tools such as state advance,
-artifact writes, and route edits are intentionally absent through 3.6.0.
+artifact writes, and route edits are intentionally absent through 3.7.0.
 
 Run `godpowers mcp-info --project .` for host setup instructions. Codex
 registration is written only when `godpowers-mcp setup --host=codex --project=. --write` is invoked explicitly.

@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.0] - 2026-06-15
+
+### Added
+- Added `evidence.memory.set/get/list/clear` (Phase 3), rebound from Mythify's
+  memory.json: a durable key/value store with categories fact, decision,
+  discovery, and state at `.godpowers/ledger/memory.json`. `set` upserts by key
+  and defaults the category to fact; `clear` removes one key or all entries;
+  writes go through `lib/atomic-write.js`.
+- Added the `npx godpowers memory set|get|list|clear [<key>] [<value>]
+  [--category ...]` CLI subcommand.
+
+### Notes
+- The memory store is isolated: it never touches `state.json`, the verifications
+  ledger, or the event stream. No existing command behavior changed.
+
 ## [3.6.0] - 2026-06-15
 
 ### Added
