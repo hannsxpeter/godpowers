@@ -1,0 +1,45 @@
+{
+  "source": "mythify-mcp",
+  "upstreamRepo": "mythify",
+  "upstreamPath": "mcp-server/src/index.js",
+  "engine": "verify_run + verify_claim (verification tools)",
+  "version": "3.6.3",
+  "commit": "7cbd601f9c4d5328a54921a051d450703e44c514",
+  "syncedAt": "2026-06-15",
+  "adaptations": [
+    "verificationStepContext (plan/step_id/step_title/step_status) rebound to substepContext (arc/substep/substep_status)",
+    "state dir .mythify/ rebound to .godpowers/ledger/",
+    "appendJsonl (fs.appendFileSync) rebound to an atomic read-modify-write append via lib/atomic-write.js",
+    "executed verdict additionally rolled up into state.json verification.commands[] via lib/state.js in the Godpowers gate shape",
+    "executed verdict additionally emitted as gate.pass / gate.fail to .godpowers/runs/<id>/events.jsonl via lib/events.js",
+    "verify_claim exposed as evidence.verifyClaim: attested, verified:null, never rolled up, never emitted"
+  ],
+  "upstreamRecordShape": {
+    "executed": [
+      "kind",
+      "claim",
+      "command",
+      "exit_code",
+      "duration_seconds",
+      "stdout_tail",
+      "stderr_tail",
+      "verified",
+      "timestamp",
+      "plan",
+      "step_id",
+      "step_title",
+      "step_status"
+    ],
+    "attested": [
+      "kind",
+      "claim",
+      "evidence",
+      "verified",
+      "timestamp",
+      "plan",
+      "step_id",
+      "step_title",
+      "step_status"
+    ]
+  }
+}

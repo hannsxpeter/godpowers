@@ -37,6 +37,7 @@ const TEST_COMMANDS = [
   [node, ['scripts/test-executor-repair.js']],
   [node, ['scripts/test-cli-dispatch.js']],
   [node, ['scripts/test-gate.js']],
+  [node, ['scripts/test-evidence.js']],
   ['npm', ['--workspace', '@godpowers/mcp', 'test']],
   [node, ['scripts/test-installer-profiles.js']],
   [node, ['scripts/test-surface-profile.js']],

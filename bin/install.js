@@ -53,6 +53,7 @@ function showHelp() {
   log('  next                 Show the dashboard and recommended next command');
   log('  state advance        Update one tracked Godpowers state step');
   log('  gate                 Check a tier artifact gate');
+  log('  verify               Run a command as executed verification evidence');
   log('  mcp-info             Show read-only MCP companion setup instructions');
   log('  quick-proof          Show a runnable proof from the shipped fixture');
   log('  automation-status    Show host automation provider support');
@@ -72,6 +73,11 @@ function showHelp() {
   log('  --step=<name>        Step for state advance, such as prd or tier-1.prd');
   log('  --status=<status>    Status for state advance');
   log('  --tier=<name>        Tier for gate: prd, design, arch, roadmap, stack, repo, build, or harden');
+  log('  --substep=<id>       Substep for verify, such as tier-2.build');
+  log('  --claim=<text>       Claim a verify command checks');
+  log('  --timeout=<seconds>  Kill a verify command after this many seconds (default 300)');
+  log('  --attest             Record a self-reported attested claim instead of executing');
+  log('  --evidence=<text>    Self-reported evidence for verify --attest');
   log('  --json               Emit JSON for status, next, proof, or automation commands');
   log('  --brief              Render compact output for status, next, or proof');
   log('  --full               Render complete output for status, next, or demo');
@@ -111,6 +117,7 @@ function showHelp() {
   log('  npx godpowers next --project=.');
   log('  npx godpowers state advance --step=prd --status=done --project=.');
   log('  npx godpowers gate --tier=prd --project=.');
+  log('  npx godpowers verify "npm test" --substep tier-2.build --claim "build slice tests pass" --project=.');
   log('  npx godpowers mcp-info --project=.');
   log('  npx godpowers quick-proof --project=.');
   log('  npx godpowers automation-status --project=.');
@@ -231,6 +238,7 @@ module.exports = {
   runExtensionScaffoldCommand: cliDispatch.runExtensionScaffoldCommand,
   runGateCommand: cliDispatch.runGateCommand,
   runStateCommand: cliDispatch.runStateCommand,
+  runVerifyCommand: cliDispatch.runVerifyCommand,
   applyDefaultRuntimeSelection,
   runInstall,
   runUninstall,

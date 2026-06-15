@@ -329,6 +329,131 @@ test('gate command renders text and missing-tier branches', () => {
   process.exitCode = 0;
 });
 
+test('parseArgs accepts verify options', () => {
+  const parsed = parseArgs([
+    'node',
+    'bin',
+    'verify',
+    'npm test',
+    '--substep=tier-2.build',
+    '--claim=tests pass',
+    '--timeout=120',
+    '--project=.'
+  ], process.cwd());
+  assert(parsed.command === 'verify', `command: ${parsed.command}`);
+  assert(parsed.verifyCommand === 'npm test', `verifyCommand: ${parsed.verifyCommand}`);
+  assert(parsed.substep === 'tier-2.build', `substep: ${parsed.substep}`);
+  assert(parsed.claim === 'tests pass', `claim: ${parsed.claim}`);
+  assert(parsed.timeout === '120', `timeout: ${parsed.timeout}`);
+});
+
+test('parseArgs accepts verify attest options with spaced flags', () => {
+  const parsed = parseArgs([
+    'node',
+    'bin',
+    'verify',
+    '--attest',
+    '--claim',
+    'rationale holds',
+    '--evidence',
+    'reviewed',
+    '--substep',
+    'tier-1.prd'
+  ], process.cwd());
+  assert(parsed.command === 'verify', `command: ${parsed.command}`);
+  assert(parsed.attest === true, 'attest flag missing');
+  assert(parsed.claim === 'rationale holds', `claim: ${parsed.claim}`);
+  assert(parsed.evidence === 'reviewed', `evidence: ${parsed.evidence}`);
+  assert(parsed.substep === 'tier-1.prd', `substep: ${parsed.substep}`);
+});
+
+test('verify command dispatches an executed pass through evidence', () => {
+  const project = mkProject('godpowers-cli-verify-pass-');
+  state.init(project, 'cli-verify-pass');
+  const result = capture(() => cliDispatch.runCommand({
+    command: 'verify',
+    project,
+    verifyCommand: 'true',
+    substep: 'tier-2.build',
+    claim: 'smoke',
+    json: true
+  }));
+  const parsed = JSON.parse(result.output);
+  assert(result.value === true, 'verify did not dispatch');
+  assert(parsed.verdict === 'pass', `verdict: ${parsed.verdict}`);
+  assert(parsed.kind === 'executed', `kind: ${parsed.kind}`);
+  assert(parsed.rollup.applied === true, 'rollup should apply');
+  assert(parsed.event.name === 'gate.pass', `event: ${parsed.event.name}`);
+  const commands = state.read(project).tiers['tier-2'].build.verification.commands;
+  assert(commands[0].status === 'pass', 'rollup status not pass');
+});
+
+test('verify command renders text and sets exit code on failure', () => {
+  process.exitCode = 0;
+  const project = mkProject('godpowers-cli-verify-fail-');
+  state.init(project, 'cli-verify-fail');
+  const result = capture(() => cliDispatch.runCommand({
+    command: 'verify',
+    project,
+    verifyCommand: 'false',
+    substep: 'tier-2.build',
+    json: false
+  }));
+  assert(result.value === true, 'verify fail did not dispatch');
+  assert(result.output.includes('Verdict: fail'), `output: ${result.output}`);
+  assert(result.output.includes('gate.fail'), 'text output missing gate.fail');
+  assert(process.exitCode === 1, `exitCode: ${process.exitCode}`);
+  process.exitCode = 0;
+});
+
+test('verify command rejects a missing command and missing substep', () => {
+  process.exitCode = 0;
+  const project = mkProject('godpowers-cli-verify-missing-');
+  state.init(project, 'cli-verify-missing');
+  const noCommand = capture(() => cliDispatch.runCommand({ command: 'verify', project, json: false }));
+  assert(noCommand.output.includes('verify requires a command'), `output: ${noCommand.output}`);
+  assert(process.exitCode === 1, 'missing command should set exit code');
+
+  process.exitCode = 0;
+  const noSubstep = capture(() => cliDispatch.runCommand({
+    command: 'verify',
+    project,
+    verifyCommand: 'true',
+    json: false
+  }));
+  assert(noSubstep.output.includes('verify requires --substep'), `output: ${noSubstep.output}`);
+  assert(process.exitCode === 1, 'missing substep should set exit code');
+  process.exitCode = 0;
+});
+
+test('verify --attest records an attested claim through evidence', () => {
+  const project = mkProject('godpowers-cli-verify-attest-');
+  state.init(project, 'cli-verify-attest');
+  const result = capture(() => cliDispatch.runCommand({
+    command: 'verify',
+    project,
+    attest: true,
+    claim: 'launch copy approved',
+    evidence: 'sign-off recorded',
+    substep: 'tier-3.launch',
+    json: true
+  }));
+  const parsed = JSON.parse(result.output);
+  assert(result.value === true, 'verify attest did not dispatch');
+  assert(parsed.kind === 'attested', `kind: ${parsed.kind}`);
+  assert(parsed.verified === null, 'attested verified should be null');
+  assert(parsed.record.kind === 'attested', 'attested ledger record missing');
+
+  const attestMissingClaim = capture(() => cliDispatch.runCommand({
+    command: 'verify',
+    project,
+    attest: true,
+    json: false
+  }));
+  assert(attestMissingClaim.output.includes('--attest requires --claim'), `output: ${attestMissingClaim.output}`);
+  process.exitCode = 0;
+});
+
 test('unknown command returns false', () => {
   const result = capture(() => cliDispatch.runCommand({ command: 'unknown' }));
   assert(result.value === false, 'unknown command should not dispatch');
