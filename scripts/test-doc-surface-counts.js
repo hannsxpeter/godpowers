@@ -70,4 +70,15 @@ assertIncludes('ARCHITECTURE-MAP.md', `| Slash commands | ${counts.skills} |`);
 assertIncludes('ARCHITECTURE-MAP.md', `| Intent recipes | ${counts.recipes} |`);
 assertIncludes('ARCHITECTURE-MAP.md', `**JS runtime modules** | **${counts.libModules}**`);
 
-console.log(`  + public surface docs match v${version}: ${surface}, ${workflowSurface}, ${recipeSurface}, ${counts.libModules} lib modules`);
+// Catalog completeness (DOC-004 / PATTERN-E): every lib/*.js must have a row in
+// lib/README.md so the "living module catalog" cannot silently drift again.
+const libReadme = read(path.join('lib', 'README.md'));
+const undocumented = fs
+  .readdirSync(path.join(root, 'lib'))
+  .filter((name) => /\.js$/.test(name))
+  .filter((name) => !libReadme.includes('`' + name + '`'));
+if (undocumented.length > 0) {
+  throw new Error(`lib/README.md is missing catalog rows for: ${undocumented.join(', ')}`);
+}
+
+console.log(`  + public surface docs match v${version}: ${surface}, ${workflowSurface}, ${recipeSurface}, ${counts.libModules} lib modules; lib/README catalog complete`);

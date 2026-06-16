@@ -39,12 +39,17 @@ package-level integrations.
 | `otel-exporter.js` | Export Godpowers events in an OpenTelemetry-shaped format. |
 | `runtime-audit.js` | Audit runtime health and expected project state. |
 | `runtime-test.js` | Provide runtime checks used by package tests. |
+| `evidence.js` | Enforced producer of executed/attested verification records, the state.json rollup, gate events, reflections, memory, lessons, and outcome loops. |
+| `evidence-import.js` | Import an existing `.mythify/` ledger into `.godpowers/ledger/`. |
+| `work-report.js` | Render the verification play-by-play from the evidence ledger. |
+| `adoption-metrics.js` | Derive adoption and outcome metrics from event streams. |
 
 ## Routing and execution
 
 | Module | Purpose |
 |--------|---------|
 | `router.js` | Resolve user intent to skills, agents, recipes, and workflows. |
+| `quarterback.js` | Entry router that classifies a prompt into a play and refuses new work when the project is on red. |
 | `command-families.js` | Define UX command families, status views, decision ladders, and trigger precedence helpers. |
 | `recipes.js` | Load and validate routing recipes. |
 | `workflow-parser.js` | Parse workflow YAML into executable steps. |
@@ -99,6 +104,7 @@ package-level integrations.
 | `drift-detector.js` | Detect context drift between artifacts and implementation. |
 | `impact.js` | Summarize expected impact of proposed changes. |
 | `linkage.js` | Connect artifacts, stories, and implementation files. |
+| `requirements.js` | Track which PRD requirements are done, in progress, or untouched from disk evidence. |
 | `multi-repo-detector.js` | Detect multi-repository workspaces. |
 | `reverse-sync.js` | Reflect implementation changes back into artifacts. |
 | `review-required.js` | Decide when review gates should block progress. |
@@ -114,6 +120,7 @@ package-level integrations.
 | `cli-dispatch.js` | Dispatch local CLI helper commands such as status, quick-proof, gate, dogfood, and extension-scaffold. |
 | `cli-log.js` | Shared ANSI console logger (log/success/warn/error) for the binary and CLI dispatch. |
 | `text-util.js` | Small shared string helpers (the canonical `slugify`). |
+| `mcp-info.js` | Render read-only MCP companion setup instructions for `npx godpowers mcp-info`. |
 | `install-profiles.js` | Select smaller role-specific slash-command install surfaces. |
 | `surface-profile.js` | Preview and apply runtime command surface profile switches after install. |
 | `installer-runtimes.js` | Map supported runtimes to their config directories. |
