@@ -3,6 +3,15 @@
 # the agents in the order this file specifies. To preview without running,
 # use `/god-mode --workflow=<name> --plan`.
 #
+# Native Pillars context (AGENTS.md + agents/context.md + agents/repo.md) is
+# woven through this arc by the orchestrator's local runtime, not a specialist
+# agent. It is now visible at both ends: the tier-0 `context` preamble runs
+# context-bootstrap (lib/pillars.detect then lib/pillars.init) so a greenfield
+# project is Pillar-ized before planning, and the `final-sync` standard-closeout
+# runs pillars-sync-plan (lib/pillars.planArtifactSync) so the pillars reflect
+# the artifacts the arc produced. Both are local runtime calls; see
+# references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md "Native Pillars context".
+#
 apiVersion: godpowers/v1
 kind: Workflow
 metadata:
@@ -15,8 +24,17 @@ metadata:
 on: [/god-mode]
 
 jobs:
+  context:
+    tier: 0
+    uses: god-orchestrator@^1.0.0
+    local-helper-groups:
+      - context-bootstrap
+    with:
+      action: pillars-bootstrap
+
   prd:
     tier: 1
+    needs: context
     uses: god-pm@^1.0.0
     with:
       template: PRD.md

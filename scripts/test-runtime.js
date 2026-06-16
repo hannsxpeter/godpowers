@@ -105,7 +105,12 @@ test('workflow-parser builds waves correctly', () => {
   const workflow = workflowParser.parseFile(workflowFile);
   const waves = workflowParser.buildWaves(workflow);
   if (waves.length === 0) throw new Error('no waves');
-  if (!waves[0].includes('prd')) throw new Error('prd should be in first wave');
+  // The tier-0 `context` preamble (Pillars detect/init) is the arc root; prd
+  // depends on it and lands in the next wave.
+  if (!waves[0].includes('context')) throw new Error('context should be in first wave');
+  if (!waves.slice(1).some((wave) => wave.includes('prd'))) {
+    throw new Error('prd should follow the context preamble');
+  }
 });
 
 test('workflow-parser validates the core workflows (>= 13)', () => {

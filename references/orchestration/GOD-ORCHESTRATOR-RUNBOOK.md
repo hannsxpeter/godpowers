@@ -115,6 +115,13 @@ This converts existing Godpowers artifacts into managed source references in
 the relevant pillar files, so old projects are Pillar-ized as part of being
 Godpower-ized.
 
+In the greenfield `full-arc` workflow this start-of-arc step is surfaced as the
+tier-0 `context` job, whose `context-bootstrap` helper group expands to
+`pillars-detect` (`lib/pillars.detect`) and `pillars-init` (`lib/pillars.init`).
+The job uses `god-orchestrator` as a local runtime call, not a `god-context-writer`
+spawn, so it changes nothing about the behavior described above; it only makes the
+init visible in `/god-mode --plan` alongside the closeout `pillars-sync-plan`.
+
 Before each major command, compute the task-specific Pillars load set with
 `lib/pillars.computeLoadSet(projectRoot, taskText)`. Load `agents/context.md`
 and `agents/repo.md` first, then the routed primary pillars and their direct
