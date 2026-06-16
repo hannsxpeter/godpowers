@@ -543,6 +543,30 @@ asyncTest('appendJsonlAtomic keeps every record under concurrent writers (ERR-00
   assert(parsed.length === WRITERS * PER_WRITER, 'every appended record should be a complete, parseable line');
 });
 
+test('LEDGER-LOG.md command echo masks obvious secret shapes; jsonl record stays exact (SEC-003)', () => {
+  const project = mkProject('godpowers-evidence-redact-');
+  state.init(project, 'evidence-redact');
+  const token = 'ghp_' + 'a'.repeat(36);
+  const command = `echo deploying && true --token=${token}`;
+  evidence.verify(command, { substep: 'tier-2.build', claim: 'redact', projectRoot: project });
+
+  const log = fs.readFileSync(path.join(project, '.godpowers', 'ledger', 'LEDGER-LOG.md'), 'utf8');
+  assert(!log.includes(token), 'LEDGER-LOG.md must not echo the raw token');
+  assert(log.includes('***REDACTED***'), 'LEDGER-LOG.md should show a redaction marker');
+
+  // The durable audit record keeps the exact command (source of truth).
+  const records = ledgerRecords(project);
+  assert(records[records.length - 1].command === command, 'jsonl record command must stay exact');
+});
+
+test('redactSecrets masks token shapes and flag values, leaves plain text (SEC-003)', () => {
+  const r = evidence._redactSecrets;
+  assert(!r('ghp_' + 'b'.repeat(36)).includes('bbbb'), 'github token not masked');
+  assert(r('--password=hunter2 next').includes('--password=***REDACTED***'), 'password flag not masked');
+  assert(r('--token sk-' + 'c'.repeat(40)).includes('***REDACTED***'), 'token flag not masked');
+  assert(r('npm run build') === 'npm run build', 'plain command should be unchanged');
+});
+
 test('runCommand flags maxBuffer overflow distinctly instead of as a plain failure (ERR-003)', () => {
   const node = JSON.stringify(process.execPath);
   const command = `${node} -e "process.stdout.write('x'.repeat(17*1024*1024))"`;

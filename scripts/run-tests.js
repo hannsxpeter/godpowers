@@ -14,6 +14,7 @@ const TEST_COMMANDS = [
   [node, ['scripts/test-skill-source-sync.js']],
   [node, ['scripts/test-quick-proof.js']],
   ['bash', ['scripts/smoke.sh']],
+  [node, ['scripts/test-hooks.js']],
   [node, ['scripts/test-runtime.js']],
   [node, ['scripts/test-yaml-parser.js']],
   [node, ['scripts/test-frontmatter.js']],

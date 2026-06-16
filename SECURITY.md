@@ -48,9 +48,25 @@ When using Godpowers in a sensitive context:
    framework but worth re-checking
 3. **Keep `.godpowers/` out of public repos** if it contains sensitive PRD
    content (add to `.gitignore` per-project)
-4. **Review hooks before installing**: `hooks/pre-tool-use.sh` and
-   `hooks/session-start.sh` run with your shell privileges
-5. **Verify the npm package signature**: `npm install godpowers --verify`
+4. **Hooks are advisory, not a sandbox**: `hooks/pre-tool-use.sh` and
+   `hooks/session-start.sh` run with your shell privileges. The pre-tool-use
+   hook only warns on common destructive command spellings (it is a typo guard
+   and is easily bypassed by uncommon spellings, quoting, aliases, or a child
+   process); do not rely on it as a security boundary. Review both before
+   installing.
+5. **Verify the npm package signature**: `npm audit signatures` (verifies
+   registry provenance and the published package signature)
+6. **Treat `.godpowers/ledger/` as executable, output-bearing state**: the
+   evidence ledger records the exact commands you run via `verify`/`outcome`
+   plus tails of their stdout/stderr. If a command or its output can contain a
+   secret, add `.godpowers/ledger/` to `.gitignore` so it is not committed. The
+   `outcome check` command re-runs a verifier stored in `goal.json`, so only run
+   it in repositories you trust.
+7. **Codex agents install with `sandbox_mode = "workspace-write"`**: the Codex
+   runtime grants every installed Godpowers agent write access to the workspace
+   (they need it to write artifacts). Combined with untrusted instructions in
+   project files, an agent could write anywhere in the workspace; narrow the
+   Codex sandbox per agent if that is a concern.
 
 ## Supported Versions
 

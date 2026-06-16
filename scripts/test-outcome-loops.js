@@ -83,4 +83,27 @@ test('outcome.status returns the goal and its iterations', () => {
   assert(status && status.goal.slug === 's' && status.iterations.length === 1, 'status shape wrong');
 });
 
+test('outcome.check announces the disk-sourced verifier before running it (SEC-002)', () => {
+  const dir = proj('godpowers-outcome-notice-');
+  evidence.outcome.start('announce', { verifier: 'true', substep: 'tier-2.build', projectRoot: dir });
+  let notice = null;
+  const result = evidence.outcome.check('announce', {
+    projectRoot: dir,
+    notice: (info) => { notice = info; }
+  });
+  assert(result.ran === true, 'check should run');
+  assert(notice && notice.verifier === 'true', `notice should carry the verifier, got ${JSON.stringify(notice)}`);
+  assert(notice.source && notice.source.endsWith(path.join('outcomes', 'announce', 'goal.json')),
+    `notice source should point at the goal.json, got ${notice && notice.source}`);
+});
+
+test('outcome.check does not fire the notice when there is no verifier (SEC-002)', () => {
+  const dir = proj('godpowers-outcome-notice-skip-');
+  evidence.outcome.start('noverify', { projectRoot: dir });
+  let fired = false;
+  const result = evidence.outcome.check('noverify', { projectRoot: dir, notice: () => { fired = true; } });
+  assert(result.reason === 'no-verifier', 'should report no-verifier');
+  assert(fired === false, 'notice must not fire when nothing will be executed');
+});
+
 report('Outcome loop tests');
