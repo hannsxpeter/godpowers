@@ -369,9 +369,14 @@ and then continue the project run. Pushing is not a terminal state.
 
 ## Audit-Remediation Loop
 
-For intent like "audit and fix until clean" / "drive the audit to clean" (the
-`audit-remediate` recipe), and as an optional end-of-arc pass, run a bounded
-audit-then-remediate loop. The maker that fixes is never the checker that grades.
+Run a bounded audit-then-remediate loop in three cases: the `full-arc`
+**`code-audit` step** (it runs `god-debt-assessor` after build and before the
+shipping tier, because AI-generated code can miss things a per-slice review and
+the security gate do not); intent like "audit and fix until clean" (the
+`audit-remediate` recipe); and any standalone `/god-tech-debt` follow-up. In
+`full-arc` the loop must drive Confirmed Critical and High findings to closure
+(or pause them as blockers) before `deploy`, `harden`, and `launch` proceed. The
+maker that fixes is never the checker that grades.
 
 1. **Audit (read-only).** Spawn `god-debt-assessor` in a fresh context. It writes
    the scored, self-contained report to `.godpowers/tech-debt/REPORT.md` with

@@ -62,9 +62,16 @@ jobs:
     verification:
       required: [test, lint, typecheck-or-check]
 
+  code-audit:
+    tier: 2
+    needs: build
+    uses: god-debt-assessor@^1.0.0
+    with:
+      mode: post-build-audit
+
   deploy:
     tier: 3
-    needs: build
+    needs: code-audit
     uses: god-deploy-engineer@^1.0.0
     closure:
       on-missing-external-access: create-waiting-access-bundle
@@ -84,7 +91,7 @@ jobs:
 
   harden:
     tier: 3
-    needs: build
+    needs: code-audit
     uses: god-harden-auditor@^1.0.0
     blocks-on:
       - critical-finding: pause
