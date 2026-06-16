@@ -749,6 +749,12 @@ test('corrupt state.json yields a clean one-line error, not a stack trace (ERR-0
   assert(!/\n\s+at /.test(result.output), 'output should not contain a stack trace');
   assert(process.exitCode === 1, `corrupt state should set a non-zero exit, got ${process.exitCode}`);
   process.exitCode = 0;
+
+  // ERR-004: the dispatcher matches a typed error code, not the message prose,
+  // so rewording the message cannot silently break the clean-error path.
+  let caught = null;
+  try { state.read(project); } catch (e) { caught = e; }
+  assert(caught && caught.code === 'CORRUPT_STATE', `state.read should throw a typed CORRUPT_STATE error, got ${caught && caught.code}`);
 });
 
 report('CLI dispatch tests');

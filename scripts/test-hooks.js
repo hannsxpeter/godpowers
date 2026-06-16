@@ -53,14 +53,22 @@ test('pre-tool-use warns on force push variants (SEC-001)', () => {
   ]) {
     const r = runHook(project, variant);
     assert(r.status === 1, `expected warn for: ${variant} (got ${r.status})`);
+    // TEST-005: assert it warns for the right reason, not just any exit 1.
+    assert(/Force pushing/.test(r.stdout), `expected force-push warning for: ${variant}`);
   }
 });
 
 test('pre-tool-use warns on git reset --hard, npm publish, gh release create', () => {
   const project = godProject();
-  for (const variant of ['git reset --hard HEAD~1', 'npm publish', 'gh release create v9.9.9']) {
+  // Each case must produce its OWN warning text, not merely exit 1 (TEST-005).
+  for (const [variant, marker] of [
+    ['git reset --hard HEAD~1', /git reset --hard/],
+    ['npm publish', /npm publish/],
+    ['gh release create v9.9.9', /gh release create/]
+  ]) {
     const r = runHook(project, variant);
     assert(r.status === 1, `expected warn for: ${variant} (got ${r.status})`);
+    assert(marker.test(r.stdout), `expected the matching warning text for: ${variant} (got: ${r.stdout})`);
   }
 });
 
