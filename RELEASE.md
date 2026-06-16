@@ -14,6 +14,7 @@
 - [DECISION] Test gate: `coverage:lib` now enforces `--branches 75` (TEST-001); a new `scripts/test-runtime-audit.js` raises `lib/runtime-audit.js` line coverage from 68.8% to 77.8% (TEST-002); `scripts/test-router.js` no longer shares cumulative state across tests and cleans up its temp dirs (TEST-003); new `scripts/test-hooks.js`, `scripts/test-cli-log.js`, and `scripts/test-text-util.js` cover the new code.
 - [DECISION] De-duplication: the five `*-sync` modules share `lib/sync-fs.js`; the ANSI logger moves to `lib/cli-log.js` and `slugify` to `lib/text-util.js`; `installer-args.parseArgs` is now table-driven (ARC-001, QUAL-001, QUAL-002).
 - [DECISION] Documentation: `ARCHITECTURE-MAP.md` counts are regenerated and now machine-guarded by `scripts/test-doc-surface-counts.js`; `state.STATE_FILE` is the canonical state-file constant and `artifact-map.js`'s scope is documented accurately (DOC-001, DOC-003, ARC-002).
+- [DECISION] Re-audit follow-ups: a fresh self-audit confirmed no regressions and closed the residual gaps it found - `installer-core.js` imports the shared logger (QUAL-003); `dashboard.js`/`planning-systems.js` consume `sync-fs` (ARC-003); the `lib/README` module catalog is complete and now guarded by a completeness check (DOC-004); the ledger-append comment is corrected (DOC-005); the corrupt-state error is typed rather than message-matched (ERR-004); and the hook tests assert each warning's text (TEST-005).
 
 ## Changes
 

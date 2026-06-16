@@ -52,6 +52,13 @@ command, agent, workflow, or recipe surface changes (counts stay 120 / 40 / 13 /
   `lib/text-util.js`; `installer-args.parseArgs` is now table-driven (was a
   358-line function); `state.STATE_FILE` is the canonical state-file constant and
   `artifact-map.js`'s scope is documented accurately.
+- **Re-audit follow-ups (ARC-003, QUAL-003, DOC-004/005, ERR-004, TEST-005):** a
+  fresh self-audit of the above confirmed no regressions and closed the residual
+  gaps: `installer-core.js` now imports the shared logger; `dashboard.js`/
+  `planning-systems.js` use `sync-fs`; the `lib/README` module catalog is complete
+  and guarded by a completeness check; the corrupt-state error is typed
+  (`err.code = 'CORRUPT_STATE'`) instead of message-matched; and the hook tests
+  assert each warning's text, not just its exit code.
 
 ## [3.13.0] - 2026-06-16
 
