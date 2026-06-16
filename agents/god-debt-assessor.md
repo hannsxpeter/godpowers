@@ -84,6 +84,24 @@ deploys, missing runbooks, paper SLOs) folds into Observability; **knowledge
 debt** (tribal knowledge, single-points-of-failure people) is reported as a
 systemic note.
 
+### Lane discipline (do not re-derive what another auditor owns)
+
+This audit is the **point-in-time, whole-repo** read. Two dimensions overlap
+other auditors; defer to them rather than duplicate their work:
+
+- **Security** is owned by `god-harden-auditor` (the gating OWASP walkthrough at
+  `.godpowers/harden/FINDINGS.md`). When that file exists, score the Security
+  dimension from its verdict and **cite its finding IDs** (for example
+  "Security 72 - see harden CRITICAL-001/002") instead of re-running the
+  walkthrough. Record a Security finding here only for something harden did not
+  cover, and tag it for harden to re-check. If FINDINGS.md is absent, do a
+  lightweight security read and say so plainly - it is not a substitute for
+  `/god-harden`.
+- **Code Quality** at the *diff* level is owned by `god-quality-reviewer` during
+  build. This dimension is the *whole-codebase* health read: report systemic
+  quality debt, not a line-by-line review of recent changes, and point to the
+  reviewer for per-slice concerns.
+
 Bands: 90-100 A, 80-89 B, 70-79 C, 60-69 D, 0-59 F. Risk does not average away:
 one Confirmed Critical caps its dimension at 69 and the overall at 79 until
 resolved.
@@ -101,8 +119,9 @@ Use search to find candidates, then **read the cited code to confirm** before
 recording. A search hit is a lead, not a finding. Per dimension's indicators:
 - Code: grep TODO/FIXME/HACK; complexity; duplication; long functions; dead code
 - Design: god files; circular deps; mixed concerns; structure-vs-docs drift
-- Security: untrusted input into queries/shell/paths/HTML; secrets; weak crypto;
-  declared-but-unenforced guards
+- Security: read `.godpowers/harden/FINDINGS.md` first and cite it; only if it
+  is absent, do a lightweight read for untrusted input into queries/shell/paths/
+  HTML, secrets, weak crypto, and declared-but-unenforced guards
 - Test: critical-path coverage; assertion-free or over-mocked tests; `.skip`
 - Dependency: `npm audit` / equivalent; staleness; deprecations; pinning
 - Error handling: empty catches; lost cause; missing timeouts; partial commits
