@@ -28,6 +28,7 @@ package-level integrations.
 | `cost-tracker.js` | Track token and cost estimates from event streams. |
 | `atomic-write.js` | Write load-bearing files through temp-file validation and atomic rename. |
 | `fs-async.js` | Promise-based file read/write helpers for non-blocking runtime paths. |
+| `sync-fs.js` | Shared project-relative read/write/exists/readJson helpers for the `*-sync` modules. |
 
 ## Events and observability
 
@@ -59,7 +60,7 @@ package-level integrations.
 
 | Module | Purpose |
 |--------|---------|
-| `artifact-map.js` | Centralize canonical artifact paths for dashboards, gates, and helpers. |
+| `artifact-map.js` | Tier gate artifact map: the per-tier required artifacts and state steps used by dashboards, gates, and doc-count checks. (Module-local paths stay in their owning module; `state.json` is named via `state.STATE_FILE`.) |
 | `artifact-linter.js` | Check artifacts for required labels, evidence, and domain precision. |
 | `artifact-diff.js` | Compare artifact changes for review and release workflows. |
 | `gate.js` | Run executable artifact gates for Phase 1 tier completion checks. |
@@ -111,6 +112,8 @@ package-level integrations.
 | `installer-files.js` | File-copy helpers shared by the installer and its tests. |
 | `installer-args.js` | Parse `bin/install.js` arguments and subcommands. |
 | `cli-dispatch.js` | Dispatch local CLI helper commands such as status, quick-proof, gate, dogfood, and extension-scaffold. |
+| `cli-log.js` | Shared ANSI console logger (log/success/warn/error) for the binary and CLI dispatch. |
+| `text-util.js` | Small shared string helpers (the canonical `slugify`). |
 | `install-profiles.js` | Select smaller role-specific slash-command install surfaces. |
 | `surface-profile.js` | Preview and apply runtime command surface profile switches after install. |
 | `installer-runtimes.js` | Map supported runtimes to their config directories. |

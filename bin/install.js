@@ -21,6 +21,7 @@ const { describeProfiles } = require('../lib/install-profiles');
 const commandFamilies = require('../lib/command-families');
 const identity = require('../lib/package-identity');
 const cliDispatch = require('../lib/cli-dispatch');
+const { log, success, warn, error } = require('../lib/cli-log');
 
 const VERSION = identity.PACKAGE_VERSION;
 
@@ -28,22 +29,6 @@ const BANNER = `
   GODPOWERS v${VERSION}
   Ship fast. Ship right. Ship everything.
 `;
-
-function log(msg) {
-  console.log(`  ${msg}`);
-}
-
-function success(msg) {
-  console.log(`  \x1b[32m+\x1b[0m ${msg}`);
-}
-
-function warn(msg) {
-  console.log(`  \x1b[33m!\x1b[0m ${msg}`);
-}
-
-function error(msg) {
-  console.error(`  \x1b[31mx\x1b[0m ${msg}`);
-}
 
 function showHelp() {
   console.log(BANNER);
