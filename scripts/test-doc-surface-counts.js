@@ -32,6 +32,7 @@ const counts = {
   agents: countFiles('agents', /^god.*\.md$/),
   workflows: countFiles('workflows', /\.yaml$/),
   recipes: countFiles(path.join('routing', 'recipes'), /\.yaml$/),
+  libModules: countFiles('lib', /\.js$/),
 };
 
 const version = pkg.version;
@@ -56,4 +57,17 @@ assertIncludes('skills/god-version.md', `Surface: ${surface}, ${workflowSurface}
 assertIncludes('skills/god-doctor.md', `[OK] ${counts.skills} skills installed`);
 assertIncludes('skills/god-doctor.md', `[OK] ${counts.agents} agents installed`);
 
-console.log(`  + public surface docs match v${version}: ${surface}, ${workflowSurface}, ${recipeSurface}`);
+// ARCHITECTURE-MAP.md was the one count-bearing doc with no machine guard, so it
+// silently rotted to v2.4.3 counts (DOC-001). Guard its surface and version
+// markers here so it stays in lockstep with the rest of the release surface.
+assertIncludes('ARCHITECTURE-MAP.md',
+  `${counts.skills} slash commands, ${counts.agents} agents, ${counts.workflows} workflows, ${counts.recipes} recipes`);
+assertIncludes('ARCHITECTURE-MAP.md', `## Numbers (as of v${version})`);
+assertIncludes('ARCHITECTURE-MAP.md', `package.json (v${version})`);
+assertIncludes('ARCHITECTURE-MAP.md', `<- ${counts.skills} slash-command skill files`);
+assertIncludes('ARCHITECTURE-MAP.md', `Real JS runtime (${counts.libModules} modules)`);
+assertIncludes('ARCHITECTURE-MAP.md', `| Slash commands | ${counts.skills} |`);
+assertIncludes('ARCHITECTURE-MAP.md', `| Intent recipes | ${counts.recipes} |`);
+assertIncludes('ARCHITECTURE-MAP.md', `**JS runtime modules** | **${counts.libModules}**`);
+
+console.log(`  + public surface docs match v${version}: ${surface}, ${workflowSurface}, ${recipeSurface}, ${counts.libModules} lib modules`);

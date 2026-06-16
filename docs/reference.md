@@ -4,6 +4,9 @@ Complete command, agent, and artifact reference for v3.13.0.
 
 ## Slash commands (120 total)
 
+The 120 total is 119 `god-*` commands plus the `/god` natural-language front
+door (a thin router that classifies intent rather than doing work itself).
+
 ### Command families
 All 120 commands remain direct entry points, but the user-facing map starts
 with likely next moves and families:
