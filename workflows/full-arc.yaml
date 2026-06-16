@@ -96,9 +96,16 @@ jobs:
     blocks-on:
       - critical-finding: pause
 
-  launch:
+  docs:
     tier: 3
     needs: harden
+    uses: god-docs-writer@^1.0.0
+    with:
+      mode: product-docs-verify
+
+  launch:
+    tier: 3
+    needs: docs
     uses: god-launch-strategist@^1.0.0
     with:
       template: HARDEN-FINDINGS.md
