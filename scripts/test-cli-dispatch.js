@@ -732,4 +732,23 @@ test('unknown command returns false', () => {
   assert(result.value === false, 'unknown command should not dispatch');
 });
 
+test('corrupt state.json yields a clean one-line error, not a stack trace (ERR-002)', () => {
+  process.exitCode = 0;
+  const project = mkProject('godpowers-cli-corrupt-state-');
+  fs.writeFileSync(path.join(project, '.godpowers', 'state.json'), '{ not valid json');
+  let threw = false;
+  let result;
+  try {
+    result = capture(() => cliDispatch.runCommand({ command: 'status', project, json: false }));
+  } catch (_) {
+    threw = true;
+  }
+  assert(!threw, 'a corrupt state file must not throw a stack trace out of runCommand');
+  assert(result.value === true, 'the command should still be dispatched');
+  assert(result.output.includes('Corrupt state file'), `expected the helpful message, got: ${result.output}`);
+  assert(!/\n\s+at /.test(result.output), 'output should not contain a stack trace');
+  assert(process.exitCode === 1, `corrupt state should set a non-zero exit, got ${process.exitCode}`);
+  process.exitCode = 0;
+});
+
 report('CLI dispatch tests');
