@@ -107,7 +107,10 @@ test('next command renders text suggestion through dashboard branch', () => {
     brief: true
   }));
   assert(result.value === true, 'next text did not dispatch');
-  assert(result.output.includes('Suggested next command:'), 'next text output missing suggestion');
+  // IXD-001: the dashboard itself states the recommendation (no third repeat).
+  assert(result.output.includes('Next:'), 'next output should surface the recommendation');
+  assert(result.output.includes('/god-init'), 'next output should name the recommended command');
+  assert(!result.output.includes('Suggested next command:'), 'the redundant third printing should be gone');
 });
 
 test('demo command dispatches through quick proof branch', () => {
