@@ -484,6 +484,10 @@ test('can-close command reports verdict and exit code through evidence', () => {
     json: false
   }));
   assert(ok.output.includes('Can close: yes'), `text output: ${ok.output}`);
+  // PROC-001: can-close output must state it is advisory and name the enforced
+  // gate, so the "described gate vs gate that runs" gap cannot mislead.
+  assert(ok.output.includes('advisory') && ok.output.includes('npx godpowers gate'),
+    `can-close should name itself advisory and point to the enforced gate: ${ok.output}`);
   assert(process.exitCode === 0, `ok exit code: ${process.exitCode}`);
   process.exitCode = 0;
 });

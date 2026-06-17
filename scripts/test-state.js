@@ -216,6 +216,10 @@ test('progressSummary treats skipped imported and not-required as complete', () 
   const p = state.progressSummary(state.read(tmp));
   assert(p.completed === 3, `completed: ${p.completed}`);
   assert(p.percent === 23, `percent: ${p.percent}`);
+  // JRN-002: skipped/not-required steps inflate the percent, so the count is
+  // exposed for honest dashboard annotation. imported is a real completion and
+  // must NOT be counted as skipped.
+  assert(p.skipped === 2, `skipped: ${p.skipped}`);
 });
 
 test('renderProgressLine includes percent and current step', () => {

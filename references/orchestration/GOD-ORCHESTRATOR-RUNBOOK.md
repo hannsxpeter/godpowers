@@ -406,6 +406,9 @@ maker that fixes is never the checker that grades.
      command and records the iteration. Repeat until the outcome succeeds or the
      budget is exhausted.
    - Never mark a finding resolved while `can-close` for its substep is red.
+     (`can-close` is the advisory since-in-flight freshness check you run as
+     discipline; the mechanically enforced gate is `npx godpowers gate`. Both
+     must agree before you close.)
 4. **Re-audit.** Re-run `god-debt-assessor` and confirm findings are resolved,
    not relocated, and that no Strength regressed. The loop is done when no
    Confirmed Critical or High remains (or the agreed bucket is empty).
@@ -535,9 +538,13 @@ requested or final sign-off begins.
 6. Verify their output exists on disk
 7. Run have-nots check on the artifact and run `standards.gate-command` when configured
 8. For an executable-gated sub-step (build, deploy, harden), record executed
-   evidence with `npx godpowers verify "<cmd>" --substep <tier.substep>` and then
-   confirm `npx godpowers can-close --substep <tier.substep> --project=.` exits
-   zero before closing. Never advance the sub-step to done while can-close is red.
+   evidence with `npx godpowers verify "<cmd>" --substep <tier.substep>`, confirm
+   the enforced gate passes with `npx godpowers gate --tier=<tier> --project=.`,
+   and then run the advisory freshness check
+   `npx godpowers can-close --substep <tier.substep> --project=.` (it must exit
+   zero). The gate is the mechanical boundary; can-close is the stricter
+   since-in-flight discipline. Never advance the sub-step to done while either
+   is red.
 9. If pass and can-close is green: advance the sub-step to done via
    `npx godpowers state advance`, sync CHECKPOINT.md, run the proactive
    auto-invoke sweep, print the "Step result" card, then move to next sub-step

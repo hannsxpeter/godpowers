@@ -204,8 +204,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: `docs/README.md` exists and links every user-facing doc under "Start here".
 - Related: none.
 
-### [PROC-001] The strictest close gate (`canClose` freshness) is documented as the discipline but not wired into the close path
+### [PROC-001] The strictest close gate (`canClose` freshness) is documented as the discipline but not wired into the close path (RESOLVED - slice 4)
 - Severity: Medium | Confidence: Confirmed | Effort: M | Dimension: Process and Workflow Efficiency
+- RESOLVED (slice 4, honesty option): the un-wiring is deliberate (the `canClose` docstring marks it "the rest of Phase 1"), so per the recommendation's second option the description was aligned to reality rather than forcing the deferred behavior change. `can-close` CLI output now prints `Note: advisory freshness check; the enforced gate is "npx godpowers gate".`; the `canClose` docstring (`lib/evidence.js`) now labels itself advisory discipline and names `gate.js` as the mechanical boundary; the orchestrator runbook (`references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`) now tells the agent to run the enforced `gate` AND the advisory `can-close`, both green, before closing. Regression test in `scripts/test-cli-dispatch.js` asserts the advisory note and gate pointer. This closes the "described gate vs gate that runs" trust gap; the optional freshness wiring remains tracked Phase-1 work.
 - Location: `lib/evidence.js:548-616` (`canClose`, self-documented at 551-553: "It does NOT mutate state and is NOT yet wired into gate.js or the close path"); enforced gate at `lib/gate.js:277-325`
 - Evidence: two notions of "can this step close" exist. `gate.js`'s `checkExecutedEvidence` is mechanically enforced by `npx godpowers gate`. `evidence.canClose` is a richer "since-in-flight" freshness predicate (stale green from a prior attempt cannot close a re-opened step), but it is enforced only by agent instruction (`GOD-ORCHESTRATOR-RUNBOOK.md:408`), not by the gate. Its only caller is the manual `can-close` CLI command.
 - Impact: the strongest anti-fakery property (freshness-bound evidence) depends on the agent remembering to run `can-close`, not on the gate. A drifted agent could close a re-opened substep on a stale prior pass that `gate.js` alone accepts, the gap between the gate that is described and the gate that runs.
@@ -252,8 +253,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: README:430 and `checkpoint.js:194-202` disambiguate arc-resume vs handoff-resume.
 - Related: none.
 
-### [JRN-002] Progress percentage can overstate shipped reality when tiers are skipped
+### [JRN-002] Progress percentage can overstate shipped reality when tiers are skipped (RESOLVED - slice 4)
 - Severity: Low | Confidence: Suspected | Effort: S | Dimension: User Journeys and Flows
+- RESOLVED (slice 4): `state.progressSummary` now returns a `skipped` count (steps with status `skipped`/`not-required`; `imported` stays a real completion), and the dashboard progress line annotates it: `15% workflow progress (2 of 13 tracked steps complete, 2 skipped)`. The percent is no longer silently inflated. Regression test in `scripts/test-state.js` asserts the skipped count; verified end to end against a state with two skipped substeps.
 - Location: `lib/state.js:364-385` (`progressSummary`), `lib/dashboard.js:39-53`
 - Evidence: progress % is `completed / total` substeps, and `skipped`/`not-required` count as complete (`state.js:16`). A run that skipped several tiers shows a high % that overstates how much product exists. The README mitigates by separating "workflow progress" from "deliverable progress" (`/god-progress`), but that needs a second command. Marked Suspected because confirming the inflation needs a live run with skipped tiers.
 - Impact: a user glancing at "85%" may over-read shipped reality.
