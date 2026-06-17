@@ -1,41 +1,40 @@
-# Godpowers 3.13.1 Release
+# Godpowers 3.13.2 Release
 
-> Status: Published
-> Date: 2026-06-16
+> Status: Prepared
+> Date: 2026-06-17
 
-[DECISION] Godpowers 3.13.1 is a maintenance release that drives a full self-audit (`codeaudit.md`, codeauditor-grade, nine weighted dimensions) to zero. It fixes one High finding plus the Medium and Low findings across runtime correctness, security hardening, the test gate, documentation, and de-duplication.
-[DECISION] No new skill, agent, workflow, or recipe surface is added or removed. Surface counts are unchanged from 3.13.0: 120 slash commands, 40 specialist agents, 13 workflows, 44 recipes.
-[DECISION] This release keeps `core` as the omitted installer profile, keeps `--profile=full` as the complete compatibility surface, and keeps the full 3.1.0-3.13.0 surface (fusion + codeauditor-grade audit + remediation loop + audited/documented greenfield arc).
+[DECISION] Godpowers 3.13.2 is a maintenance release that drives a third self-audit (`codeaudit.md`, codeauditor-grade, nine weighted dimensions) to zero. It fixes one Medium finding and twelve Low findings across de-duplication, error handling, security hardening, the test gate, and documentation.
+[DECISION] No new skill, agent, workflow, or recipe surface is added or removed. Surface counts are unchanged from 3.13.1: 120 slash commands, 40 specialist agents, 13 workflows, 44 recipes. The lib module count rises from 90 to 91 (`lib/sync-check.js`).
+[DECISION] This release keeps `core` as the omitted installer profile, keeps `--profile=full` as the complete compatibility surface, and keeps the full 3.1.0-3.13.1 surface.
 
 ## What's in this release
 
-- [DECISION] Runtime correctness: `lib/evidence.js` `appendJsonlAtomic` now appends with `fs.appendFileSync` (O_APPEND) instead of a read-modify-write, so concurrent `verify`/`outcome check` processes no longer lose ledger records and the append is no longer O(n) (ERR-001). A `maxBuffer` overflow is surfaced distinctly instead of as a plain failure (ERR-003).
-- [DECISION] Security hardening: the pre-tool-use hook is reframed as a best-effort advisory typo guard and matches more destructive-command variants (SEC-001); `outcome check` announces a disk-sourced verifier before running it (SEC-002); the `LEDGER-LOG.md` command echo masks obvious secret shapes and `SECURITY.md` documents the ledger and Codex-sandbox trust boundaries (SEC-003, SEC-004); `SECURITY.md` replaces the non-existent `npm install --verify` with `npm audit signatures` (DOC-002).
-- [DECISION] Test gate: `coverage:lib` now enforces `--branches 75` (TEST-001); a new `scripts/test-runtime-audit.js` raises `lib/runtime-audit.js` line coverage from 68.8% to 77.8% (TEST-002); `scripts/test-router.js` no longer shares cumulative state across tests and cleans up its temp dirs (TEST-003); new `scripts/test-hooks.js`, `scripts/test-cli-log.js`, and `scripts/test-text-util.js` cover the new code.
-- [DECISION] De-duplication: the five `*-sync` modules share `lib/sync-fs.js`; the ANSI logger moves to `lib/cli-log.js` and `slugify` to `lib/text-util.js`; `installer-args.parseArgs` is now table-driven (ARC-001, QUAL-001, QUAL-002).
-- [DECISION] Documentation: `ARCHITECTURE-MAP.md` counts are regenerated and now machine-guarded by `scripts/test-doc-surface-counts.js`; `state.STATE_FILE` is the canonical state-file constant and `artifact-map.js`'s scope is documented accurately (DOC-001, DOC-003, ARC-002).
-- [DECISION] Re-audit follow-ups: a fresh self-audit confirmed no regressions and closed the residual gaps it found - `installer-core.js` imports the shared logger (QUAL-003); `dashboard.js`/`planning-systems.js` consume `sync-fs` (ARC-003); the `lib/README` module catalog is complete and now guarded by a completeness check (DOC-004); the ledger-append comment is corrected (DOC-005); the corrupt-state error is typed rather than message-matched (ERR-004); and the hook tests assert each warning's text (TEST-005).
+- [DECISION] De-duplication (ARC-001, QUAL-001/002/003): the four `*-sync` modules share `lib/sync-check.js` (`addCheck`/`makeAddCheck`/`listFiles`) instead of copy-pasting them; removed dead helpers (two unused `rel()`, an unused `sha`); added `sync-fs.readTextOrNull` adopted by `requirements.js`, which now sources PRD/ROADMAP paths from `artifact-map`; fixed a boolean/string status wart in `repo-surface-sync`.
+- [DECISION] Test gate (TEST-001, TEST-002): `coverage:lib` now emits a json-summary and `scripts/check-per-file-coverage.js` (in `release:check`) fails any lib module below 70% lines, excluding the two environment-bound browser drivers, so a single file can no longer rot while the aggregate stays green; the `run()`/`appendLog()` write path of the three sync siblings is now tested for the no-banned-dash invariant.
+- [DECISION] Error handling (ERR-001): reverse-sync writes state before the ledger and surfaces a caught error as `requirementsError` instead of silently nulling it.
+- [DECISION] Security hardening (SEC-001, SEC-002): the MCP `requireRuntime` rejects any module name that is not a plain lib basename; `intent.cleanArrays` caps recursion depth so a pathologically deep YAML cannot overflow the stack.
+- [DECISION] Performance and docs (PERF-001/002, DOC-001, ARC-002): `have-nots` `findPositions` compiles its regex once per call; the bounded whole-ledger read is documented with an opt-in prune noted; the README's `docs/*` links are now absolute GitHub URLs (docs are deliberately excluded from the package); and `pillars.js` is delineated into its model and artifact-sync halves (a full split was deferred because the halves share public-API construction functions).
 
 ## Changes
 
-- [DECISION] `package.json`, `package-lock.json`, and `packages/mcp/package.json` now publish the 3.13.1 version.
-- [DECISION] New runtime modules `lib/sync-fs.js`, `lib/cli-log.js`, and `lib/text-util.js` (lib module count 87 -> 90). No public command/agent/workflow/recipe surface change.
-- [DECISION] CHANGELOG, RELEASE notes, README, roadmap, reference, architecture, and the architecture map now reflect 3.13.1. The SECURITY supported-version table already carries the `3.13.x` row.
+- [DECISION] `package.json`, `package-lock.json`, and `packages/mcp/package.json` now publish the 3.13.2 version.
+- [DECISION] New runtime module `lib/sync-check.js` (lib module count 90 -> 91). No public command/agent/workflow/recipe surface change.
+- [DECISION] CHANGELOG, RELEASE notes, README, roadmap, reference, architecture, and the architecture map now reflect 3.13.2. The SECURITY supported-version table already carries the `3.13.x` row.
 
 ## Validation
 
 - [DECISION] `npm test` passed all command groups.
-- [DECISION] `npm run release:check` passed `coverage:lib` above the 90 percent line floor and the new 75 percent branch floor for `lib/**/*.js`.
+- [DECISION] `npm run release:check` passed `coverage:lib` above the 90 percent line floor and the 75 percent branch floor, and the new per-file floor (>= 70 percent lines across 88 lib modules).
 - [DECISION] `npm run release:check` passed `npm audit --omit=dev` with 0 vulnerabilities and `git diff --check`.
-- [DECISION] `npm run release:check` passed public surface docs for version 3.13.1 with 120 skills, 40 agents, 13 workflows, and 44 recipes.
+- [DECISION] `npm run release:check` passed public surface docs for version 3.13.2 with 120 skills, 40 agents, 13 workflows, and 44 recipes.
 - [DECISION] `npm run release:check` passed root and `@godpowers/mcp` package contents.
 
 ## Upgrade
 
-- [DECISION] Use `npm install -g godpowers@3.13.1` or `npx godpowers@3.13.1`.
-- [DECISION] No migration is required. Existing projects are unaffected; the changes are internal correctness, security, test-gate, and maintainability fixes with no surface change.
+- [DECISION] Use `npm install -g godpowers@3.13.2` or `npx godpowers@3.13.2`.
+- [DECISION] No migration is required. The changes are internal de-duplication, error-visibility, security, test-gate, and documentation improvements with no surface change.
 
 ## Notes
 
-- [DECISION] The publish targets are npm `godpowers@3.13.1`, npm `@godpowers/mcp@3.13.1`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v3.13.1`.
-- [DECISION] Tagged `v3.13.1` and published to npm with provenance via the tag-triggered GitHub publish workflow (`.github/workflows/publish.yml`): `godpowers@3.13.1` and `@godpowers/mcp@3.13.1` are live as the `latest` dist-tag.
+- [DECISION] The publish targets are npm `godpowers@3.13.2`, npm `@godpowers/mcp@3.13.2`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v3.13.2`.
+- [DECISION] The tag-triggered GitHub publish workflow remains the preferred npm path because it publishes with provenance. This release has not been tagged or published to npm yet.

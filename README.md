@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-3.13.1-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.13.2-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -30,12 +30,15 @@ Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
 only one output. The project memory and proof trail matter too.
 
-Version 3.13.1 is a maintenance release that drives a full self-audit to zero:
-the runtime ledger no longer loses verification records under concurrent writes,
-the `outcome check` verifier and the pre-tool-use hook are hardened, the
-`*-sync` modules share one filesystem helper, the argument parser is table-driven,
-branch coverage is now gated, and the architecture map is kept in lockstep by a
-machine guard. Version 3.13.0 makes the default greenfield arc (`/god-mode`) miss
+Version 3.13.2 is a maintenance release that drives a third self-audit to zero:
+the `*-sync` modules now share one check-builder, the coverage gate enforces a
+per-file floor, the corrupt-state error is typed, dead helpers are removed, and
+the MCP module loader and YAML parser gain defense-in-depth guards. Version
+3.13.1 drove a full self-audit to zero: the runtime ledger no longer loses
+verification records under concurrent writes, the `outcome check` verifier and
+the pre-tool-use hook are hardened, the `*-sync` modules share one filesystem
+helper, the argument parser is table-driven, and branch coverage is gated.
+Version 3.13.0 makes the default greenfield arc (`/god-mode`) miss
 less. The one-shot `full-arc` workflow now runs a whole-codebase code audit after the
 build (so it catches what the per-slice reviews missed in AI-generated code) and
 a documentation pass after harden (so the shipped product has docs verified
@@ -334,14 +337,14 @@ dependency to the main `godpowers` package:
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@3.13.1 -p @godpowers/mcp@3.13.1 godpowers-mcp serve --project=.
+npx -y -p godpowers@3.13.2 -p @godpowers/mcp@3.13.2 godpowers-mcp serve --project=.
 ```
 
 The companion exposes `status`, `next`, `gate_check`, `lint_artifact`, and
 `trace_requirement`. Host registration is opt-in:
 
 ```bash
-npx -y -p godpowers@3.13.1 -p @godpowers/mcp@3.13.1 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@3.13.2 -p @godpowers/mcp@3.13.2 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 See [MCP Companion](https://github.com/aihxp/godpowers/blob/main/docs/mcp.md) for package boundaries and setup details.

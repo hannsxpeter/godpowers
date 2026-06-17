@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-06-16
-> Current shipped: v3.13.1
+> Current shipped: v3.13.2
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.
@@ -12,12 +12,14 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v3.13.1)
+### Current surface (v3.13.2)
 
-3.13.1 is a maintenance release: it fixes a ledger record-loss race, hardens the
-outcome verifier and the pre-tool-use hook, shares the `*-sync` filesystem
-helpers, makes the argument parser table-driven, gates branch coverage, and
-keeps the architecture map guarded. 3.13.0 preserves the 3.0.0 runtime surface
+3.13.2 is a maintenance release: it shares one check-builder across the `*-sync`
+modules, adds a per-file coverage floor, types the corrupt-state error, removes
+dead helpers, and guards the MCP module loader and YAML parser. 3.13.1 fixed a
+ledger record-loss race, hardened the outcome verifier and the pre-tool-use hook,
+shared the `*-sync` filesystem helpers, made the argument parser table-driven,
+and gated branch coverage. 3.13.0 preserves the 3.0.0 runtime surface
 contraction. It makes the default
 greenfield arc (`/god-mode`) miss less: the one-shot `full-arc` workflow now
 runs a whole-codebase code audit after the build (catching what the per-slice

@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.13.2] - 2026-06-17
+
+Maintenance release that drives a third self-audit (`codeaudit.md`) to zero: one
+Medium and twelve Low findings across de-duplication, error handling, security
+hardening, the test gate, and docs. No public command/agent/workflow/recipe
+surface change (counts stay 120 / 40 / 13 / 44); lib module count 90 -> 91.
+
+### Changed
+- **Shared sync check-builder (ARC-001):** the four `*-sync` modules no longer
+  copy-paste `addCheck`/`listFiles`; they share `lib/sync-check.js` (full
+  `addCheck` for the aggregator, area-bound `makeAddCheck` for the rest).
+- **Per-file coverage floor (TEST-001):** `coverage:lib` now emits a json-summary
+  and `scripts/check-per-file-coverage.js` (in `release:check`) fails any lib
+  module below 70% lines (excluding the two environment-bound browser drivers),
+  so a single file can no longer rot while the aggregate stays green.
+- **De-duplication and cleanup (QUAL-001/002/003):** removed dead helpers
+  (two unused `rel()`, an unused `sha`), added `sync-fs.readTextOrNull` adopted by
+  `requirements.js` (which now sources PRD/ROADMAP paths from `artifact-map`), and
+  fixed a boolean/string status wart in `repo-surface-sync`.
+- **Pillars delineation (ARC-002):** `pillars.js` now has section dividers
+  separating the model and artifact-sync halves (a full split was deferred; the
+  halves share construction functions that are public API).
+
+### Fixed
+- **Reverse-sync error visibility (ERR-001):** the requirements step now writes
+  state before the ledger and surfaces a caught error as `requirementsError`
+  instead of silently nulling it.
+
+### Security
+- **MCP module-name guard (SEC-001):** `requireRuntime` rejects any name that is
+  not a plain lib basename (defense-in-depth).
+- **YAML recursion cap (SEC-002):** `intent.cleanArrays` caps recursion depth so a
+  pathologically deep file cannot overflow the stack.
+
+### Performance
+- **have-nots regex (PERF-001):** `findPositions` compiles its regex once instead
+  of per line. The whole-ledger read in `evidence.readJsonl` is documented as
+  bounded/acceptable with an opt-in prune noted for the future (PERF-002).
+
+### Docs
+- **Absolute README doc links (DOC-001):** `docs/` is deliberately excluded from
+  the package, so the README's `docs/*` links are now absolute GitHub URLs that
+  resolve on the npm page and in the tarball.
+
 ## [3.13.1] - 2026-06-16
 
 Maintenance release that drives a full self-audit (`codeaudit.md`) to zero: one
