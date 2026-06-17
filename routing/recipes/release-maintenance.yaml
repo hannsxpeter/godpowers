@@ -15,6 +15,12 @@ triggers:
     - "ship a release"
     - "release the project"
     - "prepare release"
+    - "ship it"
+    - "ship"
+    - "release"
+    - "deploy"
+    - "deploy this"
+    - "deploy it"
 
 sequences:
   default:

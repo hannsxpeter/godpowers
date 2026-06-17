@@ -66,6 +66,11 @@ test('work size ladder classifies common implementation intents', () => {
   assert(families.classifyWorkSize('small TDD task').command === '/god-quick');
   assert(families.classifyWorkSize('production is down').command === '/god-hotfix');
   assert(families.classifyWorkSize('add a feature').command === '/god-feature');
+  // IA-002: unrelated intents must NOT be confidently mis-sized as a small
+  // /god-quick coding task; they return null so /god falls back to /god-next.
+  assert(families.classifyWorkSize('ship it') === null);
+  assert(families.classifyWorkSize('check progress') === null);
+  assert(families.classifyWorkSize('deploy this') === null);
 });
 
 test('verification ladder routes to cheapest sufficient command', () => {

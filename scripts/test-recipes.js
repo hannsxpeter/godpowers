@@ -86,6 +86,26 @@ test('matchIntent matches public front-door examples', () => {
   }
 });
 
+test('matchIntent covers high-traffic bare verbs (IA-001)', () => {
+  // The router's promise is "just describe what you want"; the most common
+  // verbs must return a topical match, not fall through to the classifier.
+  const cases = [
+    ['fix a bug', 'bug-no-urgency'],
+    ['ship it', 'release-maintenance'],
+    ['deploy this', 'release-maintenance'],
+    ['release', 'release-maintenance'],
+    ['check progress', 'whats-done']
+  ];
+  for (const [text, expected] of cases) {
+    recipes.clearCache();
+    const matches = recipes.matchIntent(text);
+    if (matches.length === 0) throw new Error(`no matches for "${text}"`);
+    if (matches[0].score < 5) throw new Error(`"${text}" scored ${matches[0].score}, want >= 5`);
+    const top = matches[0].recipe.metadata.name;
+    if (top !== expected) throw new Error(`expected ${expected} for "${text}", got ${top}`);
+  }
+});
+
 test('public starter recipes keep their command order', () => {
   recipes.clearCache();
   const brownfield = recipes.getSequence(recipes.getRecipe('brownfield-onboarding'))

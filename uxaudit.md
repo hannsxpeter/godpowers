@@ -119,8 +119,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: the first 40 lines of README contain no version numbers except the badge, and "Install" / `/god-mode` appears above the fold.
 - Related: PATTERN-B, CNT-002, CNT-003.
 
-### [IA-001] The free-text router misses the most common verbs
+### [IA-001] The free-text router misses the most common verbs (RESOLVED - slice 3)
 - Severity: High | Confidence: Confirmed | Effort: M | Dimension: Information Architecture and Navigation
+- RESOLVED (slice 3): broadened `intent-keywords` for the high-traffic recipes (bug-no-urgency: "fix a bug"/"fix bug"/"bug"; release-maintenance: "ship it"/"ship"/"release"/"deploy"/"deploy this"; whats-done: "check progress"/"progress"). Regression test in `scripts/test-recipes.js` asserts each common verb returns its topical recipe with score >= 5. Verified empirically: fix a bug -> bug-no-urgency (25), ship it -> release-maintenance (20), deploy -> release-maintenance (15), release -> release-maintenance (10), check progress -> whats-done (20).
 - Location: `lib/recipes.js` (`matchIntent`), `routing/recipes/*.yaml` (`intent-keywords`)
 - Evidence: empirical `matchIntent()` tests returned NO recipe match for "fix a bug", "ship it", "deploy", "release", and "check progress"; "production is down" also missed (the recipe lists "production down"/"fix production" but not the "X is Y" variant). The matcher does literal phrase matching, so bare verbs and natural phrasings fall through.
 - Impact: the router's headline promise is "just describe what you want" (the README invites `/god production is broken`, "ship it"), yet the most common verbs miss. A miss then falls to the classifier, which misroutes (IA-002). Dedicated `/god-fix`/`/god-ship` commands cover these, but only if the user already knows to type them, defeating the router.
@@ -175,8 +176,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: `--help` has a "Common commands" subsection of <= 6 items above the advanced ones.
 - Related: PATTERN-B.
 
-### [IA-002] The classifier fallback misroutes unmatched intents to `/god-quick`
+### [IA-002] The classifier fallback misroutes unmatched intents to `/god-quick` (RESOLVED - slice 3)
 - Severity: Medium | Confidence: Confirmed | Effort: S | Dimension: Information Architecture and Navigation
+- RESOLVED (slice 3): `classifyWorkSize` now returns `null` when there is no small-coding-task signal (instead of defaulting to `/god-quick`), so an unmatched intent falls back to the state-driven `/god-next` rather than being mis-sized as a small TDD task. An explicit `quick|small|tdd|slice|minor|chore|refactor` signal preserves the genuine `/god-quick` case. Regression test in `scripts/test-command-families.js` asserts `classifyWorkSize('ship it')`, `('check progress')`, and `('deploy this')` all return null.
 - Location: `lib/command-families.js` (`classifyWorkSize`)
 - Evidence: `classifyWorkSize()` defaults anything unmatched to `/god-quick`. Tests: "ship it" -> `/god-quick`, "check progress" -> `/god-quick`, "deploy this" -> `/god-quick`. So when a recipe miss (IA-001) falls through, "ship it" is classified as a small TDD coding task, the opposite of its meaning.
 - Impact: a confident-but-wrong route is worse than a no-match; the user may follow it. "check progress" should reach `/god-progress`, "ship it" `/god-ship`.

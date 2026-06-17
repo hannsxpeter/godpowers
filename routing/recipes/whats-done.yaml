@@ -17,6 +17,9 @@ triggers:
     - "deliverable progress"
     - "show the checklist"
     - "how much is built"
+    - "check progress"
+    - "progress"
+    - "check status"
 
 sequences:
   default:
