@@ -1,8 +1,10 @@
 ---
 name: god-reconcile
 description: |
-  Comprehensive reconciliation across all impacted artifacts before doing
-  feature work. Checks PRD, ARCH, ROADMAP, STACK, REPO, DEPLOY, OBSERVE,
+  Check before feature work (read-only): reconcile all impacted artifacts to
+  find conflicts before you build. This is the BEFORE half of the pair; its
+  write-back counterpart is /god-sync, which updates artifacts AFTER the work.
+  Checks PRD, ARCH, ROADMAP, STACK, REPO, DEPLOY, OBSERVE,
   HARDEN, LAUNCH, BACKLOG, SEEDS, TODOS, THREADS, repository documentation,
   repository surface, runtime feature awareness, source-system sync-back, and
   host capabilities in parallel. Replaces /god-roadmap-check (kept for

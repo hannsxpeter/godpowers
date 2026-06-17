@@ -18,8 +18,9 @@ responsibly.
 
 ### What to Expect
 
-- Acknowledgment within 7 days
-- Assessment within 14 days
+- Best-effort acknowledgment, typically within 7 days (this is a small,
+  pre-launch project, so treat these as targets, not guarantees)
+- Best-effort assessment, typically within 14 days
 - Fix timeline based on severity
 - Credit in the CHANGELOG when the fix ships (unless you prefer anonymity)
 

@@ -12,69 +12,53 @@ idea to hardened production. It runs as **slash commands inside your AI coding
 tool** (Claude Code, Codex, Cursor, etc.) that orchestrate **specialist agents**
 in fresh contexts to do the work.
 
-Want the short proof first? Start with [Quick Proof](https://github.com/aihxp/godpowers/blob/main/docs/quick-proof.md) to
-run `npx godpowers quick-proof --project=. --brief`, see outcome metrics, pick
-a starter command set, and understand runtime expectations before reading the
-full reference. The [First 10 Minute Proof Case Study](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/first-10-minute-proof.md)
-shows the same evidence as a before-and-after adoption story. External
-CLI-verifiable canaries now cover [sindresorhus/is](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/sindresorhus-is-adoption-canary.md),
-[expressjs/cors](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/expressjs-cors-adoption-canary.md), and
-[tinyhttp/tinyhttp](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/tinyhttp-adoption-canary.md), with host
-slash-command gaps called out rather than hidden.
-Host-run proof studies now cover [slugify-cli](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/run-a.md),
-[Countdown](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/run-b.md), and
-[react-github-readme-button](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/run-c.md), including one
-blocked harden run recorded as evidence instead of hidden as success.
+## Quick start
+
+```bash
+# 1. Install for your AI coding tool (Claude Code shown; other tools under Install)
+npx godpowers --claude --global --profile=core
+```
+
+Then, inside your AI tool:
+
+```
+/god         # describe what you want in plain language; it routes you
+/god-mode    # run the full arc from idea to hardened production, autonomously
+```
+
+Prefer to try before installing? `npx godpowers quick-proof --project=. --brief`
+prints disk-state evidence, missing-artifact visibility, a next command, and
+host guarantees against a shipped fixture, no install required.
+
+New to the vocabulary? Quick glosses: `arc` (a full project run from idea to
+launch), `tier` (a phase of that run), `have-nots` (the artifact-quality checks
+every output must pass), `quarterback` (the single orchestrator that routes each
+step), `Pillars` (the durable project-context files), `bluefield` (a new project
+inside an established org). Full definitions are in
+[docs/concepts.md](https://github.com/aihxp/godpowers/blob/main/docs/concepts.md).
+
+## Why it exists
 
 Godpowers makes AI coding accountable: every serious run should leave disk
 state, artifacts, validation gates, host guarantees, and a next action. Code is
-only one output. The project memory and proof trail matter too.
+only one output; the project memory and proof trail matter too.
 
-Version 3.13.2 is a maintenance release that drives a third self-audit to zero:
-the `*-sync` modules now share one check-builder, the coverage gate enforces a
-per-file floor, the corrupt-state error is typed, dead helpers are removed, and
-the MCP module loader and YAML parser gain defense-in-depth guards. Version
-3.13.1 drove a full self-audit to zero: the runtime ledger no longer loses
-verification records under concurrent writes, the `outcome check` verifier and
-the pre-tool-use hook are hardened, the `*-sync` modules share one filesystem
-helper, the argument parser is table-driven, and branch coverage is gated.
-Version 3.13.0 makes the default greenfield arc (`/god-mode`) miss
-less. The one-shot `full-arc` workflow now runs a whole-codebase code audit after the
-build (so it catches what the per-slice reviews missed in AI-generated code) and
-a documentation pass after harden (so the shipped product has docs verified
-against the code, not vibes). The arc goes build, code-audit, deploy, observe,
-harden, docs, launch, final-sync: per-slice review, whole-codebase audit plus
-remediation, a security gate, and verified docs before launch. This builds on
-3.12.x, which made that code audit codeauditor-grade: `god-debt-assessor`
-(`/god-tech-debt`) produces a scored, prioritized, self-contained source-code
-audit across nine weighted dimensions, and the `audit-remediate` recipe drives
-the findings to zero (audit, fix worst-first with an independent reviewer,
-re-audit, bounded by an outcome budget, with the can't-fake-done gate ensuring
-"clean" is evidence-backed). It all sits on top of the completed Mythify fusion
-(the evidence producer, enforced close-on-evidence, the quarterback, work report,
-reflections, memory, lessons, outcome loops, MCP read tools, and ledger importer). The current 3.x line keeps
-the omitted installer profile on `core`, keeps first-run, demo, and
-surface-control entry points, preserves `--profile=full` for compatibility,
-keeps locate and lifecycle views under `/god-status`, ships the optional
-`@godpowers/mcp` companion package, and verifies docs, package contents, npm
-metadata, GitHub release state, and published install behavior before public
-release.
+### See it work
 
-Maintainer hardening continues on the 3.x line with small, audited public
-surface updates when they close real workflow gaps. Historical release details
-live in [CHANGELOG.md](CHANGELOG.md), while the current release status lives in
-[RELEASE.md](RELEASE.md).
+- [Quick Proof](https://github.com/aihxp/godpowers/blob/main/docs/quick-proof.md): run `npx godpowers quick-proof --project=. --brief` for outcome metrics, a starter command set, and runtime expectations.
+- [First 10 Minute Proof Case Study](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/first-10-minute-proof.md): the same evidence as a before-and-after adoption story.
+- Independent, CLI-verifiable canaries: [sindresorhus/is](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/sindresorhus-is-adoption-canary.md), [expressjs/cors](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/expressjs-cors-adoption-canary.md), [tinyhttp/tinyhttp](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/tinyhttp-adoption-canary.md). Host slash-command gaps are called out, not hidden.
+- Host-run proof studies: [slugify-cli](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/run-a.md), [Countdown](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/run-b.md), [react-github-readme-button](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/run-c.md), including one blocked harden run kept as evidence.
 
-Strict release readiness remains fail-closed. Godpowers requires delegated
-release checks to cover root docs, docs, agents, skills, routing, workflows,
-schema, templates, references, hooks, lib, scripts, tests, fixtures, GitHub
-workflows, package metadata, npm, GitHub release, CI, publish workflow, and
-local install state before a human-approved release executor can run.
+The dashboard leads with an action brief and a host guarantee line: the next
+command, why it is recommended, whether the project is ready, the first blockers
+that need attention, and whether the host can provide full, degraded, or unknown
+runtime guarantees.
 
-The dashboard now starts with an action brief and a host guarantee line: the
-next command, why it is recommended, whether the project is ready, the first
-blockers that need attention, and whether the current host can provide full,
-degraded, or unknown runtime guarantees.
+**What's new:** [CHANGELOG.md](CHANGELOG.md) holds release history and
+[RELEASE.md](RELEASE.md) the current release status. Strict release readiness is
+fail-closed: a human-approved release executor runs only after delegated checks
+cover docs, package metadata, npm, GitHub release, CI, and local install state.
 
 ### Ten Minute Proof Path
 
@@ -380,10 +364,10 @@ See [MCP Companion](https://github.com/aihxp/godpowers/blob/main/docs/mcp.md) fo
 | `/god-dogfood` | Run messy-repo dogfood scenarios for release and autonomy readiness | (built-in) |
 | `/god-migrate` | Detect legacy planning, BMAD, and Superpowers context; import and sync back | god-greenfieldifier when needed |
 | `/god-preflight` | Read-only intake audit before project-run readiness and pillars | god-auditor |
-| `/god-audit` | Score artifacts against have-nots | god-auditor |
+| `/god-audit` | Score artifacts against the have-nots quality checklist | god-auditor |
 | `/god-debug` | 4-phase systematic debug | god-debugger |
 | `/god-review` | Two-stage code review | god-spec-reviewer + god-quality-reviewer |
-| `/god-lint` | Mechanically validate artifacts against have-nots | (built-in) |
+| `/god-lint` | Mechanically validate artifacts against the have-nots checklist | (built-in) |
 | `/god-scan` | Rebuild linkage map from code; run reverse-sync | (built-in) |
 | `/god-link` | Manually add or remove a code-artifact link | (built-in) |
 | `/god-design-impact` | What-if analysis on DESIGN.md changes | (built-in) |
@@ -427,8 +411,12 @@ files, changed public behavior, and verification before editing. Reviewers
 block speculative flexibility, unrelated cleanup, and any touched file that
 does not trace back to the request or slice plan.
 
-If `.godpowers` state already exists, `/god-mode --yolo` resumes from disk
-instead of asking for the project description again.
+If `.godpowers` state already exists, plain `/god-mode` resumes the arc from
+disk (it reads `CHECKPOINT.md`) instead of asking for the project description
+again; `--yolo` is not required to resume, it only changes how many pauses the
+run takes. To resume a manual handoff created by `/god-pause-work`, use
+`/god-resume-work` (it reads `HANDOFF.md`). Either way, `/god-status` and
+`/god-next` are always safe re-entry points that report where the run stands.
 
 Under `--yolo`, Godpowers also auto-applies Pillars sync proposals when
 durable `.godpowers` artifacts change project truth. The decision is logged to
@@ -615,9 +603,12 @@ options with tradeoffs, and a default if the user just says "go".
 
 ## Supported Tools
 
-15 first-class runtimes: Claude Code, Codex, Cursor, Windsurf, Gemini CLI,
+Installs for 15 runtimes: Claude Code, Codex, Cursor, Windsurf, Gemini CLI,
 OpenCode, Copilot, Augment, Trae, Cline, Kilo, Antigravity, Qwen, CodeBuddy,
 Pi. T3 Code inherits from the underlying agent (Codex / Claude / OpenCode).
+Support is not uniform: Claude Code and Codex are the reference-grade paths; on
+the other targets the skills and agent contracts install but host-native agent
+spawning depends on the tool. See the Runtime Expectations table above.
 
 ## Full reference
 

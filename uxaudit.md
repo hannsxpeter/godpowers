@@ -110,8 +110,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: `node bin/install.js --claude --local --profile=bogus </dev/null 2>&1` prints one clean `x Unknown install profile ...` line, no stack trace, and creates no `.claude` dir.
 - Related: PATTERN-A.
 
-### [CNT-001] The README opens with maintainer changelog prose, not a value proposition
+### [CNT-001] The README opens with maintainer changelog prose, not a value proposition (RESOLVED - slice 6)
 - Severity: High | Confidence: Confirmed | Effort: M | Dimension: Content and UX Writing
+- RESOLVED (slice 6): the README top fold is now tagline -> what/who -> "Quick start" (install + `/god-mode` + quick-proof) -> glossary pointer -> "Why it exists". The version-history prose (3.13.2/3.13.1/3.13.0/3.12.x archaeology) is replaced by a single "What's new" line linking CHANGELOG.md and RELEASE.md. Verified: the first 40 README lines contain no version number except the badge, and both the install command and `/god-mode` appear above the fold.
 - Location: `README.md:33-77` (especially 33-61)
 - Evidence: The first full screen after the tagline is release-note prose ("Version 3.13.2 is a maintenance release that drives a third self-audit to zero: the `*-sync` modules now share one check-builder, the coverage gate enforces a per-file floor, the corrupt-state error is typed ...") plus undefined terms (`*-sync`, "MCP module loader", "Mythify fusion", "quarterback", "have-nots"). The actual value prop (lines 8-13) is good but is immediately buried.
 - Impact: the most-read file leads with the least relevant content for its largest audience (newcomers deciding whether to try it). A reader looking for "what is this / who is it for / how do I start" hits version archaeology and jargon, the classic high-bounce front door.
@@ -149,8 +150,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: `status --full` on an empty project contains no "Complete" in the Phase/Step lines.
 - Related: none.
 
-### [CNT-002] Undefined internal jargon in user-facing prose
+### [CNT-002] Undefined internal jargon in user-facing prose (RESOLVED - slice 6)
 - Severity: Medium | Confidence: Confirmed | Effort: S | Dimension: Content and UX Writing
+- RESOLVED (slice 6): the README now carries an inline glossary near the top that glosses `arc`, `tier`, `have-nots`, `quarterback`, `Pillars`, and `bluefield` in 3-5 words each and links docs/concepts.md for full definitions, so each term's first occurrence is defined inline. The bare `have-nots` in the `/god-audit` and `/god-lint` one-line descriptions is now "the have-nots quality checklist". Verified: grep README for `have-nots|quarterback|bluefield`; each first occurrence is the glossed/linked definition.
 - Location: `README.md` and `docs/reference.md` (e.g. README:383 ships "/god-audit | Score artifacts against have-nots"); terms: "have-nots", "quarterback", "arc", "Pillars", "Mythify fusion", "bluefield"
 - Evidence: these terms appear before (or without) definition; `docs/concepts.md` exists but is not reached first. `SKILL.md:194` defines a plain-language substitution table ("arc" -> "project run", "tier" -> "phase") but it governs runtime spoken output, not the static docs (CNT-003 covers the leak).
 - Impact: forces decode-or-leave on a newcomer. "have-nots" especially is internal QA vocabulary that should not appear in a command's one-line description.
@@ -158,8 +160,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: grep README for `have-nots|quarterback|bluefield`; each first occurrence is defined inline or linked.
 - Related: PATTERN-B, CNT-003.
 
-### [CNT-003] README is wall-of-text dense (~640 lines, long unbroken paragraphs)
+### [CNT-003] README is wall-of-text dense (~640 lines, long unbroken paragraphs) (RESOLVED - slice 6)
 - Severity: Medium | Confidence: Confirmed | Effort: M | Dimension: Content and UX Writing
+- RESOLVED (slice 6): the dense top-of-README blocks were broken up. The proof links became a scannable "See it work" bullet list; the multi-paragraph version-history and release-readiness prose collapsed to short blocks and a one-line "What's new"; the top fold now leads with short Quick start / Why it exists sections. No paragraph in the top fold exceeds three sentences.
 - Location: `README.md` (e.g. 33-61 is effectively one block; 299-350 maintainer-validation prose)
 - Evidence: heavy nominalization ("Strict release readiness remains fail-closed", "delegated release checks to cover root docs, docs, agents, skills, routing ...") and long paragraphs make it read like spec prose, not a scannable README.
 - Impact: scannability is the primary README job; this reads as reference material, raising the cost of every first visit.
@@ -187,8 +190,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: `classifyWorkSize("ship it")` and `("check progress")` no longer return `/god-quick`.
 - Related: IA-001, PATTERN-B.
 
-### [IA-003] Several `/god-*` command names are implementation vocabulary, not user vocabulary
+### [IA-003] Several `/god-*` command names are implementation vocabulary, not user vocabulary (RESOLVED - slice 6)
 - Severity: Medium | Confidence: Confirmed | Effort: M | Dimension: Information Architecture and Navigation
+- RESOLVED (slice 6): the worst offenders now lead their description with the user-intent verb. `/god-smite`: "Clear the dependency cache (hard reset ...)" (keeps "cache" so search surfaces it). `/god-org-context`: "Set up or read organization-level context (bluefield support)". The `/god-reconcile` vs `/god-sync` overlap is resolved by leading each with the distinction: reconcile = "Check before feature work (read-only)", sync = "Update after feature work (write-back)", each naming the other as its counterpart. The playful brand names are kept; only the misleading lead clauses changed.
 - Location: `skills/god-*.md` names/descriptions; e.g. `/god-smite` ("Hard reset of node-style dependency cache"), `/god-intel`, `/god-org-context` ("Bluefield support"), `/god-reconcile` vs the existing `/god-sync`, and four overlapping "is this good?" verbs (`/god-standards`, `/god-lint`, `/god-audit`, `/god-hygiene`)
 - Evidence: a user wanting to clear caches will not find `/god-smite`; `/god-reconcile` ("Comprehensive reconciliation across all impacted artifacts") overlaps `/god-sync`; the four quality verbs differ meaningfully (the verification ladder explains it) but the names do not carry the distinction. These leaf names are what users see in completion CTAs and `/god-help all`.
 - Impact: violates one-term-per-concept and user-vocabulary; the families/ladders compensate, but the names still mislead on findability.
@@ -196,8 +200,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: for each flagged command, the description's first sentence leads with the user-intent verb; `/god-help search cache` surfaces `/god-smite`.
 - Related: PATTERN-B.
 
-### [IA-004] No `docs/` index; user-facing and internal docs are mixed with no signposting
+### [IA-004] No `docs/` index; user-facing and internal docs are mixed with no signposting (RESOLVED - slice 6)
 - Severity: Medium | Confidence: Confirmed | Effort: S | Dimension: Information Architecture and Navigation
+- RESOLVED (slice 6): added `docs/README.md` with a "Start here (using Godpowers)" section that links every user-facing doc (getting-started, quick-proof, concepts, reference, recipes, command-flows, host-capabilities, mcp, brownfield-bluefield, automation-providers, design-md, agent-specs, extension-authoring, ROADMAP, case-studies) and a separate "Internal and maintainer docs" section for the rest. Verified: `docs/README.md` exists and the user-facing docs are all under Start here.
 - Location: `docs/` (33 `.md` files, no `docs/README.md` or table of contents)
 - Evidence: internal docs (`phase-4-state-read-inventory.md`, `surface-contraction.md`, `repo-surface-sync.md`) sit beside user-facing `getting-started.md` with no separation; cross-link density is thin (only a few docs link to getting-started/reference). A user landing in `docs/` via the GitHub file browser has no map.
 - Impact: a reader cannot tell which docs are for them; the maintainer docs dilute the user docs.
@@ -245,8 +250,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: `next` states the recommended command at most twice.
 - Related: none.
 
-### [JRN-001] Resume entry points are split and the README implies `--yolo` is required
+### [JRN-001] Resume entry points are split and the README implies `--yolo` is required (RESOLVED - slice 6)
 - Severity: Low | Confidence: Confirmed | Effort: S | Dimension: User Journeys and Flows
+- RESOLVED (slice 6): the README resume paragraph now states that plain `/god-mode` resumes the arc from disk (reads CHECKPOINT.md), that `--yolo` is not required to resume (it only changes pause behavior), that `/god-resume-work` is for a manual `/god-pause-work` handoff (reads HANDOFF.md), and that `/god-status`/`/god-next` are always-safe re-entry points. The generated CHECKPOINT.md "If you are a new session" block now names `/god-mode` as the canonical arc-resume command, distinct from `/god-resume-work`.
 - Location: `skills/god-mode.md:20-22` (self-resume from disk), `routing/god-resume-work.yaml` (keys off `HANDOFF.md`), `README.md:430-431`
 - Evidence: a user returning to a paused run faces three plausible re-entries (`/god-mode`, `/god-resume-work`, `/god-status`/`/god-next`); `/god-mode` resume reads CHECKPOINT.md while `/god-resume-work` reads a different file (HANDOFF.md); and README:430 ("If `.godpowers` state already exists, `/god-mode --yolo` resumes from disk") implies resume needs `--yolo`, which is misleading (`skills/god-mode.md:20-22` resumes on any `/god-mode` when CHECKPOINT exists).
 - Impact: mild re-entry ambiguity at the highest-context-loss moment. Not a dead-end (all paths converge via `/god-next`), but friction.
@@ -264,8 +270,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: set two tier-3 substeps to `skipped`, run `status`, confirm the % is annotated rather than silently inflated.
 - Related: none.
 
-### [TRU-001] SECURITY.md promises a 7-day acknowledgment SLA the project may not meet
+### [TRU-001] SECURITY.md promises a 7-day acknowledgment SLA the project may not meet (RESOLVED - slice 6)
 - Severity: Low | Confidence: Confirmed | Effort: S | Dimension: Trust, Ethics and Transparency
+- RESOLVED (slice 6): SECURITY.md "What to Expect" now reads "Best-effort acknowledgment, typically within 7 days (this is a small, pre-launch project, so treat these as targets, not guarantees)" and the same softening for assessment. No hard SLA remains.
 - Location: `SECURITY.md:21` ("Acknowledgment within 7 days", "Assessment within 14 days") vs `SECURITY.md:111` ("fix-to-disclosure within 90 days")
 - Evidence: a hard 7-day ack SLA on a pre-launch, effectively solo-maintainer project (per USERS.md) is an over-promise that erodes trust if missed.
 - Impact: a reporter who does not hear back in 7 days distrusts the whole policy.
@@ -273,8 +280,9 @@ The README, `--help`, and the free-text router all assume insider vocabulary or 
 - Verify the fix: SECURITY.md:19-24 no longer states a hard SLA.
 - Related: none.
 
-### [TRU-002] "15 first-class runtimes" headline outruns the honest "depends on the tool" table
+### [TRU-002] "15 first-class runtimes" headline outruns the honest "depends on the tool" table (RESOLVED - slice 6)
 - Severity: Low | Confidence: Suspected | Effort: S | Dimension: Trust, Ethics and Transparency
+- RESOLVED (slice 6): the "Supported Tools" headline changed from "15 first-class runtimes" to "Installs for 15 runtimes" followed by an explicit honesty line: "Support is not uniform: Claude Code and Codex are the reference-grade paths; on the other targets the skills and agent contracts install but host-native agent spawning depends on the tool." This matches the Runtime Expectations table instead of implying parity.
 - Location: `README.md:618` ("15 first-class runtimes"), `README.md:131` ("everything (15 runtimes)") vs `README.md:182-190` (Runtime Expectations table: only Claude Code and Codex are reference-grade; the other 13 are "depends on the tool")
 - Evidence: the Runtime Expectations table is commendably honest, but the "15 first-class runtimes" headline reads as parity, while the very next table says 13 of 15 are conditional. Marked Suspected pending whether real users over-expect from the headline.
 - Impact: a skimming reader could over-expect host-native behavior on the 13 non-reference tools.

@@ -1,7 +1,10 @@
 ---
 name: god-sync
 description: |
-  Sync all affected artifacts after feature work. Updates PRD, ARCH, ROADMAP,
+  Update after feature work (write-back): sync all affected artifacts to match
+  what the work actually touched. This is the AFTER half of the pair; its
+  read-only counterpart is /god-reconcile, which checks for conflicts BEFORE
+  the work. Updates PRD, ARCH, ROADMAP,
   STACK, DEPLOY, OBSERVE, HARDEN, LAUNCH, BACKLOG, SEEDS, TODOS, THREADS
   based on what the work actually touched. Closes the loop after
   /god-reconcile + feature execution.

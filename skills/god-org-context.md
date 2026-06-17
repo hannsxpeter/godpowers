@@ -1,7 +1,7 @@
 ---
 name: god-org-context
 description: |
-  Bluefield support. Set up or read organization-level context: shared
+  Set up or read organization-level context (bluefield support): shared
   standards, conventions, infrastructure, libraries. Constrains downstream
   agents to respect org-wide decisions when building new code in an
   established context.

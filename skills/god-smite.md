@@ -1,7 +1,7 @@
 ---
 name: god-smite
 description: |
-  Hard reset of the project's node-style dependency cache: delete
+  Clear the dependency cache (hard reset of the node-style layer): delete
   node_modules / .venv / vendor / target / .next / dist / .nuxt /
   .turbo / .nx as applicable, then reinstall. For when "have you tried
   turning it off and on again" applies to the dependency layer.
