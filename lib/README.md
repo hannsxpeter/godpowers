@@ -29,6 +29,7 @@ package-level integrations.
 | `atomic-write.js` | Write load-bearing files through temp-file validation and atomic rename. |
 | `fs-async.js` | Promise-based file read/write helpers for non-blocking runtime paths. |
 | `sync-fs.js` | Shared project-relative read/write/exists/readJson helpers for the `*-sync` modules. |
+| `sync-check.js` | Shared check-builder (`addCheck`/`makeAddCheck`) and file-lister for the `*-sync` modules. |
 
 ## Events and observability
 

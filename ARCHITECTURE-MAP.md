@@ -673,7 +673,7 @@ godpowers/
 │   ├── events.v1.json
 │   └── workflow.v1.json
 │
-├── lib/                           <- Real JS runtime (90 modules)
+├── lib/                           <- Real JS runtime (91 modules)
 │   ├── state.js                   <- state model + drift detection
 │   ├── events.js                  <- OTel-shape event log + hash chain
 │   ├── router.js                  <- command routing
@@ -751,7 +751,7 @@ godpowers/
 | Templates | 16 |
 | Reference documents | 39 |
 | JSON Schemas | 7 |
-| **JS runtime modules** | **90** |
+| **JS runtime modules** | **91** |
 | **External integrations** | **5** (all detect-and-delegate; none vendored): Google Labs design.md, Impeccable, awesome-design-md, SkillUI, vercel-labs/agent-browser + Playwright |
 | Hooks | 2 |
 | Dogfood scenarios | 5 |
