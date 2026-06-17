@@ -1,6 +1,6 @@
 # Godpowers 3.13.1 Release
 
-> Status: Prepared
+> Status: Published
 > Date: 2026-06-16
 
 [DECISION] Godpowers 3.13.1 is a maintenance release that drives a full self-audit (`codeaudit.md`, codeauditor-grade, nine weighted dimensions) to zero. It fixes one High finding plus the Medium and Low findings across runtime correctness, security hardening, the test gate, documentation, and de-duplication.
@@ -38,4 +38,4 @@
 ## Notes
 
 - [DECISION] The publish targets are npm `godpowers@3.13.1`, npm `@godpowers/mcp@3.13.1`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v3.13.1`.
-- [DECISION] The tag-triggered GitHub publish workflow remains the preferred npm path because it publishes with provenance. This release has not been tagged or published to npm yet.
+- [DECISION] Tagged `v3.13.1` and published to npm with provenance via the tag-triggered GitHub publish workflow (`.github/workflows/publish.yml`): `godpowers@3.13.1` and `@godpowers/mcp@3.13.1` are live as the `latest` dist-tag.
