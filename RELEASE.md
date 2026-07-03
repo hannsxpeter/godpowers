@@ -1,6 +1,6 @@
 # Godpowers 4.0.0 Release
 
-> Status: Ready
+> Status: Published
 > Date: 2026-07-03
 
 [DECISION] Godpowers 4.0.0 is a breaking release: the canonical `.godpowers/` artifact extension changes from `.md` to `.mdx`, and Godpowers gains first-class interop with its sibling superskills godplans (`.godplans/PLAN.mdx`) and godaudits (`.godaudits/AUDIT.mdx`).
