@@ -1,6 +1,6 @@
 # Godpowers 4.0.2 Release
 
-> Status: Ready
+> Status: Published
 > Date: 2026-07-03
 
 [DECISION] Godpowers 4.0.2 is a documentation release. It completes the `.md` to `.mdx` migration in the user-facing and shipped documentation, so every reference to a generated view or ledger names the canonical `.mdx` the runtime actually writes.
