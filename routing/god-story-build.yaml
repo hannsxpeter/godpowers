@@ -8,14 +8,14 @@ metadata:
 
 prerequisites:
   required:
-    - .godpowers/stories/STORY-*.md
+    - .godpowers/stories/STORY-*.mdx
 
 execution:
   spawns: [god-planner]
   context: fresh
   secondary-spawns: [god-executor, god-spec-reviewer, god-quality-reviewer]
   writes:
-    - .godpowers/stories/STORY-*.md
+    - .godpowers/stories/STORY-*.mdx
     - source code
 
 standards:

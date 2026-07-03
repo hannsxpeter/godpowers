@@ -84,7 +84,7 @@ I built [product] over [time]. Here's what happened.
 
 ## Output
 
-Write `.godpowers/launch/indie-hackers/PLAN.md`:
+Write `.godpowers/launch/indie-hackers/PLAN.mdx`:
 
 ```markdown
 # Indie Hackers Launch Plan

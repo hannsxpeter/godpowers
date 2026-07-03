@@ -11,17 +11,17 @@ prerequisites:
     - check: state:initialized == true
       reason: "/god-design needs an initialized project"
       auto-complete: /god-init
-    - check: file:.godpowers/prd/PRD.md
+    - check: file:.godpowers/prd/PRD.mdx
       reason: "Design needs PRD user, product, and register context"
       auto-complete: /god-prd
   optional:
-    - check: file:.godpowers/prep/INITIAL-FINDINGS.md
+    - check: file:.godpowers/prep/INITIAL-FINDINGS.mdx
       reason: "Initial findings can show UI and product-experience signals"
-    - check: file:.godpowers/prep/IMPORTED-CONTEXT.md
+    - check: file:.godpowers/prep/IMPORTED-CONTEXT.mdx
       reason: "Imported legacy planning, Superpowers, or BMAD context can inform design hypotheses"
-    - check: file:.godpowers/arch/ARCH.md
+    - check: file:.godpowers/arch/ARCH.mdx
       reason: "ARCH names the UI surface that DESIGN applies to"
-    - check: file:.godpowers/stack/DECISION.md
+    - check: file:.godpowers/stack/DECISION.mdx
       reason: "STACK can refine framework-specific token shape when already selected"
 
 execution:

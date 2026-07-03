@@ -26,7 +26,7 @@ lib/planning-systems.importPlanningContext(projectRoot, {
 
 The import writes:
 
-- `.godpowers/prep/IMPORTED-CONTEXT.md`
+- `.godpowers/prep/IMPORTED-CONTEXT.mdx`
 - missing Godpowers seed artifacts when source evidence exists
 - `state.json` `source-systems` entries with import hashes and confidence
 

@@ -11,7 +11,7 @@ inputs:
   - "build state evidence"
   - "git log and events"
 outputs:
-  - ".godpowers/sprints/sprint-<n>/RETRO.md"
+  - ".godpowers/sprints/sprint-<n>/RETRO.mdx"
 gates:
   - "retrospective have-nots"
   - "specific action items with owners and due dates"
@@ -26,7 +26,7 @@ sprint, not generic platitudes.
 
 ## Gate Check
 
-`.godpowers/sprints/sprint-<N>/PLAN.md` exists with the sprint's commitments.
+`.godpowers/sprints/sprint-<N>/PLAN.mdx` exists with the sprint's commitments.
 
 ## Process
 
@@ -73,7 +73,7 @@ For each identified pattern:
 
 ## Output
 
-Write `.godpowers/sprints/sprint-<N>/RETRO.md`:
+Write `.godpowers/sprints/sprint-<N>/RETRO.mdx`:
 
 ```markdown
 # Sprint <N> Retrospective

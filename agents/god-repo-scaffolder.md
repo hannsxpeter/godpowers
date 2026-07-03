@@ -8,10 +8,10 @@ description: |
   Spawned by: /god-repo, god-orchestrator
 tools: Read, Write, Edit, Bash, Glob
 inputs:
-  - ".godpowers/stack/DECISION.md"
+  - ".godpowers/stack/DECISION.mdx"
   - "optional .godpowers/org-context.yaml"
 outputs:
-  - ".godpowers/repo/AUDIT.md"
+  - ".godpowers/repo/AUDIT.mdx"
   - "production repository scaffold files"
 gates:
   - "RP-01 through RP-08 have-nots"
@@ -26,7 +26,7 @@ Scaffold the repository.
 
 ## Gate Check
 
-`.godpowers/stack/DECISION.md` MUST exist (or scale is trivial).
+`.godpowers/stack/DECISION.mdx` MUST exist (or scale is trivial).
 
 ## Process
 
@@ -52,7 +52,7 @@ Scaffold the repository.
    - .editorconfig
    - Dependabot or equivalent
 7. Run an audit of the scaffold
-8. Write `.godpowers/repo/AUDIT.md`
+8. Write `.godpowers/repo/AUDIT.mdx`
 
 ## Have-Nots
 
@@ -67,5 +67,5 @@ Scaffold the repository.
 ## Done Criteria
 
 - All scaffold files created
-- `.godpowers/repo/AUDIT.md` documents what was created
+- `.godpowers/repo/AUDIT.mdx` documents what was created
 - CI passes on the empty scaffold

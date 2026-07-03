@@ -54,7 +54,7 @@ For each in-scope requirement: find evidence, document gaps.
 
 ### 3. Output
 
-Write `.godpowers/compliance/pci/FINDINGS.md`:
+Write `.godpowers/compliance/pci/FINDINGS.mdx`:
 
 ```markdown
 # PCI-DSS 4.0 Audit

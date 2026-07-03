@@ -41,5 +41,5 @@
 
 - [DECISION] Repo surface sync does not publish, tag, stage, commit, delete, or rewrite broad package payload policy.
 - [DECISION] Repo surface sync does not invent agent contracts or workflow intent.
-- [DECISION] Repo surface sync logs to `.godpowers/surface/REPO-SURFACE-SYNC.md` when run with logging enabled.
+- [DECISION] Repo surface sync logs to `.godpowers/surface/REPO-SURFACE-SYNC.mdx` when run with logging enabled.
 - [DECISION] Findings that require judgment remain recommendations for scoped specialist agents.

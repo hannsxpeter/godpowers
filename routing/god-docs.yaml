@@ -14,7 +14,7 @@ execution:
   spawns: [god-docs-writer]
   context: fresh
   writes:
-    - .godpowers/docs/UPDATE-LOG.md
+    - .godpowers/docs/UPDATE-LOG.mdx
     - README and docs
 
 standards:

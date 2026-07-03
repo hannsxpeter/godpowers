@@ -1,11 +1,11 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v3.14.0 (concierge surface, first-run guidance, sandbox demo, surface control, compact next commands, surface contraction, core default install profile, verb dispatchers, one-directional state authority, generated state views, executable tier gates, executable proof, adoption metrics, dogfood, host guarantees, MCP companion tools, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, Codex host proof studies, prompt-size guardrails, coverage gating, Phase 2 blocker fixes, release documentation cleanup, the evidence producer that writes the verification records the gate consumes, enforced executed evidence on the build and harden gates, the can-close gate the orchestrator consults before closing a sub-step, the quarterback entry router that refuses new work on red and right-sizes ceremony, the work report play-by-play from the evidence ledger, structured reflections recorded after each significant action, a durable key/value memory store, a reusable lessons store that auto-records from reflections, bounded outcome retry loops that record each iteration and verdict, the read-only MCP tools work_report, route, and verification_history, the optional one-time .mythify/ ledger importer that complete the Mythify fusion, a codeauditor-grade scored code audit with an audit-remediation loop that drives findings to zero, and a default greenfield arc that runs a whole-codebase code audit after the build and a documentation pass after harden so the one-shot product ships audited and documented)
+> Status: STABLE v4.0.0 (concierge surface, first-run guidance, sandbox demo, surface control, compact next commands, surface contraction, core default install profile, verb dispatchers, one-directional state authority, generated state views, executable tier gates, executable proof, adoption metrics, dogfood, host guarantees, MCP companion tools, release surface sync, request-trace review, release hardening, maintenance hardening, security and drift hardening, deliverable progress tracking, accountability hardening, extension authoring, parser hardening, external CLI canaries, Codex host proof studies, prompt-size guardrails, coverage gating, Phase 2 blocker fixes, release documentation cleanup, the evidence producer that writes the verification records the gate consumes, enforced executed evidence on the build and harden gates, the can-close gate the orchestrator consults before closing a sub-step, the quarterback entry router that refuses new work on red and right-sizes ceremony, the work report play-by-play from the evidence ledger, structured reflections recorded after each significant action, a durable key/value memory store, a reusable lessons store that auto-records from reflections, bounded outcome retry loops that record each iteration and verdict, the read-only MCP tools work_report, route, and verification_history, the optional one-time .mythify/ ledger importer that complete the Mythify fusion, a codeauditor-grade scored code audit with an audit-remediation loop that drives findings to zero, a default greenfield arc that runs a whole-codebase code audit after the build and a documentation pass after harden so the one-shot product ships audited and documented, sibling superskill interop that detects and imports .godplans/PLAN.mdx and .godaudits/AUDIT.mdx for plan-aware arcs and GA-task remediation dispatch with sync-back companion files and staleness drift checks, mdx-first artifacts with legacy .md read fallback, and an MDX-safety artifact lint backed by the U-13 have-not)
 > Authors: Godpowers Team
-> Last updated: 2026-06-17
+> Last updated: 2026-07-03
 
 This document is the canonical design for Godpowers as a coherent product.
-v3.14.0 preserves the v3.0.0 surface contraction: the omitted installer profile
+v4.0.0 preserves the v3.0.0 surface contraction: the omitted installer profile
 is `core`, first-run and demo commands guide safer onboarding, surface control
 can preview or apply runtime profiles after install, verb dispatchers route to
 existing leaf commands,
@@ -87,8 +87,8 @@ Godpowers workflow state:
 | `.godpowers/intent.yaml` | **Intent**: what the user wants | Cargo.toml, package.json |
 | `.godpowers/state.json` | **Facts**: what was resolved/done | Cargo.lock, poetry.lock |
 | `.godpowers/runs/<id>/events.jsonl` | **History**: what happened | OpenTelemetry traces |
-| `.godpowers/domain/GLOSSARY.md` | **Vocabulary**: canonical project language and unresolved ambiguity | Domain glossary |
-| `.godpowers/REQUIREMENTS.md` | **Deliverables**: which requirements are done, in progress, or not started (derived by `lib/requirements.js`, cached in `state.json` `deliverables`) | Requirements traceability matrix |
+| `.godpowers/domain/GLOSSARY.mdx` | **Vocabulary**: canonical project language and unresolved ambiguity | Domain glossary |
+| `.godpowers/REQUIREMENTS.mdx` | **Deliverables**: which requirements are done, in progress, or not started (derived by `lib/requirements.js`, cached in `state.json` `deliverables`) | Requirements traceability matrix |
 
 Every other architectural decision falls out from how these two layers relate:
 Pillars carries portable context, while `.godpowers` carries workflow state.
@@ -136,7 +136,7 @@ downstream agent and by status/audit slash commands.
     "tier-1": {
       "prd": {
         "status": "done",
-        "artifact": "prd/PRD.md",
+        "artifact": "prd/PRD.mdx",
         "artifact-hash": "sha256:abc...",
         "agent-version": "god-pm@1.0.0",
         "have-nots-passed": ["P-01", "...", "P-15"],
@@ -155,9 +155,9 @@ with attributes.
 ```jsonl
 {"trace_id":"abc","span_id":"01","ts":"...","name":"workflow.run","attrs":{"workflow":"full-arc"}}
 {"trace_id":"abc","span_id":"02","parent":"01","ts":"...","name":"agent.start","attrs":{"agent":"god-pm","tier":"prd"}}
-{"trace_id":"abc","span_id":"02","ts":"...","name":"tool.call","attrs":{"tool":"Write","path":"prd/PRD.md"}}
+{"trace_id":"abc","span_id":"02","ts":"...","name":"tool.call","attrs":{"tool":"Write","path":"prd/PRD.mdx"}}
 {"trace_id":"abc","span_id":"02","ts":"...","name":"agent.end","attrs":{"agent":"god-pm","status":"success"}}
-{"trace_id":"abc","span_id":"03","parent":"01","ts":"...","name":"have-nots.check","attrs":{"artifact":"prd/PRD.md","passed":15,"failed":0}}
+{"trace_id":"abc","span_id":"03","parent":"01","ts":"...","name":"have-nots.check","attrs":{"artifact":"prd/PRD.mdx","passed":15,"failed":0}}
 ```
 
 This is the same shape as Datadog APM, Jaeger, Honeycomb. Future skill
@@ -984,7 +984,7 @@ not user-facing.)
 
 ```
 $ npx godpowers --migrate
-  Detected: v0.3 project (.godpowers/PROGRESS.md exists, no intent.yaml)
+  Detected: v0.3 project (.godpowers/PROGRESS.mdx exists, no intent.yaml)
   Will migrate to: v1.0
   
   Steps:
@@ -1076,7 +1076,7 @@ Each release is independently shippable. v1.0 freezes the public API.
 
 | current v2.0.0 surface | v2.0 target |
 |------------|-------------|
-| `.godpowers/PROGRESS.md` (markdown) | `.godpowers/intent.yaml` + `.godpowers/state.json` + auto-generated PROGRESS.md (legacy view) |
+| `.godpowers/PROGRESS.mdx` (markdown) | `.godpowers/intent.yaml` + `.godpowers/state.json` + auto-generated PROGRESS.md (legacy view) |
 | Implicit workflow in orchestrator prose | `workflows/full-arc.yaml` declarative |
 | Prose-only agent files | Manifest YAML front matter + prose body |
 | Smoke tests (structural only) | Unit + skill contract + record/replay E2E |
@@ -1088,6 +1088,46 @@ Each release is independently shippable. v1.0 freezes the public API.
 
 The migration is additive at every step. v0.4 introduces structures;
 v0.3 commands keep working. v1.0 freezes the public API.
+
+---
+
+## 17. Sibling Superskill Interop and Artifact Extension Policy
+
+Godpowers consumes the artifacts of its two sibling superskills without owning
+them.
+
+[DECISION] The consumed contract is `.godplans/PLAN.mdx` (godplans master
+plan) and `.godaudits/AUDIT.mdx` (godaudits report). `lib/sibling-artifacts.js`
+is the read-only parser: it detects the files, parses `GP-nnn` plan tasks and
+`GA-nnn` remediation tasks (checkbox, wave, Files/Depends on/Acceptance/Verify
+fields), and recomputes every count from the checkbox body because frontmatter
+counters are cached digests. Plan requirements use `R-<DOM>-n` ids and audit
+checks mirror them one to one as `A-<DOM>-n` across the 18 shared domain
+codes; Godpowers preserves those ids verbatim on import so traceability
+survives the handoff.
+
+[DECISION] Sibling files are read-only for Godpowers with one carve-out: when
+Godpowers executes a GP or GA task, the executing agent follows the executor
+rules embedded in PLAN.mdx/AUDIT.mdx themselves (flip the checkbox and update
+frontmatter counters in the same edit, append a session-log line, never
+renumber or reword completed work). Every other flow writes back only through
+the managed companion files `.godplans/GODPOWERS-SYNC.mdx` and
+`.godaudits/GODPOWERS-SYNC.mdx` (lib/source-sync.js); fences are never written
+into PLAN.mdx or AUDIT.mdx.
+
+[DECISION] Imports record a content hash; `sibling-artifacts.staleness`
+compares it against the current file so drift between an imported digest and
+the live sibling artifact surfaces as an explicit staleness signal instead of
+silently stale context.
+
+[DECISION] Artifact extension policy: the canonical extension for
+`.godpowers/` artifacts is `.mdx`. Reads are mdx-first with a legacy `.md`
+fallback (lib/sync-fs.js: `resolveArtifact`, `readArtifact`); writes always
+use the canonical `.mdx` name, and lib-owned generated files absorb a legacy
+`.md` twin on first write. Exemptions that stay `.md`: root `DESIGN.md` and
+`PRODUCT.md` (impeccable convention), `.godpowers/cache/` (external tool
+outputs), foreign planning-system markers (`.planning/STATE.md`, `BMAD.md`,
+and kin), and host pointer files (`CLAUDE.md`, `AGENTS.md`, ...).
 
 ---
 

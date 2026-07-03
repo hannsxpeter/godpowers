@@ -32,14 +32,14 @@ aliases for one minor release. New workflows should use `/god-status
 
 ## Process
 
-1. Check whether `.godpowers/state.json` exists. If it does not, treat `.godpowers/PROGRESS.md` only as a generated legacy fallback; if neither exists, report that no Godpowers project was found and suggest `/god-init`.
+1. Check whether `.godpowers/state.json` exists. If it does not, treat `.godpowers/PROGRESS.mdx` only as a generated legacy fallback; if neither exists, report that no Godpowers project was found and suggest `/god-init`.
 2. Resolve the runtime root and load `<runtimeRoot>/lib/dashboard.js`.
 3. Call `dashboard.compute(projectRoot)` and render the compact action brief by default.
 4. Prefer the MCP `status` tool when it is available, and fall back to the CLI or runtime module when it is not.
 5. If `--full` is present, render the complete dashboard with all proactive checks.
 6. If `--lifecycle` is present, emphasize lifecycle phase, fitting workflows, PRD visibility, roadmap visibility, and the next route.
 7. If `--locate` is present, emphasize CHECKPOINT.md, HANDOFF.md, recent events, current step, and the next route.
-8. Use `.godpowers/PROGRESS.md` only as generated fallback or legacy explanation when state.json is missing.
+8. Use `.godpowers/PROGRESS.mdx` only as generated fallback or legacy explanation when state.json is missing.
 9. Scan canonical artifact paths for PRD, design, architecture, roadmap, stack, repo, build, deploy, observe, launch, harden, sync, checkpoint, and requirements evidence.
 10. Compare disk state to recorded state and flag phantom resume or untracked work.
 11. Offer `/god-repair` when recorded state and disk evidence conflict.

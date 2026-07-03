@@ -43,7 +43,10 @@ It answers:
    - README, docs, ADRs, architecture notes, env examples, AGENTS.md
    - test presence, test command discoverability, coverage signals
    - deploy, observability, security, dependency, and ownership signals
-4. Produce `.godpowers/preflight/PREFLIGHT.md`.
+   - `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx` presence (sibling
+     superskill artifacts; a master plan is direct arc-readiness evidence,
+     a prior audit is direct scoring evidence; both are read-only)
+4. Produce `.godpowers/preflight/PREFLIGHT.mdx`.
 5. Do not edit source files, planning artifacts, configs, or docs outside
    `.godpowers/preflight/`.
 
@@ -56,7 +59,7 @@ Use these dimensions:
 | Dimension | Looks for |
 |---|---|
 | Repo shape | Project type, framework, package manager, entry points, source layout |
-| Arc readiness | Product direction, architecture notes, roadmap, deploy story, decision records |
+| Arc readiness | Product direction, architecture notes, roadmap, deploy story, decision records, godplans master plan (`.godplans/PLAN.mdx`) |
 | Pillar readiness | Tests, security, docs, observability, maintainability, UX, deployability |
 | Godpowers readiness | Disk artifacts, AGENTS.md, commands, progress state, safe agent boundaries |
 | Refactor risk | Coupling, missing tests, unclear ownership, ambiguous runtime paths |
@@ -70,7 +73,7 @@ the sequence.
 The report must be plain and evidence-backed. Every recommendation must explain
 why it comes before the next one.
 
-Write `.godpowers/preflight/PREFLIGHT.md`:
+Write `.godpowers/preflight/PREFLIGHT.mdx`:
 
 ```markdown
 # Godpowers Preflight
@@ -131,6 +134,8 @@ Use the report to choose the next pass:
 |---|---|
 | Missing basic project state | `/god-init` |
 | Unknown legacy structure | `/god-archaeology` |
+| godplans `PLAN.mdx` exists | `/god-migrate` (import the plan; do NOT reconstruct) |
+| godaudits `AUDIT.mdx` exists | `/god-migrate` then `/god-audit` in prior-audit mode (consume, do not re-derive) |
 | Existing code lacks planning artifacts | `/god-reconstruct` |
 | Debt dominates delivery risk | `/god-tech-debt` |
 | Artifacts exist but quality is unknown | `/god-audit` |

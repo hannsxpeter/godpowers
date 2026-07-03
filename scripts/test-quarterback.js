@@ -46,7 +46,7 @@ test('route refuses on a red latest verdict', () => {
 
 test('route refuses on unresolved Critical harden findings', () => {
   const project = initProject('godpowers-qb-findings-');
-  writeRel(project, '.godpowers/harden/FINDINGS.md', [
+  writeRel(project, '.godpowers/harden/FINDINGS.mdx', [
     '# Security Findings',
     '',
     '| Severity | Count |',
@@ -110,6 +110,11 @@ test('route maps review intent to a light audit', () => {
   const project = initProject('godpowers-qb-review-');
   const play = quarterback.route('audit this for security risks', { projectRoot: project });
   assert(play.route === 'review', `route: ${play.route}`);
+  // This prompt matches no recipe, so nextCommand is the hardcoded fallback.
+  // Guard against phantom commands: the fallback must be a shipped skill.
+  assert(play.nextCommand === '/god-review', `next: ${play.nextCommand}`);
+  const skillFile = path.join(__dirname, '..', 'skills', `${play.nextCommand.slice(1)}.md`);
+  assert(fs.existsSync(skillFile), `fallback skill file missing: ${skillFile}`);
 });
 
 test('route maps idea-to-production to the full arc', () => {

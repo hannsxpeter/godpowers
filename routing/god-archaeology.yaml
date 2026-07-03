@@ -13,7 +13,7 @@ execution:
   spawns: [god-archaeologist]
   context: fresh
   writes:
-    - .godpowers/archaeology/REPORT.md
+    - .godpowers/archaeology/REPORT.mdx
 
 success-path:
   next-recommended: /god-reconstruct

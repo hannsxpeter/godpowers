@@ -93,7 +93,7 @@ Both must pass. Failing either blocks the commit.
 Before fuzzy language enters PRD, architecture, roadmap, stack, or docs
 artifacts, challenge it against project vocabulary. If a code or doc scan can
 answer a question, inspect first. When a term is resolved, record it in
-`.godpowers/domain/GLOSSARY.md` with canonical spelling, avoided aliases,
+`.godpowers/domain/GLOSSARY.mdx` with canonical spelling, avoided aliases,
 relationships, and any unresolved ambiguity.
 
 ### 9. Next Commands Closeout
@@ -220,12 +220,12 @@ If the automatic step changed user-visible artifacts or changed the next
 recommendation, say it in one plain sentence:
 
 ```
-Synced project artifacts after the change. Details were written to .godpowers/SYNC-LOG.md.
+Synced project artifacts after the change. Details were written to .godpowers/SYNC-LOG.mdx.
 ```
 
 If the automatic step is routine and does not change the recommendation, keep
-the details in `.godpowers/SYNC-LOG.md`, `.godpowers/CHECKPOINT.md`, or
-`.godpowers/REVIEW-REQUIRED.md` without printing a card.
+the details in `.godpowers/SYNC-LOG.mdx`, `.godpowers/CHECKPOINT.mdx`, or
+`.godpowers/REVIEW-REQUIRED.mdx` without printing a card.
 
 Use a detailed `Auto-invoked:` card only for `--verbose`, debugging,
 release-gate evidence, or a direct user request for automation internals.
@@ -271,11 +271,11 @@ Run or apply these by default in every relevant closeout:
 - Compute `/god-next` routing after successful commands.
 - Show `/god-status` style progress after `/god-sync`, `/god-scan`, and
   `/god-mode`.
-- Suggest `/god-review-changes` when `.godpowers/REVIEW-REQUIRED.md` has
+- Suggest `/god-review-changes` when `.godpowers/REVIEW-REQUIRED.mdx` has
   pending items.
 - Suggest `/god-hygiene` after a full project run, after 30 days, or when
   status shows stale docs, deps, or review queues.
-- Suggest `/god-locate` when `.godpowers/CHECKPOINT.md` is missing, stale, or
+- Suggest `/god-locate` when `.godpowers/CHECKPOINT.mdx` is missing, stale, or
   conflicts with `state.json`.
 - Suggest `/god-automation-status` or `/god-automation-setup` when host-native
   automation support is available and `.godpowers/automations.json` has no
@@ -358,7 +358,7 @@ Never auto-run these from inference alone:
 - provider dashboard, admin console, DNS, credential, or secret checks
 - broad dependency upgrades
 - destructive repair, rollback, reset, delete, or cleanup
-- clearing `.godpowers/REVIEW-REQUIRED.md`
+- clearing `.godpowers/REVIEW-REQUIRED.mdx`
 - accepting Critical security findings
 - git stage, commit, push, package, release, or publish
 - schedule, routine, background agent, API trigger, or CI workflow creation
@@ -395,7 +395,7 @@ coordination plan.
 ## Tier 0: Orchestration
 
 ### On every invocation:
-1. Read `.godpowers/state.json` if it exists, using `.godpowers/PROGRESS.md` only as a generated legacy fallback when state is missing
+1. Read `.godpowers/state.json` if it exists, using `.godpowers/PROGRESS.mdx` only as a generated legacy fallback when state is missing
 2. Scan for existing artifacts at all canonical paths
 3. Detect operating mode (A/B/C/D)
 4. Detect project scale (trivial / small / medium / large / enterprise)
@@ -428,7 +428,7 @@ Scale determines which personas activate and how deep the planning goes.
 }
 ```
 
-`.godpowers/PROGRESS.md` is a generated human-readable view of this state.
+`.godpowers/PROGRESS.mdx` is a generated human-readable view of this state.
 Commands update tracked steps through `npx godpowers state advance --step=<step>
 --status=<status> --project=.` or through an owning command wrapper, never by
 editing the generated view.
@@ -459,7 +459,7 @@ Silence is not a status. Every tier must have an explicit entry.
    - Open questions (with owners and due dates)
 3. Run substitution test on every claim
 4. Run three-label test on every sentence
-5. Write to `.godpowers/prd/PRD.md`
+5. Write to `.godpowers/prd/PRD.mdx`
 6. Run `npx godpowers state advance --step=prd --status=done --project=.`
 
 **Have-nots (PRD fails if any are true)**:
@@ -479,7 +479,7 @@ Silence is not a status. Every tier must have an explicit entry.
 
 ### 1.2 Architecture (god arch)
 
-**Gated on**: `.godpowers/prd/PRD.md` exists and passes have-nots
+**Gated on**: `.godpowers/prd/PRD.mdx` exists and passes have-nots
 
 **Persona**: Architect agent (fresh context, reads PRD)
 
@@ -494,7 +494,7 @@ Silence is not a status. Every tier must have an explicit entry.
    - Trust boundaries
    - Data model (entities, relationships, ownership)
 4. Run have-nots check
-5. Write to `.godpowers/arch/ARCH.md`
+5. Write to `.godpowers/arch/ARCH.mdx`
 6. Run `npx godpowers state advance --step=arch --status=done --project=.`
 
 **Have-nots (Architecture fails if any are true)**:
@@ -513,7 +513,7 @@ Silence is not a status. Every tier must have an explicit entry.
 
 ### 1.3 Roadmap (god roadmap)
 
-**Gated on**: `.godpowers/arch/ARCH.md` exists and passes have-nots
+**Gated on**: `.godpowers/arch/ARCH.mdx` exists and passes have-nots
 
 **Persona**: Orchestrator (no separate persona needed)
 
@@ -527,7 +527,7 @@ Silence is not a status. Every tier must have an explicit entry.
    - Completion gate (observable, not "feels done")
    - Dependency list
    - Estimated scope (T-shirt size, not fake precision)
-6. Write to `.godpowers/roadmap/ROADMAP.md`
+6. Write to `.godpowers/roadmap/ROADMAP.mdx`
 7. Run `npx godpowers state advance --step=roadmap --status=done --project=.`
 
 **Have-nots (Roadmap fails if any are true)**:
@@ -542,7 +542,7 @@ Silence is not a status. Every tier must have an explicit entry.
 
 ### 1.4 Stack (god stack)
 
-**Gated on**: `.godpowers/arch/ARCH.md` exists
+**Gated on**: `.godpowers/arch/ARCH.mdx` exists
 
 **Process**:
 1. Read Architecture (especially NFRs, ADRs, data model)
@@ -550,7 +550,7 @@ Silence is not a status. Every tier must have an explicit entry.
    - Score candidates on fit, maturity, team familiarity, ecosystem
    - Document the flip point (when would you reverse this choice?)
    - Document the lock-in cost
-3. Write to `.godpowers/stack/DECISION.md`
+3. Write to `.godpowers/stack/DECISION.mdx`
 4. Run `npx godpowers state advance --step=stack --status=done --project=.`
 
 **Pause conditions**:
@@ -571,7 +571,7 @@ Silence is not a status. Every tier must have an explicit entry.
 4. README, CONTRIBUTING, LICENSE, SECURITY.md
 5. .gitignore, .editorconfig
 6. Run repo audit
-7. Write audit to `.godpowers/repo/AUDIT.md`
+7. Write audit to `.godpowers/repo/AUDIT.mdx`
 8. Run `npx godpowers state advance --step=repo --status=done --project=.`
 
 ### 2.2 Build (god build)
@@ -677,7 +677,7 @@ Silence is not a status. Every tier must have an explicit entry.
 4. Dependency vulnerability scan
 5. Rate limiting and abuse prevention
 6. Classify findings: Critical / High / Medium / Low
-7. Write to `.godpowers/harden/FINDINGS.md`
+7. Write to `.godpowers/harden/FINDINGS.mdx`
 
 **Critical-Finding Gate**:
 If any finding is classified Critical:
@@ -721,7 +721,7 @@ Every pause includes:
 
 ### Resume Protocol
 On resume:
-1. Read `.godpowers/state.json`, with `.godpowers/PROGRESS.md` only as a generated legacy fallback when state is missing
+1. Read `.godpowers/state.json`, with `.godpowers/PROGRESS.mdx` only as a generated legacy fallback when state is missing
 2. Scan all artifact paths
 3. Verify artifact integrity (have-nots check on existing artifacts)
 4. Pick up at the first non-done tier

@@ -13,11 +13,11 @@ Spawn the **god-launch-strategist** agent in a fresh context via the host platfo
 
 ## Setup
 
-1. Verify `.godpowers/harden/FINDINGS.md` exists with NO unresolved Critical findings.
+1. Verify `.godpowers/harden/FINDINGS.mdx` exists with NO unresolved Critical findings.
 2. If Critical findings exist: REFUSE to proceed. Tell user to resolve or
    explicitly accept the risk first.
 3. Spawn god-launch-strategist with PRD path and harden FINDINGS.md path.
-4. The agent returns structured launch evidence for `.godpowers/state.json` plus landing copy artifacts; the generated `.godpowers/launch/STATE.md` view refreshes after state mutation.
+4. The agent returns structured launch evidence for `.godpowers/state.json` plus landing copy artifacts; the generated `.godpowers/launch/STATE.mdx` view refreshes after state mutation.
 
 ## Verification
 
@@ -43,7 +43,7 @@ approval require human input.
 ## On Completion
 
 ```
-Launch complete: .godpowers/launch/STATE.md (generated view)
+Launch complete: .godpowers/launch/STATE.mdx (generated view)
 
 All Godpowers tiers done. Project is live.
 

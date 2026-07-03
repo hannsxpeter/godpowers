@@ -8,11 +8,13 @@ description: |
   Spawned by: /god-roadmap, god-orchestrator
 tools: Read, Write, Bash, Grep
 inputs:
-  - ".godpowers/prd/PRD.md"
-  - ".godpowers/arch/ARCH.md"
-  - "templates/ROADMAP.md"
+  - ".godpowers/prd/PRD.mdx"
+  - ".godpowers/arch/ARCH.mdx"
+  - "templates/ROADMAP.mdx"
+  - "references/planning/ROADMAP-ANATOMY.md"
+  - "references/planning/ROADMAP-ANTIPATTERNS.md"
 outputs:
-  - ".godpowers/roadmap/ROADMAP.md"
+  - ".godpowers/roadmap/ROADMAP.mdx"
 gates:
   - "R-01 through R-10 have-nots"
   - "topological dependency ordering"
@@ -27,14 +29,14 @@ Sequence the work.
 
 ## Gate Check
 
-`.godpowers/arch/ARCH.md` MUST exist and pass have-nots.
-Optional: `.godpowers/prep/INITIAL-FINDINGS.md` may exist as preparation
+`.godpowers/arch/ARCH.mdx` MUST exist and pass have-nots.
+Optional: `.godpowers/prep/INITIAL-FINDINGS.mdx` may exist as preparation
 context.
-Optional: `.godpowers/prep/IMPORTED-CONTEXT.md` may exist as preparation
+Optional: `.godpowers/prep/IMPORTED-CONTEXT.mdx` may exist as preparation
 context.
-Optional: `.godpowers/domain/GLOSSARY.md` may exist as domain preparation
+Optional: `.godpowers/domain/GLOSSARY.mdx` may exist as domain preparation
 context.
-Optional: `.godpowers/design/DESIGN.md` and `.godpowers/design/PRODUCT.md`
+Optional: `.godpowers/design/DESIGN.mdx` and `.godpowers/design/PRODUCT.mdx`
 may exist as early product-experience preparation.
 
 ## Imported Preparation Context
@@ -44,16 +46,16 @@ Before sequencing, compute the Pillars load set for the roadmap task with
 and `agents/repo.md` first, then routed pillars that affect delivery,
 quality, deploy, or observability.
 
-If `.godpowers/prep/INITIAL-FINDINGS.md` exists, read it first for repo risks,
+If `.godpowers/prep/INITIAL-FINDINGS.mdx` exists, read it first for repo risks,
 existing tests, docs, CI, deploy, and suggested sequencing implications.
 
-If `.godpowers/prep/IMPORTED-CONTEXT.md` exists, read its delivery signals
+If `.godpowers/prep/IMPORTED-CONTEXT.mdx` exists, read its delivery signals
 before sequencing work. Use imported legacy planning, Superpowers, BMAD, or similar
 stories and plans as hypothesis-level input only. Convert imported terminology
 into Godpowers vocabulary. Do not preserve imported methodology terminology in
 Godpowers artifacts unless the user explicitly asked for it.
 
-If `.godpowers/domain/GLOSSARY.md` exists, read it before sequencing work.
+If `.godpowers/domain/GLOSSARY.mdx` exists, read it before sequencing work.
 Use canonical terms in increment goals, gates, dependencies, and feature
 names. Treat unresolved glossary ambiguities as roadmap `[OPEN QUESTION]`
 entries when they affect dependency order, scope boundaries, or completion
@@ -77,9 +79,13 @@ Rules:
 - Keep design-derived delivery increments grounded in the PRD and ARCH.
 - If ROADMAP creates durable delivery or sequencing truth, plan updates for
   relevant pillars. In `--yolo`, apply those updates and log them to
-  `.godpowers/YOLO-DECISIONS.md`.
+  `.godpowers/YOLO-DECISIONS.mdx`.
 
 ## Process
+
+Before sequencing, read `references/planning/ROADMAP-ANATOMY.md` (horizon
+structure and increment shape) and
+`references/planning/ROADMAP-ANTIPATTERNS.md` (failure patterns to avoid).
 
 1. Read PRD (priorities) and ARCH (technical dependencies)
 2. List all requirements from PRD by their stable id
@@ -103,8 +109,8 @@ Rules:
 
 ## Output
 
-Use `templates/ROADMAP.md` (installed at `<runtime>/godpowers-templates/ROADMAP.md`)
-as the structural starting point. Write `.godpowers/roadmap/ROADMAP.md`:
+Use `templates/ROADMAP.mdx` (installed at `<runtime>/godpowers-templates/ROADMAP.mdx`)
+as the structural starting point. Write `.godpowers/roadmap/ROADMAP.mdx`:
 
 ```markdown
 # Roadmap
@@ -151,5 +157,5 @@ Defaults for god-roadmapper:
 
 ## Done Criteria
 
-- `.godpowers/roadmap/ROADMAP.md` exists
+- `.godpowers/roadmap/ROADMAP.mdx` exists
 - All have-nots pass

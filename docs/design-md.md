@@ -71,10 +71,10 @@ Triggers:
 - `package.json` has a frontend framework dep (React, Vue, Svelte,
   Next.js, Nuxt, etc. - 24 patterns recognized)
 - `pubspec.yaml` declares Flutter
-- `.godpowers/prep/INITIAL-FINDINGS.md`, `.godpowers/prep/IMPORTED-CONTEXT.md`,
+- `.godpowers/prep/INITIAL-FINDINGS.mdx`, `.godpowers/prep/IMPORTED-CONTEXT.mdx`,
   or PRD mentions UI, screens, journeys, components, product voice, brand, or
   interaction states
-- `.godpowers/stack/DECISION.md` mentions a UI framework, when stack already
+- `.godpowers/stack/DECISION.mdx` mentions a UI framework, when stack already
   exists
 - `src/components/`, `app/`, or `public/` directory exists
 
@@ -146,7 +146,7 @@ diff detected
        Stage 2 (quality): WCAG contrast + token resolution + section order
        Verdict: PASS | WARN | BLOCK
 
-  -> if BLOCK: append to .godpowers/design/REJECTED.md; abort propagation
+  -> if BLOCK: append to .godpowers/design/REJECTED.mdx; abort propagation
   -> if PASS or WARN:
        lib/impact.forDesign() computes affected files
        lib/reverse-sync.run() updates linkage and writes Implementation

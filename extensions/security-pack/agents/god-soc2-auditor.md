@@ -18,8 +18,8 @@ auditor-ready evidence.
 
 ## Gate Check
 
-A deployed system exists. `.godpowers/deploy/STATE.md` and
-`.godpowers/observe/STATE.md` exist.
+A deployed system exists. `.godpowers/deploy/STATE.mdx` and
+`.godpowers/observe/STATE.mdx` exist.
 
 ## Process
 
@@ -61,7 +61,7 @@ For each criterion, document:
 
 ### 4. Output
 
-Write `.godpowers/compliance/soc2/FINDINGS.md`:
+Write `.godpowers/compliance/soc2/FINDINGS.mdx`:
 
 ```markdown
 # SOC 2 Compliance Audit

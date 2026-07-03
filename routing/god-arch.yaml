@@ -19,14 +19,14 @@ execution:
   spawns: [god-architect]
   context: fresh
   reads:
-    - .godpowers/prd/PRD.md
-    - .godpowers/design/DESIGN.md
-    - .godpowers/design/PRODUCT.md
-    - .godpowers/prep/INITIAL-FINDINGS.md
-    - .godpowers/prep/IMPORTED-CONTEXT.md
-    - templates/ARCH.md
+    - .godpowers/prd/PRD.mdx
+    - .godpowers/design/DESIGN.mdx
+    - .godpowers/design/PRODUCT.mdx
+    - .godpowers/prep/INITIAL-FINDINGS.mdx
+    - .godpowers/prep/IMPORTED-CONTEXT.mdx
+    - templates/ARCH.mdx
   writes:
-    - .godpowers/arch/ARCH.md
+    - .godpowers/arch/ARCH.mdx
     - .godpowers/arch/adr/
 
 standards:

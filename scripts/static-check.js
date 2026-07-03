@@ -230,7 +230,7 @@ test('tier routes declare executable gate commands', () => {
   }
 });
 
-test('routing prerequisites use state initialized predicate instead of PROGRESS.md file checks', () => {
+test('routing prerequisites use state initialized predicate instead of PROGRESS view file checks', () => {
   const routingDir = path.join(ROOT, 'routing');
   const recipeDir = path.join(routingDir, 'recipes');
   const targets = [
@@ -243,20 +243,21 @@ test('routing prerequisites use state initialized predicate instead of PROGRESS.
     path.join(ROOT, 'scripts', 'gen-routing.js'),
     path.join(ROOT, 'scripts', 'gen-recipes.js')
   ];
+  const progressPredicate = /file:\.godpowers\/PROGRESS\.(?:md|mdx)\b/;
   const offenders = targets.filter(file => (
-    fs.readFileSync(file, 'utf8').includes('file:.godpowers/PROGRESS.md')
+    progressPredicate.test(fs.readFileSync(file, 'utf8'))
   ));
   if (offenders.length > 0) {
-    throw new Error(`PROGRESS.md file route predicates in ${offenders.map(file => path.relative(ROOT, file)).join(', ')}`);
+    throw new Error(`PROGRESS view file route predicates in ${offenders.map(file => path.relative(ROOT, file)).join(', ')}`);
   }
 });
 
-test('command skills do not mutate PROGRESS.md directly', () => {
+test('command skills do not mutate PROGRESS views directly', () => {
   const skillsDir = path.join(ROOT, 'skills');
   const writerPatterns = [
-    /\b(?:Update|update|Record|record|Mark|mark|Write|write|Append|append|Truncate|truncate)\s+`?(?:\.godpowers\/)?PROGRESS\.md`?/,
-    /`?(?:\.godpowers\/)?PROGRESS\.md`?\s+(?:updates?|writes?|mutations?|status\s*=|status\b)/i,
-    /\bwrites?\s+[^.\n]*\bPROGRESS\.md\b/i
+    /\b(?:Update|update|Record|record|Mark|mark|Write|write|Append|append|Truncate|truncate)\s+`?(?:\.godpowers\/)?PROGRESS\.(?:md|mdx)`?/,
+    /`?(?:\.godpowers\/)?PROGRESS\.(?:md|mdx)`?\s+(?:updates?|writes?|mutations?|status\s*=|status\b)/i,
+    /\bwrites?\s+[^.\n]*\bPROGRESS\.(?:md|mdx)\b/i
   ];
   const offenders = [];
   for (const file of fs.readdirSync(skillsDir).filter(name => name.endsWith('.md')).sort()) {
@@ -269,13 +270,13 @@ test('command skills do not mutate PROGRESS.md directly', () => {
     });
   }
   if (offenders.length > 0) {
-    throw new Error(`direct PROGRESS.md writer instructions in ${offenders.join(', ')}`);
+    throw new Error(`direct PROGRESS view writer instructions in ${offenders.join(', ')}`);
   }
 });
 
-test('command skills treat PROGRESS.md as generated or legacy fallback only', () => {
+test('command skills treat PROGRESS views as generated or legacy fallback only', () => {
   const skillsDir = path.join(ROOT, 'skills');
-  const readPattern = /\b(?:Read|read|Check|check|Verify|verify|Detect|detect|derive|derives|re-derive|re-derives|re-derived|auto-detect|auto-detects)\b.*`?(?:\.godpowers\/)?PROGRESS\.md`?/;
+  const readPattern = /\b(?:Read|read|Check|check|Verify|verify|Detect|detect|derive|derives|re-derive|re-derives|re-derived|auto-detect|auto-detects)\b.*`?(?:\.godpowers\/)?PROGRESS\.(?:md|mdx)`?/;
   const allowedContext = /\b(?:fallback|legacy|generated|human-readable view|human view|migration|migrate|import|view)\b/i;
   const offenders = [];
   for (const file of fs.readdirSync(skillsDir).filter(name => name.endsWith('.md')).sort()) {
@@ -288,11 +289,11 @@ test('command skills treat PROGRESS.md as generated or legacy fallback only', ()
     });
   }
   if (offenders.length > 0) {
-    throw new Error(`PROGRESS.md authority reads in ${offenders.join(', ')}`);
+    throw new Error(`PROGRESS view authority reads in ${offenders.join(', ')}`);
   }
 });
 
-test('state-backed gates do not require markdown STATE.md artifacts', () => {
+test('state-backed gates do not require markdown STATE view artifacts', () => {
   const artifactMap = require('../lib/artifact-map');
   const expected = {
     design: { tierKey: 'tier-1', subStepKey: 'design' },
@@ -302,7 +303,7 @@ test('state-backed gates do not require markdown STATE.md artifacts', () => {
   for (const [tier, step] of Object.entries(expected)) {
     const artifacts = artifactMap.requiredArtifactsForTier(tier) || [];
     for (const artifact of artifacts) {
-      if (/\.godpowers\/[^/]+\/STATE\.md$/.test(artifact.path)) {
+      if (/\.godpowers\/[^/]+\/STATE\.(?:md|mdx)$/.test(artifact.path)) {
         offenders.push(`${tier}:${artifact.path}`);
       }
     }
@@ -316,14 +317,14 @@ test('state-backed gates do not require markdown STATE.md artifacts', () => {
   }
 });
 
-test('state view owner covers Godpowers-owned STATE.md views', () => {
+test('state view owner covers Godpowers-owned STATE.mdx views', () => {
   const stateViews = require('../lib/state-views');
   const expected = {
-    design: '.godpowers/design/STATE.md',
-    build: '.godpowers/build/STATE.md',
-    deploy: '.godpowers/deploy/STATE.md',
-    observe: '.godpowers/observe/STATE.md',
-    launch: '.godpowers/launch/STATE.md'
+    design: '.godpowers/design/STATE.mdx',
+    build: '.godpowers/build/STATE.mdx',
+    deploy: '.godpowers/deploy/STATE.mdx',
+    observe: '.godpowers/observe/STATE.mdx',
+    launch: '.godpowers/launch/STATE.mdx'
   };
   const missing = [];
   for (const [step, relPath] of Object.entries(expected)) {
@@ -337,7 +338,7 @@ test('state view owner covers Godpowers-owned STATE.md views', () => {
 });
 
 test('route and workflow handoffs use state.json instead of generated state views', () => {
-  const generatedStateView = /\.godpowers\/(?:design|build|deploy|observe|launch)\/STATE\.md/;
+  const generatedStateView = /\.godpowers\/(?:design|build|deploy|observe|launch)\/STATE\.(?:md|mdx)/;
   const files = [
     ...walkMatching(path.join(ROOT, 'routing'), file => /\.ya?ml$/.test(file)),
     ...walkMatching(path.join(ROOT, 'workflows'), file => /\.ya?ml$/.test(file)),
@@ -357,8 +358,8 @@ test('route and workflow handoffs use state.json instead of generated state view
   }
 });
 
-test('runtime modules read generated STATE.md views only through the view owner', () => {
-  const generatedStateView = /\.godpowers\/(?:design|build|deploy|observe|launch)\/STATE\.md/;
+test('runtime modules read generated STATE views only through the view owner', () => {
+  const generatedStateView = /\.godpowers\/(?:design|build|deploy|observe|launch)\/STATE\.(?:md|mdx)/;
   const allowed = new Set([
     'lib/state-views.js',
     'scripts/static-check.js',
@@ -382,12 +383,12 @@ test('runtime modules read generated STATE.md views only through the view owner'
     });
   }
   if (offenders.length > 0) {
-    throw new Error(`direct runtime generated STATE.md reads in ${offenders.join(', ')}`);
+    throw new Error(`direct runtime generated STATE view reads in ${offenders.join(', ')}`);
   }
 });
 
-test('prompts do not direct-edit generated STATE.md views', () => {
-  const generatedStateView = /`?(?:\.godpowers\/)?(?:design|build|deploy|observe|launch)\/STATE\.md`?/;
+test('prompts do not direct-edit generated STATE views', () => {
+  const generatedStateView = /`?(?:\.godpowers\/)?(?:design|build|deploy|observe|launch)\/STATE\.(?:md|mdx)`?/;
   const directAction = /\b(?:Write|write|Update|update|Append|append|Record|record|Mark|mark|Modify|modify)\b/;
   const allowedGeneratedContext = /\b(?:generated|regenerate|regenerates|refreshes|state-views\.js|view|views|checksum warning|managed)\b/i;
   const files = [
@@ -405,7 +406,7 @@ test('prompts do not direct-edit generated STATE.md views', () => {
     });
   }
   if (offenders.length > 0) {
-    throw new Error(`direct generated STATE.md edit prompts in ${offenders.join(', ')}`);
+    throw new Error(`direct generated STATE view edit prompts in ${offenders.join(', ')}`);
   }
 });
 

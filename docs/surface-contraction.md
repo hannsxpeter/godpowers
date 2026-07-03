@@ -10,9 +10,9 @@
 
 - [DECISION] `lib/install-profiles.js` is the current source for install profile membership.
 - [DECISION] The `core` profile currently selects 19 skills from the shipped `skills/` directory.
-- [DECISION] The `builder` profile currently selects 40 skills from the shipped `skills/` directory.
-- [DECISION] The `maintainer` profile currently selects 48 skills from the shipped `skills/` directory.
-- [DECISION] The `suite` profile currently selects 21 skills from the shipped `skills/` directory.
+- [DECISION] The `builder` profile currently selects 43 skills from the shipped `skills/` directory.
+- [DECISION] The `maintainer` profile currently selects 51 skills from the shipped `skills/` directory.
+- [DECISION] The `suite` profile currently selects 24 skills from the shipped `skills/` directory.
 - [DECISION] The `full` profile currently selects 120 skills from the shipped `skills/` directory.
 - [DECISION] `lib/install-profiles.js` defaults an omitted profile to `core`.
 - [DECISION] `--profile=full` preserves every shipped slash command, including deprecated compatibility aliases.

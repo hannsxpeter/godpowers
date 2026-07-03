@@ -1,7 +1,7 @@
 ---
 name: god-resume-work
 description: |
-  Resume work from a previous session. Reads .godpowers/HANDOFF.md if it
+  Resume work from a previous session. Reads .godpowers/HANDOFF.mdx if it
   exists, otherwise re-derives state from state.json and disk, with
   PROGRESS.md as a generated legacy fallback. Continues from the last
   incomplete sub-step.
@@ -16,7 +16,7 @@ Load context and continue.
 
 ## Process
 
-1. Check for `.godpowers/HANDOFF.md`:
+1. Check for `.godpowers/HANDOFF.mdx`:
    - If exists: read it, summarize for user, ask if context is correct
    - If not: fall back to /god-status (re-derive from disk)
 
@@ -31,7 +31,7 @@ Load context and continue.
 
 4. After resuming, archive HANDOFF.md:
    - Move to `.godpowers/archive/HANDOFF-[timestamp].md` so the trail is preserved
-   - Reset `.godpowers/HANDOFF.md` (or delete) so future pauses start clean
+   - Reset `.godpowers/HANDOFF.mdx` (or delete) so future pauses start clean
 
 ## On Completion
 

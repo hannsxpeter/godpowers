@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - .godpowers/stories/STORY-*.md (status=in-progress or blocked)
+    - .godpowers/stories/STORY-*.mdx (status=in-progress or blocked)
 
 execution:
   spawns: [built-in]

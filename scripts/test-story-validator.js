@@ -102,7 +102,7 @@ test('parseStory handles deps as array', () => {
 
 test('parseStory returns error for missing frontmatter', () => {
   const tmp = mkProject();
-  const file = path.join(tmp, '.godpowers/stories/auth/STORY-auth-999.md');
+  const file = path.join(tmp, '.godpowers/stories/auth/STORY-auth-999.mdx');
   fs.writeFileSync(file, '# No frontmatter\n');
   const story = validator.parseStory(file);
   if (!story.errors.includes('missing-frontmatter')) throw new Error('not detected');

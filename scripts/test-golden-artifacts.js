@@ -44,14 +44,14 @@ const CLI  = 'examples/cli-tool';
 // --- Fixture presence -----------------------------------------------------
 
 test('saas-mrr-tracker fixture has 4 core artifacts', () => {
-  for (const f of ['prd/PRD.md', 'arch/ARCH.md', 'roadmap/ROADMAP.md', 'stack/DECISION.md']) {
+  for (const f of ['prd/PRD.mdx', 'arch/ARCH.mdx', 'roadmap/ROADMAP.mdx', 'stack/DECISION.mdx']) {
     const p = path.join(SAAS, '.godpowers', f);
     assert(exists(p), `missing: ${p}`);
   }
 });
 
 test('cli-tool fixture has 4 core artifacts', () => {
-  for (const f of ['prd/PRD.md', 'arch/ARCH.md', 'roadmap/ROADMAP.md', 'stack/DECISION.md']) {
+  for (const f of ['prd/PRD.mdx', 'arch/ARCH.mdx', 'roadmap/ROADMAP.mdx', 'stack/DECISION.mdx']) {
     const p = path.join(CLI, '.godpowers', f);
     assert(exists(p), `missing: ${p}`);
   }
@@ -60,14 +60,14 @@ test('cli-tool fixture has 4 core artifacts', () => {
 // --- Linter passes on every fixture artifact -----------------------------
 
 const FIXTURES = [
-  { p: `${SAAS}/.godpowers/prd/PRD.md`,         type: 'prd',     name: 'SaaS PRD' },
-  { p: `${SAAS}/.godpowers/arch/ARCH.md`,       type: 'arch',    name: 'SaaS ARCH' },
-  { p: `${SAAS}/.godpowers/roadmap/ROADMAP.md`, type: 'roadmap', name: 'SaaS ROADMAP' },
-  { p: `${SAAS}/.godpowers/stack/DECISION.md`,  type: 'stack',   name: 'SaaS STACK' },
-  { p: `${CLI}/.godpowers/prd/PRD.md`,          type: 'prd',     name: 'CLI PRD' },
-  { p: `${CLI}/.godpowers/arch/ARCH.md`,        type: 'arch',    name: 'CLI ARCH' },
-  { p: `${CLI}/.godpowers/roadmap/ROADMAP.md`,  type: 'roadmap', name: 'CLI ROADMAP' },
-  { p: `${CLI}/.godpowers/stack/DECISION.md`,   type: 'stack',   name: 'CLI STACK' },
+  { p: `${SAAS}/.godpowers/prd/PRD.mdx`,         type: 'prd',     name: 'SaaS PRD' },
+  { p: `${SAAS}/.godpowers/arch/ARCH.mdx`,       type: 'arch',    name: 'SaaS ARCH' },
+  { p: `${SAAS}/.godpowers/roadmap/ROADMAP.mdx`, type: 'roadmap', name: 'SaaS ROADMAP' },
+  { p: `${SAAS}/.godpowers/stack/DECISION.mdx`,  type: 'stack',   name: 'SaaS STACK' },
+  { p: `${CLI}/.godpowers/prd/PRD.mdx`,          type: 'prd',     name: 'CLI PRD' },
+  { p: `${CLI}/.godpowers/arch/ARCH.mdx`,        type: 'arch',    name: 'CLI ARCH' },
+  { p: `${CLI}/.godpowers/roadmap/ROADMAP.mdx`,  type: 'roadmap', name: 'CLI ROADMAP' },
+  { p: `${CLI}/.godpowers/stack/DECISION.mdx`,   type: 'stack',   name: 'CLI STACK' },
 ];
 
 for (const fx of FIXTURES) {
@@ -83,7 +83,7 @@ for (const fx of FIXTURES) {
 // --- Substitution-test signals (named personas, numeric anchors) ---------
 
 test('SaaS PRD names a specific persona, not a generic role', () => {
-  const txt = read(`${SAAS}/.godpowers/prd/PRD.md`);
+  const txt = read(`${SAAS}/.godpowers/prd/PRD.mdx`);
   // generic "developers" / "users" should NOT be the only persona target
   // some specific signal must appear
   const hasSpecificSignal = /MRR|founder|\$\d|SaaS/i.test(txt);
@@ -92,14 +92,14 @@ test('SaaS PRD names a specific persona, not a generic role', () => {
 });
 
 test('SaaS PRD includes numeric scope anchors ($, %, count)', () => {
-  const txt = read(`${SAAS}/.godpowers/prd/PRD.md`);
+  const txt = read(`${SAAS}/.godpowers/prd/PRD.mdx`);
   const hasNumber = /\$\d|\d+%|\d+ (customers|users|founders|seats)/i.test(txt);
   assert(hasNumber,
     'PRD lacks numeric scope anchors; have-not P-04 would fire');
 });
 
 test('CLI PRD names a specific user / use-case', () => {
-  const txt = read(`${CLI}/.godpowers/prd/PRD.md`);
+  const txt = read(`${CLI}/.godpowers/prd/PRD.mdx`);
   const hasSpecificSignal = /CLI|terminal|shell|command-line|tool|developer-facing/i.test(txt);
   assert(hasSpecificSignal, 'CLI PRD lacks specific signal');
 });
@@ -107,13 +107,13 @@ test('CLI PRD names a specific user / use-case', () => {
 // --- ADR references in ARCH map to real ADR entries ---------------------
 
 test('SaaS ARCH references at least one ADR', () => {
-  const txt = read(`${SAAS}/.godpowers/arch/ARCH.md`);
+  const txt = read(`${SAAS}/.godpowers/arch/ARCH.mdx`);
   const adrCount = (txt.match(/ADR-\d{3}/g) || []).length;
   assert(adrCount >= 1, `no ADR references in ARCH; got ${adrCount}`);
 });
 
 test('CLI ARCH references at least one ADR', () => {
-  const txt = read(`${CLI}/.godpowers/arch/ARCH.md`);
+  const txt = read(`${CLI}/.godpowers/arch/ARCH.mdx`);
   const adrCount = (txt.match(/ADR-\d{3}/g) || []).length;
   assert(adrCount >= 1, `no ADR references in CLI ARCH; got ${adrCount}`);
 });
@@ -121,14 +121,14 @@ test('CLI ARCH references at least one ADR', () => {
 // --- PRD requirement IDs referenced by ROADMAP --------------------------
 
 test('SaaS ROADMAP has milestone IDs (M-N)', () => {
-  const txt = read(`${SAAS}/.godpowers/roadmap/ROADMAP.md`);
+  const txt = read(`${SAAS}/.godpowers/roadmap/ROADMAP.mdx`);
   const milestoneCount = (txt.match(/M-\d+/g) || []).length;
   assert(milestoneCount >= 2,
     `ROADMAP lacks milestone IDs; got ${milestoneCount}`);
 });
 
 test('CLI ROADMAP has milestone IDs (M-N)', () => {
-  const txt = read(`${CLI}/.godpowers/roadmap/ROADMAP.md`);
+  const txt = read(`${CLI}/.godpowers/roadmap/ROADMAP.mdx`);
   const milestoneCount = (txt.match(/M-\d+/g) || []).length;
   assert(milestoneCount >= 2,
     `CLI ROADMAP lacks milestone IDs; got ${milestoneCount}`);
@@ -142,13 +142,13 @@ test('CLI ROADMAP has milestone IDs (M-N)', () => {
 // --- STACK DECISION has flip points -------------------------------------
 
 test('SaaS STACK DECISION names a flip point', () => {
-  const txt = read(`${SAAS}/.godpowers/stack/DECISION.md`);
+  const txt = read(`${SAAS}/.godpowers/stack/DECISION.mdx`);
   const hasFlip = /flip[ -]point|revisit|when to reconsider/i.test(txt);
   assert(hasFlip, 'STACK DECISION lacks flip points; have-not S-04 would fire');
 });
 
 test('CLI STACK DECISION names a flip point', () => {
-  const txt = read(`${CLI}/.godpowers/stack/DECISION.md`);
+  const txt = read(`${CLI}/.godpowers/stack/DECISION.mdx`);
   const hasFlip = /flip[ -]point|revisit|when to reconsider/i.test(txt);
   assert(hasFlip, 'CLI STACK DECISION lacks flip points');
 });
@@ -171,7 +171,7 @@ test('SaaS DESIGN.md exists and has the canonical sections', () => {
   const p = `${SAAS}/DESIGN.md`;
   if (!exists(p)) {
     // Some installs may have moved it under .godpowers/design/
-    const alt = `${SAAS}/.godpowers/design/DESIGN.md`;
+    const alt = `${SAAS}/.godpowers/design/DESIGN.mdx`;
     assert(exists(alt) || exists(p), `no DESIGN.md found in ${SAAS}`);
     return;
   }

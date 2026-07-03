@@ -9,7 +9,7 @@ package-level integrations.
 | Module | Purpose |
 |--------|---------|
 | `state.js` | Read, initialize, validate, and write `.godpowers/state.json`. |
-| `state-views.js` | Generate managed markdown views such as `.godpowers/PROGRESS.md` and Godpowers-owned per-tier `STATE.md` files from `state.json`. |
+| `state-views.js` | Generate managed markdown views such as `.godpowers/PROGRESS.mdx` and Godpowers-owned per-tier `STATE.md` files from `state.json`. |
 | `state-advance.js` | Mutate one tracked state step through locking and generated state view refresh. |
 | `state-lock.js` | Coordinate state writes with a lock file. |
 | `intent.js` | Read and validate `intent.yaml` from project roots or `.godpowers/`. |
@@ -80,7 +80,8 @@ package-level integrations.
 |--------|---------|
 | `context-writer.js` | Produce tool-specific context files. |
 | `context-budget.js` | Keep generated context within budget. |
-| `planning-systems.js` | Detect and import legacy planning, BMAD, and Superpowers planning context. |
+| `planning-systems.js` | Detect and import legacy planning, BMAD, Superpowers, godplans, and godaudits planning context. |
+| `sibling-artifacts.js` | Read-only parser/consumer for the sibling superskill artifacts `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx`: detection, task and finding parsing, IMPORTED-CONTEXT digests, open GA remediation tasks, and import staleness. |
 | `source-sync.js` | Write managed Godpowers progress back to source-system companion files. |
 | `design-detector.js` | Detect design-system conventions. |
 | `design-spec.js` | Normalize design specifications. |

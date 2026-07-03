@@ -17,7 +17,7 @@ execution:
   context: fresh
   secondary-spawns: [god-architect, god-planner, god-executor, god-spec-reviewer, god-quality-reviewer, god-harden-auditor, god-launch-strategist]
   writes:
-    - .godpowers/features/<slug>/PRD.md
+    - .godpowers/features/<slug>/PRD.mdx
     - feature code
 
 

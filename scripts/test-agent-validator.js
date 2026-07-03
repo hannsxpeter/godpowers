@@ -288,26 +288,26 @@ name: god-test
 description: x
 ---
 
-I write .godpowers/test/STATE.md and append to .godpowers/state.json.
+I write .godpowers/test/STATE.mdx and append to .godpowers/state.json.
 `);
   const agent = validator.parseAgentFile(file);
   const paths = validator.findOutputPaths(agent);
-  if (!paths.includes('.godpowers/test/STATE.md')) throw new Error('path missed');
+  if (!paths.includes('.godpowers/test/STATE.mdx')) throw new Error('path missed');
 });
 
 test('findOutputPaths prefers structured outputs frontmatter when present', () => {
   const file = mkAgent(`---
 name: god-test
 description: x
-outputs: [".godpowers/test/STATE.md"]
+outputs: [".godpowers/test/STATE.mdx"]
 ---
 
-I read .godpowers/prd/PRD.md and write nothing else.
+I read .godpowers/prd/PRD.mdx and write nothing else.
 `);
   const agent = validator.parseAgentFile(file);
   const paths = validator.findOutputPaths(agent);
-  if (!paths.includes('.godpowers/test/STATE.md')) throw new Error('structured path missed');
-  if (paths.includes('.godpowers/prd/PRD.md')) throw new Error('input path should not be claimed');
+  if (!paths.includes('.godpowers/test/STATE.mdx')) throw new Error('structured path missed');
+  if (paths.includes('.godpowers/prd/PRD.mdx')) throw new Error('input path should not be claimed');
 });
 
 test('findOutputPaths picks up project-root MD files', () => {

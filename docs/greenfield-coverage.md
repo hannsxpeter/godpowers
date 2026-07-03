@@ -28,19 +28,19 @@ These are produced sequentially as the arc progresses:
 | Tier | Sub-step | Artifact path | Created by | Conditional? |
 |------|----------|---------------|------------|---|
 | 0 | Orchestration | `.godpowers/state.json` | god-orchestrator | always |
-| 0 | Orchestration | `.godpowers/PROGRESS.md` | god-orchestrator | always |
+| 0 | Orchestration | `.godpowers/PROGRESS.mdx` | god-orchestrator | always |
 | 0 | Orchestration | `.godpowers/intent.yaml` (v0.5+) | god-orchestrator | always |
-| 1 | PRD | `.godpowers/prd/PRD.md` | god-pm | always |
-| 1 | Architecture | `.godpowers/arch/ARCH.md` + `adr/` | god-architect | always |
-| 1 | Roadmap | `.godpowers/roadmap/ROADMAP.md` | god-roadmapper | always |
-| 1 | Stack | `.godpowers/stack/DECISION.md` | god-stack-selector | always |
+| 1 | PRD | `.godpowers/prd/PRD.mdx` | god-pm | always |
+| 1 | Architecture | `.godpowers/arch/ARCH.mdx` + `adr/` | god-architect | always |
+| 1 | Roadmap | `.godpowers/roadmap/ROADMAP.mdx` | god-roadmapper | always |
+| 1 | Stack | `.godpowers/stack/DECISION.mdx` | god-stack-selector | always |
 | 1 | **Design** | `DESIGN.md` (project root, Google Labs spec) | god-designer | **UI projects only** |
 | 1 | **Product** | `PRODUCT.md` (project root) | impeccable teach | **UI + impeccable installed** |
-| 2 | Repo | `.godpowers/repo/AUDIT.md` + repo source | god-repo-scaffolder | always |
-| 2 | Build | `.godpowers/build/PLAN.md` + `.godpowers/state.json` + code | god-planner + god-executor | always |
+| 2 | Repo | `.godpowers/repo/AUDIT.mdx` + repo source | god-repo-scaffolder | always |
+| 2 | Build | `.godpowers/build/PLAN.mdx` + `.godpowers/state.json` + code | god-planner + god-executor | always |
 | 3 | Deploy | `.godpowers/state.json` deploy evidence | god-deploy-engineer | always |
 | 3 | Observe | `.godpowers/state.json` observe evidence | god-observability-engineer | always |
-| 3 | Harden | `.godpowers/harden/FINDINGS.md` | god-harden-auditor | always |
+| 3 | Harden | `.godpowers/harden/FINDINGS.mdx` | god-harden-auditor | always |
 | 3 | Launch | `.godpowers/state.json` launch evidence | god-launch-strategist | always |
 
 Detection of UI presence is automatic via `lib/design-detector.js`
@@ -59,10 +59,10 @@ These exist only when you use them. Empty placeholder files would be noise.
 
 | Artifact | Created when | Created by |
 |----------|--------------|------------|
-| `.godpowers/backlog/BACKLOG.md` | first `/god-add-backlog` | god-orchestrator |
-| `.godpowers/seeds/<id>.md` | first `/god-plant-seed` | god-orchestrator |
-| `.godpowers/todos/TODOS.md` | first `/god-add-todo` or `/god-note` | god-orchestrator |
-| `.godpowers/threads/<name>.md` | first `/god-thread new` | god-orchestrator |
+| `.godpowers/backlog/BACKLOG.mdx` | first `/god-add-backlog` | god-orchestrator |
+| `.godpowers/seeds/<id>.mdx` | first `/god-plant-seed` | god-orchestrator |
+| `.godpowers/todos/TODOS.mdx` | first `/god-add-todo` or `/god-note` | god-orchestrator |
+| `.godpowers/threads/<name>.mdx` | first `/god-thread new` | god-orchestrator |
 
 When `/god-reconcile` runs, missing capture artifacts return status
 `not-yet-created`. This is graceful, not a failure.
@@ -73,19 +73,19 @@ These exist after their workflow runs:
 
 | Artifact | Created by | When |
 |----------|------------|------|
-| `.godpowers/postmortems/<id>/POSTMORTEM.md` | god-incident-investigator | After /god-postmortem |
-| `.godpowers/spikes/<slug>/SPIKE.md` | god-spike-runner | After /god-spike |
-| `.godpowers/migrations/<slug>/MIGRATION.md` | god-migration-strategist | After /god-upgrade |
-| `.godpowers/features/<slug>/PRD.md` | god-pm (feature-mode) | After /god-feature |
-| `.godpowers/explore/<slug>.md` | god-explorer | After /god-explore |
-| `.godpowers/discussions/<topic>.md` | god-explorer | After /god-discuss |
-| `.godpowers/learnings/<milestone>/LEARNINGS.md` | god-orchestrator | After /god-extract-learnings |
-| `.godpowers/sprints/sprint-<n>/PLAN.md` + `RETRO.md` | god-orchestrator + god-retrospective | After /god-sprint |
-| `.godpowers/SYNC-LOG.md` | god-updater | After /god-sync (any sync run) |
-| `.godpowers/HYGIENE-REPORT.md` | god-orchestrator | After /god-hygiene |
-| `.godpowers/AUDIT-REPORT.md` | god-auditor | After /god-audit |
-| `.godpowers/HANDOFF.md` | god-orchestrator | After /god-pause-work |
-| `.godpowers/YOLO-DECISIONS.md` | god-orchestrator | When --yolo auto-resolves a pause |
+| `.godpowers/postmortems/<id>/POSTMORTEM.mdx` | god-incident-investigator | After /god-postmortem |
+| `.godpowers/spikes/<slug>/SPIKE.mdx` | god-spike-runner | After /god-spike |
+| `.godpowers/migrations/<slug>/MIGRATION.mdx` | god-migration-strategist | After /god-upgrade |
+| `.godpowers/features/<slug>/PRD.mdx` | god-pm (feature-mode) | After /god-feature |
+| `.godpowers/explore/<slug>.mdx` | god-explorer | After /god-explore |
+| `.godpowers/discussions/<topic>.mdx` | god-explorer | After /god-discuss |
+| `.godpowers/learnings/<milestone>/LEARNINGS.mdx` | god-orchestrator | After /god-extract-learnings |
+| `.godpowers/sprints/sprint-<n>/PLAN.mdx` + `RETRO.md` | god-orchestrator + god-retrospective | After /god-sprint |
+| `.godpowers/SYNC-LOG.mdx` | god-updater | After /god-sync (any sync run) |
+| `.godpowers/HYGIENE-REPORT.mdx` | god-orchestrator | After /god-hygiene |
+| `.godpowers/AUDIT-REPORT.mdx` | god-auditor | After /god-audit |
+| `.godpowers/HANDOFF.mdx` | god-orchestrator | After /god-pause-work |
+| `.godpowers/YOLO-DECISIONS.mdx` | god-orchestrator | When --yolo auto-resolves a pause |
 
 ## What `/god-mode --yolo` does about sync
 

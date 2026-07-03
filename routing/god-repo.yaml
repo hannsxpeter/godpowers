@@ -16,7 +16,7 @@ execution:
   spawns: [god-repo-scaffolder]
   context: fresh
   writes:
-    - .godpowers/repo/AUDIT.md
+    - .godpowers/repo/AUDIT.mdx
     - repo source files
 
 standards:

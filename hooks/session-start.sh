@@ -14,12 +14,20 @@
 
 set -euo pipefail
 
-PROGRESS_FILE=".godpowers/PROGRESS.md"
+# Generated views are canonically .mdx; legacy projects still hold .md twins,
+# so probe .mdx first and fall back to .md.
 STATE_FILE=".godpowers/state.json"
-CHECKPOINT_FILE=".godpowers/CHECKPOINT.md"
+PROGRESS_FILE=""
+for f in .godpowers/PROGRESS.mdx .godpowers/PROGRESS.md; do
+  if [ -f "$f" ]; then PROGRESS_FILE="$f"; break; fi
+done
+CHECKPOINT_FILE=""
+for f in .godpowers/CHECKPOINT.mdx .godpowers/CHECKPOINT.md; do
+  if [ -f "$f" ]; then CHECKPOINT_FILE="$f"; break; fi
+done
 
 # Exit silently if not in a Godpowers project
-if [ ! -f "$PROGRESS_FILE" ] && [ ! -f "$STATE_FILE" ] && [ ! -f "$CHECKPOINT_FILE" ]; then
+if [ -z "$PROGRESS_FILE" ] && [ ! -f "$STATE_FILE" ] && [ -z "$CHECKPOINT_FILE" ]; then
   exit 0
 fi
 
@@ -41,8 +49,8 @@ if command -v godpowers >/dev/null 2>&1; then
   fi
 fi
 
-# Prefer CHECKPOINT.md (the orient-a-new-session pin) when present
-if [ -f "$CHECKPOINT_FILE" ]; then
+# Prefer the checkpoint pin (the orient-a-new-session file) when present
+if [ -n "$CHECKPOINT_FILE" ]; then
   echo ""
   echo "Checkpoint ($CHECKPOINT_FILE) - read this FIRST:"
   echo ""
@@ -68,7 +76,7 @@ if [ -f "$STATE_FILE" ]; then
   else
     head -20 "$STATE_FILE"
   fi
-elif [ -f "$PROGRESS_FILE" ]; then
+elif [ -n "$PROGRESS_FILE" ]; then
   echo ""
   echo "Progress ($PROGRESS_FILE):"
   cat "$PROGRESS_FILE"

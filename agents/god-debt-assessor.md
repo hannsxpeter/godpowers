@@ -13,7 +13,7 @@ inputs:
   - "optional archaeology report"
   - "dependency and test evidence"
 outputs:
-  - ".godpowers/tech-debt/REPORT.md"
+  - ".godpowers/tech-debt/REPORT.mdx"
 gates:
   - "technical debt prioritization evidence"
   - "debt assessment have-nots"
@@ -90,7 +90,7 @@ This audit is the **point-in-time, whole-repo** read. Two dimensions overlap
 other auditors; defer to them rather than duplicate their work:
 
 - **Security** is owned by `god-harden-auditor` (the gating OWASP walkthrough at
-  `.godpowers/harden/FINDINGS.md`). When that file exists, score the Security
+  `.godpowers/harden/FINDINGS.mdx`). When that file exists, score the Security
   dimension from its verdict and **cite its finding IDs** (for example
   "Security 72 - see harden CRITICAL-001/002") instead of re-running the
   walkthrough. Record a Security finding here only for something harden did not
@@ -119,7 +119,7 @@ Use search to find candidates, then **read the cited code to confirm** before
 recording. A search hit is a lead, not a finding. Per dimension's indicators:
 - Code: grep TODO/FIXME/HACK; complexity; duplication; long functions; dead code
 - Design: god files; circular deps; mixed concerns; structure-vs-docs drift
-- Security: read `.godpowers/harden/FINDINGS.md` first and cite it; only if it
+- Security: read `.godpowers/harden/FINDINGS.mdx` first and cite it; only if it
   is absent, do a lightweight read for untrusted input into queries/shell/paths/
   HTML, secrets, weak crypto, and declared-but-unenforced guards
 - Test: critical-path coverage; assertion-free or over-mocked tests; `.skip`
@@ -144,7 +144,7 @@ impact + L or Medium + S; P2 = Medium + M; P3 = Low or XL without clear benefit.
 
 ### 5. Output
 
-Write `.godpowers/tech-debt/REPORT.md`, self-contained for an acting agent with
+Write `.godpowers/tech-debt/REPORT.mdx`, self-contained for an acting agent with
 no memory of the audit:
 
 ```markdown

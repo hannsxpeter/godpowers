@@ -20,7 +20,7 @@ execution:
   spawns: [built-in]
   context: fresh
   writes:
-    - .godpowers/REQUIREMENTS.md
+    - .godpowers/REQUIREMENTS.mdx
 
 
 success-path:

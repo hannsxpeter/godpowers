@@ -15,6 +15,10 @@ triggers:
     - "pay down tech debt"
     - "address all the findings"
     - "code audit and fix"
+    - "fix GA-"
+    - "fix the audit finding"
+    - "godaudits remediation"
+    - "remediate the godaudits findings"
 
 sequences:
   default:

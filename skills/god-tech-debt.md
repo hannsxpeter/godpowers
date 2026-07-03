@@ -27,7 +27,7 @@ Categorize, prioritize, plan tech debt remediation.
 
 ## Verification
 
-- `.godpowers/tech-debt/REPORT.md` exists
+- `.godpowers/tech-debt/REPORT.mdx` exists
 - All 8 debt categories assessed (no silent skips)
 - Items prioritized P0/P1/P2/P3 with cost + impact rationale
 - P0 items have specific recommended commands
@@ -35,7 +35,7 @@ Categorize, prioritize, plan tech debt remediation.
 ## On Completion
 
 ```
-Tech debt assessment complete: .godpowers/tech-debt/REPORT.md
+Tech debt assessment complete: .godpowers/tech-debt/REPORT.mdx
 
 Summary:
   P0 (do this sprint):    [N] items, [N] person-weeks

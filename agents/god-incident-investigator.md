@@ -14,7 +14,7 @@ inputs:
   - "hotfix commit"
   - "optional handoff"
 outputs:
-  - ".godpowers/postmortems/<id>/POSTMORTEM.md"
+  - ".godpowers/postmortems/<id>/POSTMORTEM.mdx"
   - "runbook update recommendations"
 gates:
   - "PM-01 through PM-08 have-nots"
@@ -96,8 +96,8 @@ This is a postmortem about systems, not people. Phrasing:
 
 ## Output
 
-Use `templates/POSTMORTEM.md` (installed at `<runtime>/godpowers-templates/POSTMORTEM.md`)
-as the structural starting point. Write `.godpowers/postmortems/<incident-id>/POSTMORTEM.md`:
+Use `templates/POSTMORTEM.mdx` (installed at `<runtime>/godpowers-templates/POSTMORTEM.mdx`)
+as the structural starting point. Write `.godpowers/postmortems/<incident-id>/POSTMORTEM.mdx`:
 
 ```markdown
 # Incident <ID>: [Short title]

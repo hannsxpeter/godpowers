@@ -13,7 +13,7 @@ inputs:
   - "changed behavior evidence"
 outputs:
   - "updated docs"
-  - ".godpowers/docs/UPDATE-LOG.md"
+  - ".godpowers/docs/UPDATE-LOG.mdx"
 gates:
   - "DC-01 through DC-05 have-nots"
   - "docs match code evidence"
@@ -33,7 +33,7 @@ Write docs that don't lie.
 Identify:
 - Existing docs (README, CONTRIBUTING, API docs, comments, etc.)
 - Code surface (public APIs, exported functions, CLI commands, env vars)
-- `.godpowers/domain/GLOSSARY.md` if present
+- `.godpowers/domain/GLOSSARY.mdx` if present
 - Doc gaps: code with no docs
 - Doc drift: docs claiming things that aren't true
 - Term drift: docs using avoided aliases or conflicting meanings
@@ -44,7 +44,7 @@ For every claim in existing docs:
 - Find the corresponding code
 - Verify the claim matches reality
 - Flag drift (e.g., README says `npm start` but package.json has `npm run dev`)
-- If `.godpowers/domain/GLOSSARY.md` exists, verify docs use canonical terms
+- If `.godpowers/domain/GLOSSARY.mdx` exists, verify docs use canonical terms
   unless a non-canonical term is quoted from an external source.
 
 ### 3. Write or Update
@@ -60,9 +60,9 @@ For each section:
 
 Update README.md, CONTRIBUTING.md, docs/, etc. as needed.
 
-Use `templates/DOCS-UPDATE-LOG.md` (installed at
-`<runtime>/godpowers-templates/DOCS-UPDATE-LOG.md`) as the structural
-starting point. Write a summary to `.godpowers/docs/UPDATE-LOG.md`:
+Use `templates/DOCS-UPDATE-LOG.mdx` (installed at
+`<runtime>/godpowers-templates/DOCS-UPDATE-LOG.mdx`) as the structural
+starting point. Write a summary to `.godpowers/docs/UPDATE-LOG.mdx`:
 
 ```markdown
 # Docs Update Log

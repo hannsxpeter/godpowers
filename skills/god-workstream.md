@@ -35,7 +35,7 @@ Active workstreams:
 Switch to a different workstream:
 1. Verify current workstream has no uncommitted changes (or stash them)
 2. Checkout `workstream/<name>` branch
-3. Load `.godpowers/workstreams/<name>/PROGRESS.md` as active state
+3. Load `.godpowers/workstreams/<name>/PROGRESS.mdx` as active state
 
 ### `/god-workstream status`
 Show detailed status of current workstream and any conflicts with main.

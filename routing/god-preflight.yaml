@@ -15,13 +15,15 @@ execution:
   spawns: [god-auditor]
   context: fresh
   writes:
-    - .godpowers/preflight/PREFLIGHT.md
+    - .godpowers/preflight/PREFLIGHT.mdx
 
 success-path:
   next-recommended: /god-archaeology
   alternatives:
     - command: /god-init
       when: missing-basic-project-state
+    - command: /god-migrate
+      when: sibling-plan-or-audit-detected
     - command: /god-reconstruct
       when: planning-artifacts-missing
     - command: /god-tech-debt

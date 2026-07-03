@@ -15,7 +15,7 @@ execution:
   context: fresh
   secondary-spawns: [god-planner, god-executor, god-spec-reviewer, god-quality-reviewer, god-deploy-engineer, god-observability-engineer]
   writes:
-    - .godpowers/migrations/<slug>/MIGRATION.md
+    - .godpowers/migrations/<slug>/MIGRATION.mdx
 
 standards:
   substitution-test: true

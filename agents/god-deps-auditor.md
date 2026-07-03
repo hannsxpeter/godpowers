@@ -13,7 +13,7 @@ inputs:
   - "stack decision"
   - "security advisories"
 outputs:
-  - ".godpowers/deps/AUDIT.md"
+  - ".godpowers/deps/AUDIT.mdx"
   - "classified dependency update plan"
 gates:
   - "DP-01 through DP-06 have-nots"
@@ -92,8 +92,8 @@ For each update:
 
 ### 5. Output
 
-Use `templates/DEPS-AUDIT.md` (installed at `<runtime>/godpowers-templates/DEPS-AUDIT.md`)
-as the structural starting point. Write `.godpowers/deps/AUDIT.md`:
+Use `templates/DEPS-AUDIT.mdx` (installed at `<runtime>/godpowers-templates/DEPS-AUDIT.mdx`)
+as the structural starting point. Write `.godpowers/deps/AUDIT.mdx`:
 
 ```markdown
 # Dependency Audit

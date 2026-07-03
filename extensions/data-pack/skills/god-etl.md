@@ -13,7 +13,7 @@ extension: "@godpowers/data-pack"
 Spawn god-etl-engineer for an ETL pipeline build.
 
 ## Verification
-- `.godpowers/data/etl/<pipeline-name>/PIPELINE.md` exists
+- `.godpowers/data/etl/<pipeline-name>/PIPELINE.mdx` exists
 - Idempotency verified
 - Lag SLO defined
 - Dead-letter wired

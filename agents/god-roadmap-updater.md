@@ -8,10 +8,10 @@ description: |
   Spawned by: end of feature-addition recipe execution, /god-roadmap update
 tools: Read, Write, Edit, Bash, Grep, Glob
 inputs:
-  - ".godpowers/roadmap/ROADMAP.md"
+  - ".godpowers/roadmap/ROADMAP.mdx"
   - "completed feature change description"
 outputs:
-  - "updated .godpowers/roadmap/ROADMAP.md"
+  - "updated .godpowers/roadmap/ROADMAP.mdx"
   - "roadmap changelog entry"
 gates:
   - "roadmap update have-nots"
@@ -26,7 +26,7 @@ After feature work, the roadmap should reflect reality.
 
 ## Inputs
 
-- Current `.godpowers/roadmap/ROADMAP.md`
+- Current `.godpowers/roadmap/ROADMAP.mdx`
 - Description of what just happened (feature added, milestone completed, scope changed)
 - Optional: changeset (commits since the relevant milestone started)
 
@@ -76,7 +76,7 @@ After any update, re-check roadmap have-nots:
 
 ## Output
 
-Updated `.godpowers/roadmap/ROADMAP.md` with:
+Updated `.godpowers/roadmap/ROADMAP.mdx` with:
 - Diff annotations: what was added, removed, moved
 - Updated dates
 - Re-validated have-nots
@@ -85,7 +85,7 @@ Updated `.godpowers/roadmap/ROADMAP.md` with:
 
 After updating, the deliverable ledger can be refreshed via
 `lib/requirements.writeLedger(projectRoot)` (or `/god-progress`) so
-`.godpowers/REQUIREMENTS.md` reflects the roadmap changes.
+`.godpowers/REQUIREMENTS.mdx` reflects the roadmap changes.
 
 Append a `## Changelog` section at the bottom:
 

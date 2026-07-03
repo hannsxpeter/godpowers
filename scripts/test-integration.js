@@ -122,7 +122,7 @@ test('end-to-end: code with annotations populates linkage and PRD footer', () =>
   const tmp = mkProject();
   state.init(tmp, 'e2e-test');
   fs.mkdirSync(path.join(tmp, '.godpowers', 'prd'), { recursive: true });
-  fs.writeFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.md'),
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.mdx'),
     '# PRD\n\nuser content\n\nP-MUST-01 stable id mention\n');
   fs.mkdirSync(path.join(tmp, 'src'), { recursive: true });
   fs.writeFileSync(path.join(tmp, 'src/login.ts'),
@@ -135,7 +135,7 @@ test('end-to-end: code with annotations populates linkage and PRD footer', () =>
   if (!fwd['P-MUST-01']) throw new Error('linkage not populated');
 
   // PRD footer added (without touching user content)
-  const prd = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.md'), 'utf8');
+  const prd = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.mdx'), 'utf8');
   if (!prd.includes('user content')) throw new Error('user content lost');
   if (!prd.includes('P-MUST-01')) throw new Error('PRD footer missing');
   if (!prd.includes('godpowers:linkage:begin')) throw new Error('fence missing');

@@ -20,7 +20,7 @@ Plan a Product Hunt launch.
 
 ## Verification
 
-- `.godpowers/launch/product-hunt/PLAN.md` exists
+- `.godpowers/launch/product-hunt/PLAN.mdx` exists
 - Gallery plan has 3+ images
 - Tagline passes substitution test
 - Maker comment drafted
@@ -28,7 +28,7 @@ Plan a Product Hunt launch.
 ## On Completion
 
 ```
-Product Hunt plan ready: .godpowers/launch/product-hunt/PLAN.md
+Product Hunt plan ready: .godpowers/launch/product-hunt/PLAN.mdx
 
 Tagline: [chosen]
 Hunter: self-hunt OR [name]

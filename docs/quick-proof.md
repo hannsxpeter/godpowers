@@ -110,13 +110,13 @@ Godpowers routes the work through project state and artifacts:
 
 ```text
 .godpowers/state.json
-.godpowers/PROGRESS.md
-.godpowers/prd/PRD.md
-.godpowers/arch/ARCH.md
-.godpowers/roadmap/ROADMAP.md
-.godpowers/stack/DECISION.md
-.godpowers/build/PLAN.md
-.godpowers/harden/FINDINGS.md
+.godpowers/PROGRESS.mdx
+.godpowers/prd/PRD.mdx
+.godpowers/arch/ARCH.mdx
+.godpowers/roadmap/ROADMAP.mdx
+.godpowers/stack/DECISION.mdx
+.godpowers/build/PLAN.mdx
+.godpowers/harden/FINDINGS.mdx
 ```
 
 The difference is the audit trail. Code is only one output. The project memory,

@@ -65,7 +65,7 @@ For each: find the implementing code/config and cite it. If missing, flag.
 
 ### 5. Output
 
-Write `.godpowers/compliance/hipaa/FINDINGS.md`:
+Write `.godpowers/compliance/hipaa/FINDINGS.mdx`:
 
 ```markdown
 # HIPAA Security Rule Audit

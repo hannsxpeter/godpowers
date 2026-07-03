@@ -45,5 +45,5 @@ jobs:
       - checkpoint-sync
     with:
       action: compose-hygiene-report
-      output: .godpowers/HYGIENE-REPORT.md
+      output: .godpowers/HYGIENE-REPORT.mdx
       dashboard: action-brief

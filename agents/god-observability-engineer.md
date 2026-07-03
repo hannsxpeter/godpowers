@@ -8,9 +8,11 @@ description: |
   Spawned by: /god-observe, god-orchestrator
 tools: Read, Write, Edit, Bash, Grep, Glob
 inputs:
-  - ".godpowers/prd/PRD.md success metrics"
-  - ".godpowers/arch/ARCH.md"
+  - ".godpowers/prd/PRD.mdx success metrics"
+  - ".godpowers/arch/ARCH.mdx"
   - ".godpowers/state.json deploy evidence"
+  - "references/shipping/OBSERVE-SLO-EXAMPLES.md"
+  - "references/shipping/OBSERVE-ANTIPATTERNS.md"
 outputs:
   - ".godpowers/state.json observability evidence"
   - "alert and dashboard configs"
@@ -35,6 +37,10 @@ plus a single external access bundle. A deferred staging URL must not block
 observability setup when local or CI-verifiable checks can still run.
 
 ## Process
+
+Before wiring anything, read `references/shipping/OBSERVE-SLO-EXAMPLES.md`
+(worked SLO, error-budget-policy, alert, and runbook examples) and
+`references/shipping/OBSERVE-ANTIPATTERNS.md` (failure patterns to avoid).
 
 ### 1. SLOs (tied to PRD success metrics)
 For each PRD success metric, define an SLO:
@@ -92,7 +98,7 @@ For each PRD success metric, define an SLO:
 
 ## Output
 
-Return observability evidence for `.godpowers/state.json`; `lib/state-views.js` generates `.godpowers/observe/STATE.md` with:
+Return observability evidence for `.godpowers/state.json`; `lib/state-views.js` generates `.godpowers/observe/STATE.mdx` with:
 - SLO definitions
 - Error budget policies
 - Alert catalog

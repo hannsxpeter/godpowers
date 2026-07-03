@@ -15,11 +15,11 @@ execution:
   spawns: [god-reconstructor]
   context: fresh
   writes:
-    - .godpowers/prd/PRD.md
-    - .godpowers/arch/ARCH.md
-    - .godpowers/roadmap/ROADMAP.md
-    - .godpowers/stack/DECISION.md
-    - .godpowers/RECONSTRUCTION-LOG.md
+    - .godpowers/prd/PRD.mdx
+    - .godpowers/arch/ARCH.mdx
+    - .godpowers/roadmap/ROADMAP.mdx
+    - .godpowers/stack/DECISION.mdx
+    - .godpowers/RECONSTRUCTION-LOG.mdx
 
 success-path:
   next-recommended: /god-audit

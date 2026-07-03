@@ -24,7 +24,7 @@ const FAKE_STATE = {
   project: { name: 'demo', mode: 'A', scale: 'medium' },
   tiers: {
     'tier-1': {
-      prd: { status: 'done', artifact: '.godpowers/prd/PRD.md' },
+      prd: { status: 'done', artifact: '.godpowers/prd/PRD.mdx' },
       arch: { status: 'pending' }
     }
   }

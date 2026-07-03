@@ -63,7 +63,7 @@ User runs `/god-sync` after manual changes. Useful for:
 Before spawning, show a concise sync note:
 
 ```
-Syncing project artifacts after this workflow. Details will be written to .godpowers/SYNC-LOG.md.
+Syncing project artifacts after this workflow. Details will be written to .godpowers/SYNC-LOG.mdx.
 ```
 
 Use the detailed helper list only with `--verbose` or release-gate debugging.
@@ -99,7 +99,7 @@ Sync status:
     + checkpoint-sync: <CHECKPOINT.md updated or skipped>
     + context-refresh: <updated AGENTS.md/tool pointers, no-op, or skipped by setting>
   Artifacts: <changed files, no-op, or deferred>
-  Log: .godpowers/SYNC-LOG.md
+  Log: .godpowers/SYNC-LOG.mdx
 
 If this path ran only a local helper, say:
   Agent: none, local runtime only

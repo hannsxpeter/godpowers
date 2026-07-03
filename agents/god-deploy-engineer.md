@@ -7,9 +7,11 @@ description: |
   Spawned by: /god-deploy, god-orchestrator
 tools: Read, Write, Edit, Bash, Glob
 inputs:
-  - ".godpowers/arch/ARCH.md"
-  - ".godpowers/stack/DECISION.md"
+  - ".godpowers/arch/ARCH.mdx"
+  - ".godpowers/stack/DECISION.mdx"
   - ".godpowers/state.json build evidence"
+  - "references/shipping/DEPLOY-PATTERNS.md"
+  - "references/shipping/DEPLOY-ANTIPATTERNS.md"
 outputs:
   - ".godpowers/state.json deploy evidence"
   - "CI and deploy configuration"
@@ -30,6 +32,11 @@ Set up the deploy pipeline.
 Build is complete. All tests pass. `.godpowers/state.json` records `tier-2.build.status == done` with passing build verification commands.
 
 ## Process
+
+Before configuring anything, read `references/shipping/DEPLOY-PATTERNS.md`
+(same-artifact promotion, expand-contract, real health checks, tested
+rollback) and
+`references/shipping/DEPLOY-ANTIPATTERNS.md` (failure patterns to avoid).
 
 1. Read ARCH for deployment topology
 2. Read stack DECISION for hosting/CI choices
@@ -73,7 +80,7 @@ Build is complete. All tests pass. `.godpowers/state.json` records `tier-2.build
 - If real staging is not reachable, build the closest local staging harness and
   run the same smoke command against it.
 - If provider credentials, DNS, TLS, dashboard access, or production secrets are
-  missing, write `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md`.
+  missing, write `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx`.
 - That file must contain the smallest next access item, exact env var names
   only when needed by the next command, exact provider links only when a failed
   check proves they are needed, and the command Godpowers will run after access
@@ -104,7 +111,7 @@ Build is complete. All tests pass. `.godpowers/state.json` records `tier-2.build
 
 ## Output
 
-Return deploy evidence for `.godpowers/state.json`; `lib/state-views.js` generates `.godpowers/deploy/STATE.md` from these fields:
+Return deploy evidence for `.godpowers/state.json`; `lib/state-views.js` generates `.godpowers/deploy/STATE.mdx` from these fields:
 
 ```markdown
 # Deploy State

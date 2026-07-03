@@ -16,7 +16,7 @@ execution:
   spawns: [god-auditor]
   context: fresh
   writes:
-    - .godpowers/AUDIT-REPORT.md
+    - .godpowers/AUDIT-REPORT.mdx
 
 
 success-path:

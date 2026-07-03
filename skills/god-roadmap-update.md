@@ -22,7 +22,7 @@ Keep ROADMAP.md as a living artifact.
 
 ## Setup
 
-1. Verify `.godpowers/roadmap/ROADMAP.md` exists
+1. Verify `.godpowers/roadmap/ROADMAP.mdx` exists
 2. Determine the operation:
    - Mark complete: which milestone?
    - Append: where (Now/Next/Later) and what?
@@ -48,7 +48,7 @@ After god-roadmap-updater returns:
 ## On Completion
 
 ```
-Roadmap updated: .godpowers/roadmap/ROADMAP.md
+Roadmap updated: .godpowers/roadmap/ROADMAP.mdx
 
 Change: [description]
 Have-nots: still passing

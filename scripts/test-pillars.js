@@ -159,11 +159,11 @@ test('planArtifactSync proposes by default and auto-applies under yolo', () => {
   const tmp = mkTmp();
   pillars.init(tmp, { corePillars: ['arch'] });
 
-  const normal = pillars.planArtifactSync(tmp, ['.godpowers/arch/ARCH.md']);
+  const normal = pillars.planArtifactSync(tmp, ['.godpowers/arch/ARCH.mdx']);
   if (normal.length !== 1) throw new Error(`expected 1 proposal, got ${normal.length}`);
   if (normal[0].action !== 'propose') throw new Error(`expected propose, got ${normal[0].action}`);
 
-  const yolo = pillars.planArtifactSync(tmp, ['.godpowers/arch/ARCH.md'], { yolo: true });
+  const yolo = pillars.planArtifactSync(tmp, ['.godpowers/arch/ARCH.mdx'], { yolo: true });
   if (yolo.length !== 1) throw new Error(`expected 1 yolo proposal, got ${yolo.length}`);
   if (yolo[0].action !== 'auto-apply') throw new Error(`expected auto-apply, got ${yolo[0].action}`);
 });
@@ -179,14 +179,14 @@ test('applyArtifactSync writes managed source sections into mapped pillars', () 
     ''
   ].join('\n'));
 
-  const result = pillars.applyArtifactSync(tmp, ['.godpowers/arch/ARCH.md'], { yolo: true });
+  const result = pillars.applyArtifactSync(tmp, ['.godpowers/arch/ARCH.mdx'], { yolo: true });
   if (result.length !== 1) throw new Error(`expected 1 sync result, got ${result.length}`);
   if (result[0].pillar !== 'arch') throw new Error(`expected arch, got ${result[0].pillar}`);
   if (result[0].signals !== 2) throw new Error(`expected 2 signals, got ${result[0].signals}`);
 
   const arch = fs.readFileSync(path.join(tmp, 'agents', 'arch.md'), 'utf8');
   if (!arch.includes(pillars.PILLAR_SYNC_FENCE_BEGIN)) throw new Error('sync fence missing');
-  if (!arch.includes('.godpowers/arch/ARCH.md')) throw new Error('artifact source missing');
+  if (!arch.includes('.godpowers/arch/ARCH.mdx')) throw new Error('artifact source missing');
   if (!arch.includes('auto-applied by yolo')) throw new Error('yolo mode missing');
   if (!arch.includes('Use a modular monolith')) throw new Error('decision signal missing');
   if (!arch.includes('queue latency exceeds 500 ms')) throw new Error('hypothesis signal missing');
@@ -206,10 +206,10 @@ test('pillarizeExisting converts an existing Godpowers project into Pillars', ()
   const context = fs.readFileSync(path.join(tmp, 'agents', 'context.md'), 'utf8');
   const arch = fs.readFileSync(path.join(tmp, 'agents', 'arch.md'), 'utf8');
   const stack = fs.readFileSync(path.join(tmp, 'agents', 'stack.md'), 'utf8');
-  if (!context.includes('.godpowers/prd/PRD.md')) throw new Error('PRD not linked to context pillar');
+  if (!context.includes('.godpowers/prd/PRD.mdx')) throw new Error('PRD not linked to context pillar');
   if (!context.includes('studio operators')) throw new Error('PRD signal not extracted');
-  if (!arch.includes('.godpowers/arch/ARCH.md')) throw new Error('ARCH not linked to arch pillar');
-  if (!stack.includes('.godpowers/stack/DECISION.md')) throw new Error('STACK not linked to stack pillar');
+  if (!arch.includes('.godpowers/arch/ARCH.mdx')) throw new Error('ARCH not linked to arch pillar');
+  if (!stack.includes('.godpowers/stack/DECISION.mdx')) throw new Error('STACK not linked to stack pillar');
 });
 
 test('extractDurableSignalsFromText sanitizes restricted characters', () => {

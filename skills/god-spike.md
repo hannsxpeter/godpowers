@@ -72,7 +72,7 @@ The user reviews the SPIKE.md and decides:
 ## On Completion
 
 ```
-Spike complete: .godpowers/spikes/<question-slug>/SPIKE.md
+Spike complete: .godpowers/spikes/<question-slug>/SPIKE.mdx
 
 Time-boxed: [N hours]
 Time spent: [actual]

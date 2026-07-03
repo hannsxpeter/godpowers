@@ -15,7 +15,7 @@ execution:
   context: fresh
   secondary-spawns: [god-executor, god-quality-reviewer]
   writes:
-    - .godpowers/deps/AUDIT.md
+    - .godpowers/deps/AUDIT.mdx
 
 standards:
   substitution-test: true

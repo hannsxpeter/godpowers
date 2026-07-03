@@ -40,14 +40,14 @@ Add a feature to an already-existing project.
 ### Phase 1: Mini-PRD
 Spawn **god-pm** in fresh context with instructions:
 "This is a feature addition to an existing product. Write a feature-scoped
-PRD section. The product PRD already exists at .godpowers/prd/PRD.md; do NOT
-rewrite it. Append the feature spec to .godpowers/features/<feature-slug>/PRD.md."
+PRD section. The product PRD already exists at .godpowers/prd/PRD.mdx; do NOT
+rewrite it. Append the feature spec to .godpowers/features/<feature-slug>/PRD.mdx."
 
 ### Phase 2: Micro-architecture (conditional)
 If the feature touches new architectural ground:
 Spawn **god-architect** with instructions:
 "Existing ARCH.md describes the system. This feature extends it. Write only
-the architectural deltas to .godpowers/features/<feature-slug>/ARCH-DELTA.md
+the architectural deltas to .godpowers/features/<feature-slug>/ARCH-DELTA.mdx
 and update relevant ADRs."
 
 If the feature fits within existing architecture: skip this phase.
@@ -63,7 +63,7 @@ Feature flag the rollout if the feature is high-risk.
 ### Phase 5: Harden (just the new code)
 Spawn **god-harden-auditor** with instructions:
 "Review only the new code added for this feature. Existing code already
-audited at .godpowers/harden/FINDINGS.md."
+audited at .godpowers/harden/FINDINGS.mdx."
 
 ### Phase 6: Soft launch
 No landing page. No marketing. The feature ships behind a flag, gradually

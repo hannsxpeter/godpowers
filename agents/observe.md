@@ -15,7 +15,7 @@ see_also: [quality]
 ## Signals
 
 - [DECISION] `lib/events.js` writes hash-chained JSONL events under `.godpowers/runs/<run-id>/events.jsonl`.
-- [DECISION] `lib/checkpoint.js` writes `.godpowers/CHECKPOINT.md` as the durable orientation pin for future sessions.
+- [DECISION] `lib/checkpoint.js` writes `.godpowers/CHECKPOINT.mdx` as the durable orientation pin for future sessions.
 - [DECISION] `/god-logs`, `/god-metrics`, and `/god-trace` read the event stream.
 - [DECISION] `lib/dashboard.js` renders disk-derived project status, action brief, proactive checks, and host guarantees.
 - [DECISION] Event vocabulary includes local helper, dashboard, host capability, dogfood, source-system import, sync-back, repo-doc sync, and repo-surface sync events.

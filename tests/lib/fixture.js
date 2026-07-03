@@ -59,7 +59,7 @@ function listGodpowersArtifacts(projectPath) {
       const relPath = path.join(rel, entry.name);
       if (entry.isDirectory()) {
         walk(fullPath, relPath);
-      } else if (entry.name.endsWith('.md') || entry.name.endsWith('.json')) {
+      } else if (entry.name.endsWith('.mdx') || entry.name.endsWith('.md') || entry.name.endsWith('.json')) {
         artifacts.push(relPath);
       }
     }

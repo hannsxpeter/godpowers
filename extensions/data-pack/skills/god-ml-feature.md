@@ -13,7 +13,7 @@ extension: "@godpowers/data-pack"
 Spawn god-ml-feature-engineer.
 
 ## Verification
-- `.godpowers/data/ml-features/<name>/FEATURE.md` exists
+- `.godpowers/data/ml-features/<name>/FEATURE.mdx` exists
 - Training-serving consistency proven
 - Freshness SLO documented
 - Drift detection wired

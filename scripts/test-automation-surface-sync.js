@@ -75,7 +75,7 @@ function fixture() {
     'execution:',
     '  spawns: [god-writer]',
     '  writes:',
-    '    - .godpowers/write/REPORT.md',
+    '    - .godpowers/write/REPORT.mdx',
     'success-path:',
     '  next-recommended: /god-status'
   ].join('\n'));
@@ -138,7 +138,7 @@ test('route quality sync requires gate commands for executable tier routes', () 
     'execution:',
     '  spawns: [built-in]',
     '  writes:',
-    '    - .godpowers/prd/PRD.md',
+    '    - .godpowers/prd/PRD.mdx',
     'standards:',
     '  substitution-test: true',
     '  three-label-test: true',

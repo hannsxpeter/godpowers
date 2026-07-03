@@ -16,16 +16,16 @@ execution:
   spawns: [god-reconciler]
   context: fresh
   reads:
-    - .godpowers/prd/PRD.md
-    - .godpowers/arch/ARCH.md
-    - .godpowers/roadmap/ROADMAP.md
-    - .godpowers/stack/DECISION.md
-    - .godpowers/repo/AUDIT.md
+    - .godpowers/prd/PRD.mdx
+    - .godpowers/arch/ARCH.mdx
+    - .godpowers/roadmap/ROADMAP.mdx
+    - .godpowers/stack/DECISION.mdx
+    - .godpowers/repo/AUDIT.mdx
     - .godpowers/state.json
-    - .godpowers/harden/FINDINGS.md
-    - .godpowers/backlog/BACKLOG.md
+    - .godpowers/harden/FINDINGS.mdx
+    - .godpowers/backlog/BACKLOG.mdx
     - .godpowers/seeds/
-    - .godpowers/todos/TODOS.md
+    - .godpowers/todos/TODOS.mdx
     - .godpowers/threads/
 
 success-path:

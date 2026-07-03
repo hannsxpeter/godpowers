@@ -527,7 +527,7 @@ Creates `pr/<original-branch>` filtering out `.godpowers/` commits. Push that br
 
 ```
 /god-extract-learnings   <- writes LEARNINGS.md
-[share .godpowers/learnings/<milestone>/LEARNINGS.md]
+[share .godpowers/learnings/<milestone>/LEARNINGS.mdx]
 ```
 
 ### Multi-perspective decision (acting like a team)
@@ -742,7 +742,7 @@ Reads disk state, suggests the right command with reason.
 ```
 Shows which PRD requirements and roadmap increments are done, in progress, or
 not started, derived from the linkage map. Refreshes the
-`.godpowers/REQUIREMENTS.md` checklist you can open or share.
+`.godpowers/REQUIREMENTS.mdx` checklist you can open or share.
 
 ### "Is the project healthy?"
 

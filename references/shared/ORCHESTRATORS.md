@@ -45,17 +45,17 @@ If you arrive at Godpowers carrying artifacts from another system,
 `/god-init` Mode B (gap-fill) and `/god-migrate` read what exists and map it
 forward:
 
-- legacy planning `.planning/` or `.legacy-planning/` context -> `.godpowers/prep/IMPORTED-CONTEXT.md`
+- legacy planning `.planning/` or `.legacy-planning/` context -> `.godpowers/prep/IMPORTED-CONTEXT.mdx`
   and optional native seed artifacts
 - BMAD `_bmad-output/` or `.bmad/` context -> imported preparation context and
   open questions for PRD, architecture, roadmap, and stack
 - Superpowers specs or plans -> imported preparation context and native
   Godpowers seed artifacts when confidence is high
-- Existing PRD-like documents -> `.godpowers/prd/PRD.md` after
+- Existing PRD-like documents -> `.godpowers/prd/PRD.mdx` after
   substitution-test rewrite if needed
 - Existing ADRs -> `.godpowers/arch/adr/`
-- Existing roadmap or milestones -> `.godpowers/roadmap/ROADMAP.md`
-- Existing story or ticket files -> `.godpowers/stories/STORY-*.md` through
+- Existing roadmap or milestones -> `.godpowers/roadmap/ROADMAP.mdx`
+- Existing story or ticket files -> `.godpowers/stories/STORY-*.mdx` through
   `/god-story`
 
 Mode B does not delete the source files. It produces Godpowers artifacts

@@ -14,7 +14,7 @@ execution:
   spawns: [built-in]
   context: fresh
   writes:
-    - .godpowers/HANDOFF.md
+    - .godpowers/HANDOFF.mdx
 
 
 success-path:

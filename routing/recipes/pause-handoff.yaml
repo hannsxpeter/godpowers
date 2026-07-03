@@ -16,6 +16,6 @@ sequences:
     description: "Pause work, hand off to teammate"
     steps:
       - command: "/god-pause-work"
-        why: "Save HANDOFF.md with context"
+        why: "Save HANDOFF.mdx with context"
 
 default-sequence: default

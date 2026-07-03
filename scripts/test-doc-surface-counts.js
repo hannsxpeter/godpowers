@@ -70,6 +70,22 @@ assertIncludes('ARCHITECTURE-MAP.md', `| Slash commands | ${counts.skills} |`);
 assertIncludes('ARCHITECTURE-MAP.md', `| Intent recipes | ${counts.recipes} |`);
 assertIncludes('ARCHITECTURE-MAP.md', `**JS runtime modules** | **${counts.libModules}**`);
 
+// Install-profile sizes in docs/surface-contraction.md rotted silently as the
+// profiles grew. Derive each size from lib/install-profiles.js selection
+// against the shipped skills/ directory so the doc cannot drift again.
+const installProfiles = require(path.join(root, 'lib', 'install-profiles.js'));
+const skillNames = fs
+  .readdirSync(path.join(root, 'skills'))
+  .filter((name) => /^god.*\.md$/.test(name))
+  .map((name) => name.replace(/\.md$/, ''));
+for (const profile of [...Object.keys(installProfiles.PROFILE_SKILLS), 'full']) {
+  const size = installProfiles.selectedSkillNames(profile, skillNames).size;
+  assertIncludes(
+    'docs/surface-contraction.md',
+    `The \`${profile}\` profile currently selects ${size} skills from the shipped \`skills/\` directory.`
+  );
+}
+
 // Catalog completeness (DOC-004 / PATTERN-E): every lib/*.js must have a row in
 // lib/README.md so the "living module catalog" cannot silently drift again.
 const libReadme = read(path.join('lib', 'README.md'));

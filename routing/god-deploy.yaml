@@ -21,7 +21,7 @@ execution:
   writes:
     - .godpowers/state.json
     - deploy config
-    - .godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md when needed
+    - .godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx when needed
 
 standards:
   substitution-test: true

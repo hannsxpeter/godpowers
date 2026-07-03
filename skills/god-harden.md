@@ -15,7 +15,7 @@ Spawn the **god-harden-auditor** agent in a fresh context via the host platform'
 
 1. Verify build is complete through `.godpowers/state.json` `tier-2.build.status == done`.
 2. Spawn god-harden-auditor with full code access.
-3. The agent writes `.godpowers/harden/FINDINGS.md`.
+3. The agent writes `.godpowers/harden/FINDINGS.mdx`.
 
 ## Verification
 
@@ -52,7 +52,7 @@ If ANY finding is Critical:
 
 If FINDINGS.md has 0 Critical findings:
 ```
-Harden complete: .godpowers/harden/FINDINGS.md
+Harden complete: .godpowers/harden/FINDINGS.mdx
 [N] High, [N] Medium, [N] Low. 0 Critical. Launch gate: PASSED.
 
 Suggested next: /god-launch (put it in front of users)
@@ -60,7 +60,7 @@ Suggested next: /god-launch (put it in front of users)
 
 If FINDINGS.md has Critical findings:
 ```
-Harden complete: .godpowers/harden/FINDINGS.md
+Harden complete: .godpowers/harden/FINDINGS.mdx
 [N] CRITICAL findings. Launch gate: BLOCKED.
 
 Suggested next: Resolve Critical findings, then re-run /god-harden.
@@ -70,7 +70,7 @@ Use /god-debug if you need help with the fix.
 
 ## Re-invocation contract
 
-What happens if `/god-harden` is run when `.godpowers/harden/FINDINGS.md` already exists:
+What happens if `/god-harden` is run when `.godpowers/harden/FINDINGS.mdx` already exists:
 
 | Existing state | Behavior |
 |---|---|

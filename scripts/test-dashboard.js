@@ -48,10 +48,10 @@ test('compute reports progress and planning visibility from disk', () => {
   const tmp = mkProject();
   state.init(tmp, 'demo');
   state.updateSubStep(tmp, 'tier-0', 'orchestration', { status: 'done' });
-  state.updateSubStep(tmp, 'tier-1', 'prd', { status: 'done', artifact: 'prd/PRD.md' });
-  writeRel(tmp, '.godpowers/prd/PRD.md', '# PRD\n');
-  writeRel(tmp, '.godpowers/CHECKPOINT.md', '# Checkpoint\n');
-  writeRel(tmp, '.godpowers/SYNC-LOG.md', '# Sync Log\n');
+  state.updateSubStep(tmp, 'tier-1', 'prd', { status: 'done', artifact: 'prd/PRD.mdx' });
+  writeRel(tmp, '.godpowers/prd/PRD.mdx', '# PRD\n');
+  writeRel(tmp, '.godpowers/CHECKPOINT.mdx', '# Checkpoint\n');
+  writeRel(tmp, '.godpowers/SYNC-LOG.mdx', '# Sync Log\n');
 
   const result = dashboard.compute(tmp, { git: false });
   assert(result.state === 'in progress', `state: ${result.state}`);
@@ -142,7 +142,7 @@ test('action brief does not let routine maintenance compete with planning next s
 test('pending review file becomes proactive review suggestion', () => {
   const tmp = mkProject();
   state.init(tmp, 'review-demo');
-  writeRel(tmp, '.godpowers/REVIEW-REQUIRED.md',
+  writeRel(tmp, '.godpowers/REVIEW-REQUIRED.mdx',
     '# Review Required\n\n### P1 Missing test\n\n- [ ] REVIEW: add coverage\n');
   const result = dashboard.compute(tmp, { git: false });
   assert(/pending/.test(result.proactive.reviews), `reviews: ${result.proactive.reviews}`);

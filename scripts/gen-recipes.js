@@ -73,7 +73,7 @@ const recipes = [
     keywords: ['returning', 'after break', 'pick up where left', 'resume project', 'coming back after a week', 'back after a week', 'coming back'],
     stateConditions: ['state:initialized == true'],
     sequence: [
-      { cmd: '/god-resume-work', why: 'If HANDOFF.md exists, restore context', skipWhen: 'no-handoff' },
+      { cmd: '/god-resume-work', why: 'If HANDOFF.mdx exists, restore context', skipWhen: 'no-handoff' },
       { cmd: '/god-status', why: 'Current state from disk' },
       { cmd: '/god-hygiene', why: 'Check what may have drifted' },
       { cmd: '/god-next', why: 'Pick up where you left off' }
@@ -337,7 +337,7 @@ const recipes = [
     description: 'Pause work, hand off to teammate',
     keywords: ['hand off', 'teammate takes over', 'pause for someone'],
     sequence: [
-      { cmd: '/god-pause-work', why: 'Save HANDOFF.md with context' }
+      { cmd: '/god-pause-work', why: 'Save HANDOFF.mdx with context' }
     ]
   },
   {

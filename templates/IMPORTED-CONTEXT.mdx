@@ -6,7 +6,7 @@
 
 ## Sources Detected
 
-- [DECISION] Source system: [legacy planning / Superpowers / BMAD / other].
+- [DECISION] Source system: [legacy planning / Superpowers / BMAD / godplans / godaudits / other].
 - [DECISION] Source path: [relative path].
 - [DECISION] Managed sync-back path: [relative path or "not enabled"].
 - [HYPOTHESIS] Useful signal: [what this source appears to clarify].
@@ -33,6 +33,22 @@
 - [HYPOTHESIS] Risk or compliance signal: [imported detail].
 - [OPEN QUESTION] Imported technical ambiguity: [question] -- Owner: user -- Due: before /god-arch.
 
+## Executable Plan Signals (godplans only)
+
+- [DECISION] Plan file: [.godplans/PLAN.mdx or "not detected"].
+- [DECISION] GP task counts: [total / done, recounted from checkboxes, not frontmatter].
+- [DECISION] Requirement id domains present: [`R-<DOM>-n` domains, e.g. `R-SEC`, `R-DB`, or "none"].
+- [DECISION] Executor rules block present: [yes / no].
+- [HYPOTHESIS] Plan-derived product intent: [what the plan appears to target beyond its literal tasks].
+
+## Audit Signals (godaudits only)
+
+- [DECISION] Audit file: [.godaudits/AUDIT.mdx or "not detected"].
+- [DECISION] Per-domain scores: [domain: score list from the Scorecard, or "none"].
+- [DECISION] Open GA remediation tasks: [count and ids, recounted from checkboxes].
+- [DECISION] Open Critical/High findings: [F-ids or "none"].
+- [HYPOTHESIS] Audit-derived risk signal: [what the findings imply beyond their literal text].
+
 ## Use Rules
 
 - [DECISION] Godpowers agents may use this artifact as preparation context only.
@@ -40,4 +56,6 @@
 - [DECISION] This artifact must not override native Pillars files under `agents/*.md`.
 - [DECISION] If imported context conflicts with user intent or a Godpowers artifact, the Godpowers artifact wins and the conflict becomes an open question.
 - [DECISION] PRD, architecture, roadmap, and stack agents should cite imported signals as `[HYPOTHESIS]` until confirmed by Godpowers artifacts or the user.
+- [DECISION] Carve-out: facts read from `.godplans/PLAN.mdx` or `.godaudits/AUDIT.mdx` (GP/GA task status, `R-<DOM>-n` and `A-<DOM>-n` ids, scores) are `[DECISION]`-grade citations of authored intent when cited by GP/R id; product claims inferred beyond the plan stay `[HYPOTHESIS]`.
+- [DECISION] `.godplans/` and `.godaudits/` artifacts are read-only for Godpowers except when executing GP/GA tasks under the executor rules embedded in those files; all other write-back uses only `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`.
 - [DECISION] Sync-back must preserve source-system context through managed companion files or fences, not by overwriting arbitrary source-system artifacts.

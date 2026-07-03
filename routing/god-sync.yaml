@@ -18,7 +18,7 @@ execution:
   secondary-spawns: [god-pm, god-architect, god-roadmap-updater, god-harden-auditor]
   writes:
     - any updated artifacts (PRD, ARCH, ROADMAP, STACK, etc.)
-    - .godpowers/SYNC-LOG.md (append-only)
+    - .godpowers/SYNC-LOG.mdx (append-only)
 
 standards:
   gate-on-failure: pause-for-user

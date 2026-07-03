@@ -34,7 +34,7 @@ More mechanical have-nots wired in over time. Interpretive checks (e.g.,
 | Form | What it does |
 |---|---|
 | `/god-lint` | Lint every known artifact in `.godpowers/` and project root |
-| `/god-lint <path>` | Lint one specific file (e.g., `.godpowers/prd/PRD.md`) |
+| `/god-lint <path>` | Lint one specific file (e.g., `.godpowers/prd/PRD.mdx`) |
 | `/god-lint --json` | Output structured JSON instead of human report |
 | `/god-lint --errors-only` | Show only error-severity findings |
 
@@ -58,7 +58,7 @@ More mechanical have-nots wired in over time. Interpretive checks (e.g.,
 ```
 /god-lint report
 
-.godpowers/prd/PRD.md
+.godpowers/prd/PRD.mdx
   Type: prd
   Errors: 2, Warnings: 1, Info: 0
   [P-04] ERROR line 24: Success metric without timeline.
@@ -68,7 +68,7 @@ More mechanical have-nots wired in over time. Interpretive checks (e.g.,
   [U-02] WARNING line 12: Unlabeled sentence: "We will build the best..."
          -> Tag with [DECISION], [HYPOTHESIS], or [OPEN QUESTION].
 
-.godpowers/arch/ARCH.md
+.godpowers/arch/ARCH.mdx
   Type: arch
   Errors: 0, Warnings: 0, Info: 0
   Clean: no findings.
@@ -82,7 +82,7 @@ Aggregate: 2 errors, 1 warning, 0 info across 2 files.
 {
   "results": [
     {
-      "path": ".godpowers/prd/PRD.md",
+      "path": ".godpowers/prd/PRD.mdx",
       "type": "prd",
       "summary": { "errors": 2, "warnings": 1, "infos": 0 },
       "findings": [

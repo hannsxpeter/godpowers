@@ -16,13 +16,13 @@ execution:
   spawns: [god-stack-selector]
   context: fresh
   reads:
-    - .godpowers/arch/ARCH.md
-    - .godpowers/design/DESIGN.md
-    - .godpowers/design/PRODUCT.md
-    - .godpowers/prep/INITIAL-FINDINGS.md
-    - .godpowers/prep/IMPORTED-CONTEXT.md
+    - .godpowers/arch/ARCH.mdx
+    - .godpowers/design/DESIGN.mdx
+    - .godpowers/design/PRODUCT.mdx
+    - .godpowers/prep/INITIAL-FINDINGS.mdx
+    - .godpowers/prep/IMPORTED-CONTEXT.mdx
   writes:
-    - .godpowers/stack/DECISION.md
+    - .godpowers/stack/DECISION.mdx
 
 standards:
   substitution-test: true

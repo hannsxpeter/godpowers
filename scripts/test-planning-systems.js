@@ -86,11 +86,11 @@ test('importPlanningContext writes prep context and Godpowers seed artifacts', (
   write(path.join(tmp, '.planning', 'ROADMAP.md'), '# Roadmap\n\n## Phase 1\n');
 
   const result = planningSystems.importPlanningContext(tmp);
-  assert(result.importedContextPath === '.godpowers/prep/IMPORTED-CONTEXT.md', 'bad imported context path');
-  assert(result.writtenArtifacts.includes('prd/PRD.md'), 'PRD seed not written');
-  assert(result.writtenArtifacts.includes('roadmap/ROADMAP.md'), 'roadmap seed not written');
+  assert(result.importedContextPath === '.godpowers/prep/IMPORTED-CONTEXT.mdx', 'bad imported context path');
+  assert(result.writtenArtifacts.includes('prd/PRD.mdx'), 'PRD seed not written');
+  assert(result.writtenArtifacts.includes('roadmap/ROADMAP.mdx'), 'roadmap seed not written');
 
-  const imported = fs.readFileSync(path.join(tmp, '.godpowers', 'prep', 'IMPORTED-CONTEXT.md'), 'utf8');
+  const imported = fs.readFileSync(path.join(tmp, '.godpowers', 'prep', 'IMPORTED-CONTEXT.mdx'), 'utf8');
   assert(imported.includes('[DECISION] Source system: legacy planning.'), 'source not documented');
   assert(imported.includes('[HYPOTHESIS]'), 'hypothesis labels missing');
 

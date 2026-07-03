@@ -2,7 +2,7 @@
 name: god-add-backlog
 description: |
   Add an idea to the backlog. Less urgent than a todo. Reviewed periodically
-  via /god-add-backlog list. Captured in .godpowers/backlog/BACKLOG.md.
+  via /god-add-backlog list. Captured in .godpowers/backlog/BACKLOG.mdx.
 
   Triggers on: "god add backlog", "/god-add-backlog", "backlog this", "for later"
 ---
@@ -13,7 +13,7 @@ Add an idea to the backlog parking lot.
 
 ## Process
 
-1. Append to `.godpowers/backlog/BACKLOG.md`:
+1. Append to `.godpowers/backlog/BACKLOG.mdx`:
 
 ```markdown
 - [date] [idea description] (source: [conversation context])

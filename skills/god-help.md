@@ -111,6 +111,9 @@ Built-in, no spawned agent. Reads:
 - `.godpowers/state.json` for current state
 - `<runtimeRoot>/lib/dashboard.js` for the next route when available
 - `<runtimeRoot>/lib/command-families.js` for family cards and ladders
+- `<runtimeRoot>/references/shared/GLOSSARY.md` for canonical definitions of
+  Godpowers vocabulary (tier, sub-step, artifact, gate, have-not, mode, scale)
+  when the user asks what a term means
 
 Resolve `<runtimeRoot>` as `<projectRoot>` when
 `<projectRoot>/lib/dashboard.js` exists. Otherwise use the installed bundle at

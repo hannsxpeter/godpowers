@@ -113,7 +113,7 @@ deployed staging verification until the user provides
 When auto-invoked, show a concise default note:
 
 ```text
-Verified the evidenced runtime target. Details were written to .godpowers/runtime/<run-id>/summary.md.
+Verified the evidenced runtime target. Details were written to .godpowers/runtime/<run-id>/summary.mdx.
 ```
 
 Use a detailed `Auto-invoked:` card only with `--verbose` or debugging.

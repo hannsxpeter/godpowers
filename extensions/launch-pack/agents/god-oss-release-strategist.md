@@ -73,7 +73,7 @@ Don't:
 
 ## Output
 
-Write `.godpowers/launch/oss/PLAN.md`:
+Write `.godpowers/launch/oss/PLAN.mdx`:
 
 ```markdown
 # OSS Release Plan

@@ -47,11 +47,11 @@ test('state init writes managed per-tier STATE.md views with valid checksums', (
   state.init(tmp, 'tier-view-demo');
 
   for (const relPath of [
-    '.godpowers/design/STATE.md',
-    '.godpowers/build/STATE.md',
-    '.godpowers/deploy/STATE.md',
-    '.godpowers/observe/STATE.md',
-    '.godpowers/launch/STATE.md'
+    '.godpowers/design/STATE.mdx',
+    '.godpowers/build/STATE.mdx',
+    '.godpowers/deploy/STATE.mdx',
+    '.godpowers/observe/STATE.mdx',
+    '.godpowers/launch/STATE.mdx'
   ]) {
     const file = stateViewFile(tmp, relPath);
     const content = readStateView(tmp, relPath);
@@ -81,7 +81,7 @@ test('managed progress view preserves user content outside the fence', () => {
 
 test('managed per-tier state view preserves user content outside the fence', () => {
   const tmp = mkProject('godpowers-state-views-tier-preserve-');
-  const relPath = '.godpowers/deploy/STATE.md';
+  const relPath = '.godpowers/deploy/STATE.mdx';
   const file = stateViewFile(tmp, relPath);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, '# User Deploy Notes\n\nKeep this deploy note.\n');
@@ -121,7 +121,7 @@ test('tampered managed progress fence emits a warning and is replaced', () => {
 test('tampered managed per-tier state fence emits a warning and is replaced', () => {
   const tmp = mkProject('godpowers-state-views-tier-tamper-');
   const current = state.init(tmp, 'tier-tamper-demo');
-  const relPath = '.godpowers/deploy/STATE.md';
+  const relPath = '.godpowers/deploy/STATE.mdx';
   const file = stateViewFile(tmp, relPath);
   const tampered = readStateView(tmp, relPath).replace('Status: `pending`.', 'Status: `done`.');
   fs.writeFileSync(file, tampered);
@@ -135,7 +135,7 @@ test('tampered managed per-tier state fence emits a warning and is replaced', ()
 
   assert(result.some(item => item.path === file && item.written === true),
     'tampered per-tier fence should be rewritten');
-  assert(warnings.some(warning => warning.includes('.godpowers/deploy/STATE.md')),
+  assert(warnings.some(warning => warning.includes('.godpowers/deploy/STATE.mdx')),
     `warnings: ${JSON.stringify(warnings)}`);
   assert(parsed.validChecksum === true, 'repaired per-tier checksum should validate');
   assert(repaired.includes('Status: `pending`.'), 'expected per-tier managed body missing');
@@ -158,10 +158,10 @@ test('state.updateSubStep refreshes deploy STATE.md evidence from state.json', (
   state.init(tmp, 'deploy-refresh-demo');
   state.updateSubStep(tmp, 'tier-3', 'deploy', {
     status: 'done',
-    artifact: 'deploy/STATE.md',
+    artifact: 'deploy/STATE.mdx',
     'verified-target-type': 'local-staging',
     'rollback-evidence': 'npm run rollback:smoke',
-    'external-access-deferral': '.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md',
+    'external-access-deferral': '.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx',
     verification: {
       commands: [
         {
@@ -174,8 +174,8 @@ test('state.updateSubStep refreshes deploy STATE.md evidence from state.json', (
       ]
     }
   });
-  const content = readStateView(tmp, '.godpowers/deploy/STATE.md');
-  const parsed = stateViews.parseManaged(stateViewFile(tmp, '.godpowers/deploy/STATE.md'));
+  const content = readStateView(tmp, '.godpowers/deploy/STATE.mdx');
+  const parsed = stateViews.parseManaged(stateViewFile(tmp, '.godpowers/deploy/STATE.mdx'));
 
   assert(parsed.validChecksum === true, 'deploy state view checksum should validate');
   assert(content.includes('- [DECISION] Status: `done`.'), 'deploy status was not refreshed');
@@ -183,7 +183,7 @@ test('state.updateSubStep refreshes deploy STATE.md evidence from state.json', (
     'deploy verification command missing');
   assert(content.includes('| verified-target-type | local-staging |'), 'deploy target evidence missing');
   assert(content.includes('| rollback-evidence | npm run rollback:smoke |'), 'deploy rollback evidence missing');
-  assert(content.includes('| external-access-deferral | .godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md |'),
+  assert(content.includes('| external-access-deferral | .godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx |'),
     'deploy external access deferral missing');
 });
 
@@ -227,8 +227,8 @@ asyncTest('state.writeAsync refreshes per-tier STATE.md views from state.json', 
       }
     }
   });
-  const content = readStateView(tmp, '.godpowers/build/STATE.md');
-  const parsed = stateViews.parseManaged(stateViewFile(tmp, '.godpowers/build/STATE.md'));
+  const content = readStateView(tmp, '.godpowers/build/STATE.mdx');
+  const parsed = stateViews.parseManaged(stateViewFile(tmp, '.godpowers/build/STATE.mdx'));
 
   assert(content.includes('- [DECISION] Project: async-tier-view.'), 'async tier view project missing');
   assert(content.includes('| npm test | pass | 0 | - | - | - |'), 'async tier verification missing');

@@ -80,7 +80,7 @@ Patch updates: N applied
 Minor updates: N applied
 Major updates: N deferred to /god-upgrade
 
-Audit: .godpowers/deps/AUDIT.md
+Audit: .godpowers/deps/AUDIT.mdx
 
 Suggested next:
   - For each major version deferred: /god-upgrade

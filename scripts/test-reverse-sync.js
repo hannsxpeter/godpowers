@@ -20,10 +20,10 @@ function mkProject() {
   fs.mkdirSync(path.join(tmp, '.godpowers', 'arch'), { recursive: true });
   fs.mkdirSync(path.join(tmp, '.godpowers', 'roadmap'), { recursive: true });
   fs.mkdirSync(path.join(tmp, '.godpowers', 'stack'), { recursive: true });
-  fs.writeFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.md'), '# PRD\n\nuser content here.\n');
-  fs.writeFileSync(path.join(tmp, '.godpowers', 'arch', 'ARCH.md'), '# ARCH\n\nuser content here.\n');
-  fs.writeFileSync(path.join(tmp, '.godpowers', 'roadmap', 'ROADMAP.md'), '# Roadmap\n\nuser content here.\n');
-  fs.writeFileSync(path.join(tmp, '.godpowers', 'stack', 'DECISION.md'), '# Stack\n\nuser content here.\n');
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.mdx'), '# PRD\n\nuser content here.\n');
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'arch', 'ARCH.mdx'), '# ARCH\n\nuser content here.\n');
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'roadmap', 'ROADMAP.mdx'), '# Roadmap\n\nuser content here.\n');
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'stack', 'DECISION.mdx'), '# Stack\n\nuser content here.\n');
   fs.writeFileSync(path.join(tmp, 'DESIGN.md'), '---\nname: Test\n---\n\n## Overview\n');
   return tmp;
 }
@@ -36,13 +36,13 @@ console.log('\n  Reverse-sync behavioral tests\n');
 
 test('readFenced returns no fence when none present', () => {
   const tmp = mkProject();
-  const r = reverseSync.readFenced(path.join(tmp, '.godpowers/prd/PRD.md'));
+  const r = reverseSync.readFenced(path.join(tmp, '.godpowers/prd/PRD.mdx'));
   if (r.fenced !== '') throw new Error('false positive');
 });
 
 test('writeFenced creates fence and preserves user content', () => {
   const tmp = mkProject();
-  const file = path.join(tmp, '.godpowers/prd/PRD.md');
+  const file = path.join(tmp, '.godpowers/prd/PRD.mdx');
   const before = fs.readFileSync(file, 'utf8');
   reverseSync.writeFenced(file, 'fenced content');
   const after = fs.readFileSync(file, 'utf8');
@@ -54,7 +54,7 @@ test('writeFenced creates fence and preserves user content', () => {
 
 test('writeFenced is idempotent', () => {
   const tmp = mkProject();
-  const file = path.join(tmp, '.godpowers/prd/PRD.md');
+  const file = path.join(tmp, '.godpowers/prd/PRD.mdx');
   reverseSync.writeFenced(file, 'fenced content');
   const first = fs.readFileSync(file, 'utf8');
   reverseSync.writeFenced(file, 'fenced content');
@@ -64,7 +64,7 @@ test('writeFenced is idempotent', () => {
 
 test('writeFenced replaces existing fence content (refresh)', () => {
   const tmp = mkProject();
-  const file = path.join(tmp, '.godpowers/prd/PRD.md');
+  const file = path.join(tmp, '.godpowers/prd/PRD.mdx');
   reverseSync.writeFenced(file, 'first version');
   reverseSync.writeFenced(file, 'second version');
   const content = fs.readFileSync(file, 'utf8');
@@ -135,8 +135,24 @@ test('appendFooters preserves user content', () => {
   const tmp = mkProject();
   linkage.addLink(tmp, 'P-MUST-01', 'src/login.ts');
   reverseSync.appendFooters(tmp);
-  const content = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.md'), 'utf8');
+  const content = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.mdx'), 'utf8');
   if (!content.includes('user content here.')) throw new Error('user content lost');
+});
+
+test('appendFooters writes into a legacy .md twin without creating .mdx', () => {
+  const tmp = mkProject();
+  fs.renameSync(
+    path.join(tmp, '.godpowers/prd/PRD.mdx'),
+    path.join(tmp, '.godpowers/prd/PRD.md')
+  );
+  linkage.addLink(tmp, 'P-MUST-01', 'src/login.ts');
+  reverseSync.appendFooters(tmp);
+  if (fs.existsSync(path.join(tmp, '.godpowers/prd/PRD.mdx'))) {
+    throw new Error('should not create a bare .mdx next to legacy .md');
+  }
+  const legacy = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.md'), 'utf8');
+  if (!legacy.includes('P-MUST-01')) throw new Error('footer not appended to legacy twin');
+  if (!legacy.includes('user content here.')) throw new Error('user content lost');
 });
 
 test('appendFooters skips missing artifact files', () => {
@@ -174,7 +190,7 @@ test('run populates linkage map and PRD footer', () => {
   const fwd = linkage.readForward(tmp);
   if (!fwd['P-MUST-01']) throw new Error('linkage not populated');
 
-  const prd = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.md'), 'utf8');
+  const prd = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.mdx'), 'utf8');
   if (!prd.includes('P-MUST-01')) throw new Error('PRD footer not appended');
   if (!prd.includes('user content here.')) throw new Error('user content lost');
 });
@@ -182,7 +198,7 @@ test('run populates linkage map and PRD footer', () => {
 test('run caches deliverable summary in state.json when requirements exist', () => {
   const tmp = mkProject();
   state.init(tmp, 'reverse-sync-deliverables');
-  fs.writeFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.md'), [
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.mdx'), [
     '# PRD',
     '',
     '## Functional Requirements',
@@ -191,7 +207,7 @@ test('run caches deliverable summary in state.json when requirements exist', () 
     '- P-MUST-01 [DECISION] User can log in -- Acceptance: token returned',
     ''
   ].join('\n'));
-  fs.writeFileSync(path.join(tmp, '.godpowers', 'roadmap', 'ROADMAP.md'), [
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'roadmap', 'ROADMAP.mdx'), [
     '# Roadmap',
     '',
     '## Now',
@@ -238,9 +254,9 @@ test('run is idempotent (no duplicate fences after re-run)', () => {
   fs.mkdirSync(path.join(tmp, 'src'), { recursive: true });
   fs.writeFileSync(path.join(tmp, 'src/login.ts'), '// Implements: P-MUST-01');
   reverseSync.run(tmp, { runImpeccable: false });
-  const after1 = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.md'), 'utf8');
+  const after1 = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.mdx'), 'utf8');
   reverseSync.run(tmp, { runImpeccable: false });
-  const after2 = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.md'), 'utf8');
+  const after2 = fs.readFileSync(path.join(tmp, '.godpowers/prd/PRD.mdx'), 'utf8');
   // Should have exactly one fence-begin marker
   const beginCount = (after2.match(/godpowers:linkage:begin/g) || []).length;
   if (beginCount !== 1) throw new Error(`expected 1 fence-begin, got ${beginCount}`);

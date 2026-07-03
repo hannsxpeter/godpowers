@@ -15,7 +15,7 @@ execution:
   context: fresh
   secondary-spawns: [god-docs-writer]
   writes:
-    - .godpowers/postmortems/<id>/POSTMORTEM.md
+    - .godpowers/postmortems/<id>/POSTMORTEM.mdx
 
 standards:
   substitution-test: true

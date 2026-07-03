@@ -20,8 +20,8 @@ execution:
   spawns: [built-in]
   context: fresh
   reads:
-    - .godpowers/prep/INITIAL-FINDINGS.md
-    - .godpowers/prep/IMPORTED-CONTEXT.md
+    - .godpowers/prep/INITIAL-FINDINGS.mdx
+    - .godpowers/prep/IMPORTED-CONTEXT.mdx
   writes:
     []
 

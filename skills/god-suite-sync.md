@@ -24,7 +24,7 @@ warnings by default; surfaces in REVIEW-REQUIRED.md per repo.
    - Ask user: which version is canonical?
    - On answer: copy canonical content to all other siblings
 4. After all drifted files resolved: append entry to
-   `.godpowers/suite/SYNC-LOG.md`
+   `.godpowers/suite/SYNC-LOG.mdx`
 5. Refresh suite state.
 
 ## Forms
@@ -38,7 +38,7 @@ warnings by default; surfaces in REVIEW-REQUIRED.md per repo.
 ## Output
 
 - Modified byte-identical files in non-canonical repos
-- Append entry to `.godpowers/suite/SYNC-LOG.md`
+- Append entry to `.godpowers/suite/SYNC-LOG.mdx`
 - Refreshed `.godpowers/suite/state.json`
 
 ## What this does NOT do

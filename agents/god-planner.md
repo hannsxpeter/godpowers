@@ -9,11 +9,13 @@ description: |
   Spawned by: /god-build, god-orchestrator (before god-executor waves)
 tools: Read, Write, Bash, Grep, Glob
 inputs:
-  - ".godpowers/roadmap/ROADMAP.md"
-  - ".godpowers/arch/ARCH.md"
-  - ".godpowers/stack/DECISION.md"
+  - ".godpowers/roadmap/ROADMAP.mdx"
+  - ".godpowers/arch/ARCH.mdx"
+  - ".godpowers/stack/DECISION.mdx"
+  - "references/building/BUILD-VERTICAL-SLICES.md"
+  - "references/building/BUILD-WAVES.md"
 outputs:
-  - ".godpowers/build/PLAN.md"
+  - ".godpowers/build/PLAN.mdx"
 gates:
   - "vertical slices with test-first sequence"
   - "dependency and verification criteria coverage"
@@ -27,9 +29,13 @@ Plan the build.
 
 ## Gate Check
 
-`.godpowers/roadmap/ROADMAP.md` and `.godpowers/stack/DECISION.md` MUST exist.
+`.godpowers/roadmap/ROADMAP.mdx` and `.godpowers/stack/DECISION.mdx` MUST exist.
 
 ## Process
+
+Before planning, read `references/building/BUILD-VERTICAL-SLICES.md` (what
+makes a slice vertical, with examples) and `references/building/BUILD-WAVES.md`
+(how to group slices into parallel waves).
 
 1. Read roadmap, identify the current delivery increment (first non-done
    Now item). Note the increment's member requirement ids from its
@@ -64,7 +70,7 @@ Plan the build.
 
 ## Output
 
-Write `.godpowers/build/PLAN.md`:
+Write `.godpowers/build/PLAN.mdx`:
 
 ```markdown
 # Build Plan: Delivery Increment [N]
@@ -95,7 +101,7 @@ Write `.godpowers/build/PLAN.md`:
 
 ## Done Criteria
 
-- `.godpowers/build/PLAN.md` exists
+- `.godpowers/build/PLAN.mdx` exists
 - Every slice has tests-first sequence
 - Every slice names the PRD requirement ids it delivers
 - Every slice separates existing references from new artifacts

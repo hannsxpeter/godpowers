@@ -13,12 +13,12 @@ tools: Read, Write, Bash, Grep
 inputs:
   - "runtime URL"
   - "DESIGN.md"
-  - ".godpowers/prd/PRD.md"
+  - ".godpowers/prd/PRD.mdx"
   - "project root"
 outputs:
   - ".godpowers/runtime/<run-id>/audit-report.json"
   - ".godpowers/runtime/<run-id>/test-report.json"
-  - ".godpowers/runtime/<run-id>/summary.md"
+  - ".godpowers/runtime/<run-id>/summary.mdx"
 gates:
   - "WCAG AA contrast"
   - "component drift threshold"

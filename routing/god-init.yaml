@@ -17,11 +17,11 @@ execution:
   context: fresh
   reads: [user-intent]
   writes:
-    - .godpowers/PROGRESS.md
+    - .godpowers/PROGRESS.mdx
     - .godpowers/state.json
     - .godpowers/intent.yaml
-    - .godpowers/prep/INITIAL-FINDINGS.md
-    - .godpowers/prep/IMPORTED-CONTEXT.md
+    - .godpowers/prep/INITIAL-FINDINGS.mdx
+    - .godpowers/prep/IMPORTED-CONTEXT.mdx
 
 success-path:
   next-recommended: /god-prd

@@ -13,10 +13,10 @@ Spawn the **god-roadmapper** agent in a fresh context via the host platform's na
 
 ## Setup
 
-1. Verify `.godpowers/arch/ARCH.md` exists. If not, tell user to run `/god-arch` first.
+1. Verify `.godpowers/arch/ARCH.mdx` exists. If not, tell user to run `/god-arch` first.
 2. Spawn god-auditor briefly to verify ARCH passes have-nots.
 3. Spawn god-roadmapper with PRD and ARCH paths.
-4. The agent writes `.godpowers/roadmap/ROADMAP.md`.
+4. The agent writes `.godpowers/roadmap/ROADMAP.mdx`.
 
 ## Verification
 
@@ -24,12 +24,12 @@ After god-roadmapper returns:
 1. Verify ROADMAP.md exists on disk
 2. Spawn god-auditor to verify have-nots pass
 3. Run `npx godpowers gate --tier=roadmap --project=.` and do not proceed on a non-zero exit
-4. Run `npx godpowers state advance --step=roadmap --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.md`.
+4. Run `npx godpowers state advance --step=roadmap --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.mdx`.
 
 ## On Completion
 
 ```
-Roadmap complete: .godpowers/roadmap/ROADMAP.md
+Roadmap complete: .godpowers/roadmap/ROADMAP.mdx
 
 Suggested next: /god-stack (pick the tech) if not already done,
                 otherwise /god-repo (scaffold the repo)
@@ -38,7 +38,7 @@ Suggested next: /god-stack (pick the tech) if not already done,
 
 ## Re-invocation contract
 
-What happens if `/god-roadmap` is run when `.godpowers/roadmap/ROADMAP.md` already exists:
+What happens if `/god-roadmap` is run when `.godpowers/roadmap/ROADMAP.mdx` already exists:
 
 | Existing state | Behavior |
 |---|---|

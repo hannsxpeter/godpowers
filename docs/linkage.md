@@ -197,7 +197,7 @@ status per requirement:
 | in progress | code is linked, but its increment (or the build) is not done |
 | done | code is linked AND its increment is done (or the build is complete) |
 
-Reverse-sync regenerates the human-readable ledger `.godpowers/REQUIREMENTS.md`
+Reverse-sync regenerates the human-readable ledger `.godpowers/REQUIREMENTS.mdx`
 and caches a summary under `state.json` `deliverables` whenever the map changes.
 `/god-progress` surfaces this, and `/god-status` shows a deliverable-progress
 section. Because status is derived from the map (not hand-maintained), it
@@ -251,4 +251,4 @@ Findings flow to `REVIEW-REQUIRED.md`.
 - `lib/code-scanner.js` - all 6 discovery mechanisms
 - `lib/drift-detector.js` - drift checks
 - `lib/requirements.js` - derives requirement status and renders the ledger
-- `/god-progress` - deliverable progress report (`.godpowers/REQUIREMENTS.md`)
+- `/god-progress` - deliverable progress report (`.godpowers/REQUIREMENTS.mdx`)

@@ -11,9 +11,11 @@ inputs:
   - "user intent"
   - ".godpowers/intent.yaml"
   - "optional preparation context"
-  - "templates/PRD.md"
+  - "templates/PRD.mdx"
+  - "references/planning/PRD-ANATOMY.md"
+  - "references/planning/PRD-ANTIPATTERNS.md"
 outputs:
-  - ".godpowers/prd/PRD.md"
+  - ".godpowers/prd/PRD.mdx"
   - ".godpowers/prd/PRD.meta.json"
 gates:
   - "P-01 through P-15 have-nots"
@@ -30,8 +32,13 @@ enough that an architect and developer can build from this document alone.
 
 ## Output
 
-Use `templates/PRD.md` (installed at `<runtime>/godpowers-templates/PRD.md`) as
-the structural starting point. Write `.godpowers/prd/PRD.md` with these
+Before drafting, read `references/planning/PRD-ANATOMY.md` (what each section
+must contain) and `references/planning/PRD-ANTIPATTERNS.md` (failure patterns
+to avoid). The eight required sections below are the anatomy's sections 1-8;
+the PRD must satisfy each of them as the anatomy defines it.
+
+Use `templates/PRD.mdx` (installed at `<runtime>/godpowers-templates/PRD.mdx`) as
+the structural starting point. Write `.godpowers/prd/PRD.mdx` with these
 required sections:
 
 1. **Problem Statement** (substitution-tested)
@@ -71,15 +78,15 @@ Before drafting, compute the Pillars load set for the PRD task with
 and `agents/repo.md` first, then any task-routed pillars. Pillars is native
 project truth for Godpowers; use it before broader repo archaeology.
 
-If `.godpowers/prep/INITIAL-FINDINGS.md` exists, read it first so the PRD
+If `.godpowers/prep/INITIAL-FINDINGS.mdx` exists, read it first so the PRD
 reflects what Godpowers observed during init: codebase shape, tests, docs,
 risks, and methodology systems detected.
 
-If `.godpowers/prep/IMPORTED-CONTEXT.md` exists, read it before drafting the
+If `.godpowers/prep/IMPORTED-CONTEXT.mdx` exists, read it before drafting the
 PRD. Use product signals from legacy planning, Superpowers, BMAD, or similar systems as
 hypothesis-level input only.
 
-If `.godpowers/domain/GLOSSARY.md` exists, read it before drafting the PRD.
+If `.godpowers/domain/GLOSSARY.mdx` exists, read it before drafting the PRD.
 Use canonical terms from the glossary in problem statements, target users,
 requirements, no-gos, and open questions. Treat unresolved glossary
 ambiguities as PRD `[OPEN QUESTION]` entries when they affect scope,
@@ -100,7 +107,7 @@ Rules:
   requirement.
 - If the PRD creates durable product truth, plan corresponding updates for
   `agents/context.md`. In `--yolo`, apply those updates and log them to
-  `.godpowers/YOLO-DECISIONS.md`.
+  `.godpowers/YOLO-DECISIONS.mdx`.
 
 ## Quality Gates
 
@@ -152,7 +159,7 @@ Default if you say "go": [X] because [Y]
 
 If invoked with `--yolo`, do NOT pause. At every condition that would
 otherwise pause, auto-pick the default and log to
-`.godpowers/YOLO-DECISIONS.md`:
+`.godpowers/YOLO-DECISIONS.mdx`:
 
 ```markdown
 ## god-pm: [Brief decision title]
@@ -173,7 +180,7 @@ Defaults for god-pm:
 
 ## Done Criteria
 
-- `.godpowers/prd/PRD.md` exists on disk
+- `.godpowers/prd/PRD.mdx` exists on disk
 - All sections present
 - All have-nots pass
 - All sentences labeled

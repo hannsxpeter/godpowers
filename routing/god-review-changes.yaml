@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - .godpowers/REVIEW-REQUIRED.md
+    - .godpowers/REVIEW-REQUIRED.mdx
 
 execution:
   spawns: [built-in]

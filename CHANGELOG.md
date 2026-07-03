@@ -7,6 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-07-03
+
+Sibling superskill integration and mdx-first artifacts. Godpowers now detects
+and imports godplans (`.godplans/PLAN.mdx`) and godaudits (`.godaudits/AUDIT.mdx`)
+context, runs plan-aware arcs, and dispatches GA remediation tasks, and the
+canonical `.godpowers/` artifact extension changes from `.md` to `.mdx`. No
+public command/agent/workflow/recipe surface change (counts stay
+120 / 40 / 13 / 44); lib module count 91 -> 92 (`lib/sibling-artifacts.js`);
+have-nots catalog 156 -> 157 (U-13).
+
+### BREAKING
+- **Canonical artifact extension is now `.mdx`:** every Godpowers-owned
+  `.godpowers/` artifact is written as `.mdx`. Legacy `.md` artifacts remain
+  readable (reads are mdx-first with `.md` fallback via `lib/sync-fs.js`
+  `resolveArtifact`/`readArtifact`), and lib-owned generated files absorb a
+  legacy `.md` twin on first write. Re-run `npx godpowers install` for your
+  runtimes: installed runtimes and hooks must be refreshed so they understand
+  `.mdx` projects; old runtimes cannot see `.mdx` artifacts. Exemptions stay
+  `.md`: root `DESIGN.md`/`PRODUCT.md`, `.godpowers/cache/`, foreign
+  planning-system markers, and host pointer files.
+
+### Added
+- **godplans/godaudits interop (`lib/sibling-artifacts.js`):** read-only
+  detection and parsing of `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx`
+  (GP/GA checkbox tasks, findings, R-/A- domain id mirroring), `/god-migrate`
+  import seeds with GP task ids and R-<DOM>-n ids preserved verbatim,
+  plan-aware arcs, `/god-fix` dispatch of open GA remediation tasks with the
+  finding's Verify command as the done-check, managed
+  `.godplans/GODPOWERS-SYNC.mdx` and `.godaudits/GODPOWERS-SYNC.mdx` sync-back
+  companions, and import-hash staleness drift checks. Sibling files stay
+  read-only except when executing plan or audit tasks under the executor rules
+  embedded in PLAN.mdx/AUDIT.mdx themselves.
+- **MDX-safety lint (U-13):** new have-not "MDX-unsafe artifact content" with a
+  mechanical artifact-linter check, so artifact bodies that would break MDX
+  compilation fail the lint instead of failing downstream tooling.
+
+### Fixed
+- **Safe-sync gate wiring:** the `.godpowers/sync/` safe-sync markers the
+  router reads are now written by the documented remediation flow, so a
+  detected sync plan can actually be cleared instead of permanently blocking
+  Tier 3 commands.
+- **Quarterback review fallback:** the review play falls back to a command
+  that exists (`/god-review`) instead of the phantom `/god-code-review`.
+- **References wiring:** planning anatomy/antipattern docs, building and
+  shipping references, and orchestration detection guides are now pointed to
+  by the agents that should consume them instead of shipping unreferenced.
+- **Agent-specs completeness:** `docs/agent-specs.md` covers all 40 product
+  agents (added the missing god-automation-engineer, god-coordinator,
+  god-greenfieldifier, and god-storyteller sections).
+
 ## [3.14.0] - 2026-06-17
 
 UX-audit remediation release. Drives the Godpowers UX audit (`uxaudit.md`, 11

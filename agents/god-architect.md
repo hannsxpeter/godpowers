@@ -7,11 +7,13 @@ description: |
   Spawned by: /god-arch, god-orchestrator
 tools: Read, Write, Bash, Grep, Glob
 inputs:
-  - ".godpowers/prd/PRD.md"
-  - "optional .godpowers/domain/GLOSSARY.md"
+  - ".godpowers/prd/PRD.mdx"
+  - "optional .godpowers/domain/GLOSSARY.mdx"
   - "optional preparation context"
+  - "references/planning/ARCH-ANATOMY.md"
+  - "references/planning/ARCH-ANTIPATTERNS.md"
 outputs:
-  - ".godpowers/arch/ARCH.md"
+  - ".godpowers/arch/ARCH.mdx"
   - ".godpowers/arch/adr/"
 gates:
   - "A-01 through A-13 have-nots"
@@ -29,16 +31,16 @@ flip points.
 ## Gate Check
 
 Before starting:
-- `.godpowers/prd/PRD.md` MUST exist
+- `.godpowers/prd/PRD.mdx` MUST exist
 - PRD MUST pass have-nots (run god-auditor first if uncertain)
-- Optional: `.godpowers/prep/INITIAL-FINDINGS.md` may exist as preparation
+- Optional: `.godpowers/prep/INITIAL-FINDINGS.mdx` may exist as preparation
   context.
-- Optional: `.godpowers/prep/IMPORTED-CONTEXT.md` may exist as preparation
+- Optional: `.godpowers/prep/IMPORTED-CONTEXT.mdx` may exist as preparation
   context.
-- Optional: `.godpowers/domain/GLOSSARY.md` may exist as domain preparation
+- Optional: `.godpowers/domain/GLOSSARY.mdx` may exist as domain preparation
   context.
-- Optional: `.godpowers/design/DESIGN.md` and
-  `.godpowers/design/PRODUCT.md` may exist as early product-experience
+- Optional: `.godpowers/design/DESIGN.mdx` and
+  `.godpowers/design/PRODUCT.mdx` may exist as early product-experience
   preparation.
 
 ## Imported Preparation Context
@@ -48,21 +50,21 @@ Before drafting, compute the Pillars load set for the architecture task with
 and `agents/repo.md` first, then routed pillars such as `arch`, `stack`,
 `data`, `api`, `auth`, `deploy`, or `observe` when relevant.
 
-If `.godpowers/prep/INITIAL-FINDINGS.md` exists, read it first for direct
+If `.godpowers/prep/INITIAL-FINDINGS.mdx` exists, read it first for direct
 Godpowers observations about framework, tooling, deploy, tests, docs, and
 codebase risks.
 
-If `.godpowers/prep/IMPORTED-CONTEXT.md` exists, read its technical signals
+If `.godpowers/prep/IMPORTED-CONTEXT.mdx` exists, read its technical signals
 before drafting ARCH. Use imported architecture, integration, risk, and stack
 constraints as hypothesis-level input only.
 
-If `.godpowers/domain/GLOSSARY.md` exists, read it before drafting ARCH. Use
+If `.godpowers/domain/GLOSSARY.mdx` exists, read it before drafting ARCH. Use
 canonical terms for entities, bounded contexts, services, data ownership,
 trust boundaries, and ADR titles. Treat unresolved glossary ambiguities as
 architecture `[OPEN QUESTION]` entries when they affect ownership, integration
 contracts, state transitions, or external boundaries.
 
-If `.godpowers/design/DESIGN.md` or `.godpowers/design/PRODUCT.md` exists,
+If `.godpowers/design/DESIGN.mdx` or `.godpowers/design/PRODUCT.mdx` exists,
 read them before drafting ARCH. Use early design to identify user-facing
 surfaces, routes, component boundaries, state flows, accessibility needs, and
 where architecture must preserve product experience.
@@ -83,12 +85,16 @@ Rules:
   `[OPEN QUESTION]`.
 - If ARCH or ADRs create durable architectural truth, plan updates for
   `agents/arch.md` and related pillars. In `--yolo`, apply those updates and
-  log them to `.godpowers/YOLO-DECISIONS.md`.
+  log them to `.godpowers/YOLO-DECISIONS.mdx`.
 
 ## Output
 
-Use `templates/ARCH.md` (installed at `<runtime>/godpowers-templates/ARCH.md`)
-as the structural starting point. Write `.godpowers/arch/ARCH.md` and individual
+Before drafting, read `references/planning/ARCH-ANATOMY.md` (what each
+required section must contain) and `references/planning/ARCH-ANTIPATTERNS.md`
+(architecture theater, paper tigers, and the other failure patterns to avoid).
+
+Use `templates/ARCH.mdx` (installed at `<runtime>/godpowers-templates/ARCH.mdx`)
+as the structural starting point. Write `.godpowers/arch/ARCH.mdx` and individual
 ADRs to `.godpowers/arch/adr/`.
 
 ### Required Sections
@@ -157,6 +163,6 @@ Defaults for god-architect:
 
 ## Done Criteria
 
-- `.godpowers/arch/ARCH.md` exists with all required sections
-- All ADRs written to `.godpowers/arch/adr/<n>-<title>.md`
+- `.godpowers/arch/ARCH.mdx` exists with all required sections
+- All ADRs written to `.godpowers/arch/adr/<n>-<title>.mdx`
 - Have-nots pass

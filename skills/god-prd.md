@@ -14,12 +14,12 @@ Spawn the **god-pm** agent in a fresh context via the host platform's native age
 ## Setup
 
 1. If `.godpowers/state.json` does not exist: tell the user to run `/god-init` first.
-2. Read `.godpowers/prep/INITIAL-FINDINGS.md` if present.
-3. Read `.godpowers/prep/IMPORTED-CONTEXT.md` if present.
+2. Read `.godpowers/prep/INITIAL-FINDINGS.mdx` if present.
+3. Read `.godpowers/prep/IMPORTED-CONTEXT.mdx` if present.
 4. Spawn god-pm with the user's project description from `state.json`,
    `.godpowers/intent.yaml`, and any prep artifacts. Prep artifacts are
    context, not source of truth.
-5. The agent writes `.godpowers/prd/PRD.md`
+5. The agent writes `.godpowers/prd/PRD.mdx`
 6. The agent runs have-nots checks before declaring done
 7. If god-pm pauses for a human question: relay to user using pause format
 8. If prep artifacts or the PRD show UI or product-experience signals, route
@@ -29,10 +29,10 @@ Spawn the **god-pm** agent in a fresh context via the host platform's native age
 ## Verification
 
 After god-pm returns:
-1. Verify `.godpowers/prd/PRD.md` exists on disk
+1. Verify `.godpowers/prd/PRD.mdx` exists on disk
 2. Spawn god-auditor briefly to verify have-nots pass
 3. Run `npx godpowers gate --tier=prd --project=.` and do not proceed on a non-zero exit
-4. Run `npx godpowers state advance --step=prd --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.md`.
+4. Run `npx godpowers state advance --step=prd --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.mdx`.
 
 ## Pause Format
 
@@ -50,7 +50,7 @@ Default: [if you say "go", I'll pick X because Y]
 After PRD is written and have-nots pass, print:
 
 ```
-PRD complete: .godpowers/prd/PRD.md
+PRD complete: .godpowers/prd/PRD.mdx
 
 Suggested next: /god-design (shape product experience) if UI/product experience is detected, otherwise /god-arch (design the architecture)
 ```
@@ -58,7 +58,7 @@ Suggested next: /god-design (shape product experience) if UI/product experience 
 
 ## Re-invocation contract
 
-What happens if `/god-prd` is run when `.godpowers/prd/PRD.md` already exists:
+What happens if `/god-prd` is run when `.godpowers/prd/PRD.mdx` already exists:
 
 | Existing state | Behavior |
 |---|---|

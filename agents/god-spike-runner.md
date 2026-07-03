@@ -13,7 +13,7 @@ inputs:
   - "time-box"
   - "minimal relevant context"
 outputs:
-  - ".godpowers/spikes/<slug>/SPIKE.md"
+  - ".godpowers/spikes/<slug>/SPIKE.mdx"
   - "throwaway proof-of-concept code"
 gates:
   - "SP-01 through SP-05 have-nots"
@@ -63,8 +63,8 @@ If the question is API ergonomics: write 3-5 client-side examples.
 
 ### 4. Document Findings
 
-Use `templates/SPIKE.md` (installed at `<runtime>/godpowers-templates/SPIKE.md`)
-as the structural starting point. Write `.godpowers/spikes/<question-slug>/SPIKE.md`:
+Use `templates/SPIKE.mdx` (installed at `<runtime>/godpowers-templates/SPIKE.mdx`)
+as the structural starting point. Write `.godpowers/spikes/<question-slug>/SPIKE.mdx`:
 
 ```markdown
 # Spike: [The Question]

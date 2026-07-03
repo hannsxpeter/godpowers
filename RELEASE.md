@@ -1,41 +1,43 @@
-# Godpowers 3.14.0 Release
+# Godpowers 4.0.0 Release
 
-> Status: Published
-> Date: 2026-06-17
+> Status: Draft
+> Date: 2026-07-03
 
-[DECISION] Godpowers 3.14.0 is a UX-audit remediation release that drives the Godpowers UX audit (`uxaudit.md`, 11 weighted experience lenses) to zero: all 20 findings across usability, content, information architecture, interaction, process, journeys, and trust.
-[DECISION] The changes are backward compatible and add no new commands. They tighten the install and dashboard surfaces, broaden the free-text router, restructure `--help`, add a docs index, and rewrite the front-door documentation. This is a minor bump because it adds backward-compatible user-facing functionality.
-[DECISION] No new skill, agent, workflow, or recipe surface is added or removed. Surface counts are unchanged: 120 slash commands, 40 specialist agents, 13 workflows, 44 recipes. The lib module count is unchanged at 91.
+[DECISION] Godpowers 4.0.0 is a breaking release: the canonical `.godpowers/` artifact extension changes from `.md` to `.mdx`, and Godpowers gains first-class interop with its sibling superskills godplans (`.godplans/PLAN.mdx`) and godaudits (`.godaudits/AUDIT.mdx`).
+[DECISION] This is a major bump because installed runtimes must be refreshed: reads keep a legacy `.md` fallback, but pre-4.0 runtimes and hooks cannot see `.mdx` artifacts.
+[DECISION] No new skill, agent, workflow, or recipe surface is added or removed. Surface counts are unchanged: 120 slash commands, 40 specialist agents, 13 workflows, 44 recipes. The lib module count is 91 -> 92 (`lib/sibling-artifacts.js`). The have-nots catalog is 156 -> 157 (U-13 MDX-unsafe artifact content).
 
 ## What's in this release
 
-- [DECISION] Install and surface validation (USE-001, USE-002, USE-003): a typo'd bare subcommand errors instead of silently starting a global install; an unknown `--profile` is a clean one-line error before any filesystem write; `surface --runtime=<bad>` is rejected instead of planning an apply to a nonexistent runtime.
-- [DECISION] Dashboard and report display honesty (USE-004, CNT-005, CNT-006, IXD-001): `status --full` shows `Phase/Step: not initialized` instead of `Complete` on an uninitialized project; the readiness headline reads `no blockers` instead of the overloaded `ready`; the empty `report` names the commands that populate the ledger; `next` no longer prints the recommended command a third time.
-- [DECISION] Free-text router accuracy (IA-001, IA-002): broadened `intent-keywords` so common verbs match a topical recipe (fix a bug, ship it, deploy, release, check progress); `classifyWorkSize` returns null when no small-task signal is present instead of mis-sizing an unrelated intent as `/god-quick`.
-- [DECISION] Process and journey honesty (PROC-001, JRN-002): `can-close` output, its docstring, and the orchestrator runbook now state that `can-close` is the advisory freshness check and `npx godpowers gate` is the enforced boundary; the dashboard progress line annotates skipped steps so a skipped-tier run no longer shows an inflated percent.
-- [DECISION] Help and docs prioritization (CNT-004, IA-004): `--help` leads with a 6-item "Start here" group above two labelled advanced groups; a new `docs/README.md` indexes user-facing docs under "Start here" and separates internal/maintainer docs.
-- [DECISION] Front-door content, vocabulary, and trust (CNT-001, CNT-002, CNT-003, IA-003, JRN-001, TRU-001, TRU-002): the README top fold leads with a runnable Quick start and an inline glossary, version archaeology moved to a CHANGELOG/RELEASE pointer; the worst command descriptions lead with the user-intent verb and the `/god-reconcile` vs `/god-sync` overlap is disambiguated; the README clarifies that plain `/god-mode` resumes from disk; SECURITY.md softens its SLA to best-effort; the runtime headline no longer implies 15-way parity.
+- [DECISION] Breaking artifact extension change: every Godpowers-owned `.godpowers/` artifact is written as `.mdx`. Reads are mdx-first with legacy `.md` fallback (`lib/sync-fs.js` `resolveArtifact`/`readArtifact`); lib-owned generated files absorb a legacy `.md` twin on first write. Exemptions stay `.md`: root `DESIGN.md`/`PRODUCT.md`, `.godpowers/cache/`, foreign planning-system markers, and host pointer files.
+- [DECISION] godplans/godaudits interop: `lib/sibling-artifacts.js` detects and parses `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx` (GP/GA checkbox tasks, findings, R-/A- domain id mirroring across the 18 shared domain codes), recomputing every count from the checkbox body because frontmatter counters are cached digests.
+- [DECISION] Import and plan-aware arcs: `/god-migrate` imports godplans and godaudits seeds with GP task ids and R-<DOM>-n ids preserved verbatim; arcs consume the imported plan context; `/god-fix` dispatches open GA remediation tasks with the finding's evidence file:line and the GA Verify command as the done-check.
+- [DECISION] Sync-back companions and read-only boundary: write-back happens only through the managed `.godplans/GODPOWERS-SYNC.mdx` and `.godaudits/GODPOWERS-SYNC.mdx` companions; sibling files stay read-only except when executing plan or audit tasks under the executor rules embedded in PLAN.mdx/AUDIT.mdx themselves.
+- [DECISION] Staleness drift checks: imports record a content hash and `sibling-artifacts.staleness` compares it against the live sibling artifact, so drift surfaces as an explicit signal instead of silently stale context.
+- [DECISION] MDX-safety lint: new have-not U-13 (MDX-unsafe artifact content) with a mechanical artifact-linter check.
+- [DECISION] Gap fixes: the safe-sync gate's `.godpowers/sync/` markers are now written by the documented remediation flow; the quarterback review play falls back to `/god-review` instead of the phantom `/god-code-review`; unreferenced planning/building/shipping/orchestration references are wired to their consuming agents; `docs/agent-specs.md` covers all 40 product agents.
 
 ## Changes
 
-- [DECISION] `package.json`, `package-lock.json`, and `packages/mcp/package.json` now publish the 3.14.0 version.
-- [DECISION] No new runtime module (lib module count unchanged at 91). No public command/agent/workflow/recipe surface change.
-- [DECISION] CHANGELOG, RELEASE notes, README, roadmap, reference, architecture, the architecture map, and `agents/context.md` now reflect 3.14.0. The SECURITY supported-version table now carries the `3.14.x` row.
+- [DECISION] `package.json` and `packages/mcp/package.json` now publish the 4.0.0 version.
+- [DECISION] One new runtime module (`lib/sibling-artifacts.js`, lib module count 91 -> 92). No public command/agent/workflow/recipe surface change.
+- [DECISION] CHANGELOG, RELEASE notes, README, roadmap, reference, architecture, the architecture map, MCP docs, and the have-nots counts in concepts/validation/agent-specs now reflect 4.0.0 and the 157 have-nots.
+- [DECISION] `ARCHITECTURE.md` gains section 17 documenting the sibling superskill interop contract and the artifact extension policy.
+- [DECISION] `packages/mcp/README.md` documents the runtime-skew caveat: pair `@godpowers/mcp` 4.0.0 with a `godpowers` runtime at 4.0.0 or later.
 
 ## Validation
 
-- [DECISION] `npm test` passed all command groups.
-- [DECISION] `npm run release:check` passed `coverage:lib` above the 90 percent line floor and the 75 percent branch floor, and the per-file floor (>= 70 percent lines across the lib modules).
-- [DECISION] `npm run release:check` passed `npm audit --omit=dev` with 0 vulnerabilities and `git diff --check`.
-- [DECISION] `npm run release:check` passed public surface docs for version 3.14.0 with 120 skills, 40 agents, 13 workflows, and 44 recipes.
-- [DECISION] `npm run release:check` passed root and `@godpowers/mcp` package contents.
+- [OPEN QUESTION] `npm test` across all command groups. Owner: release executor. Due: before publish.
+- [OPEN QUESTION] `npm run release:check` (coverage floors, `npm audit --omit=dev`, `git diff --check`, surface docs, package contents). Owner: release executor. Due: before publish.
+- [DECISION] `node scripts/test-doc-surface-counts.js` passes public surface docs for version 4.0.0 with 120 skills, 40 agents, 13 workflows, 44 recipes, and 92 lib modules.
 
 ## Upgrade
 
-- [DECISION] Use `npm install -g godpowers@3.14.0` or `npx godpowers@3.14.0`.
-- [DECISION] No migration is required. The changes are install-surface validation, dashboard/router honesty, and documentation improvements with no breaking surface change.
+- [DECISION] Use `npm install -g godpowers@4.0.0` or `npx godpowers@4.0.0`.
+- [DECISION] Migration is required for installed runtimes: re-run `npx godpowers install` (or your runtime flags, e.g. `npx godpowers --claude --global`) so installed runtimes and hooks understand `.mdx` projects. Old runtimes cannot see `.mdx` artifacts.
+- [DECISION] Existing projects need no manual file renames: legacy `.md` artifacts remain readable, and lib-owned generated files migrate their legacy twin on first write.
 
 ## Notes
 
-- [DECISION] The publish targets are npm `godpowers@3.14.0`, npm `@godpowers/mcp@3.14.0`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v3.14.0`.
-- [DECISION] Tagged `v3.14.0` and published to npm with provenance via the tag-triggered GitHub publish workflow (`.github/workflows/publish.yml`): `godpowers@3.14.0` and `@godpowers/mcp@3.14.0` are live as the `latest` dist-tag.
+- [DECISION] The publish targets are npm `godpowers@4.0.0`, npm `@godpowers/mcp@4.0.0`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v4.0.0`.
+- [OPEN QUESTION] Tag `v4.0.0` and publish to npm with provenance via the tag-triggered GitHub publish workflow (`.github/workflows/publish.yml`). Owner: release executor. Due: publish day.

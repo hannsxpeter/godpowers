@@ -94,7 +94,7 @@ When DESIGN.md or PRODUCT.md change as a result of any subcommand:
 1. `god-design-reviewer` runs in two-stage gate (spec + quality)
 2. PASS: change applied; downstream propagation runs (impact, REVIEW-REQUIRED)
 3. WARN: change applied with warnings logged
-4. BLOCK: change rejected; appended to `.godpowers/design/REJECTED.md`;
+4. BLOCK: change rejected; appended to `.godpowers/design/REJECTED.mdx`;
    user told why and what to fix
 
 This pattern mirrors code review (god-spec-reviewer + god-quality-reviewer)
@@ -251,7 +251,7 @@ vendored. If SkillUI isn't installed, the bridge returns
 
 ## Re-invocation contract
 
-What happens if `/god-design` is run when `.godpowers/design/DESIGN.md` already exists:
+What happens if `/god-design` is run when `.godpowers/design/DESIGN.mdx` already exists:
 
 | Existing state | Behavior |
 |---|---|

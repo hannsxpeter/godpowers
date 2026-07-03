@@ -13,9 +13,9 @@ Spawn the **god-repo-scaffolder** agent in a fresh context via the host platform
 
 ## Setup
 
-1. Verify `.godpowers/stack/DECISION.md` exists. If not, tell user to run `/god-stack` first.
+1. Verify `.godpowers/stack/DECISION.mdx` exists. If not, tell user to run `/god-stack` first.
 2. Spawn god-repo-scaffolder with the stack DECISION path.
-3. The agent scaffolds the repo and writes `.godpowers/repo/AUDIT.md`.
+3. The agent scaffolds the repo and writes `.godpowers/repo/AUDIT.mdx`.
 
 ## Verification
 
@@ -23,12 +23,12 @@ After god-repo-scaffolder returns:
 1. Verify AUDIT.md exists on disk
 2. Verify CI passes on the empty scaffold
 3. Run `npx godpowers gate --tier=repo --project=.` and do not proceed on a non-zero exit
-4. Run `npx godpowers state advance --step=repo --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.md`.
+4. Run `npx godpowers state advance --step=repo --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.mdx`.
 
 ## On Completion
 
 ```
-Repo scaffolded: .godpowers/repo/AUDIT.md
+Repo scaffolded: .godpowers/repo/AUDIT.mdx
 
 Suggested next: /god-build (start building the first milestone)
 ```

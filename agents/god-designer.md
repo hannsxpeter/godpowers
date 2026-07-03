@@ -9,9 +9,9 @@ description: |
   Spawned by: /god-design, god-orchestrator (Tier 1, conditional on UI)
 tools: Read, Write, Edit, Bash, Grep, Glob
 inputs:
-  - ".godpowers/prd/PRD.md"
-  - ".godpowers/arch/ARCH.md"
-  - ".godpowers/stack/DECISION.md"
+  - ".godpowers/prd/PRD.mdx"
+  - ".godpowers/arch/ARCH.mdx"
+  - ".godpowers/stack/DECISION.mdx"
   - ".godpowers/state.json"
 outputs:
   - "DESIGN.md"
@@ -93,8 +93,8 @@ Cascade:
   - `references/design/UX-WRITING.md` (copy)
   - `references/design/DESIGN-ANTIPATTERNS.md` (what to avoid)
 
-  Read `.godpowers/prep/INITIAL-FINDINGS.md` and
-  `.godpowers/prep/IMPORTED-CONTEXT.md` when present, then use PRD.md
+  Read `.godpowers/prep/INITIAL-FINDINGS.mdx` and
+  `.godpowers/prep/IMPORTED-CONTEXT.mdx` when present, then use PRD.md
   (target users, flows, register hints), plus ARCH.md and STACK.md only
   when they already exist. Early mode runs after PRD and before
   architecture, so do not require ARCH or STACK. In early mode, produce
@@ -102,7 +102,8 @@ Cascade:
   screens, flows, component needs, interaction states, product voice,
   constraints, anti-references, and visual token direction.
 
-  Generate a starter DESIGN.md from the template, applying the rules
+  Generate a starter DESIGN.md from `templates/DESIGN.md` (installed at
+  `<runtime>/godpowers-templates/DESIGN.md`), applying the rules
   from the references above. The output will be less polished than
   impeccable's, but it's not toothless: the
   references encode our design opinions across all 7 domains
@@ -122,7 +123,7 @@ result before applying.
   the format)
 - `.godpowers/state.json` design evidence with lint history, version,
   impeccable command log, and drift snapshot; `lib/state-views.js`
-  regenerates `.godpowers/design/STATE.md`
+  regenerates `.godpowers/design/STATE.mdx`
 
 ## Validation
 

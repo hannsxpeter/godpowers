@@ -3,8 +3,8 @@
 Status: DESIGN (not yet implemented)
 Author: architecture analysis, 2026-06-15
 Scope: redesign Mythify's evidence engine and router/quarterback as native Node
-inside Godpowers, keeping Godpowers' pure-skill execution model, 52 agents, 121
-routing defs, and multi-runtime install intact.
+inside Godpowers, keeping Godpowers' pure-skill execution model, 40 product
+agents, 120 routing defs, and multi-runtime install intact.
 
 ## 1. Executive summary
 
@@ -228,7 +228,7 @@ the hood:
 [30] recovery  <- incident/hotfix/postmortem intent -> hotfix-arc / postmortem
 [40] brownfield<- inheriting existing code -> brownfield-arc / archaeology
 [50] research  <- uncertain tech -> /god-spike / /god-explore
-[60] review    <- "find risks/critique/audit" -> audit-only / /god-code-review
+[60] review    <- "find risks/critique/audit" -> audit-only / /god-review
 [70] full      <- "idea to production / ship it all" -> full-arc (/god-mode)
 [80] feature   <- ordinary multi-step feature -> feature-arc
 [90] trivial   <- single reversible edit / question -> /god-fast or answer inline
@@ -241,7 +241,7 @@ fix). Everything else delegates to the existing `router.js` / `recipes.js`.
 ### 4.4 god-orchestrator refactor
 
 Unchanged: spawns specialists in fresh contexts, private disk-mediated handoff,
-pause rules, the 52 agents, mode/scale detection. We change only how it decides
+pause rules, the 40 product agents, mode/scale detection. We change only how it decides
 next and how it declares done.
 
 Current loop (`GOD-ORCHESTRATOR-RUNBOOK.md:480-496`):
@@ -338,7 +338,7 @@ the MCP is a read-only veneer.
 
 ## 6. Preserved vs changed
 
-Preserved: 52 agents, 121 routing defs, 43 recipes, 13 workflows, the 4-tier
+Preserved: 40 product agents, 120 routing defs, 44 recipes, 13 workflows, the 4-tier
 model, `state.v1.json` (extended, not broken), `gate.js` read shape, `events.jsonl`,
 linkage, requirements, pure-skill execution, 15-runtime install, MCP read-only
 veneer, fresh-context spawning, private handoff, pause rules.
@@ -375,7 +375,7 @@ tools.
   shared package only if the re-sync friction outweighs the coupling it avoids.
 - vs "Godpowers calls external Mythify via MCP": no Python dependency for users,
   one state dir, no version-skew between two products.
-- vs "clean-sheet third product": keeps Godpowers' maturity (120 commands, 52
+- vs "clean-sheet third product": keeps Godpowers' maturity (120 commands, 40
   agents) and avoids second-system syndrome; reuses Mythify's already-Node engine.
 - vs "leave Godpowers as-is": Godpowers' own evidence ledger stays
   producer-less and skippable, and it still cannot right-size ceremony or refuse

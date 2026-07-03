@@ -40,7 +40,7 @@ Build features that don't ruin models in production.
 
 ## Output
 
-Write `.godpowers/data/ml-features/<feature-name>/FEATURE.md`.
+Write `.godpowers/data/ml-features/<feature-name>/FEATURE.mdx`.
 
 ## Have-Nots
 

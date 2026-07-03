@@ -23,7 +23,7 @@ delegates to `god-reconciler` with ROADMAP-focused output.
 
 ## Setup
 
-1. Verify `.godpowers/roadmap/ROADMAP.md` exists. If not: nothing to reconcile against; suggest /god-roadmap or /god-feature directly.
+1. Verify `.godpowers/roadmap/ROADMAP.mdx` exists. If not: nothing to reconcile against; suggest /god-roadmap or /god-feature directly.
 2. Spawn `god-reconciler` with the user's intent description and ask for ROADMAP-focused output.
 
 ## Output

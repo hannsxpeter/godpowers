@@ -137,7 +137,7 @@ test('detectDrift reports missing artifact', () => {
   state.init(tmp, 'drift');
   state.updateSubStep(tmp, 'tier-1', 'prd', {
     status: 'done',
-    artifact: 'prd/PRD.md',
+    artifact: 'prd/PRD.mdx',
     'artifact-hash': 'sha256:' + 'a'.repeat(64)
   });
   const drift = state.detectDrift(tmp);
@@ -155,7 +155,7 @@ test('detectDrift reports hash mismatch when file changes', () => {
   const originalHash = state.hashFile(f);
   state.updateSubStep(tmp, 'tier-1', 'prd', {
     status: 'done',
-    artifact: 'prd/PRD.md',
+    artifact: 'prd/PRD.mdx',
     'artifact-hash': originalHash
   });
   fs.writeFileSync(f, 'modified');

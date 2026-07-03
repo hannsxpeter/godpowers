@@ -47,7 +47,7 @@ Show nodes with no edges. Likely: requirements never delivered, ADRs
 never referenced, slices never reviewed.
 
 ### `/god-graph render`
-Render an ASCII or Mermaid visualization to `.godpowers/graph/GRAPH.md`.
+Render an ASCII or Mermaid visualization to `.godpowers/graph/GRAPH.mdx`.
 
 ## Why this matters
 

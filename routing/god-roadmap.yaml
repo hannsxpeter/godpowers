@@ -16,15 +16,15 @@ execution:
   spawns: [god-roadmapper]
   context: fresh
   reads:
-    - .godpowers/prd/PRD.md
-    - .godpowers/arch/ARCH.md
-    - .godpowers/design/DESIGN.md
-    - .godpowers/design/PRODUCT.md
-    - .godpowers/prep/INITIAL-FINDINGS.md
-    - .godpowers/prep/IMPORTED-CONTEXT.md
-    - templates/ROADMAP.md
+    - .godpowers/prd/PRD.mdx
+    - .godpowers/arch/ARCH.mdx
+    - .godpowers/design/DESIGN.mdx
+    - .godpowers/design/PRODUCT.mdx
+    - .godpowers/prep/INITIAL-FINDINGS.mdx
+    - .godpowers/prep/IMPORTED-CONTEXT.mdx
+    - templates/ROADMAP.mdx
   writes:
-    - .godpowers/roadmap/ROADMAP.md
+    - .godpowers/roadmap/ROADMAP.mdx
 
 standards:
   substitution-test: true

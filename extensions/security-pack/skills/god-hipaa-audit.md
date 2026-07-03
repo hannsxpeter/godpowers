@@ -21,14 +21,14 @@ HIPAA Security Rule audit (164.308, 164.310, 164.312).
 ## Verification
 
 After god-hipaa-auditor returns:
-1. Verify `.godpowers/compliance/hipaa/FINDINGS.md` exists
+1. Verify `.godpowers/compliance/hipaa/FINDINGS.mdx` exists
 2. No CRITICAL gaps unaddressed
 3. Update PROGRESS.md with HIPAA audit timestamp
 
 ## On Completion
 
 ```
-HIPAA audit complete: .godpowers/compliance/hipaa/FINDINGS.md
+HIPAA audit complete: .godpowers/compliance/hipaa/FINDINGS.mdx
 
 Administrative gaps: [N]
 Physical gaps: [N]

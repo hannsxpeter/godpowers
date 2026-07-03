@@ -14,7 +14,7 @@ execution:
   context: fresh
   parallel-spawns: [god-pm, god-architect, god-executor, god-quality-reviewer, god-harden-auditor, god-launch-strategist]
   writes:
-    - .godpowers/party/*.md
+    - .godpowers/party/*.mdx
 
 success-path:
   next-recommended: /god-next

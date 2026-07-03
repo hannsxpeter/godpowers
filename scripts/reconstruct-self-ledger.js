@@ -3,9 +3,9 @@
  * Reconstruct Godpowers' own deliverable ledger.
  *
  * Godpowers dogfoods its own traceability system. This script maps every PRD
- * requirement (declared in .godpowers/prd/PRD.md) to the real file that
+ * requirement (declared in .godpowers/prd/PRD.mdx) to the real file that
  * implements it, populates the linkage map (source: "reconstruct"), regenerates
- * .godpowers/REQUIREMENTS.md, and records PRD/ROADMAP completion plus the
+ * .godpowers/REQUIREMENTS.mdx, and records PRD/ROADMAP completion plus the
  * deliverable summary in state.json.
  *
  * Re-runnable and idempotent: linkage.addLink and the ledger render are both
@@ -79,7 +79,7 @@ function stableArtifactStep(current, patch, now) {
 
 // 1. Validate: every declared PRD requirement is mapped, every mapped file exists.
 const declared = requirements.parsePrdRequirements(ROOT).map(r => r.id);
-if (declared.length === 0) fail('no requirements found in .godpowers/prd/PRD.md');
+if (declared.length === 0) fail('no requirements found in .godpowers/prd/PRD.mdx');
 
 const unmapped = declared.filter(id => !MAP[id]);
 if (unmapped.length > 0) fail(`requirements with no file mapping: ${unmapped.join(', ')}`);
@@ -114,13 +114,13 @@ if (s) {
   s.tiers['tier-1'] = s.tiers['tier-1'] || {};
   s.tiers['tier-1'].prd = stableArtifactStep(s.tiers['tier-1'].prd, {
     status: 'done',
-    artifact: 'prd/PRD.md',
-    'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/prd/PRD.md'))
+    artifact: 'prd/PRD.mdx',
+    'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/prd/PRD.mdx'))
   }, now);
   s.tiers['tier-1'].roadmap = stableArtifactStep(s.tiers['tier-1'].roadmap, {
     status: 'done',
-    artifact: 'roadmap/ROADMAP.md',
-    'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/roadmap/ROADMAP.md'))
+    artifact: 'roadmap/ROADMAP.mdx',
+    'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/roadmap/ROADMAP.mdx'))
   }, now);
   s.deliverables = requirements.summarizeForState(derived, s.deliverables);
   const coveragePct = Math.round(linkage.coverage(ROOT, declared) * 100);
@@ -140,5 +140,5 @@ console.log('Reconstructed Godpowers self-ledger:');
 console.log(`  Requirements: ${sum.total} (${sum.done} done, ${sum.inProgress} in progress, ${sum.untouched} not started; ${sum.percent}%)`);
 console.log(`  Increments:   ${sum.increments.done} done, ${sum.increments.building} building, ${sum.increments.pending} pending`);
 console.log(`  Linkage:      ${links} links across ${declared.length} requirements (${Math.round(linkage.coverage(ROOT, declared) * 100)}% coverage)`);
-console.log('  Ledger:       .godpowers/REQUIREMENTS.md');
+console.log('  Ledger:       .godpowers/REQUIREMENTS.mdx');
 console.log('  State:        .godpowers/state.json (tier-1 prd+roadmap done, deliverables cached)');

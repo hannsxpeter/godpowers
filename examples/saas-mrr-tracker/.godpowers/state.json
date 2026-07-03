@@ -10,7 +10,7 @@
       "design": {
         "status": "done",
         "updated": "2026-06-10T18:08:00.000Z",
-        "artifact": "design/STATE.md",
+        "artifact": "design/STATE.mdx",
         "verification": {
           "commands": [
             {

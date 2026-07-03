@@ -28,18 +28,18 @@ Spawn 4 mapper agents in parallel, each in fresh context:
 3. **Quality mapper**: test coverage, lint warnings, complexity hotspots
 4. **Concerns mapper**: security risks, performance hotspots, technical debt
 
-Each writes to `.godpowers/codebase/<focus>.md`.
+Each writes to `.godpowers/codebase/<focus>.mdx`.
 
-After all 4 return, optionally synthesize into `.godpowers/codebase/SUMMARY.md`.
+After all 4 return, optionally synthesize into `.godpowers/codebase/SUMMARY.mdx`.
 
 ## On Completion
 
 ```
 Codebase mapped.
-  + .godpowers/codebase/tech.md
-  + .godpowers/codebase/architecture.md
-  + .godpowers/codebase/quality.md
-  + .godpowers/codebase/concerns.md
+  + .godpowers/codebase/tech.mdx
+  + .godpowers/codebase/architecture.mdx
+  + .godpowers/codebase/quality.mdx
+  + .godpowers/codebase/concerns.mdx
 
 Suggested next: /god-init Mode B (gap-fill) or /god-feature
 

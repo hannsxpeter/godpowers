@@ -82,7 +82,7 @@ approved that exact write-capable action:
 - stage, commit, push, merge, package, publish, or release
 - deploy to staging or production
 - access provider dashboards, DNS, credentials, secrets, or billing
-- clear `.godpowers/REVIEW-REQUIRED.md`
+- clear `.godpowers/REVIEW-REQUIRED.mdx`
 - accept Critical security findings
 - run broad dependency upgrades
 - delete files, reset branches, or clean worktrees

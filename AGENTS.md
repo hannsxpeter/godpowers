@@ -30,7 +30,7 @@ projects from raw idea to hardened production.
 - Every tier skill documents its gate check (upstream dependency)
 - Every tier skill documents its have-nots (failure modes)
 - Artifacts are written to `.godpowers/<tier>/` paths
-- State is tracked in `.godpowers/PROGRESS.md`
+- State is tracked in `.godpowers/PROGRESS.mdx`
 - Dashboard state is computed by `lib/dashboard.js`
 - Repo docs, repo surface, route quality, recipe coverage, release surface, host capability, and dogfood checks are executable release gates
 - Disk state is authoritative; conversation memory is not

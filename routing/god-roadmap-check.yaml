@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - check: file:.godpowers/roadmap/ROADMAP.md
+    - check: file:.godpowers/roadmap/ROADMAP.mdx
       auto-complete: /god-roadmap
       human-required: true
 
@@ -16,9 +16,9 @@ execution:
   spawns: [god-reconciler]
   context: fresh
   reads:
-    - .godpowers/roadmap/ROADMAP.md
+    - .godpowers/roadmap/ROADMAP.mdx
     - .godpowers/state.json
-    - .godpowers/prd/PRD.md
+    - .godpowers/prd/PRD.mdx
   writes:
     - reconciliation verdict (returned to caller)
 

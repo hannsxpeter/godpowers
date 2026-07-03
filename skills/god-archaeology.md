@@ -27,7 +27,7 @@ Deep brownfield code analysis.
 
 ## Verification
 
-- `.godpowers/archaeology/REPORT.md` exists
+- `.godpowers/archaeology/REPORT.mdx` exists
 - Report covers: history, decisions, conventions, risks, tribal knowledge
 - High-risk files explicitly listed
 - Recommendations are specific (not "be careful")
@@ -35,7 +35,7 @@ Deep brownfield code analysis.
 ## On Completion
 
 ```
-Archaeology complete: .godpowers/archaeology/REPORT.md
+Archaeology complete: .godpowers/archaeology/REPORT.mdx
 
 History analyzed: [N] commits over [time period]
 High-risk files identified: [N]

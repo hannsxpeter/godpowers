@@ -8,9 +8,10 @@ description: |
   Spawned by: /god-launch, god-orchestrator
 tools: Read, Write, Edit, Bash, Grep, WebSearch
 inputs:
-  - ".godpowers/prd/PRD.md"
-  - ".godpowers/harden/FINDINGS.md"
+  - ".godpowers/prd/PRD.mdx"
+  - ".godpowers/harden/FINDINGS.mdx"
   - ".godpowers/state.json launch prerequisites"
+  - "references/shipping/LAUNCH-ANTIPATTERNS.md"
 outputs:
   - ".godpowers/state.json launch evidence"
   - "landing copy and channel messaging"
@@ -29,14 +30,18 @@ Put the product in front of users.
 
 ## Gate Check
 
-`.godpowers/harden/FINDINGS.md` exists with NO unresolved Critical findings.
+`.godpowers/harden/FINDINGS.mdx` exists with NO unresolved Critical findings.
 If Critical findings are unresolved, REFUSE to proceed and tell orchestrator
 to pause for human resolution.
 
-Confirm all P-MUST requirements show done in `.godpowers/REQUIREMENTS.md` before
+Confirm all P-MUST requirements show done in `.godpowers/REQUIREMENTS.mdx` before
 launch.
 
 ## Process
+
+Before writing launch material, read
+`references/shipping/LAUNCH-ANTIPATTERNS.md` (quiet launches, launches without
+rollback or success criteria, and the other failure patterns to avoid).
 
 ### 1. Landing Page Copy
 - Hero headline: substitution-tested (swap competitor name in, must break)
@@ -84,7 +89,7 @@ For each channel:
 
 ### 6. Shipping Closure
 - Read `.godpowers/state.json` deploy and observe evidence plus
-  `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md` if present.
+  `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx` if present.
 - If deploy or observe is waiting on external access, do not create a broad
   dashboard checklist. Reference only the smallest next access item from the
   waiting bundle and write launch state as local-ready with deployed
@@ -109,7 +114,7 @@ For each channel:
 
 ## Output
 
-Return launch evidence for `.godpowers/state.json`; `lib/state-views.js` generates `.godpowers/launch/STATE.md` with the launch artifact summary.
+Return launch evidence for `.godpowers/state.json`; `lib/state-views.js` generates `.godpowers/launch/STATE.mdx` with the launch artifact summary.
 
 ## Have-Nots
 

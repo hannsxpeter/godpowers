@@ -10,7 +10,7 @@
       "build": {
         "status": "done",
         "updated": "2026-06-10T18:08:00.000Z",
-        "artifact": "build/STATE.md",
+        "artifact": "build/STATE.mdx",
         "verification": {
           "commands": [
             {

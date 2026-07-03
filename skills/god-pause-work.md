@@ -3,7 +3,7 @@ name: god-pause-work
 description: |
   Pause work mid-task. Captures the current state, what was being worked on,
   open threads, and next steps so a future session can resume cleanly.
-  Writes to .godpowers/HANDOFF.md.
+  Writes to .godpowers/HANDOFF.mdx.
 
   Triggers on: "god pause", "/god-pause-work", "pause work", "save context",
   "I need to stop"
@@ -15,7 +15,7 @@ Create a context handoff so you can resume cleanly later.
 
 ## Process
 
-1. Read `.godpowers/state.json` to capture current state; use `.godpowers/PROGRESS.md` only as a generated legacy fallback when state is missing.
+1. Read `.godpowers/state.json` to capture current state; use `.godpowers/PROGRESS.mdx` only as a generated legacy fallback when state is missing.
 2. Identify what was actively being worked on:
    - Which slice? Which agent was running?
    - What was the next step?
@@ -24,7 +24,7 @@ Create a context handoff so you can resume cleanly later.
    - Decisions made this session
    - Open questions raised
    - Things the user mentioned that aren't yet in artifacts
-4. Write `.godpowers/HANDOFF.md`:
+4. Write `.godpowers/HANDOFF.mdx`:
 
 ```markdown
 # Godpowers Handoff
@@ -58,7 +58,7 @@ Paused: [timestamp]
 ## On Completion
 
 ```
-Work paused. Handoff written: .godpowers/HANDOFF.md
+Work paused. Handoff written: .godpowers/HANDOFF.mdx
 
 To resume: open a new session and run /god-resume-work
 ```

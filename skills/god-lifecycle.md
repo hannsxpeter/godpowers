@@ -24,10 +24,10 @@ Show project phase and contextually appropriate workflows.
 1. Detect lifecycle phase from disk:
    - **No `.godpowers/`** -> Pre-init
    - **`.godpowers/state.json` exists, not all tracked steps done** -> In progress
-   - **Only generated legacy `.godpowers/PROGRESS.md` exists** -> In progress after re-deriving state from disk
+   - **Only generated legacy `.godpowers/PROGRESS.mdx` exists** -> In progress after re-deriving state from disk
    - **All tiers done, no special markers** -> Steady state
    - **`.godpowers/postmortems/<id>/` exists with no POSTMORTEM.md** -> Post-incident pending
-   - **`.godpowers/migrations/<slug>/MIGRATION.md` exists, status != complete** -> In-migration
+   - **`.godpowers/migrations/<slug>/MIGRATION.mdx` exists, status != complete** -> In-migration
    - **`.godpowers/spikes/` has any inconclusive entries** -> Spike pending follow-up
 
 2. Display the phase with context.
@@ -114,7 +114,7 @@ Or pause and switch context: /god-pause-work
 ```
 Lifecycle: Spike pending follow-up
 
-Inconclusive spike: .godpowers/spikes/<slug>/SPIKE.md
+Inconclusive spike: .godpowers/spikes/<slug>/SPIKE.mdx
 Recommended follow-up: [from spike's recommendation]
 
 Suggested next: /god-spike with narrower question

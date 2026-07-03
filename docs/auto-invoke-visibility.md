@@ -14,7 +14,7 @@ agent, but routine helper names do not need to lead the default transcript.
 ## Default Visibility Shape
 
 ```text
-Synced project artifacts after the change. Details were written to .godpowers/SYNC-LOG.md.
+Synced project artifacts after the change. Details were written to .godpowers/SYNC-LOG.mdx.
 ```
 
 Use one concise sentence when automatic work changes artifacts, creates review
@@ -82,7 +82,7 @@ Route closeouts that use contextual or choice-based next values must use
 | Repo documentation sync | `/god-sync`, `/god-docs`, `/god-doctor`, `/god-status`, `/god-mode` | Show only fixes or recommendations that change the next command |
 | Host capability detection | `/god-status`, `/god-next`, `/god-doctor`, `/god-sync`, release closeout | Show full, degraded, or unknown host guarantees |
 | Dogfood runner | `/god-dogfood`, `npx godpowers dogfood`, release readiness checks | Show scenario names, pass/fail counts, and fixture paths |
-| Checkpoint sync | State mutation checkpoints | Show `.godpowers/CHECKPOINT.md` created, updated, no-op, or skipped |
+| Checkpoint sync | State mutation checkpoints | Show `.godpowers/CHECKPOINT.mdx` created, updated, no-op, or skipped |
 | Context refresh | `/god-sync`, `/god-init`, `/god-context` | Show `god-context-writer` spawn or no-op |
 | Standards checks | Routed stage boundaries | Show gate, artifact, pass/fail, and next route |
 | Spawn trace checks | Route-quality sync and release closeout | Require `agent.start` and `agent.end` for agent-spawning routes |

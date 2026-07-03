@@ -22,7 +22,7 @@ locally; the coordinator tracks atomicity.
    - Patch description (what's the change)
    - Repos in scope (defaults: all siblings; user can subset)
    - Per-repo any specific notes
-3. Create `.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.md` with the patch
+3. Create `.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.mdx` with the patch
    description, repos in scope, per-repo notes, dry-run flag, and patch-mode
    instruction.
 4. Spawn `god-coordinator` in `patch` mode with only a display-safe payload:

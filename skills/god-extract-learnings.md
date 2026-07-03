@@ -27,7 +27,7 @@ Capture institutional knowledge from a completed phase or milestone.
    - **Lessons learned**: what would you do differently next time
    - **Patterns established**: techniques that worked, worth reusing
    - **Surprises**: things you didn't expect (good or bad)
-3. Write to `.godpowers/learnings/<milestone>/LEARNINGS.md`
+3. Write to `.godpowers/learnings/<milestone>/LEARNINGS.mdx`
 4. Optionally append summary to a global `~/.godpowers-knowledge.md` for
    cross-project learning (opt-in)
 

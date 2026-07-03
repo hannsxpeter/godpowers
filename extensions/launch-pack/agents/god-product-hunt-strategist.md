@@ -66,7 +66,7 @@ Examples that fail:
 
 ## Output
 
-Write `.godpowers/launch/product-hunt/PLAN.md`:
+Write `.godpowers/launch/product-hunt/PLAN.mdx`:
 
 ```markdown
 # Product Hunt Launch Plan

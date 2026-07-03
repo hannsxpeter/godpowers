@@ -12,8 +12,8 @@ inputs:
   - "optional existing artifacts"
   - "optional domain glossary"
 outputs:
-  - ".godpowers/explore/<slug>.md"
-  - ".godpowers/discussions/<topic>.md"
+  - ".godpowers/explore/<slug>.mdx"
+  - ".godpowers/discussions/<topic>.mdx"
   - "optional domain glossary update"
 gates:
   - "clarified problem framing"
@@ -43,8 +43,8 @@ Read what the user gave you. Identify:
 - Existing project-specific terms
 - Terms that appear overloaded, vague, or inconsistent
 
-Read `.godpowers/domain/GLOSSARY.md` if it exists. If it does not exist, create
-it lazily from `templates/DOMAIN-GLOSSARY.md` only after the first term or
+Read `.godpowers/domain/GLOSSARY.mdx` if it exists. If it does not exist, create
+it lazily from `templates/DOMAIN-GLOSSARY.mdx` only after the first term or
 ambiguity is resolved.
 
 If code or docs can answer a question, inspect them before asking the user.
@@ -69,13 +69,13 @@ Surface hidden assumptions:
      pay $0 for?"
 
 Challenge domain language:
-- If a term conflicts with `.godpowers/domain/GLOSSARY.md`, call it out
+- If a term conflicts with `.godpowers/domain/GLOSSARY.mdx`, call it out
   immediately and ask which meaning should win.
 - If a term is fuzzy or overloaded, propose one canonical term and list aliases
   to avoid.
 - If relationships between terms matter, test them with concrete edge cases.
 - Record resolved terms, avoided aliases, relationships, and ambiguities in
-  `.godpowers/domain/GLOSSARY.md` as they are resolved.
+  `.godpowers/domain/GLOSSARY.mdx` as they are resolved.
 
 ### Phase 3: Reframe
 Present 2-3 alternative framings of the same problem:
@@ -147,7 +147,7 @@ Date: [timestamp]
 - User has clarity (or confirms one framing as the direction)
 - Output document exists with the seed for /god-prd
 - Open questions explicitly listed (not buried in prose)
-- Resolved domain terms are captured in `.godpowers/domain/GLOSSARY.md`
+- Resolved domain terms are captured in `.godpowers/domain/GLOSSARY.mdx`
 - Glossary updates contain no implementation details
 
 ## NOT Your Job

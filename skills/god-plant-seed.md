@@ -22,7 +22,7 @@ Capture an idea that should surface later when conditions are right.
 ## Process
 
 1. Take the idea + trigger condition from the user
-2. Write to `.godpowers/seeds/<seed-id>.md`:
+2. Write to `.godpowers/seeds/<seed-id>.mdx`:
 
 ```markdown
 # Seed: [short name]

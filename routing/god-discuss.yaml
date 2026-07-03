@@ -20,7 +20,7 @@ execution:
   spawns: [god-explorer]
   context: fresh
   writes:
-    - .godpowers/discussions/<topic>.md
+    - .godpowers/discussions/<topic>.mdx
 
 
 success-path:

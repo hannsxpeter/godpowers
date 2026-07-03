@@ -9,8 +9,8 @@
     "legacy-planning"
   ],
   "expectedFiles": [
-    ".godpowers/prep/IMPORTED-CONTEXT.md",
-    ".godpowers/prd/PRD.md",
+    ".godpowers/prep/IMPORTED-CONTEXT.mdx",
+    ".godpowers/prd/PRD.mdx",
     ".planning/GODPOWERS-SYNC.md"
   ]
 }

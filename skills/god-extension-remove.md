@@ -34,7 +34,7 @@ Example:
 ## What this does NOT remove
 
 - Project-level artifacts the pack produced (e.g.
-  `.godpowers/audits/soc2-2026-01.md`). These stay; re-install the
+  `.godpowers/audits/soc2-2026-01.mdx`). These stay; re-install the
   pack to read them again.
 - Have-nots IDs already recorded in linkage. Those references become
   dead until the pack is re-installed.

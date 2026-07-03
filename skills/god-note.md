@@ -1,7 +1,7 @@
 ---
 name: god-note
 description: |
-  Zero-friction idea capture. Append a note to .godpowers/notes/NOTES.md
+  Zero-friction idea capture. Append a note to .godpowers/notes/NOTES.mdx
   with timestamp. Optionally promote to a todo.
 
   Triggers on: "god note", "/god-note", "capture this", "remember this"
@@ -14,7 +14,7 @@ Capture an idea with zero ceremony.
 ## Process
 
 1. Take the user's note text
-2. Append to `.godpowers/notes/NOTES.md` with timestamp:
+2. Append to `.godpowers/notes/NOTES.mdx` with timestamp:
 
 ```markdown
 - 2026-05-09 14:23:45: [note text]

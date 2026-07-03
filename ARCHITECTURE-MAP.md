@@ -539,7 +539,7 @@ Workflows don't just exist; they hand off to each other.
    |
    v
 4. god-pm agent starts in fresh 200K context
-   (reads state.json, intent.yaml, templates/PRD.md)
+   (reads state.json, intent.yaml, templates/PRD.mdx)
    |
    v
 5. Agent does work:
@@ -550,7 +550,7 @@ Workflows don't just exist; they hand off to each other.
    - Checks have-nots P-01 through P-15
    |
    v
-6. Agent writes: .godpowers/prd/PRD.md
+6. Agent writes: .godpowers/prd/PRD.mdx
    |
    v
 7. Returns to skill (via Task tool result)
@@ -564,7 +564,7 @@ Workflows don't just exist; they hand off to each other.
    |
    v
 9. Prints to user:
-   "PRD complete: .godpowers/prd/PRD.md
+   "PRD complete: .godpowers/prd/PRD.mdx
     Suggested next: /god-arch"
 ```
 
@@ -640,7 +640,7 @@ godpowers/
 ├── README.md, CHANGELOG.md, LICENSE, CONTRIBUTING.md, SECURITY.md, USERS.md
 ├── ARCHITECTURE.md                <- Design doc
 ├── ARCHITECTURE-MAP.md            <- This file
-├── package.json (v3.14.0)
+├── package.json (v4.0.0)
 ├── .github/workflows/              <- CI + npm publish workflows
 │
 ├── bin/install.js                 <- CLI installer (15 runtimes)
@@ -656,11 +656,11 @@ godpowers/
 ├── workflows/                     <- 13 executable workflow YAMLs
 │   ├── full-arc.yaml, feature-arc.yaml, hotfix-arc.yaml, ...
 │
-├── templates/                     <- 15 artifact templates
-│   ├── PRD.md, ARCH.md, ROADMAP.md, ...
+├── templates/                     <- 14 artifact templates
+│   ├── PRD.mdx, ARCH.mdx, ROADMAP.mdx, ...
 │
 ├── references/
-│   ├── HAVE-NOTS.md               <- 156 named failure modes (canonical)
+│   ├── HAVE-NOTS.md               <- 157 named failure modes (canonical)
 │   ├── orchestration/             <- Mode/scale detection patterns
 │   ├── planning/                  <- PRD/ARCH/ROADMAP/STACK anatomies + antipatterns
 │   ├── building/                  <- Vertical slices, waves
@@ -673,7 +673,7 @@ godpowers/
 │   ├── events.v1.json
 │   └── workflow.v1.json
 │
-├── lib/                           <- Real JS runtime (91 modules)
+├── lib/                           <- Real JS runtime (92 modules)
 │   ├── state.js                   <- state model + drift detection
 │   ├── events.js                  <- OTel-shape event log + hash chain
 │   ├── router.js                  <- command routing
@@ -736,7 +736,7 @@ godpowers/
 
 ---
 
-## Numbers (as of v3.14.0)
+## Numbers (as of v4.0.0)
 
 | Component | Count |
 |-----------|-------|
@@ -747,11 +747,11 @@ godpowers/
 | Specialist agents | 40 |
 | Workflows (core YAMLs) | 13 |
 | Intent recipes | 44 |
-| Have-nots | 156 documented + 30+ mechanically validated by linter |
+| Have-nots | 157 documented + 30+ mechanically validated by linter |
 | Templates | 16 |
 | Reference documents | 39 |
 | JSON Schemas | 7 |
-| **JS runtime modules** | **91** |
+| **JS runtime modules** | **92** |
 | **External integrations** | **5** (all detect-and-delegate; none vendored): Google Labs design.md, Impeccable, awesome-design-md, SkillUI, vercel-labs/agent-browser + Playwright |
 | Hooks | 2 |
 | Dogfood scenarios | 5 |

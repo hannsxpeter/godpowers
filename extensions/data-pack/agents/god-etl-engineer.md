@@ -40,7 +40,7 @@ Build ETL pipelines that don't lie about success.
 
 ## Output
 
-Write `.godpowers/data/etl/<pipeline-name>/PIPELINE.md` with the contract
+Write `.godpowers/data/etl/<pipeline-name>/PIPELINE.mdx` with the contract
 and operational runbook.
 
 ## Have-Nots

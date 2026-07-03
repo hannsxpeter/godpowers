@@ -32,7 +32,7 @@ are listed manually; godpowers does NOT auto-walk parent dirs.
    - Byte-identical files to track (one per line; e.g., LICENSE, .editorconfig)
    - Version-table entries (optional; can be added later)
    - Shared standards (node-version, linter; optional)
-3. Create `.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.md` with the
+3. Create `.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.mdx` with the
    collected suite name, sibling paths, byte-identical files, version-table
    entries, shared standards, and init-mode instruction.
 4. Spawn `god-coordinator` agent in `init` mode with only a display-safe
@@ -54,7 +54,7 @@ are listed manually; godpowers does NOT auto-walk parent dirs.
 
 - `.godpowers/suite-config.yaml` (hub)
 - `.godpowers/suite/state.json` (hub; aggregate)
-- `.godpowers/suite/STATE.md` (hub; human-readable)
+- `.godpowers/suite/STATE.mdx` (hub; human-readable)
 - Updates to each sibling's `state.json` (`suite.hubPath` field)
 
 ## Suite-config schema

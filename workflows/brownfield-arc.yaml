@@ -22,17 +22,32 @@ jobs:
     uses: god-auditor@^1.0.0
     with:
       mode: preflight
-      output: .godpowers/preflight/PREFLIGHT.md
+      output: .godpowers/preflight/PREFLIGHT.mdx
 
   archaeology:
     tier: 0
     needs: preflight
     uses: god-archaeologist@^1.0.0
 
+  # Local runtime call: lib/planning-systems.importPlanningContext. Imports
+  # sibling godplans/godaudits artifacts (and legacy planning systems) into
+  # prep context and seed artifacts before reconstruction runs. PLAN.mdx and
+  # AUDIT.mdx stay read-only; parsing via lib/sibling-artifacts.js.
+  import-sibling-artifacts:
+    tier: 0
+    needs: preflight
+    uses: god-orchestrator@^1.0.0
+    local-helpers:
+      - sibling-artifact-import
+    with:
+      action: import-sibling-artifacts
+
   reconstruct:
     tier: 1
-    needs: archaeology
+    needs: [archaeology, import-sibling-artifacts]
     uses: god-reconstructor@^1.0.0
+    with:
+      prefer-imported-plan: .godplans/PLAN.mdx
 
   debt-assess:
     tier: 0
@@ -53,7 +68,10 @@ jobs:
     with:
       mode: greenfield-simulation
       compare: existing-codebase-to-canonical-godpowers-arc
-      output: .godpowers/audit/GREENFIELD-SIMULATION.md
+      compare-inputs:
+        - .godplans/PLAN.mdx
+        - .godaudits/AUDIT.mdx
+      output: .godpowers/audit/GREENFIELD-SIMULATION.mdx
 
   greenfieldify-artifacts:
     tier: 0
@@ -61,20 +79,20 @@ jobs:
     uses: god-greenfieldifier@^1.0.0
     with:
       mode: brownfield
-      audit: .godpowers/audit/GREENFIELD-SIMULATION.md
-      plan: .godpowers/audit/GREENFIELDIFY-PLAN.md
+      audit: .godpowers/audit/GREENFIELD-SIMULATION.mdx
+      plan: .godpowers/audit/GREENFIELDIFY-PLAN.mdx
       approval: required-before-writing-canonical-artifacts
       artifacts:
-        - .godpowers/prd/PRD.md
-        - .godpowers/design/DESIGN.md
-        - .godpowers/product/PRODUCT.md
-        - .godpowers/arch/ARCH.md
-        - .godpowers/roadmap/ROADMAP.md
-        - .godpowers/stack/DECISION.md
-        - .godpowers/repo/AUDIT.md
+        - .godpowers/prd/PRD.mdx
+        - .godpowers/design/DESIGN.mdx
+        - .godpowers/product/PRODUCT.mdx
+        - .godpowers/arch/ARCH.mdx
+        - .godpowers/roadmap/ROADMAP.mdx
+        - .godpowers/stack/DECISION.mdx
+        - .godpowers/repo/AUDIT.mdx
         - .godpowers/state.json
-        - .godpowers/build/PLAN.md
-        - .godpowers/harden/FINDINGS.md
+        - .godpowers/build/PLAN.mdx
+        - .godpowers/harden/FINDINGS.mdx
 
   steady-state-handoff:
     tier: 0

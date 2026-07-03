@@ -19,9 +19,11 @@ execution:
   spawns: [god-orchestrator]
   context: fresh
   reads:
-    - .godpowers/prep/INITIAL-FINDINGS.md
-    - .godpowers/prep/IMPORTED-CONTEXT.md
-    - .godpowers/preflight/PREFLIGHT.md
+    - .godpowers/prep/INITIAL-FINDINGS.mdx
+    - .godpowers/prep/IMPORTED-CONTEXT.mdx
+    - .godpowers/preflight/PREFLIGHT.mdx
+    - .godplans/PLAN.mdx
+    - .godaudits/AUDIT.mdx
   secondary-spawns: [god-auditor, god-pm, god-designer, god-architect, god-roadmapper, god-stack-selector, god-repo-scaffolder, god-planner, god-executor, god-spec-reviewer, god-quality-reviewer, god-deploy-engineer, god-observability-engineer, god-harden-auditor, god-launch-strategist]
   writes:
     []

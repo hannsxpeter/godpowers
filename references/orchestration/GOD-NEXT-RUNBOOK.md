@@ -13,7 +13,7 @@ This reference owns the detailed process notes for `/god-next`. The skill file s
 
 Use runtime routing YAML, recipes, `lib/command-families.js`, `lib/router.js`, `lib/dashboard.js`, state.json, PROGRESS.md, CHECKPOINT.md, and completed artifacts.
 
-Read `.godpowers/prep/INITIAL-FINDINGS.md` and `.godpowers/prep/IMPORTED-CONTEXT.md` when present. Treat them as preparation context only.
+Read `.godpowers/prep/INITIAL-FINDINGS.mdx` and `.godpowers/prep/IMPORTED-CONTEXT.mdx` when present. Treat them as preparation context only.
 
 ## Route detail
 

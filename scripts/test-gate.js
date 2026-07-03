@@ -46,7 +46,7 @@ test('artifact map normalizes command names and reports required artifacts', () 
   assert(required.length === 2, `design should have 2 required artifacts, got ${required.length}`);
   assert(required.some((artifact) => artifact.path === '.godpowers/state.json'),
     'design gate should require state.json evidence');
-  assert(!required.some((artifact) => artifact.path === '.godpowers/design/STATE.md'),
+  assert(!required.some((artifact) => artifact.path === '.godpowers/design/STATE.mdx'),
     'design gate should not require markdown state');
   const buildArtifacts = artifactMap.requiredArtifactsForTier('build');
   assert(buildArtifacts.length === 1 && buildArtifacts[0].path === '.godpowers/state.json',
@@ -67,7 +67,7 @@ test('design gate passes when optional PRODUCT artifact is absent', () => {
     '',
     '[DECISION] Gate Design exists only to prove optional PRODUCT handling.'
   ].join('\n'));
-  writeRel(project, '.godpowers/design/STATE.md', [
+  writeRel(project, '.godpowers/design/STATE.mdx', [
     '# Design State',
     '',
     '[DECISION] This markdown state view is present but not gate-authoritative.'
@@ -75,7 +75,7 @@ test('design gate passes when optional PRODUCT artifact is absent', () => {
   initState(project, (current) => {
     current.tiers['tier-1'].design = {
       status: 'done',
-      artifact: 'design/STATE.md',
+      artifact: 'design/STATE.mdx',
       updated: '2026-06-10T18:05:00.000Z'
     };
   });
@@ -106,7 +106,7 @@ test('missing required artifact fails the gate', () => {
 
 test('artifact lint error fails the gate', () => {
   const project = mkProject('godpowers-gate-lint-');
-  writeRel(project, '.godpowers/prd/PRD.md', [
+  writeRel(project, '.godpowers/prd/PRD.mdx', [
     '# Bad PRD',
     '',
     '[DECISION] This PRD contains an em dash ' + String.fromCharCode(0x2014) + ' which must fail.',
@@ -128,7 +128,7 @@ test('artifact lint error fails the gate', () => {
 
 test('harden gate fails unresolved Critical findings', () => {
   const project = mkProject('godpowers-gate-harden-');
-  writeRel(project, '.godpowers/harden/FINDINGS.md', [
+  writeRel(project, '.godpowers/harden/FINDINGS.mdx', [
     '# Security Findings',
     '',
     '| Severity | Count |',
@@ -150,7 +150,7 @@ test('harden gate fails unresolved Critical findings', () => {
 test('harden gate fails without executed verification evidence', () => {
   const project = mkProject('godpowers-gate-harden-evidence-');
   // No Critical findings, so only the new executed-evidence requirement blocks.
-  writeRel(project, '.godpowers/harden/FINDINGS.md', [
+  writeRel(project, '.godpowers/harden/FINDINGS.mdx', [
     '# Security Findings',
     '',
     '[DECISION] The harden run found no unresolved Critical findings.',
@@ -178,7 +178,7 @@ test('harden gate fails without executed verification evidence', () => {
 
 test('harden gate passes with no criticals and an executed pass', () => {
   const project = mkProject('godpowers-gate-harden-evidence-pass-');
-  writeRel(project, '.godpowers/harden/FINDINGS.md', [
+  writeRel(project, '.godpowers/harden/FINDINGS.mdx', [
     '# Security Findings',
     '',
     '[DECISION] The harden run found no unresolved Critical findings.',
@@ -223,7 +223,7 @@ test('build gate fails without passed command evidence', () => {
 
 test('build gate ignores markdown state and fails from state.json failed command evidence', () => {
   const project = mkProject('godpowers-gate-build-failed-command-');
-  writeRel(project, '.godpowers/build/STATE.md', [
+  writeRel(project, '.godpowers/build/STATE.mdx', [
     '# Build State',
     '',
     '[DECISION] This markdown view claims every verification command passed.'
@@ -254,7 +254,7 @@ test('JSON shape remains stable', () => {
   for (const key of ['tier', 'verdict', 'artifacts', 'checks', 'findings', 'summary']) {
     assert(Object.prototype.hasOwnProperty.call(result, key), `missing key ${key}`);
   }
-  assert(result.artifacts[0].path === '.godpowers/stack/DECISION.md', 'unexpected stack artifact path');
+  assert(result.artifacts[0].path === '.godpowers/stack/DECISION.mdx', 'unexpected stack artifact path');
   assert(result.summary.checkedArtifacts >= 1, 'checked artifact count missing');
 });
 

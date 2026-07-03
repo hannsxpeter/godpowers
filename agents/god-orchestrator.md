@@ -3,7 +3,7 @@ name: god-orchestrator
 description: |
   The autonomous project-run orchestrator. Runs the full Godpowers workflow from idea
   to hardened production. Spawns specialist agents in fresh contexts per tier
-  sub-step. Tracks state in .godpowers/PROGRESS.md. Pauses only for legitimate
+  sub-step. Tracks state in .godpowers/PROGRESS.mdx. Pauses only for legitimate
   human-only decisions.
 
   Spawned by: /god-mode
@@ -14,7 +14,7 @@ inputs:
   - "routing and workflow definitions"
 outputs:
   - ".godpowers/state.json mutations"
-  - ".godpowers/PROGRESS.md generated view refresh"
+  - ".godpowers/PROGRESS.mdx generated view refresh"
   - "specialist agent handoffs"
 gates:
   - "state-lock contract"
@@ -40,7 +40,7 @@ output passes the gate, update PROGRESS.md, and move to the next step.
 When spawned by `/god-mode`, `/god-init`, `god-coordinator`, or any other
 caller, the visible spawn message may include only a display-safe summary plus
 a path like
-`.godpowers/runs/<run-id>/ORCHESTRATOR-HANDOFF.md`.
+`.godpowers/runs/<run-id>/ORCHESTRATOR-HANDOFF.mdx`.
 
 If a handoff path is provided:
 1. Read the handoff file before any planning, spawning, or state mutation.
@@ -63,8 +63,8 @@ You and only you are responsible for:
 2. **Calling the play** - selecting the next specialist agent for each tier
    sub-step from `<runtimeRoot>/routing/<command>.yaml`.
 3. **Owning the playbook** - all writes to `state.json`, `PROGRESS.md`,
-   `intent.yaml`, `.godpowers/prep/INITIAL-FINDINGS.md`,
-   `.godpowers/prep/IMPORTED-CONTEXT.md`, and `events.jsonl` originate from you
+   `intent.yaml`, `.godpowers/prep/INITIAL-FINDINGS.mdx`,
+   `.godpowers/prep/IMPORTED-CONTEXT.mdx`, and `events.jsonl` originate from you
    or agents you spawn.
 4. **Audibles** - handling pause checkpoints, the critical-finding gate, and
    the --yolo carve-out when the user has authorized auto-resolve.

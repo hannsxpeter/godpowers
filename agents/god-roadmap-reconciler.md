@@ -9,7 +9,7 @@ description: |
   Spawned by: legacy /god-roadmap-check installs only
 tools: Read, Bash, Grep, Glob, Task
 inputs:
-  - ".godpowers/roadmap/ROADMAP.md"
+  - ".godpowers/roadmap/ROADMAP.mdx"
   - ".godpowers/state.json"
   - "user feature intent"
   - "optional PRD evidence"
@@ -30,9 +30,9 @@ classification logic.
 ## Inputs
 
 - User intent as one paragraph.
-- `.godpowers/roadmap/ROADMAP.md`.
+- `.godpowers/roadmap/ROADMAP.mdx`.
 - `.godpowers/state.json`.
-- Optional `.godpowers/prd/PRD.md`.
+- Optional `.godpowers/prd/PRD.mdx`.
 
 ## Process
 

@@ -4,7 +4,7 @@ description: |
   Deliverable progress report. Answers "what is done, what is in progress, and
   what is left?" at the requirement and roadmap-increment level (not the
   pipeline-stage level that /god-status leads with). Re-derives everything from
-  disk and refreshes the .godpowers/REQUIREMENTS.md ledger.
+  disk and refreshes the .godpowers/REQUIREMENTS.mdx ledger.
 
   Triggers on: "god progress", "what's done", "what's left", "requirements
   status", "how far along are we", "show me the checklist", "deliverable
@@ -24,12 +24,12 @@ proactive ops). Never report from memory; re-derive from disk every time.
    "No Godpowers project found. Run `/god-init` to start." and stop.
 2. Resolve the runtime root and load `<runtimeRoot>/lib/requirements.js`.
 3. Call `requirements.derive(projectRoot)`. This reads, all from disk:
-   - `.godpowers/prd/PRD.md` for declared requirements (P-MUST/SHOULD/COULD ids)
-   - `.godpowers/roadmap/ROADMAP.md` for delivery increments and their members
+   - `.godpowers/prd/PRD.mdx` for declared requirements (P-MUST/SHOULD/COULD ids)
+   - `.godpowers/roadmap/ROADMAP.mdx` for delivery increments and their members
    - `.godpowers/links/` for the linkage forward map (requirement -> code)
    - `.godpowers/state.json` for build and increment completion
 4. Refresh the ledger: `requirements.writeLedger(projectRoot, derived)` so
-   `.godpowers/REQUIREMENTS.md` always reflects current disk truth.
+   `.godpowers/REQUIREMENTS.mdx` always reflects current disk truth.
 5. Compute "what's next": the highest-priority requirement that is not yet done
    (MUST before SHOULD before COULD), preferring one whose increment is already
    building. Fall back to `router.suggestNext(projectRoot)` for the command.
@@ -44,7 +44,7 @@ declared yet), say so plainly and route the user to `/god-prd`, then stop.
 Godpowers Progress
 
 Source: disk (PRD + ROADMAP + linkage + build state)
-Ledger: .godpowers/REQUIREMENTS.md
+Ledger: .godpowers/REQUIREMENTS.mdx
 
 Requirements: [########------------] 8/14 done (57%)
   In progress: 3
@@ -72,7 +72,7 @@ Gaps:
   none
   (or: P-MUST-09 is in a done increment but has no linked code)
 
-Open the full checklist any time: .godpowers/REQUIREMENTS.md
+Open the full checklist any time: .godpowers/REQUIREMENTS.mdx
 ```
 
 Use plain text. No emoji, no box-drawing. Ledger marks are `[x]` done, `[~]`
@@ -101,4 +101,4 @@ unlinked code is a real inconsistency.
 - `/god-progress` - deliverable progress (which requirements/increments).
   Use when you want to know how much of the actual product is built.
 - `/god-next` - just the single recommended next command.
-- `.godpowers/REQUIREMENTS.md` - the static checklist file to open or share.
+- `.godpowers/REQUIREMENTS.mdx` - the static checklist file to open or share.

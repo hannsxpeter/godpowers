@@ -26,6 +26,6 @@ sequences:
     description: "See which requirements and increments are done, in progress, or not started"
     steps:
       - command: "/god-progress"
-        why: "Derives requirement and increment status from disk and refreshes .godpowers/REQUIREMENTS.md"
+        why: "Derives requirement and increment status from disk and refreshes .godpowers/REQUIREMENTS.mdx"
 
 default-sequence: default

@@ -22,11 +22,11 @@ execution:
   context: fresh
   reads:
     - .godpowers/intent.yaml
-    - .godpowers/prep/INITIAL-FINDINGS.md
-    - .godpowers/prep/IMPORTED-CONTEXT.md
-    - templates/PRD.md
+    - .godpowers/prep/INITIAL-FINDINGS.mdx
+    - .godpowers/prep/IMPORTED-CONTEXT.mdx
+    - templates/PRD.mdx
   writes:
-    - .godpowers/prd/PRD.md
+    - .godpowers/prd/PRD.mdx
     - .godpowers/prd/PRD.meta.json
   secondary-spawns: [god-auditor]  # for verification
 

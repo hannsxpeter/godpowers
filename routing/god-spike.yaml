@@ -14,7 +14,7 @@ execution:
   spawns: [god-spike-runner]
   context: fresh
   writes:
-    - .godpowers/spikes/<slug>/SPIKE.md
+    - .godpowers/spikes/<slug>/SPIKE.mdx
 
 standards:
   substitution-test: true

@@ -35,8 +35,8 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-mode`, `/god-init` (delegated), `/god-mode --yolo` |
-| **Inputs** | User intent, `.godpowers/state.json`, `.godpowers/PROGRESS.md`, optional `.godpowers/intent.yaml`, optional legacy planning / Superpowers / BMAD context |
-| **Outputs** | `.godpowers/state.json` (mode + scale), `.godpowers/PROGRESS.md`, `.godpowers/prep/INITIAL-FINDINGS.md`, optional `.godpowers/prep/IMPORTED-CONTEXT.md` |
+| **Inputs** | User intent, `.godpowers/state.json`, `.godpowers/PROGRESS.mdx`, optional `.godpowers/intent.yaml`, optional legacy planning / Superpowers / BMAD context |
+| **Outputs** | `.godpowers/state.json` (mode + scale), `.godpowers/PROGRESS.mdx`, `.godpowers/prep/INITIAL-FINDINGS.mdx`, optional `.godpowers/prep/IMPORTED-CONTEXT.mdx` |
 | **Downstream consumers** | All other agents read state.json |
 | **Artifact awareness** | All 14 artifact categories (it routes to specialists) |
 | **Handoff** | Spawns specialists in tier order; awaits their return; pauses for legitimate human-only decisions |
@@ -62,8 +62,8 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-prd`, `/god-feature` (mini-PRD mode), `/god-mode` (via orchestrator), reconciliation if PRD missing |
-| **Inputs** | User intent, `.godpowers/intent.yaml`, optional `.godpowers/domain/GLOSSARY.md`, optional `.godpowers/prep/INITIAL-FINDINGS.md`, optional `.godpowers/prep/IMPORTED-CONTEXT.md`, `templates/PRD.md` |
-| **Outputs** | `.godpowers/prd/PRD.md` + `.godpowers/prd/PRD.meta.json` |
+| **Inputs** | User intent, `.godpowers/intent.yaml`, optional `.godpowers/domain/GLOSSARY.mdx`, optional `.godpowers/prep/INITIAL-FINDINGS.mdx`, optional `.godpowers/prep/IMPORTED-CONTEXT.mdx`, `templates/PRD.mdx` |
+| **Outputs** | `.godpowers/prd/PRD.mdx` + `.godpowers/prd/PRD.meta.json` |
 | **Downstream consumers** | god-architect, god-roadmapper, god-launch-strategist, god-observability-engineer (reads NFRs), god-reconciler |
 | **Artifact awareness** | Domain glossary, initial findings, and imported preparation context are supporting evidence only, never source of truth |
 | **Handoff** | Returns when PRD passes have-nots P-01..P-15. Pauses for ambiguous problem space, missing domain knowledge, conflicting requirements. |
@@ -74,8 +74,8 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-arch`, `/god-feature` (delta mode), `/god-mode` |
-| **Inputs** | `.godpowers/prd/PRD.md`, optional `.godpowers/domain/GLOSSARY.md`, optional `.godpowers/prep/INITIAL-FINDINGS.md`, optional `.godpowers/prep/IMPORTED-CONTEXT.md`, `templates/ARCH.md` |
-| **Outputs** | `.godpowers/arch/ARCH.md`, `.godpowers/arch/adr/<n>-<title>.md` |
+| **Inputs** | `.godpowers/prd/PRD.mdx`, optional `.godpowers/domain/GLOSSARY.mdx`, optional `.godpowers/prep/INITIAL-FINDINGS.mdx`, optional `.godpowers/prep/IMPORTED-CONTEXT.mdx`, `templates/ARCH.mdx` |
+| **Outputs** | `.godpowers/arch/ARCH.mdx`, `.godpowers/arch/adr/<n>-<title>.mdx` |
 | **Downstream consumers** | god-roadmapper, god-stack-selector, god-planner, god-deploy-engineer, god-harden-auditor |
 | **Artifact awareness** | PRD requirements, NFRs, optional org-context.yaml (bluefield), domain glossary, imported preparation context as supporting evidence |
 | **Handoff** | Returns when ARCH passes have-nots A-01..A-13. Pauses on tied architectures, human-constraint flip points. |
@@ -86,8 +86,8 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-roadmap`, `/god-mode`, `/god-roadmap-update` (legacy) |
-| **Inputs** | `.godpowers/prd/PRD.md`, `.godpowers/arch/ARCH.md`, optional `.godpowers/domain/GLOSSARY.md`, optional `.godpowers/prep/INITIAL-FINDINGS.md`, optional `.godpowers/prep/IMPORTED-CONTEXT.md`, `templates/ROADMAP.md` |
-| **Outputs** | `.godpowers/roadmap/ROADMAP.md` |
+| **Inputs** | `.godpowers/prd/PRD.mdx`, `.godpowers/arch/ARCH.mdx`, optional `.godpowers/domain/GLOSSARY.mdx`, optional `.godpowers/prep/INITIAL-FINDINGS.mdx`, optional `.godpowers/prep/IMPORTED-CONTEXT.mdx`, `templates/ROADMAP.mdx` |
+| **Outputs** | `.godpowers/roadmap/ROADMAP.mdx` |
 | **Downstream consumers** | god-planner, god-reconciler |
 | **Artifact awareness** | PRD requirements, ARCH dependency edges, domain glossary, imported milestones and stories as supporting evidence |
 | **Handoff** | Returns when ROADMAP passes have-nots R-01..R-10. Pauses on capacity unknown, ambiguous ordering. |
@@ -98,8 +98,8 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-stack`, `/god-mode` |
-| **Inputs** | `.godpowers/arch/ARCH.md`, optional `.godpowers/domain/GLOSSARY.md`, optional `.godpowers/org-context.yaml` (bluefield constraint), optional `.godpowers/prep/INITIAL-FINDINGS.md`, optional `.godpowers/prep/IMPORTED-CONTEXT.md` |
-| **Outputs** | `.godpowers/stack/DECISION.md` |
+| **Inputs** | `.godpowers/arch/ARCH.mdx`, optional `.godpowers/domain/GLOSSARY.mdx`, optional `.godpowers/org-context.yaml` (bluefield constraint), optional `.godpowers/prep/INITIAL-FINDINGS.mdx`, optional `.godpowers/prep/IMPORTED-CONTEXT.mdx` |
+| **Outputs** | `.godpowers/stack/DECISION.mdx` |
 | **Downstream consumers** | god-repo-scaffolder, god-planner, god-deploy-engineer |
 | **Artifact awareness** | ARCH NFRs, ADRs, org constraints if bluefield, domain glossary, imported stack signals as supporting evidence |
 | **Handoff** | Returns when DECISION passes have-nots S-01..S-05. Pauses on within-10% ties, high-lock-in choices. |
@@ -110,8 +110,8 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-explore`, `/god-discuss`, `/god-list-assumptions`, `/god-refactor` (scoping mode) |
-| **Inputs** | User intent (free-form), optional existing artifacts, optional `.godpowers/domain/GLOSSARY.md` |
-| **Outputs** | `.godpowers/explore/<slug>.md` OR `.godpowers/discussions/<topic>.md`, optional `.godpowers/domain/GLOSSARY.md` |
+| **Inputs** | User intent (free-form), optional existing artifacts, optional `.godpowers/domain/GLOSSARY.mdx` |
+| **Outputs** | `.godpowers/explore/<slug>.mdx` OR `.godpowers/discussions/<topic>.mdx`, optional `.godpowers/domain/GLOSSARY.mdx` |
 | **Downstream consumers** | god-pm (uses clarified problem statement), god-planner (uses scoped refactor) |
 | **Artifact awareness** | Whatever artifacts exist for context, plus canonical domain terms and ambiguities |
 | **Handoff** | Returns clarified framing or surfaced assumptions |
@@ -126,8 +126,8 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-repo`, `/god-mode` |
-| **Inputs** | `.godpowers/stack/DECISION.md`, optional `.godpowers/org-context.yaml` |
-| **Outputs** | `.godpowers/repo/AUDIT.md` + repo source files (package.json, CI, lint, README, etc.) |
+| **Inputs** | `.godpowers/stack/DECISION.mdx`, optional `.godpowers/org-context.yaml` |
+| **Outputs** | `.godpowers/repo/AUDIT.mdx` + repo source files (package.json, CI, lint, README, etc.) |
 | **Downstream consumers** | god-planner (knows the structure), god-executor (writes into the structure), god-deploy-engineer (uses CI config) |
 | **Artifact awareness** | Stack decision, org standards |
 | **Handoff** | Returns when AUDIT.md exists and CI passes on empty scaffold. Have-nots RP-01..RP-08. |
@@ -138,8 +138,8 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-build`, `/god-feature`, `/god-refactor`, `/god-quick`, `/god-upgrade` (test gap-fill mode) |
-| **Inputs** | `.godpowers/roadmap/ROADMAP.md`, `.godpowers/arch/ARCH.md`, `.godpowers/stack/DECISION.md`, optional existing `.godpowers/build/PLAN.md` |
-| **Outputs** | `.godpowers/build/PLAN.md` (vertical slices grouped into waves) |
+| **Inputs** | `.godpowers/roadmap/ROADMAP.mdx`, `.godpowers/arch/ARCH.mdx`, `.godpowers/stack/DECISION.mdx`, optional existing `.godpowers/build/PLAN.mdx` |
+| **Outputs** | `.godpowers/build/PLAN.mdx` (vertical slices grouped into waves) |
 | **Downstream consumers** | god-executor (one slice per spawn), god-spec-reviewer (reads slice plan) |
 | **Artifact awareness** | Roadmap milestones, ARCH dependencies, stack tooling |
 | **Handoff** | Returns when PLAN.md is complete (slices have tests-first sequences, dependencies, verification criteria) |
@@ -150,7 +150,7 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | god-orchestrator (per slice during /god-build), `/god-feature`, `/god-refactor`, `/god-hotfix`, `/god-upgrade`, `/god-add-tests`, `/god-update-deps` |
-| **Inputs** | One slice plan from `.godpowers/build/PLAN.md`, relevant ARCH excerpts, stack DECISION |
+| **Inputs** | One slice plan from `.godpowers/build/PLAN.mdx`, relevant ARCH excerpts, stack DECISION |
 | **Outputs** | Source code, test files, regression tests (in repo, not .godpowers/) |
 | **Downstream consumers** | god-spec-reviewer, god-quality-reviewer |
 | **Artifact awareness** | Just the slice plan and immediate context (FRESH context per slice; doesn't see other slices) |
@@ -190,7 +190,7 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-deploy`, `/god-mode`, `/god-hotfix` (expedited mode), `/god-refactor` (gradual rollout mode), `/god-upgrade` (per-slice with metric gating) |
-| **Inputs** | `.godpowers/arch/ARCH.md`, `.godpowers/stack/DECISION.md`, `.godpowers/state.json` build evidence, optional `.godpowers/org-context.yaml` |
+| **Inputs** | `.godpowers/arch/ARCH.mdx`, `.godpowers/stack/DECISION.mdx`, `.godpowers/state.json` build evidence, optional `.godpowers/org-context.yaml` |
 | **Outputs** | `.godpowers/state.json` deploy evidence, CI/CD config files, optional deploy access bundle |
 | **Downstream consumers** | god-observability-engineer (uses pipeline for deploy events), god-launch-strategist (verifies deploy is healthy) |
 | **Artifact awareness** | ARCH topology, stack hosting choice, build artifacts |
@@ -202,7 +202,7 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-observe`, `/god-mode`, `/god-hotfix` (verify-symptom-resolved mode) |
-| **Inputs** | `.godpowers/prd/PRD.md` (success metrics -> SLOs), `.godpowers/arch/ARCH.md`, `.godpowers/state.json` deploy evidence, optional `.godpowers/org-context.yaml` |
+| **Inputs** | `.godpowers/prd/PRD.mdx` (success metrics -> SLOs), `.godpowers/arch/ARCH.mdx`, `.godpowers/state.json` deploy evidence, optional `.godpowers/org-context.yaml` |
 | **Outputs** | `.godpowers/state.json` observability evidence, alert configs, dashboard configs, runbooks |
 | **Downstream consumers** | god-launch-strategist (verifies metrics ready before launch) |
 | **Artifact awareness** | PRD success metrics, deploy pipeline, org observability stack |
@@ -215,7 +215,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-harden`, `/god-mode`, `/god-feature` (scope-to-new-code mode) |
 | **Inputs** | Code, `.godpowers/state.json` deploy evidence, optional `.godpowers/org-context.yaml` (org-specific security standards) |
-| **Outputs** | `.godpowers/harden/FINDINGS.md` |
+| **Outputs** | `.godpowers/harden/FINDINGS.mdx` |
 | **Downstream consumers** | god-launch-strategist (BLOCKED on Critical findings) |
 | **Artifact awareness** | Full codebase, deploy config |
 | **Handoff** | Returns FINDINGS.md. If Critical: BLOCKS launch (even with --yolo). Have-nots H-01..H-11. |
@@ -226,7 +226,7 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-launch`, `/god-mode`, `/god-feature` (feature-flag-rollout mode) |
-| **Inputs** | `.godpowers/prd/PRD.md`, `.godpowers/harden/FINDINGS.md` (must have NO unresolved Criticals) |
+| **Inputs** | `.godpowers/prd/PRD.mdx`, `.godpowers/harden/FINDINGS.mdx` (must have NO unresolved Criticals) |
 | **Outputs** | `.godpowers/state.json` launch evidence, landing copy, OG cards, channel-specific messaging, D-7..D+7 runbook |
 | **Downstream consumers** | (end of arc; no downstream consumers within Godpowers; users consume launch artifacts externally) |
 | **Artifact awareness** | PRD positioning, harden findings, optional extension packs (Show HN, PH, IH, OSS) |
@@ -255,7 +255,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-postmortem` |
 | **Inputs** | Logs, events.jsonl (if v0.5+), git log, hotfix commit, optional HANDOFF.md |
-| **Outputs** | `.godpowers/postmortems/<id>/POSTMORTEM.md` |
+| **Outputs** | `.godpowers/postmortems/<id>/POSTMORTEM.mdx` |
 | **Downstream consumers** | god-docs-writer (updates runbooks based on findings), action items routed to other workflows |
 | **Artifact awareness** | Whole project history; all artifacts; runbooks |
 | **Handoff** | Returns POSTMORTEM.md with class-of-bug + action items. Have-nots PM-01..PM-08. |
@@ -267,7 +267,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-spike` |
 | **Inputs** | The specific question + time-box |
-| **Outputs** | `.godpowers/spikes/<slug>/SPIKE.md` + throwaway POC code |
+| **Outputs** | `.godpowers/spikes/<slug>/SPIKE.mdx` + throwaway POC code |
 | **Downstream consumers** | god-pm (if user proceeds: SPIKE.md informs feature PRD) |
 | **Artifact awareness** | Just the question; minimal context |
 | **Handoff** | Returns when time-boxed. Recommends proceed / reject / follow-up spike. Have-nots SP-01..SP-05. |
@@ -279,7 +279,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-upgrade` |
 | **Inputs** | Migration target (from -> to), `.godpowers/state.json` build evidence, upstream changelog |
-| **Outputs** | `.godpowers/migrations/<slug>/MIGRATION.md` |
+| **Outputs** | `.godpowers/migrations/<slug>/MIGRATION.mdx` |
 | **Downstream consumers** | god-planner (test gap-fill), god-executor (per-slice migration), god-deploy-engineer (gradual rollout), god-observability-engineer (metric watch) |
 | **Artifact awareness** | Code surface, test coverage, upstream release notes |
 | **Handoff** | Returns MIGRATION.md with phased plan. Have-nots MG-01..MG-07. |
@@ -291,7 +291,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-docs`, `/god-postmortem` (runbook updates), `/god-hygiene` (verify-only mode) |
 | **Inputs** | Code + existing docs |
-| **Outputs** | Updated docs (README, CONTRIBUTING, runbooks), `.godpowers/docs/UPDATE-LOG.md` |
+| **Outputs** | Updated docs (README, CONTRIBUTING, runbooks), `.godpowers/docs/UPDATE-LOG.mdx` |
 | **Downstream consumers** | (humans reading docs) |
 | **Artifact awareness** | Whole codebase |
 | **Handoff** | Returns when all docs verified against code. Have-nots DC-01..DC-05. |
@@ -303,7 +303,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-update-deps`, `/god-hygiene` |
 | **Inputs** | `package.json` / `pyproject.toml` / `Cargo.toml` / etc., lockfiles |
-| **Outputs** | `.godpowers/deps/AUDIT.md` |
+| **Outputs** | `.godpowers/deps/AUDIT.mdx` |
 | **Downstream consumers** | god-executor (applies patch/minor updates), `/god-upgrade` (for major bumps) |
 | **Artifact awareness** | Stack decision (knows what's in scope), security advisories |
 | **Handoff** | Returns AUDIT.md with classified updates. Have-nots DP-01..DP-06. |
@@ -315,7 +315,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-sprint retro` |
 | **Inputs** | Sprint PLAN.md, build/STATE.md, git log, events.jsonl |
-| **Outputs** | `.godpowers/sprints/sprint-<n>/RETRO.md` |
+| **Outputs** | `.godpowers/sprints/sprint-<n>/RETRO.mdx` |
 | **Downstream consumers** | god-roadmapper (next sprint plan informed by retro) |
 | **Artifact awareness** | Sprint context |
 | **Handoff** | Returns RETRO.md with specific action items + owners + due dates |
@@ -327,9 +327,9 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-preflight`, `/god-audit`, `/god-hygiene`, called by orchestrator before tier transitions for gate checks, called by god-architect/etc. before they run (verify upstream passes have-nots) |
 | **Inputs** | Any artifact in `.godpowers/<tier>/`; for preflight mode, repo structure, org context, docs, tests, CI, deploy, and agent instruction signals |
-| **Outputs** | `.godpowers/preflight/PREFLIGHT.md` (preflight) OR `.godpowers/AUDIT-REPORT.md` (full audit) OR PASS/FAIL verdict (gate check) |
+| **Outputs** | `.godpowers/preflight/PREFLIGHT.mdx` (preflight) OR `.godpowers/AUDIT-REPORT.mdx` (full audit) OR PASS/FAIL verdict (gate check) |
 | **Downstream consumers** | Orchestrator (for routing decisions), tier agents (for gate checks) |
-| **Artifact awareness** | All 156 have-nots; all tier artifact contracts; preflight lens for arc-ready, pillars, Godpowers, suite, and refactor risk |
+| **Artifact awareness** | All 157 have-nots; all tier artifact contracts; preflight lens for arc-ready, pillars, Godpowers, suite, and refactor risk |
 | **Handoff** | Returns score per artifact + prioritized remediation. |
 | **Standards check** | This IS the standards check |
 
@@ -355,7 +355,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-archaeology`, brownfield-arc workflow |
 | **Inputs** | Whole codebase + git history |
-| **Outputs** | `.godpowers/archaeology/REPORT.md` |
+| **Outputs** | `.godpowers/archaeology/REPORT.mdx` |
 | **Downstream consumers** | god-reconstructor (richer reconstruction with archaeology in hand), god-debt-assessor (debt mapped to archaeological findings) |
 | **Artifact awareness** | Whole codebase, git log, comments, READMEs |
 | **Handoff** | Returns REPORT.md with history, decisions, conventions, risks, tribal knowledge |
@@ -367,7 +367,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-reconstruct`, brownfield-arc workflow |
 | **Inputs** | Whole codebase + optional archaeology REPORT.md |
-| **Outputs** | `.godpowers/prd/PRD.md`, `.godpowers/arch/ARCH.md`, `.godpowers/roadmap/ROADMAP.md`, `.godpowers/stack/DECISION.md`, `.godpowers/RECONSTRUCTION-LOG.md` (all with confidence levels) |
+| **Outputs** | `.godpowers/prd/PRD.mdx`, `.godpowers/arch/ARCH.mdx`, `.godpowers/roadmap/ROADMAP.mdx`, `.godpowers/stack/DECISION.mdx`, `.godpowers/RECONSTRUCTION-LOG.mdx` (all with confidence levels) |
 | **Downstream consumers** | god-auditor (scores reconstruction), all downstream tier agents (treat reconstructed artifacts as starting point) |
 | **Artifact awareness** | Whole codebase + archaeology output |
 | **Handoff** | Returns reconstructed artifacts with prominent warnings. Recommends stakeholder review. |
@@ -379,7 +379,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-tech-debt`, brownfield-arc workflow |
 | **Inputs** | Whole codebase + optional archaeology REPORT.md |
-| **Outputs** | `.godpowers/tech-debt/REPORT.md` |
+| **Outputs** | `.godpowers/tech-debt/REPORT.mdx` |
 | **Downstream consumers** | Various: P0 items routed to /god-hotfix, /god-update-deps, /god-upgrade, /god-feature |
 | **Artifact awareness** | Whole codebase, dependency state, security advisories |
 | **Handoff** | Returns REPORT.md with P0/P1/P2/P3 prioritization + specific remediation commands |
@@ -423,7 +423,7 @@ Each agent has these fields:
 |---|---|
 | **Triggers** | `/god-sync`, auto-invoked at end of feature-addition recipes, mandatory at end of /god-mode |
 | **Inputs** | Reconciliation verdict (or re-runs reconciliation), changed files, trigger type, recent commits |
-| **Outputs** | Updates to any/all core artifacts, local sync logs, feature awareness, source-system summaries, and `.godpowers/SYNC-LOG.md` (append-only) |
+| **Outputs** | Updates to any/all core artifacts, local sync logs, feature awareness, source-system summaries, and `.godpowers/SYNC-LOG.mdx` (append-only) |
 | **Downstream consumers** | (no specific consumers; this is the closure step) |
 | **Artifact awareness** | ALL core artifacts plus local runtime and repository surfaces |
 | **Handoff** | Returns when all touched artifacts pass have-nots, local sync surfaces are reported, and SYNC-LOG.md is appended |
@@ -434,7 +434,7 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | Older installed `/god-roadmap-check` copies only; current routing spawns `god-reconciler` |
-| **Inputs** | `.godpowers/roadmap/ROADMAP.md`, optional PRD |
+| **Inputs** | `.godpowers/roadmap/ROADMAP.mdx`, optional PRD |
 | **Outputs** | ROADMAP portion of the `god-reconciler` verdict |
 | **Downstream consumers** | Calling skill |
 | **Artifact awareness** | Delegated to `god-reconciler` |
@@ -446,7 +446,7 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-roadmap-update` (legacy) |
-| **Inputs** | `.godpowers/roadmap/ROADMAP.md`, change description |
+| **Inputs** | `.godpowers/roadmap/ROADMAP.mdx`, change description |
 | **Outputs** | Updated ROADMAP.md, Roadmap Changelog |
 | **Downstream consumers** | (no specific) |
 | **Artifact awareness** | ROADMAP only |
@@ -709,8 +709,8 @@ added during the production-ready + design + linkage push.
 | **File** | `agents/god-designer.md` |
 | **Triggers** | `/god-design`, `/god-design teach`, `/god-design from <site>`, `/god-design suggest`, `/god-design refresh`, `/god-design polish [...]`, `/god-mode` Tier 1 (when UI detected) |
 | **Inputs** | PRD.md (target users, register), ARCH.md (UI surface), STACK/DECISION.md (UI framework), state.json |
-| **Outputs** | `DESIGN.md` (project root, Google Labs spec), `PRODUCT.md` (when impeccable installed), `.godpowers/state.json` design evidence, generated `.godpowers/design/STATE.md` |
-| **Downstream consumers** | god-design-reviewer (gates the change), god-impact-analyzer, god-updater (reverse-sync), repo scaffolder (token references in templates) |
+| **Outputs** | `DESIGN.md` (project root, Google Labs spec), `PRODUCT.md` (when impeccable installed), `.godpowers/state.json` design evidence, generated `.godpowers/design/STATE.mdx` |
+| **Downstream consumers** | god-design-reviewer (gates the change), impact analysis (`lib/impact.js` runtime, not a spawned agent), god-updater (reverse-sync), repo scaffolder (token references in templates) |
 | **Artifact awareness** | Reads PRD, ARCH, STACK; writes DESIGN, PRODUCT |
 | **Standards check** | Validates with `lib/design-spec.lint`, `npx @google/design.md lint`, and `npx impeccable detect` (when installed) |
 | **Handoff** | Returns to god-orchestrator with DESIGN.md path + validation summary; suggested next is `/god-repo` |
@@ -722,7 +722,7 @@ added during the production-ready + design + linkage push.
 | **File** | `agents/god-design-reviewer.md` |
 | **Triggers** | Spawned by god-design-updater BEFORE impact analysis; spawned by god-orchestrator on mid-arc DESIGN/PRODUCT change detection |
 | **Inputs** | DESIGN.md diff (old vs new), PRODUCT.md (for register, brand, anti-references) |
-| **Outputs** | Verdict: PASS / WARN / BLOCK; appends to `.godpowers/design/REJECTED.md` on BLOCK |
+| **Outputs** | Verdict: PASS / WARN / BLOCK; appends to `.godpowers/design/REJECTED.mdx` on BLOCK |
 | **Downstream consumers** | god-design-updater (continues only on PASS or WARN); god-orchestrator (BLOCK pauses both default and --yolo as critical-finding gate trigger) |
 | **Artifact awareness** | Reads PRD, PRODUCT, DESIGN |
 | **Standards check** | Stage 1 (spec): impeccable critique against PRODUCT register; Stage 2 (quality): design-spec lint + impeccable audit + WCAG contrast |
@@ -736,7 +736,7 @@ added during the production-ready + design + linkage push.
 | **Triggers** | DESIGN.md or PRODUCT.md change detected (mid-arc, /god-sync, post-impeccable-command) |
 | **Inputs** | DESIGN.md diff, linkage map |
 | **Outputs** | Updates DESIGN.md fence footer; populates REVIEW-REQUIRED.md with affected files; emits `runtime.review-needed` events |
-| **Downstream consumers** | god-design-reviewer (gates), god-impact-analyzer (computes affected files), reverse-sync pipeline |
+| **Downstream consumers** | god-design-reviewer (gates), `lib/impact.js` (computes affected files; runtime module, not a spawned agent), reverse-sync pipeline |
 | **Artifact awareness** | Reads/writes DESIGN; reads PRD, ARCH; reads/writes REVIEW-REQUIRED |
 | **Standards check** | Inherits god-design-reviewer's gate verdict |
 | **Handoff** | After PASS/WARN verdict: continues to impact analysis -> REVIEW-REQUIRED.md -> reverse-sync. After BLOCK: aborts propagation. |
@@ -766,6 +766,65 @@ added during the production-ready + design + linkage push.
 | **Artifact awareness** | Reads state.json + .godpowers/links/; writes only inside `<!-- godpowers:begin --> ... <!-- godpowers:end -->` fences |
 | **Standards check** | Detect-then-write: never creates files for tools without their config dir; never overwrites user content outside the fence; idempotent |
 | **Handoff** | Returns compact success to `/god-init` and `/god-sync`; returns results summary only for explicit `/god-context` commands |
+
+---
+
+## Agents added in v0.12+ (suite, stories, migration, automation)
+
+These specs cover the multi-repo suite coordinator, story decomposition,
+greenfieldification, and host-automation agents added after v0.11.
+
+### god-coordinator
+
+| Field | Value |
+|---|---|
+| **File** | `agents/god-coordinator.md` |
+| **Triggers** | `/god-suite-init`, `/god-suite-status`, `/god-suite-sync`, `/god-suite-release`, `/god-suite-patch` |
+| **Inputs** | Suite manifest (`.godpowers/suite-config.yaml` at the hub), per-repo `state.json` files, suite operation request, optional `.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.mdx` |
+| **Outputs** | Suite coordination state (`lib/suite-state.refreshFromRepos`), per-repo orchestrator handoff files, suite release or sync report |
+| **Downstream consumers** | Per-repo god-orchestrator (spawned for project-run work inside each repo); suite status readers |
+| **Artifact awareness** | Reads per-repo state.json files; never modifies a repo's state.json directly (each orchestrator owns its own) |
+| **Standards check** | Gates: per-repo orchestrator ownership, byte-identical file sync verification, suite meta-linter results (`lib/meta-linter.runAll`) |
+| **Handoff** | Returns suite-level status and per-repo next actions; never bypasses individual orchestrators (the Quarterback rule holds per-repo) |
+
+### god-storyteller
+
+| Field | Value |
+|---|---|
+| **File** | `agents/god-storyteller.md` |
+| **Triggers** | `/god-story`, `/god-feature --with-stories` |
+| **Inputs** | User story prompt or feature decomposition; PRD.md and ARCH.md for context; optional existing STORY-*.md files to chain into (deps) |
+| **Outputs** | `.godpowers/stories/<feature-slug>/STORY-<NNN>.mdx` (user story, acceptance criteria, initial slice plan) |
+| **Downstream consumers** | `/god-story-build` (implements the story), `/god-story-verify`, `/god-story-close` |
+| **Artifact awareness** | Reads PRD, ARCH; links stories to PRD requirement ids via `requirement:` frontmatter |
+| **Standards check** | Gates: user-story format, runtime-test-friendly acceptance criteria, linkage participation |
+| **Handoff** | Returns story artifact path plus suggested build or feature next step |
+
+### god-greenfieldifier
+
+| Field | Value |
+|---|---|
+| **File** | `agents/god-greenfieldifier.md` |
+| **Triggers** | brownfield-arc and bluefield-arc workflows, god-orchestrator, `/god-migrate` (conditional spawn for low-confidence or conflicting imports) |
+| **Inputs** | `.godpowers/audit/GREENFIELD-SIMULATION.mdx`, `.godpowers/prep/INITIAL-FINDINGS.mdx` and `IMPORTED-CONTEXT.mdx` (when present), existing canonical artifacts, `.godpowers/state.json` |
+| **Outputs** | `.godpowers/audit/GREENFIELDIFY-PLAN.mdx` (written before any artifact edit), approved canonical artifact updates |
+| **Downstream consumers** | god-orchestrator (resumes the arc with migrated artifacts); planning agents reading the updated canon |
+| **Artifact awareness** | Reads the audit and every existing canonical artifact before recommending a rewrite; disk state is authoritative |
+| **Standards check** | Gates: user approval before rewriting artifacts, state.json handoff authority, greenfieldification rules |
+| **Handoff** | Returns migrated artifacts and remaining brownfield or bluefield gaps |
+
+### god-automation-engineer
+
+| Field | Value |
+|---|---|
+| **File** | `agents/god-automation-engineer.md` |
+| **Triggers** | `/god-automation-setup` (after the user approves provider, template ids, cadence, and scope) |
+| **Inputs** | Approved automation setup plan, host provider choice, `.godpowers/state.json`, existing `.godpowers/automations.json` |
+| **Outputs** | `.godpowers/automations.json` (successful automations only), host-native automation configuration |
+| **Downstream consumers** | `/god-automation-status` (reports active automations); `lib/automation-providers.js` consumers |
+| **Artifact awareness** | Reads automations.json and state.json; touches only confirmed host automation surfaces, never invents OS scheduling |
+| **Standards check** | Gates: explicit user approval, provider verification, no unverified background claims |
+| **Handoff** | Returns successful automation ids or a hard-stop blocker (missing approval field, no callable host surface) |
 
 ---
 

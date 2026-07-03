@@ -55,7 +55,7 @@ Optionally spawn **god-docs-writer** to:
 ## On Completion
 
 ```
-Postmortem complete: .godpowers/postmortems/<incident-id>/POSTMORTEM.md
+Postmortem complete: .godpowers/postmortems/<incident-id>/POSTMORTEM.mdx
 
 Severity: SEV-[N]
 Root cause: [one line]

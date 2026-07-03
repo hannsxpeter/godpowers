@@ -18,7 +18,7 @@ directions cover every change surface:
 | File | Owner | Job |
 |---|---|---|
 | `REVIEW-REQUIRED.md` | god-updater (auto-populates) | Append-only registry of pending reviews. User clears via `/god-review-changes`. |
-| `.godpowers/design/REJECTED.md` | god-design-reviewer (BLOCK verdicts) | Append-only audit trail of design changes that were rejected. |
+| `.godpowers/design/REJECTED.mdx` | god-design-reviewer (BLOCK verdicts) | Append-only audit trail of design changes that were rejected. |
 | `.godpowers/links/{artifact-to-code,code-to-artifact}.json` | god-updater (via lib/code-scanner) | Bidirectional linkage map. |
 
 User content is never overwritten. All auto-generated content lives in
@@ -35,7 +35,7 @@ Pipeline:
 ```
 artifact change detected
   -> god-design-reviewer (for DESIGN/PRODUCT only) - two-stage gate
-       BLOCK: append to .godpowers/design/REJECTED.md; pause arc
+       BLOCK: append to .godpowers/design/REJECTED.mdx; pause arc
        PASS or WARN: continue
   -> lib/impact.forArtifactDiff (or forDesign for DESIGN.md)
        returns: { idDiff, addedAffects, removedAffects, severity }

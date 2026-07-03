@@ -9,7 +9,7 @@ metadata:
     without SLOs, ETL without idempotency.
 
 engines:
-  godpowers: ">=2.0.0 <4.0.0"
+  godpowers: ">=2.0.0 <5.0.0"
 
 provides:
   agents:

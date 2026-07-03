@@ -12,11 +12,11 @@ inputs:
   - "optional archaeology report"
   - "existing docs and tests"
 outputs:
-  - ".godpowers/prd/PRD.md"
-  - ".godpowers/arch/ARCH.md"
-  - ".godpowers/roadmap/ROADMAP.md"
-  - ".godpowers/stack/DECISION.md"
-  - ".godpowers/RECONSTRUCTION-LOG.md"
+  - ".godpowers/prd/PRD.mdx"
+  - ".godpowers/arch/ARCH.mdx"
+  - ".godpowers/roadmap/ROADMAP.mdx"
+  - ".godpowers/stack/DECISION.mdx"
+  - ".godpowers/RECONSTRUCTION-LOG.mdx"
 gates:
   - "per-tier have-nots"
   - "confidence levels on reconstructed claims"
@@ -45,6 +45,9 @@ intent is lost) but it gives Godpowers something to work with.
 - Project root
 - Optional: archaeology report from god-archaeologist
 - Optional: any existing partial artifacts (README, ADRs, comments)
+- Optional: `.godplans/PLAN.mdx` (authored godplans master plan; treat as
+  HIGH-confidence intent, cite by GP/R id, never edit it; parse via
+  `lib/sibling-artifacts.js`)
 
 ## Process
 
@@ -60,12 +63,17 @@ From the code, derive:
     within its priority (P-MUST-01, P-MUST-02, P-SHOULD-01, P-COULD-01), placed
     at the start of the bullet. These ids are load-bearing for the deliverable
     ledger and the linkage map.
+- When `.godplans/PLAN.mdx` is present, derive the problem statement, users,
+  and requirements from the plan FIRST (confidence HIGH; these are
+  [DECISION]-grade citations of authored intent), and code evidence second.
+  Preserve the source R-<DOM>-n id alongside the minted P-* id, e.g.
+  `P-MUST-01 (plan: R-AUTH-2)`, so linkage back to the plan survives.
 - **Non-functional requirements**: what NFRs are enforced? (from rate limits, caching, indexes)
 - **Scope and no-gos**: what's deliberately NOT in the code?
 
 Mark every section with: "Reconstructed from code on [date]; verify with stakeholders before treating as authoritative."
 
-Write to `.godpowers/prd/PRD.md` with the reconstruction warning prominently.
+Write to `.godpowers/prd/PRD.mdx` with the reconstruction warning prominently.
 
 ### 2. Reconstruct ARCH
 
@@ -78,7 +86,7 @@ From the code, derive:
 - **Trust boundaries**: from auth code, API gateways, network config
 - **Data model**: from schema files, migrations, ORM definitions
 
-Write to `.godpowers/arch/ARCH.md` with reconstruction warning.
+Write to `.godpowers/arch/ARCH.mdx` with reconstruction warning.
 
 ### 3. Reconstruct ROADMAP
 
@@ -88,11 +96,15 @@ From git history + current state:
 - **Next**: TODOs at module level, unimplemented endpoints, stubs
 - **Later**: high-level themes from issue tracker if accessible
 
+When `.godplans/PLAN.mdx` is present, map its GP task checkbox state to the
+roadmap instead of inferring solely from git history: `- [x] GP-` tasks feed
+Done, `- [ ] GP-` tasks feed Next, in the plan's phase and wave order.
+
 Give each delivery increment a stable `M-<slug>` id, a `**Status**:` field
 (pending/building/done), and a `**Features (from PRD)**:` list of the
 reconstructed requirement ids it delivers.
 
-Write to `.godpowers/roadmap/ROADMAP.md`. Mark Done section explicitly so we don't "rebuild" things that already exist.
+Write to `.godpowers/roadmap/ROADMAP.mdx`. Mark Done section explicitly so we don't "rebuild" things that already exist.
 
 ### 4. Reconstruct STACK
 
@@ -102,25 +114,25 @@ From package.json/pyproject.toml/Cargo.toml/etc:
 - **Flip points**: hard to infer; mark [OPEN QUESTION] for each
 - **Lock-in cost**: estimate based on usage depth
 
-Write to `.godpowers/stack/DECISION.md`.
+Write to `.godpowers/stack/DECISION.mdx`.
 
 ### 5. Regenerate the deliverable ledger
 
 After the PRD and ROADMAP are written (both carry the new ids), regenerate the
 deliverable ledger by calling `lib/requirements.writeLedger(projectRoot)` so
-`.godpowers/REQUIREMENTS.md` reflects the reconstructed state. Requirement
+`.godpowers/REQUIREMENTS.mdx` reflects the reconstructed state. Requirement
 status is derived from the linkage map (code that carries `// Implements: P-...`
 annotations), so reconstructed requirements without linked code will show as
 not started until that linkage exists.
 
 ## Outputs
 
-All four artifacts written to `.godpowers/<tier>/<artifact>.md` with:
+All four artifacts written to `.godpowers/<tier>/<artifact>.mdx` with:
 - Top-of-file warning: "RECONSTRUCTED ARTIFACT: derived from code by god-reconstructor on [date]. Verify with stakeholders before treating as authoritative."
 - Each section tagged with confidence level: HIGH (direct evidence) / MEDIUM (inferred) / LOW (guessed)
 - Open questions explicitly listed for stakeholder verification
 
-Plus: `.godpowers/RECONSTRUCTION-LOG.md` documenting:
+Plus: `.godpowers/RECONSTRUCTION-LOG.mdx` documenting:
 - What was reconstructed
 - What was inferred vs evidenced
 - Confidence per section

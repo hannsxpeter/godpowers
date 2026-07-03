@@ -19,7 +19,7 @@ execution:
   spawns: [god-harden-auditor]
   context: fresh
   writes:
-    - .godpowers/harden/FINDINGS.md
+    - .godpowers/harden/FINDINGS.mdx
   blocks-on:
     - critical-finding: pause-required
   parallel-spawns:

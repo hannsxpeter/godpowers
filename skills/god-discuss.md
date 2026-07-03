@@ -26,7 +26,7 @@ Spawn god-explorer in fresh context with focus="next-phase-scoping".
 
 The agent:
 1. Reads the active workflow context
-2. Reads `.godpowers/domain/GLOSSARY.md` if it exists
+2. Reads `.godpowers/domain/GLOSSARY.mdx` if it exists
 3. Asks targeted questions one at a time, with a recommended answer for each
 4. Explores the codebase instead of asking when repo evidence can answer
 5. Challenges vague, overloaded, or conflicting terms against the glossary
@@ -38,8 +38,8 @@ The agent:
    - What evidence would change the recommended next command?
 8. Surfaces 2-3 hidden assumptions
 9. Identifies what's [DECISION] vs [HYPOTHESIS] vs [OPEN QUESTION]
-10. Drafts a brief in `.godpowers/discussions/<topic>.md`
-11. Updates `.godpowers/domain/GLOSSARY.md` when a term or ambiguity is resolved
+10. Drafts a brief in `.godpowers/discussions/<topic>.mdx`
+11. Updates `.godpowers/domain/GLOSSARY.mdx` when a term or ambiguity is resolved
 
 The brief and glossary get passed to the next planning command. The glossary is
 preparation context, not a replacement for PRD, ARCH, ROADMAP, STACK, or Pillars
@@ -47,9 +47,9 @@ files.
 
 ## Domain Glossary Rules
 
-- Create `.godpowers/domain/GLOSSARY.md` lazily from `templates/DOMAIN-GLOSSARY.md`
+- Create `.godpowers/domain/GLOSSARY.mdx` lazily from `templates/DOMAIN-GLOSSARY.mdx`
   only when the discussion resolves the first project-specific term.
-- Keep `.godpowers/domain/GLOSSARY.md` free of implementation details.
+- Keep `.godpowers/domain/GLOSSARY.mdx` free of implementation details.
 - Use the glossary for canonical terms, avoided aliases, relationships, example
   dialogue, flagged ambiguities, and source notes.
 - When the user uses a term that conflicts with the glossary, call out the
@@ -63,8 +63,8 @@ files.
 ## Output
 
 ```
-Discussion complete: .godpowers/discussions/<topic>.md
-Domain glossary: .godpowers/domain/GLOSSARY.md (created or updated if terms resolved)
+Discussion complete: .godpowers/discussions/<topic>.mdx
+Domain glossary: .godpowers/domain/GLOSSARY.mdx (created or updated if terms resolved)
 
 Key findings:
   - [assumption surfaced]

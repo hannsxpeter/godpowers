@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - .godpowers/stories/STORY-*.md (status=in-progress)
+    - .godpowers/stories/STORY-*.mdx (status=in-progress)
 
 execution:
   spawns: [god-browser-tester]

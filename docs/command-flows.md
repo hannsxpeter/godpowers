@@ -36,10 +36,10 @@ Each command has:
 - Reads: user intent from chat
 - Writes:
   - `.godpowers/state.json`
-  - `.godpowers/PROGRESS.md` as a generated managed view
+  - `.godpowers/PROGRESS.mdx` as a generated managed view
   - `.godpowers/intent.yaml`
-  - `.godpowers/prep/INITIAL-FINDINGS.md`
-  - `.godpowers/prep/IMPORTED-CONTEXT.md` when legacy planning, Superpowers, BMAD, or
+  - `.godpowers/prep/INITIAL-FINDINGS.mdx`
+  - `.godpowers/prep/IMPORTED-CONTEXT.mdx` when legacy planning, Superpowers, BMAD, or
     similar planning context is detected
 
 **Standards check**: none (no artifacts produced yet)
@@ -74,11 +74,11 @@ Each command has:
 - Secondary spawns: `god-auditor` (for verification)
 - Reads:
   - `.godpowers/intent.yaml`
-  - `.godpowers/prep/INITIAL-FINDINGS.md` if present
-  - `.godpowers/prep/IMPORTED-CONTEXT.md` if present
-  - `templates/PRD.md` (structural starting point)
+  - `.godpowers/prep/INITIAL-FINDINGS.mdx` if present
+  - `.godpowers/prep/IMPORTED-CONTEXT.mdx` if present
+  - `templates/PRD.mdx` (structural starting point)
 - Writes:
-  - `.godpowers/prd/PRD.md`
+  - `.godpowers/prd/PRD.mdx`
   - `.godpowers/prd/PRD.meta.json`
 
 **Standards check**:
@@ -114,12 +114,12 @@ Each command has:
 **Execution**:
 - Spawns: `god-architect`
 - Reads:
-  - `.godpowers/prd/PRD.md`
-  - `.godpowers/prep/INITIAL-FINDINGS.md` if present
-  - `.godpowers/prep/IMPORTED-CONTEXT.md` if present
-  - `templates/ARCH.md`
+  - `.godpowers/prd/PRD.mdx`
+  - `.godpowers/prep/INITIAL-FINDINGS.mdx` if present
+  - `.godpowers/prep/IMPORTED-CONTEXT.mdx` if present
+  - `templates/ARCH.mdx`
 - Writes:
-  - `.godpowers/arch/ARCH.md`
+  - `.godpowers/arch/ARCH.mdx`
   - `.godpowers/arch/adr/`
 
 **Standards check**:
@@ -145,8 +145,8 @@ Each command has:
 **Execution**:
 - Spawns: `god-roadmapper`
 - Reads: PRD, ARCH, optional initial findings, optional imported preparation context,
-  `templates/ROADMAP.md`
-- Writes: `.godpowers/roadmap/ROADMAP.md`
+  `templates/ROADMAP.mdx`
+- Writes: `.godpowers/roadmap/ROADMAP.mdx`
 
 **Standards**: have-nots R-01 through R-10
 
@@ -164,7 +164,7 @@ Each command has:
 - Spawns: `god-stack-selector`
 - Reads: ARCH, optional initial findings, and optional imported preparation
   context
-- Writes: `.godpowers/stack/DECISION.md`
+- Writes: `.godpowers/stack/DECISION.mdx`
 
 **Standards**: have-nots S-01 through S-05
 
@@ -181,7 +181,7 @@ Each command has:
 **Execution**:
 - Spawns: `god-repo-scaffolder`
 - Writes:
-  - `.godpowers/repo/AUDIT.md`
+  - `.godpowers/repo/AUDIT.mdx`
   - Repo source files (package.json, CI, lint, README, etc.)
 
 **Standards**: have-nots RP-01 through RP-08
@@ -199,14 +199,14 @@ Each command has:
 - `state:tier-2.repo.status == done` -> auto: `/god-repo`
 
 **Execution** (composite, multi-agent):
-- Phase 1: `god-planner` writes `.godpowers/build/PLAN.md` with vertical slices grouped into waves
+- Phase 1: `god-planner` writes `.godpowers/build/PLAN.mdx` with vertical slices grouped into waves
 - Phase 2: For each wave, for each slice in parallel:
   - Spawn `god-executor` (TDD enforced strictly)
   - Spawn `god-spec-reviewer` (independent of executor)
   - Spawn `god-quality-reviewer` (independent of spec-reviewer)
   - On both pass: atomic commit
   - On either fail: return to executor with feedback
-- Writes: source code, tests, `.godpowers/state.json`, and `.godpowers/build/PLAN.md`
+- Writes: source code, tests, `.godpowers/state.json`, and `.godpowers/build/PLAN.mdx`
 
 **Standards**: have-nots B-01 through B-12
 
@@ -255,7 +255,7 @@ Each command has:
 
 **Execution**:
 - Spawns: `god-harden-auditor`
-- Writes: `.godpowers/harden/FINDINGS.md`
+- Writes: `.godpowers/harden/FINDINGS.mdx`
 
 **Standards**: have-nots H-01 through H-11
 
@@ -335,7 +335,7 @@ Auto-complete: `/god-init`
 - Build: `god-planner` + `god-executor` + reviewers (per slice)
 - Harden new code: `god-harden-auditor` (mode=scope-to-new-code)
 - Soft launch: `god-launch-strategist` (mode=feature-flag-rollout)
-- Writes: `.godpowers/features/<slug>/PRD.md`, feature code, deploy
+- Writes: `.godpowers/features/<slug>/PRD.mdx`, feature code, deploy
 
 **Skips**: `/god-init`, `/god-stack`, `/god-repo` (already done)
 
@@ -370,7 +370,7 @@ Auto-complete: `/god-init`
 **Execution**:
 - `god-incident-investigator`
 - Optional: `god-docs-writer` for runbook updates
-- Writes: `.godpowers/postmortems/<id>/POSTMORTEM.md`
+- Writes: `.godpowers/postmortems/<id>/POSTMORTEM.mdx`
 
 **Standards**: have-nots PM-01 through PM-08
 
@@ -378,7 +378,7 @@ Auto-complete: `/god-init`
 
 **Endoff**:
 - Lifecycle: `post-incident-pending -> steady-state-active`
-- Action items appended to `.godpowers/todos/TODOS.md`
+- Action items appended to `.godpowers/todos/TODOS.mdx`
 
 ---
 
@@ -407,7 +407,7 @@ Auto-complete: `/god-init`
 
 **Execution**:
 - `god-spike-runner` (time-boxed 1d default)
-- Writes: `.godpowers/spikes/<slug>/SPIKE.md`
+- Writes: `.godpowers/spikes/<slug>/SPIKE.mdx`
 
 **Standards**: have-nots SP-01 through SP-05
 
@@ -460,7 +460,7 @@ Auto-complete: `/god-init`
 **Execution**:
 - `lib/repo-doc-sync.run(projectRoot)` for mechanical repository documentation claims
 - `god-docs-writer`
-- Writes: `.godpowers/docs/UPDATE-LOG.md`, README, docs/
+- Writes: `.godpowers/docs/UPDATE-LOG.mdx`, README, docs/
 
 **Standards**: have-nots DC-01 through DC-05
 
@@ -478,7 +478,7 @@ Auto-complete: `/god-init`
 - `lib/repo-surface-sync.run(projectRoot)` for structural repository surface drift, including route-quality, recipe-coverage, and release-surface checks
 - `lib/source-sync.run(projectRoot)` when imported source systems have sync-back enabled
 - `god-updater`
-- Writes: `.godpowers/SYNC-LOG.md`, `.godpowers/docs/REPO-DOC-SYNC.md`, `.godpowers/surface/REPO-SURFACE-SYNC.md`, and touched artifacts
+- Writes: `.godpowers/SYNC-LOG.mdx`, `.godpowers/docs/REPO-DOC-SYNC.mdx`, `.godpowers/surface/REPO-SURFACE-SYNC.mdx`, and touched artifacts
 
 **Standards**: artifact have-nots plus visible auto-invoke reporting
 
@@ -492,7 +492,7 @@ Auto-complete: `/god-init`
 
 **Execution**:
 - `god-auditor` (mode=full-audit)
-- Writes: `.godpowers/AUDIT-REPORT.md`
+- Writes: `.godpowers/AUDIT-REPORT.mdx`
 
 **Success path**:
 - Failures found: `/god-redo <tier>` for the worst-scored tier
@@ -509,7 +509,7 @@ Auto-complete: `/god-init`
 - `god-deps-auditor` (audit-only)
 - `god-docs-writer` (verify-only)
 - Compose: `god-orchestrator`
-- Writes: `.godpowers/HYGIENE-REPORT.md`
+- Writes: `.godpowers/HYGIENE-REPORT.mdx`
 
 **Success path**: `/god-status` with prioritized actions
 

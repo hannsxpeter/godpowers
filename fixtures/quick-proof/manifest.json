@@ -12,8 +12,8 @@
     "state": "in progress",
     "next": "/god-prd",
     "missing": [
-      ".godpowers/prd/PRD.md",
-      ".godpowers/roadmap/ROADMAP.md"
+      ".godpowers/prd/PRD.mdx",
+      ".godpowers/roadmap/ROADMAP.mdx"
     ]
   }
 }

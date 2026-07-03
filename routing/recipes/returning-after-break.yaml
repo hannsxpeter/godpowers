@@ -22,7 +22,7 @@ sequences:
     description: "Returning to a project after a long break"
     steps:
       - command: "/god-resume-work"
-        why: "If HANDOFF.md exists, restore context"
+        why: "If HANDOFF.mdx exists, restore context"
         skip-when: no-handoff
       - command: "/god-status"
         why: "Current state from disk"

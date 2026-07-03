@@ -21,14 +21,14 @@ PCI-DSS 4.0 audit.
 ## Verification
 
 After god-pci-auditor returns:
-1. Verify `.godpowers/compliance/pci/FINDINGS.md` exists
+1. Verify `.godpowers/compliance/pci/FINDINGS.mdx` exists
 2. SAQ scope correctly identified
 3. Update PROGRESS.md
 
 ## On Completion
 
 ```
-PCI-DSS audit complete: .godpowers/compliance/pci/FINDINGS.md
+PCI-DSS audit complete: .godpowers/compliance/pci/FINDINGS.mdx
 
 SAQ scope: [SAQ-A / SAQ-D / etc.]
 Requirements with gaps: [N of in-scope]

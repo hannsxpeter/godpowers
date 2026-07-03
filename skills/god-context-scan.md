@@ -47,9 +47,14 @@ called drifts.
      heldFacts: [...]
    ```
 2. `lib/checkpoint.diff(projectRoot, claim)` compares the claim to
-   `.godpowers/CHECKPOINT.md` frontmatter + facts.
+   `.godpowers/CHECKPOINT.mdx` frontmatter + facts.
 3. `lib/state.detectDrift(projectRoot)` cross-checks artifacts on
-   disk match their recorded hashes.
+   disk match their recorded hashes. This includes source-systems
+   import hashes for sibling artifacts: when `.godplans/PLAN.mdx` or
+   `.godaudits/AUDIT.mdx` no longer matches the hash recorded at
+   import (the user re-ran godplans/godaudits mid-session), report a
+   WARN drift "sibling artifact changed since import" with suggested
+   action `/god-migrate` re-import.
 4. `lib/events.readRun(projectRoot, latestRun)` last 30 events
    verified for hash-chain continuity (when v0.13+ event hash
    chain is in place).

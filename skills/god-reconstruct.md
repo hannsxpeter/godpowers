@@ -21,6 +21,11 @@ Derive planning artifacts from existing code.
 
 ## Setup
 
+0. Check for `.godplans/PLAN.mdx`. If present, route to `/god-migrate` import
+   first: PLAN.mdx is authored planning, strictly better than
+   reverse-engineering. Reconstruction should then only fill gaps the plan
+   does not cover, using the plan as HIGH-confidence intent evidence (cite
+   GP/R ids) for those gaps. The plan file itself stays read-only.
 1. Verify codebase exists (Mode B)
 2. Optional: run /god-archaeology first for richer input
 3. Spawn god-reconstructor in fresh context
@@ -35,7 +40,7 @@ Derive planning artifacts from existing code.
 - Each has reconstruction warning at top
 - Each section tagged with confidence level (HIGH/MEDIUM/LOW)
 - Open questions explicitly listed
-- `.godpowers/RECONSTRUCTION-LOG.md` written
+- `.godpowers/RECONSTRUCTION-LOG.mdx` written
 
 ## On Completion
 
@@ -49,7 +54,7 @@ Artifacts derived from code:
   + stack/DECISION.md     (flip points marked OPEN QUESTION)
 
 Open questions for stakeholder review: [N]
-Reconstruction log: .godpowers/RECONSTRUCTION-LOG.md
+Reconstruction log: .godpowers/RECONSTRUCTION-LOG.mdx
 
 CRITICAL: these are reconstructed, not authoritative. Schedule
 stakeholder review within 1-2 weeks. Treat as starting point.

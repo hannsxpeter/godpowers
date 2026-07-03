@@ -13,21 +13,21 @@ Spawn the **god-stack-selector** agent in a fresh context via the host platform'
 
 ## Setup
 
-1. Verify `.godpowers/arch/ARCH.md` exists. If not, tell user to run `/god-arch` first.
+1. Verify `.godpowers/arch/ARCH.mdx` exists. If not, tell user to run `/god-arch` first.
 2. Spawn god-stack-selector with the ARCH path.
-3. The agent writes `.godpowers/stack/DECISION.md`.
+3. The agent writes `.godpowers/stack/DECISION.mdx`.
 
 ## Verification
 
 After god-stack-selector returns:
 1. Verify DECISION.md exists on disk
 2. Run `npx godpowers gate --tier=stack --project=.` and do not proceed on a non-zero exit
-3. Run `npx godpowers state advance --step=stack --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.md`.
+3. Run `npx godpowers state advance --step=stack --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.mdx`.
 
 ## On Completion
 
 ```
-Stack decision complete: .godpowers/stack/DECISION.md
+Stack decision complete: .godpowers/stack/DECISION.mdx
 
 Suggested next: /god-repo (scaffold the repo with the chosen stack)
 ```
@@ -35,7 +35,7 @@ Suggested next: /god-repo (scaffold the repo with the chosen stack)
 
 ## Re-invocation contract
 
-What happens if `/god-stack` is run when `.godpowers/stack/DECISION.md` already exists:
+What happens if `/god-stack` is run when `.godpowers/stack/DECISION.mdx` already exists:
 
 | Existing state | Behavior |
 |---|---|

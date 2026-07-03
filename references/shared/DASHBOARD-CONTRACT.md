@@ -77,7 +77,7 @@ Planning visibility:
 Deliverable progress:
   Requirements: <done>/<total> done (<pct>%), <in-progress> in progress, <untouched> not started
   Increments: <done> done, <building> building, <pending> pending
-  Ledger: .godpowers/REQUIREMENTS.md
+  Ledger: .godpowers/REQUIREMENTS.mdx
 
 Proactive checks:
   Checkpoint: <fresh | refreshed | missing | stale | conflicts with state.json>

@@ -15,8 +15,8 @@ Orchestrate the build via specialist agents.
 ## Setup
 
 1. Verify gates:
-   - `.godpowers/roadmap/ROADMAP.md` exists (skip if scale is trivial)
-   - `.godpowers/stack/DECISION.md` exists (skip if scale is trivial)
+   - `.godpowers/roadmap/ROADMAP.mdx` exists (skip if scale is trivial)
+   - `.godpowers/stack/DECISION.mdx` exists (skip if scale is trivial)
    - Repo is scaffolded
 2. If any gate fails: tell user which command to run first
 3. Compute the Pillars load set for the build task with
@@ -28,10 +28,10 @@ Orchestrate the build via specialist agents.
 
 ### Phase 1: Plan
 Spawn **god-planner** in fresh context with ROADMAP, ARCH, DECISION.
-Output: `.godpowers/build/PLAN.md` with vertical slices grouped into waves.
+Output: `.godpowers/build/PLAN.mdx` with vertical slices grouped into waves.
 
 After the planner returns, run the source-grounding preflight from
-`lib/source-grounding.js` against `.godpowers/build/PLAN.md`. The plan must
+`lib/source-grounding.js` against `.godpowers/build/PLAN.mdx`. The plan must
 distinguish existing files, existing symbols, new artifacts, and unchecked
 references before any executor starts.
 
@@ -62,7 +62,7 @@ For each slice in the wave (parallel):
      overcomplication, speculative abstraction, or unrelated cleanup
    - If PASS: commit the slice atomically
 5. Record build status and slice evidence in `.godpowers/state.json` so
-   `.godpowers/build/STATE.md` regenerates as a managed view.
+   `.godpowers/build/STATE.mdx` regenerates as a managed view.
 
 Move to next wave only when current wave is fully committed.
 
@@ -80,7 +80,7 @@ After all waves:
 5. Record the exact verification commands that passed in `.godpowers/state.json`
    under `tiers.tier-2.build.verification.commands`
 6. Run `npx godpowers gate --tier=build --project=.` and do not proceed on a non-zero exit
-7. Run `npx godpowers state advance --step=build --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.md` plus `.godpowers/build/STATE.md`.
+7. Run `npx godpowers state advance --step=build --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.mdx` plus `.godpowers/build/STATE.mdx`.
 8. If the build plan or implementation establishes durable conventions, plan
    pillar updates through `lib/pillars.planArtifactSync`. Under
    `/god-mode --yolo`, apply those updates immediately and log the decision.
@@ -95,7 +95,7 @@ Pause for user ONLY if:
 ## On Completion
 
 ```
-Build complete: .godpowers/build/STATE.md (generated view)
+Build complete: .godpowers/build/STATE.mdx (generated view)
 [N] slices delivered. [N] commits. All tests passing.
 
 Suggested next: /god-harden (adversarial review, gates Launch)

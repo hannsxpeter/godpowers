@@ -7,11 +7,13 @@ description: |
   Spawned by: /god-stack, god-orchestrator
 tools: Read, Write, Bash, Grep, WebSearch
 inputs:
-  - ".godpowers/arch/ARCH.md"
+  - ".godpowers/arch/ARCH.mdx"
   - "optional org constraints"
   - "optional imported stack signals"
+  - "references/planning/STACK-ANATOMY.md"
+  - "references/planning/STACK-ANTIPATTERNS.md"
 outputs:
-  - ".godpowers/stack/DECISION.md"
+  - ".godpowers/stack/DECISION.mdx"
 gates:
   - "S-01 through S-05 have-nots"
   - "scored candidates and flip points"
@@ -26,26 +28,26 @@ Pick the technology stack.
 
 ## Gate Check
 
-`.godpowers/arch/ARCH.md` MUST exist.
-Optional: `.godpowers/prep/INITIAL-FINDINGS.md` may exist as preparation
+`.godpowers/arch/ARCH.mdx` MUST exist.
+Optional: `.godpowers/prep/INITIAL-FINDINGS.mdx` may exist as preparation
 context.
-Optional: `.godpowers/prep/IMPORTED-CONTEXT.md` may exist as preparation
+Optional: `.godpowers/prep/IMPORTED-CONTEXT.mdx` may exist as preparation
 context.
-Optional: `.godpowers/domain/GLOSSARY.md` may exist as domain preparation
+Optional: `.godpowers/domain/GLOSSARY.mdx` may exist as domain preparation
 context.
-Optional: `.godpowers/design/DESIGN.md` and `.godpowers/design/PRODUCT.md`
+Optional: `.godpowers/design/DESIGN.mdx` and `.godpowers/design/PRODUCT.mdx`
 may exist as product-experience preparation.
 
 ## Imported Preparation Context
 
-If `.godpowers/prep/INITIAL-FINDINGS.md` exists, read it first for direct
+If `.godpowers/prep/INITIAL-FINDINGS.mdx` exists, read it first for direct
 tooling, package manager, framework, runtime, CI, and deploy observations.
 
-If `.godpowers/prep/IMPORTED-CONTEXT.md` exists, read its technical and stack
+If `.godpowers/prep/IMPORTED-CONTEXT.mdx` exists, read its technical and stack
 signals before scoring candidates. Use imported technology choices, constraints,
 and team familiarity as hypothesis-level input only.
 
-If `.godpowers/domain/GLOSSARY.md` exists, read it before scoring candidates.
+If `.godpowers/domain/GLOSSARY.mdx` exists, read it before scoring candidates.
 Use it to understand domain relationships, ownership boundaries, data shape,
 integration language, and ambiguity that may affect stack fit.
 
@@ -64,6 +66,10 @@ Rules:
   a stack or architecture open question.
 
 ## Process
+
+Before scoring candidates, read `references/planning/STACK-ANATOMY.md`
+(per-category decision structure) and
+`references/planning/STACK-ANTIPATTERNS.md` (failure patterns to avoid).
 
 1. Read ARCH thoroughly (NFRs, ADRs, data model, scale expectations, team size)
 2. For each technology category needed:
@@ -87,9 +93,9 @@ Rules:
 
 ## Output
 
-Use `templates/STACK-DECISION.md` (installed at
-`<runtime>/godpowers-templates/STACK-DECISION.md`) as the structural starting
-point. Write `.godpowers/stack/DECISION.md`:
+Use `templates/STACK-DECISION.mdx` (installed at
+`<runtime>/godpowers-templates/STACK-DECISION.mdx`) as the structural starting
+point. Write `.godpowers/stack/DECISION.mdx`:
 
 ```markdown
 # Stack Decision
@@ -139,6 +145,6 @@ Defaults for god-stack-selector:
 
 ## Done Criteria
 
-- `.godpowers/stack/DECISION.md` exists
+- `.godpowers/stack/DECISION.mdx` exists
 - Every category has a chosen candidate with rationale and flip point
 - No High-lock-in choices without explicit acknowledgment

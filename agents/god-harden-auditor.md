@@ -11,8 +11,10 @@ inputs:
   - "codebase"
   - ".godpowers/state.json deploy evidence"
   - "optional org security standards"
+  - "references/shipping/HARDEN-OWASP-WORKSHEETS.md"
+  - "references/shipping/HARDEN-ANTIPATTERNS.md"
 outputs:
-  - ".godpowers/harden/FINDINGS.md"
+  - ".godpowers/harden/FINDINGS.mdx"
 gates:
   - "H-01 through H-11 have-nots"
   - "Critical findings block launch"
@@ -31,6 +33,10 @@ the application can be broken.
 Build is complete. Code is in the repo.
 
 ## Process
+
+Before reviewing, read `references/shipping/HARDEN-OWASP-WORKSHEETS.md` (the
+per-category worksheets for the walkthrough below) and
+`references/shipping/HARDEN-ANTIPATTERNS.md` (failure patterns to avoid).
 
 ### 1. OWASP Top 10 Manual Walkthrough
 
@@ -104,9 +110,9 @@ For each finding:
 
 ## Output
 
-Use `templates/HARDEN-FINDINGS.md` (installed at
-`<runtime>/godpowers-templates/HARDEN-FINDINGS.md`) as the structural starting
-point. Write `.godpowers/harden/FINDINGS.md`:
+Use `templates/HARDEN-FINDINGS.mdx` (installed at
+`<runtime>/godpowers-templates/HARDEN-FINDINGS.mdx`) as the structural starting
+point. Write `.godpowers/harden/FINDINGS.mdx`:
 
 ```markdown
 # Security Findings
@@ -140,7 +146,7 @@ Launch gate: PASSED / BLOCKED
 ## Critical-Finding Gate
 
 If ANY finding is Critical:
-- `.godpowers/harden/FINDINGS.md` declares launch BLOCKED
+- `.godpowers/harden/FINDINGS.mdx` declares launch BLOCKED
 - Return to orchestrator: it MUST pause for human resolution
 - Launch agent must refuse to proceed
 

@@ -4,9 +4,10 @@ description: |
   Comprehensive reconciliation across ALL impacted artifacts before feature
   work. Checks PRD, ARCH, ROADMAP, STACK, REPO, DEPLOY, OBSERVE, HARDEN,
   LAUNCH, BACKLOG, SEEDS, TODOS, THREADS, repository documentation,
-  repository surface, feature awareness, host capability, and source-system
-  sync-back in parallel. Returns multi-dimensional verdict so user knows every
-  place the work intersects with existing artifacts.
+  repository surface, feature awareness, host capability, source-system
+  sync-back, and sibling godplans/godaudits artifacts in parallel. Returns
+  multi-dimensional verdict so user knows every place the work intersects
+  with existing artifacts.
 
   Spawned by: /god-reconcile, recipe execution (feature-addition category)
 tools: Read, Bash, Grep, Glob, Task
@@ -17,6 +18,7 @@ inputs:
 outputs:
   - "multi-dimensional reconciliation verdict"
   - "optional .godpowers/reconciliation/ report"
+  - ".godpowers/sync/SAFE-SYNC-PLAN.mdx (only when blocking sync conflicts exist)"
 gates:
   - "all relevant surfaces checked"
   - "missing artifacts handled explicitly"
@@ -56,13 +58,13 @@ For each artifact below, check (in parallel where possible):
 
 ### Tier 1 artifacts
 
-#### PRD (`.godpowers/prd/PRD.md`)
+#### PRD (`.godpowers/prd/PRD.mdx`)
 - Is the requirement explicitly listed? (grep functional/non-functional sections)
 - Is it implied but not specific? (semantic similarity)
 - Verdict: present / missing / ambiguous
 - If missing: recommend `/god-redo prd` or accept divergence with audit
 
-#### ARCH (`.godpowers/arch/ARCH.md` + `adr/`)
+#### ARCH (`.godpowers/arch/ARCH.mdx` + `adr/`)
 - Does the feature need a new component in C4 diagrams?
 - Does it cross a new trust boundary?
 - Does any existing ADR need a flip-point review?
@@ -70,11 +72,11 @@ For each artifact below, check (in parallel where possible):
 - Verdict: covered / needs-delta / needs-new-adr / unchanged
 - If needs-delta: recommend `/god-arch` in delta-only mode
 
-#### ROADMAP (`.godpowers/roadmap/ROADMAP.md`)
+#### ROADMAP (`.godpowers/roadmap/ROADMAP.mdx`)
 - Already-done / in-progress / enhancement / prerequisite-needed / new / ambiguous
 - Use the integrated ROADMAP classification logic for milestone overlap.
 
-#### STACK (`.godpowers/stack/DECISION.md`)
+#### STACK (`.godpowers/stack/DECISION.mdx`)
 - Does the feature require a new dependency category? (e.g., adding a queue when none exists)
 - Does it change a flip point? (e.g., choice now needs to handle new scale)
 - Verdict: covered / needs-addition / changes-flip-point
@@ -82,7 +84,7 @@ For each artifact below, check (in parallel where possible):
 
 ### Tier 2 artifacts
 
-#### REPO (`.godpowers/repo/AUDIT.md`)
+#### REPO (`.godpowers/repo/AUDIT.mdx`)
 - Does the feature need a new top-level folder?
 - New lint rule for the new code path?
 - New CI step?
@@ -110,7 +112,7 @@ Source: `.godpowers/state.json` `tier-3.observe`.
 - New alert + runbook?
 - Verdict: covered / needs-slo / needs-alert
 
-#### HARDEN (`.godpowers/harden/FINDINGS.md`)
+#### HARDEN (`.godpowers/harden/FINDINGS.mdx`)
 - Does the feature add a new attack surface?
 - New auth boundary to test?
 - New input source to validate?
@@ -126,7 +128,7 @@ Source: `.godpowers/state.json` `tier-3.launch`.
 
 ### Capture artifacts
 
-#### BACKLOG (`.godpowers/backlog/BACKLOG.md`)
+#### BACKLOG (`.godpowers/backlog/BACKLOG.mdx`)
 - Does an existing backlog entry match this intent?
 - Verdict: not-captured / already-captured (with entry reference)
 
@@ -134,7 +136,7 @@ Source: `.godpowers/state.json` `tier-3.launch`.
 - Does this work trigger a planted seed's condition?
 - Verdict: no-seeds / triggers-seed (with seed ID)
 
-#### TODOS (`.godpowers/todos/TODOS.md`)
+#### TODOS (`.godpowers/todos/TODOS.mdx`)
 - Does an open todo relate to this?
 - Verdict: no-related / supersedes-todo / relates-to-todo
 
@@ -163,16 +165,56 @@ Source: `.godpowers/state.json` `tier-3.launch`.
 - If imported planning systems have low confidence or conflicts: recommend
   `god-greenfieldifier`.
 
-#### SOURCE SYSTEM SYNC-BACK (legacy planning, BMAD, Superpowers)
+#### SOURCE SYSTEM SYNC-BACK (legacy planning, BMAD, Superpowers, godplans, godaudits)
 - Did migrated source-system summaries need managed sync-back?
+- For godplans/godaudits, sync-back writes only the managed
+  `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`
+  companion; PLAN.mdx and AUDIT.mdx are never edited by this flow.
 - Verdict: not-applicable / fresh / needs-sync-back / blocked-by-conflict
 - If conflicts exist: recommend greenfieldifier review before writes.
+
+#### SIBLING PLAN (`.godplans/PLAN.mdx`)
+- Does the intent match an existing GP task in the plan? (read-only; parse
+  via `lib/sibling-artifacts.js`)
+- Verdict: not-applicable / planned-in-godplans (with GP id) / not-in-plan /
+  plan-conflict
+- If plan-conflict: the plan is authored intent; surface the GP/R id and ask
+  the user before proceeding.
+
+#### SIBLING AUDIT (`.godaudits/AUDIT.mdx`)
+- Does the intent address or invalidate an open GA remediation task or F
+  finding? (read-only)
+- Verdict: not-applicable / addresses-ga-task (with GA id) / invalidates-finding
+  (with F id) / unrelated
+- If it addresses a GA task: recommend routing through `/god-fix GA-<n>` so
+  the finding's Verify command becomes the done-check.
 
 #### HOST CAPABILITY (`lib/host-capabilities.js`)
 - Does the work depend on a host feature such as fresh-context spawning,
   local shell, GitHub CLI, npm, or extension authoring?
 - Verdict: full / degraded / unknown
 - If degraded: include the missing guarantee in the recommendation.
+
+### Blocking sync conflicts (safe-sync plan)
+
+When the checks above surface cross-artifact conflicts that contradict each
+other (for example ROADMAP marks a milestone shipped that the PRD dropped, or
+deploy evidence references a service the ARCH removed) and shipping on top of
+them would make Tier 3 claims false, write
+`.godpowers/sync/SAFE-SYNC-PLAN.mdx` before returning:
+
+- one entry per conflict: the artifacts involved, the contradiction, and the
+  evidence line for each side
+- concrete resolution steps per conflict (which artifact to change, or which
+  command runs the fix)
+
+This file is a gate. `lib/router.js` blocks /god-deploy, /god-observe,
+/god-harden, /god-launch, and /god-mode Tier 3 work through the
+`safe-sync-clear` prerequisite until /god-reconcile verifies the resolutions
+and writes `.godpowers/sync/SAFE-SYNC-RESOLVED.mdx`. Do NOT write the plan
+for ordinary non-blocking drift; report that through the normal per-artifact
+verdicts. Report the plan path and each conflict in the returned verdict so
+the caller can tell the user why Tier 3 is blocked.
 
 ## Output
 
@@ -199,7 +241,10 @@ Return structured JSON to the orchestrating skill:
   "repo_surface": { "status": "needs-surface-sync", "action": "run repo-surface-sync" },
   "feature_awareness": { "status": "needs-awareness-refresh", "action": "run feature-awareness" },
   "source_sync_back": { "status": "not-applicable" },
+  "sibling_plan": { "status": "planned-in-godplans", "match": "GP-204", "action": "execute under the plan's embedded executor rules" },
+  "sibling_audit": { "status": "addresses-ga-task", "match": "GA-102", "action": "route via /god-fix GA-102 with the finding's Verify command as done-check" },
   "host_capability": { "status": "degraded", "gap": "fresh-context agent spawn not detected" },
+  "safe_sync": { "status": "clear" },
   "recommendation": {
     "primary-action": "/god-feature scoped to Milestone 2",
     "preflight": [
@@ -212,6 +257,9 @@ Return structured JSON to the orchestrating skill:
   }
 }
 ```
+
+When blocking conflicts were found, `safe_sync` becomes
+`{ "status": "blocking", "plan": ".godpowers/sync/SAFE-SYNC-PLAN.mdx", "conflicts": <n> }`.
 
 ## Decision tree the user sees
 
@@ -238,7 +286,10 @@ Where this intersects existing artifacts:
   SURFACE:    needs repo-surface sync
   FEATURES:   awareness refresh needed
   SOURCE:     no sync-back needed
+  PLAN:       planned in godplans as GP-204
+  AUDIT:      addresses open GA-102 (F-SEC-3)
   HOST:       degraded - fresh-context agent spawn not detected
+  SYNC GATE:  clear (or: BLOCKING - plan at .godpowers/sync/SAFE-SYNC-PLAN.mdx)
 
 Recommended sequence:
   1. /god-redo prd            (add requirement)
@@ -288,6 +339,9 @@ For feature-addition category recipes: ALWAYS reconcile.
 Reconciliation FAILS if:
 - Returns "all covered" without checking each artifact
 - Skips an artifact silently (must report status for each)
+- Finds blocking cross-artifact sync conflicts but does not write
+  `.godpowers/sync/SAFE-SYNC-PLAN.mdx` (the Tier 3 gate never engages)
+- Writes SAFE-SYNC-PLAN.mdx for ordinary non-blocking drift (gate spam)
 - Skips repo docs, repo surface, feature awareness, source sync-back, or host
   capability when the work affects them
 - Recommends bypass without justification

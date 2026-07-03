@@ -13,7 +13,7 @@ extension: "@godpowers/data-pack"
 Spawn god-dashboard-builder.
 
 ## Verification
-- `.godpowers/data/dashboards/<name>/SPEC.md` exists
+- `.godpowers/data/dashboards/<name>/SPEC.mdx` exists
 - Every chart has a question
 - Every chart ties to an action
 - No more than 7 charts per dashboard

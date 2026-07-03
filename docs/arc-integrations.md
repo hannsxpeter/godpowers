@@ -179,7 +179,7 @@ god-deps-auditor classifies each outdated dep:
 
 **Output**:
 ```
-.godpowers/deps/AUDIT.md (from /god-update-deps):
+.godpowers/deps/AUDIT.mdx (from /god-update-deps):
 
 ## Deferred to /god-upgrade
 | Package | Current | Target | Recommended workflow |
@@ -279,7 +279,7 @@ THEN god-planner re-plans the refactor slices.
 
 **After postmortem completes**:
 ```
-.godpowers/postmortems/<id>/POSTMORTEM.md contains action items
+.godpowers/postmortems/<id>/POSTMORTEM.mdx contains action items
    |
    v
 For each P0 action item:
@@ -291,7 +291,7 @@ For each P0 action item:
 ```
 
 **Action items get cross-referenced**: each item appears in
-.godpowers/todos/TODOS.md with priority and source link to the postmortem.
+.godpowers/todos/TODOS.mdx with priority and source link to the postmortem.
 
 User runs /god-check-todos -> sees postmortem items -> selects one ->
 appropriate workflow spawns.
@@ -392,7 +392,7 @@ greenfield builds new; upgrade migrates existing without breaking.
 
 **When /god-audit finds failures**:
 ```
-.godpowers/AUDIT-REPORT.md contains:
+.godpowers/AUDIT-REPORT.mdx contains:
   PRD: 75% (2 have-nots failing)
   ARCH: 100%
   ROADMAP: 90% (1 have-not failing)
@@ -511,7 +511,7 @@ all spawned agents.
 god-orchestrator runs with yolo=true
    |
    ├── god-auditor called with mode=preflight for brownfield/bluefield
-   |   -> Writes .godpowers/preflight/PREFLIGHT.md
+   |   -> Writes .godpowers/preflight/PREFLIGHT.mdx
    |   -> Auto-follows safest recommended route
    |   -> Logs route choice to YOLO-DECISIONS.md
    |
@@ -525,7 +525,7 @@ god-orchestrator runs with yolo=true
    ├── god-stack-selector called with yolo=true
    |   -> Auto-picks the lower-lock-in option on ties
    |
-   ├── god-build-orchestrator called with yolo=true
+   ├── god-planner called with yolo=true (spawns the build workers)
    |   -> god-executor with yolo=true: still TDD-strict (TDD never bypassed)
    |   -> god-spec-reviewer / god-quality-reviewer: still independent
    |

@@ -76,7 +76,7 @@
     },
     "deliverables": {
       "type": "object",
-      "description": "Cached deliverable summary (requirement and roadmap-increment status). Recomputed fresh by lib/requirements.js from PRD + ROADMAP + linkage + build state; the human-readable ledger is .godpowers/REQUIREMENTS.md.",
+      "description": "Cached deliverable summary (requirement and roadmap-increment status). Recomputed fresh by lib/requirements.js from PRD + ROADMAP + linkage + build state; the human-readable ledger is .godpowers/REQUIREMENTS.mdx.",
       "additionalProperties": true,
       "properties": {
         "updated": { "type": "string" },
@@ -101,14 +101,14 @@
     },
     "source-systems": {
       "type": "array",
-      "description": "Detected external planning systems imported into Godpowers and eligible for managed sync-back.",
+      "description": "Detected external planning systems imported into Godpowers and eligible for managed sync-back. Includes the sibling superskill artifacts godplans (.godplans/PLAN.mdx) and godaudits (.godaudits/AUDIT.mdx).",
       "items": {
         "type": "object",
         "required": ["id", "name", "confidence", "files", "import-hash"],
         "properties": {
           "id": {
             "type": "string",
-            "enum": ["legacy-planning", "bmad", "superpowers", "other"]
+            "enum": ["legacy-planning", "bmad", "superpowers", "godplans", "godaudits", "other"]
           },
           "name": { "type": "string" },
           "confidence": {

@@ -343,7 +343,7 @@ test('parseAgentBudget extracts required + optional + max-tokens', () => {
   fs.writeFileSync(agentPath,
     `---
 name: g
-required-context: [.godpowers/prd/PRD.md, .godpowers/state.json]
+required-context: [.godpowers/prd/PRD.mdx, .godpowers/state.json]
 optional-context: [.godpowers/runs/latest/events.jsonl]
 max-tokens: 50000
 ---

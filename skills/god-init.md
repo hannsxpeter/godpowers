@@ -19,7 +19,7 @@ This skill is a thin wrapper. Detection happens automatically; user never
 needs to specify a mode.
 
 1. Check if `.godpowers/` already exists:
-   - If yes: read `.godpowers/state.json`, use generated `.godpowers/PROGRESS.md`
+   - If yes: read `.godpowers/state.json`, use generated `.godpowers/PROGRESS.mdx`
      only as a legacy fallback, call
      `lib/pillars.pillarizeExisting(projectRoot)` to ensure the existing
      Godpowers project is also Pillar-ized, report current state, ask if user
@@ -34,7 +34,7 @@ needs to specify a mode.
    - Look for org-level context (current dir + parent dirs):
      - .godpowers/org-context.yaml
      - Workspace configs that share standards
-   - Write `.godpowers/prep/INITIAL-FINDINGS.md` summarizing what Godpowers
+   - Write `.godpowers/prep/INITIAL-FINDINGS.mdx` summarizing what Godpowers
      observed about the repo, tooling, docs, tests, risks, and suggested next
      command. This happens before `/god-prd`, `/god-next`, or `/god-mode`
      continues.
@@ -44,12 +44,21 @@ needs to specify a mode.
        `.claude/skills/`, `.codex/skills/`
      - BMAD: `.bmad-core/`, `bmad-core/`, `.bmad/`, `BMAD.md`,
        `docs/prd.md`, `docs/architecture.md`, `docs/roadmap.md`
+     - godplans: `.godplans/PLAN.mdx` (godplans master plan)
+     - godaudits: `.godaudits/AUDIT.mdx` (godaudits audit report)
    - If any are detected, summarize useful signals into
-     `.godpowers/prep/IMPORTED-CONTEXT.md` as preparation context.
+     `.godpowers/prep/IMPORTED-CONTEXT.mdx` as preparation context.
      Do not treat external planning-system files as source of truth.
    - Auto-invoke `lib/planning-systems.importPlanningContext(projectRoot)`
-     when legacy planning, Superpowers, or BMAD context is detected. Report this as
-     `Agent: none, local runtime only`.
+     when legacy planning, Superpowers, BMAD, godplans, or godaudits context is
+     detected, and record the systems in `state.json` `source-systems`. Report
+     this as `Agent: none, local runtime only`.
+   - godplans and godaudits are sibling superskills, not legacy systems.
+     Announce them plainly: "Detected: a godplans master plan. I will import
+     it instead of re-planning." or "Detected: a godaudits audit report. I
+     will import its findings instead of rediscovering them." Their artifacts
+     are read-only for Godpowers except when executing GP/GA tasks; use
+     `lib/sibling-artifacts.js` (detect, summarize) for parsing.
    - If import confidence is low, more than one source system appears to
      conflict, or canonical Godpowers seed artifacts cannot be created from
      available evidence, spawn `god-greenfieldifier` to produce a controlled
@@ -60,8 +69,9 @@ needs to specify a mode.
      - UI surfaces: `src/components/`, `app/`, `pages/`, `routes/`,
        `public/`, form-heavy flows, dashboards, editor surfaces, mobile
        shells, marketing pages, or other user-facing product experience
-     - Imported legacy planning, Superpowers, or BMAD context that mentions UX, screens,
-       journeys, components, brand, interaction states, or visual design
+     - Imported legacy planning, Superpowers, BMAD, godplans, or godaudits
+       context that mentions UX, screens, journeys, components, brand,
+       interaction states, or visual design
    - Record the result in `INITIAL-FINDINGS.md` so `/god-prd`, `/god-next`,
      and `/god-mode` can place `/god-design` after PRD and before
      `/god-arch` when the project needs early product-experience shape.
@@ -94,7 +104,7 @@ needs to specify a mode.
 5. Ask the user to describe what they want to build. Accept any format.
 
 6. Create a private disk handoff before spawning the orchestrator:
-   - Path: `.godpowers/runs/<run-id>/INIT-ORCHESTRATOR-HANDOFF.md`
+   - Path: `.godpowers/runs/<run-id>/INIT-ORCHESTRATOR-HANDOFF.mdx`
    - Create parent directories if needed.
    - Put the user's description, detected mode, detected context, initial
      findings summary, imported context summary, Pillars status, and next-step
@@ -116,9 +126,11 @@ needs to specify a mode.
    The orchestrator will:
    - Run Mode Detection (announced in plain English; stored as A/B/C/E internally)
    - Run Scale Detection (trivial/small/medium/large/enterprise)
-   - Write `.godpowers/prep/INITIAL-FINDINGS.md`
-   - Run planning-system context detection for legacy planning, Superpowers, and BMAD
-   - Write `.godpowers/prep/IMPORTED-CONTEXT.md` when useful context exists
+   - Write `.godpowers/prep/INITIAL-FINDINGS.mdx`
+   - Run planning-system context detection for legacy planning, Superpowers,
+     BMAD, godplans (`.godplans/PLAN.mdx`), and godaudits
+     (`.godaudits/AUDIT.mdx`)
+   - Write `.godpowers/prep/IMPORTED-CONTEXT.mdx` when useful context exists
    - Run automatic planning-system import through
      `lib/planning-systems.importPlanningContext(projectRoot)` and record
      detected source systems under `state.json` `source-systems`
@@ -128,7 +140,7 @@ needs to specify a mode.
    - For bluefield: load org-context, then schedule preflight as constraint intake
    - Create directory structure
    - Write `.godpowers/state.json` with mode, scale, timestamp, tier states,
-     then regenerate the managed `.godpowers/PROGRESS.md` view
+     then regenerate the managed `.godpowers/PROGRESS.mdx` view
    - Return mode/scale/announcement to this skill
 
 8. Detect scale by analyzing the description:
@@ -157,7 +169,7 @@ needs to specify a mode.
      PROGRESS.md              # generated managed view
      prep/
        INITIAL-FINDINGS.md
-       IMPORTED-CONTEXT.md   # only when legacy planning / Superpowers / BMAD context exists
+       IMPORTED-CONTEXT.md   # only when legacy planning / Superpowers / BMAD / godplans / godaudits context exists
      prd/
      arch/
        adr/
@@ -171,7 +183,7 @@ needs to specify a mode.
      harden/
    ```
 
-10. Write `state.json` with mode, scale, timestamp, and all tiers set to `pending`, then regenerate `.godpowers/PROGRESS.md`
+10. Write `state.json` with mode, scale, timestamp, and all tiers set to `pending`, then regenerate `.godpowers/PROGRESS.mdx`
 
 11. Report to the user:
    - Detected mode and scale
@@ -190,18 +202,22 @@ needs to specify a mode.
 
 ## Output
 
-`.godpowers/state.json` created with initial state and `.godpowers/PROGRESS.md` generated as a managed human view.
+`.godpowers/state.json` created with initial state and `.godpowers/PROGRESS.mdx` generated as a managed human view.
 
-Always create `.godpowers/prep/INITIAL-FINDINGS.md`. This is Godpowers'
+Always create `.godpowers/prep/INITIAL-FINDINGS.mdx`. This is Godpowers'
 durable answer to "what did init find in this codebase?" It captures codebase
 shape, framework and tooling signals, tests, CI, docs, AI-tool files, detected
 methodology systems, Pillars health, UI or product-experience signals, risk
 signals, and the reasoning behind the suggested next command.
 
-If legacy planning, Superpowers, BMAD, or similar planning context is detected, create
-`.godpowers/prep/IMPORTED-CONTEXT.md`. This artifact is preparation context,
-not source of truth. It feeds PRD, architecture, roadmap, and stack decisions
-as hypothesis-level input only.
+If legacy planning, Superpowers, BMAD, godplans, godaudits, or similar
+planning context is detected, create `.godpowers/prep/IMPORTED-CONTEXT.mdx`.
+This artifact is preparation context, not source of truth. It feeds PRD,
+architecture, roadmap, and stack decisions as hypothesis-level input only,
+with one carve-out: facts read from `.godplans/PLAN.mdx` or
+`.godaudits/AUDIT.mdx` (GP/GA task status, R-<DOM>-n and A-<DOM>-n ids,
+scores) may be cited as [DECISION]-grade authored intent; product claims
+inferred beyond the plan stay [HYPOTHESIS].
 
 ## Native Pillars context and AI-tool context
 

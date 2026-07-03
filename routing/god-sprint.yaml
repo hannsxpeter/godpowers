@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - .godpowers/roadmap/ROADMAP.md
+    - .godpowers/roadmap/ROADMAP.mdx
 
 execution:
   spawns: [god-retrospective]

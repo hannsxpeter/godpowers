@@ -17,7 +17,7 @@ A version bump that knows about dependents. Different from `/god-launch`
 
 1. Verify suite is registered.
 2. Prompt for: which repo, new version, release notes.
-3. Create `.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.md` with the repo,
+3. Create `.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.mdx` with the repo,
    new version, release notes, propagation flags, and suite release
    instruction.
 4. Spawn `god-coordinator` in `release` mode with only a display-safe
@@ -36,7 +36,7 @@ A version bump that knows about dependents. Different from `/god-launch`
      `version-bump` directive (NOT a full project run)
    - Aggregates results per-repo
    - Updates `.godpowers/suite-config.yaml` version-table to match
-   - Appends to `.godpowers/suite/SYNC-LOG.md`
+   - Appends to `.godpowers/suite/SYNC-LOG.mdx`
 6. Reports aggregated outcome (bumped + propagated repos).
 
 ## Forms

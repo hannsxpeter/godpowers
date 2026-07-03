@@ -15,7 +15,7 @@ Spawn the **god-observability-engineer** agent in a fresh context via the host p
 
 1. Verify `.godpowers/state.json` records `tier-3.deploy.status == done`.
 2. Spawn god-observability-engineer with PRD (for success metrics) and ARCH paths.
-3. The agent returns structured observability evidence for `.godpowers/state.json`; the generated `.godpowers/observe/STATE.md` view refreshes after state mutation.
+3. The agent returns structured observability evidence for `.godpowers/state.json`; the generated `.godpowers/observe/STATE.mdx` view refreshes after state mutation.
 
 ## Verification
 
@@ -37,7 +37,7 @@ After god-observability-engineer returns:
 ## On Completion
 
 ```
-Observability complete: .godpowers/observe/STATE.md (generated view)
+Observability complete: .godpowers/observe/STATE.mdx (generated view)
 
 Suggested next: /god-harden (adversarial security review, gates Launch)
 ```
@@ -45,7 +45,7 @@ Suggested next: /god-harden (adversarial security review, gates Launch)
 Under `/god-mode --yolo`, do not stop with a dashboard checklist. Create or
 update alert definitions, dashboard definitions, runbooks, and local checks
 first. If real provider access is still required, append the exact missing
-credentials to `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md`.
+credentials to `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx`.
 
 Provider credentials are last-mile inputs. Do not ask for dashboard access,
 API keys, or observability admin consoles until the local definitions, runbook

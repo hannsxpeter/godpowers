@@ -31,20 +31,20 @@ intent, architecture, delivery commitments, or org constraints.
 
 ## Inputs
 
-- `.godpowers/audit/GREENFIELD-SIMULATION.md`
-- `.godpowers/prep/INITIAL-FINDINGS.md`, when present
-- `.godpowers/prep/IMPORTED-CONTEXT.md`, when present
+- `.godpowers/audit/GREENFIELD-SIMULATION.mdx`
+- `.godpowers/prep/INITIAL-FINDINGS.mdx`, when present
+- `.godpowers/prep/IMPORTED-CONTEXT.mdx`, when present
 - Existing canonical artifacts:
-  - `.godpowers/prd/PRD.md`
-  - `.godpowers/design/DESIGN.md`
-  - `.godpowers/product/PRODUCT.md`
-  - `.godpowers/arch/ARCH.md`
-  - `.godpowers/roadmap/ROADMAP.md`
-  - `.godpowers/stack/DECISION.md`
-  - `.godpowers/repo/AUDIT.md`
+  - `.godpowers/prd/PRD.mdx`
+  - `.godpowers/design/DESIGN.mdx`
+  - `.godpowers/product/PRODUCT.mdx`
+  - `.godpowers/arch/ARCH.mdx`
+  - `.godpowers/roadmap/ROADMAP.mdx`
+  - `.godpowers/stack/DECISION.mdx`
+  - `.godpowers/repo/AUDIT.mdx`
   - `.godpowers/state.json` build, deploy, observe, and launch evidence
-  - `.godpowers/build/PLAN.md`
-  - `.godpowers/harden/FINDINGS.md`
+  - `.godpowers/build/PLAN.mdx`
+  - `.godpowers/harden/FINDINGS.mdx`
 - Source evidence from code, org context, and imported planning systems.
 
 ## Process
@@ -67,7 +67,7 @@ For every gap in the audit, classify it as exactly one:
 
 ### 3. Write The Plan First
 
-Write `.godpowers/audit/GREENFIELDIFY-PLAN.md` before editing canonical
+Write `.godpowers/audit/GREENFIELDIFY-PLAN.mdx` before editing canonical
 artifacts.
 
 The plan must include:
@@ -134,11 +134,11 @@ When approved, update all affected artifacts, not just the first one:
 After approved rewrites:
 
 - If the PRD or ROADMAP changed, refresh the deliverable ledger with
-  `lib/requirements.writeLedger(projectRoot)` so `.godpowers/REQUIREMENTS.md`
+  `lib/requirements.writeLedger(projectRoot)` so `.godpowers/REQUIREMENTS.mdx`
   stays consistent with the rewritten ids and any `// Implements:` annotations
   already in code.
-- Update `.godpowers/SYNC-LOG.md`.
-- Update `.godpowers/PROGRESS.md`.
+- Update `.godpowers/SYNC-LOG.mdx`.
+- Update `.godpowers/PROGRESS.mdx`.
 - Update `.godpowers/state.json` with:
   - `greenfieldification.status`
   - `greenfieldification.plan`
@@ -161,7 +161,7 @@ After approved rewrites:
 
 ## Output
 
-Always write `.godpowers/audit/GREENFIELDIFY-PLAN.md`.
+Always write `.godpowers/audit/GREENFIELDIFY-PLAN.mdx`.
 
 If user approval is required, return the PAUSE block.
 
@@ -170,7 +170,7 @@ If changes are approved and applied, return:
 ```json
 {
   "status": "greenfieldified",
-  "plan": ".godpowers/audit/GREENFIELDIFY-PLAN.md",
+  "plan": ".godpowers/audit/GREENFIELDIFY-PLAN.mdx",
   "updatedArtifacts": [],
   "openQuestions": [],
   "validation": []

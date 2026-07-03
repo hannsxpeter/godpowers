@@ -28,7 +28,7 @@ jobs:
     with:
       mode: preflight
       scope: org-context-and-surrounding-repo
-      output: .godpowers/preflight/PREFLIGHT.md
+      output: .godpowers/preflight/PREFLIGHT.mdx
 
   greenfield-simulation-audit:
     tier: 0
@@ -37,7 +37,7 @@ jobs:
     with:
       mode: greenfield-simulation
       compare: canonical-godpowers-arc-to-org-constraints
-      output: .godpowers/audit/GREENFIELD-SIMULATION.md
+      output: .godpowers/audit/GREENFIELD-SIMULATION.mdx
 
   greenfieldify-artifacts:
     tier: 0
@@ -45,20 +45,20 @@ jobs:
     uses: god-greenfieldifier@^1.0.0
     with:
       mode: bluefield
-      audit: .godpowers/audit/GREENFIELD-SIMULATION.md
-      plan: .godpowers/audit/GREENFIELDIFY-PLAN.md
+      audit: .godpowers/audit/GREENFIELD-SIMULATION.mdx
+      plan: .godpowers/audit/GREENFIELDIFY-PLAN.mdx
       approval: required-before-writing-canonical-artifacts
       artifacts:
-        - .godpowers/prd/PRD.md
-        - .godpowers/design/DESIGN.md
-        - .godpowers/product/PRODUCT.md
-        - .godpowers/arch/ARCH.md
-        - .godpowers/roadmap/ROADMAP.md
-        - .godpowers/stack/DECISION.md
-        - .godpowers/repo/AUDIT.md
+        - .godpowers/prd/PRD.mdx
+        - .godpowers/design/DESIGN.mdx
+        - .godpowers/product/PRODUCT.mdx
+        - .godpowers/arch/ARCH.mdx
+        - .godpowers/roadmap/ROADMAP.mdx
+        - .godpowers/stack/DECISION.mdx
+        - .godpowers/repo/AUDIT.mdx
         - .godpowers/state.json
-        - .godpowers/build/PLAN.md
-        - .godpowers/harden/FINDINGS.md
+        - .godpowers/build/PLAN.mdx
+        - .godpowers/harden/FINDINGS.mdx
 
   prd:
     tier: 1

@@ -12,7 +12,7 @@ inputs:
   - ".godpowers/state.json build evidence"
   - "upstream changelog"
 outputs:
-  - ".godpowers/migrations/<slug>/MIGRATION.md"
+  - ".godpowers/migrations/<slug>/MIGRATION.mdx"
   - "phased migration plan"
 gates:
   - "MG-01 through MG-07 have-nots"
@@ -83,8 +83,8 @@ For each migration slice:
 
 ### 5. Output
 
-Use `templates/MIGRATION.md` (installed at `<runtime>/godpowers-templates/MIGRATION.md`)
-as the structural starting point. Write `.godpowers/migrations/<migration-slug>/MIGRATION.md`:
+Use `templates/MIGRATION.mdx` (installed at `<runtime>/godpowers-templates/MIGRATION.mdx`)
+as the structural starting point. Write `.godpowers/migrations/<migration-slug>/MIGRATION.mdx`:
 
 ```markdown
 # Migration: [From X to Y]

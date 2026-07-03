@@ -50,7 +50,7 @@ test('Tier 3 route writes use state.json instead of generated state views', () =
     if (!writes.includes('.godpowers/state.json')) {
       throw new Error(`${command} does not write state.json`);
     }
-    const generatedView = writes.find(item => /\.godpowers\/(?:deploy|observe|launch)\/STATE\.md$/.test(item));
+    const generatedView = writes.find(item => /\.godpowers\/(?:deploy|observe|launch)\/STATE\.(?:md|mdx)$/.test(item));
     if (generatedView) throw new Error(`${command} writes generated view ${generatedView}`);
   }
 });
@@ -61,7 +61,7 @@ test('/god-reconcile reads state.json instead of generated state views', () => {
   const reads = routing.execution && routing.execution.reads;
   if (!Array.isArray(reads)) throw new Error('/god-reconcile reads missing');
   if (!reads.includes('.godpowers/state.json')) throw new Error('/god-reconcile missing state.json read');
-  const generatedView = reads.find(item => /\.godpowers\/(?:build|deploy|observe|launch)\/STATE\.md$/.test(item));
+  const generatedView = reads.find(item => /\.godpowers\/(?:build|deploy|observe|launch)\/STATE\.(?:md|mdx)$/.test(item));
   if (generatedView) throw new Error(`/god-reconcile reads generated view ${generatedView}`);
 });
 
@@ -155,10 +155,11 @@ test('checkPrerequisites: /god-prd needs initialized state', () => {
   }
 });
 
-test('checkPrerequisites: /god-prd uses state.json without PROGRESS.md', () => {
+test('checkPrerequisites: /god-prd uses state.json without the PROGRESS view', () => {
   router.clearCache();
   const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-initialized-test-'));
   state.init(proj, 'router-initialized-test');
+  fs.rmSync(path.join(proj, '.godpowers', 'PROGRESS.mdx'), { force: true });
   fs.rmSync(path.join(proj, '.godpowers', 'PROGRESS.md'), { force: true });
 
   const result = router.checkPrerequisites('/god-prd', proj);
@@ -220,7 +221,7 @@ function markPreDeployDone(projectRoot) {
 
 function writeSafeSyncPlan(projectRoot) {
   fs.mkdirSync(path.join(projectRoot, '.godpowers', 'sync'), { recursive: true });
-  fs.writeFileSync(path.join(projectRoot, '.godpowers', 'sync', 'SAFE-SYNC-PLAN.md'),
+  fs.writeFileSync(path.join(projectRoot, '.godpowers', 'sync', 'SAFE-SYNC-PLAN.mdx'),
     '# Release Truth And Safe Sync\n\nMissing: safe sync against origin/main\n');
 }
 
@@ -242,7 +243,7 @@ test('suggestNext: safe sync plan blocks deploy with reconcile route', () => {
     throw new Error(`expected safe-sync reconcile, got ${s.command}`);
   }
   if (s.blocker !== 'safe-sync') throw new Error('expected safe-sync blocker');
-  if (s.evidence !== '.godpowers/sync/SAFE-SYNC-PLAN.md') {
+  if (s.evidence !== '.godpowers/sync/SAFE-SYNC-PLAN.mdx') {
     throw new Error(`expected plan evidence, got ${s.evidence}`);
   }
   fs.rmSync(proj, { recursive: true, force: true });
@@ -293,9 +294,9 @@ test('suggestNext: resolved safe sync plan allows deploy route', () => {
   const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-safe-sync-test-'));
   markPreDeployDone(proj);
   fs.mkdirSync(path.join(proj, '.godpowers', 'sync'), { recursive: true });
-  fs.writeFileSync(path.join(proj, '.godpowers', 'sync', 'SAFE-SYNC-PLAN.md'),
+  fs.writeFileSync(path.join(proj, '.godpowers', 'sync', 'SAFE-SYNC-PLAN.mdx'),
     '# Release Truth And Safe Sync\n');
-  fs.writeFileSync(path.join(proj, '.godpowers', 'sync', 'SAFE-SYNC-DONE.md'),
+  fs.writeFileSync(path.join(proj, '.godpowers', 'sync', 'SAFE-SYNC-DONE.mdx'),
     '# Safe Sync Done\n');
 
   const s = router.suggestNext(proj);
@@ -307,14 +308,14 @@ test('suggestNext: checkpoint safe sync blocker routes to reconcile', () => {
   router.clearCache();
   const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-safe-sync-test-'));
   markPreDeployDone(proj);
-  fs.writeFileSync(path.join(proj, '.godpowers', 'CHECKPOINT.md'),
+  fs.writeFileSync(path.join(proj, '.godpowers', 'CHECKPOINT.mdx'),
     '# CHECKPOINT\n\nSafe sync remains the active red gate before deploy.\n');
 
   const s = router.suggestNext(proj);
   if (s.command !== '/god-reconcile Release Truth And Safe Sync') {
     throw new Error(`expected checkpoint reconcile, got ${s.command}`);
   }
-  if (s.evidence !== '.godpowers/CHECKPOINT.md') {
+  if (s.evidence !== '.godpowers/CHECKPOINT.mdx') {
     throw new Error(`expected checkpoint evidence, got ${s.evidence}`);
   }
   fs.rmSync(proj, { recursive: true, force: true });
@@ -325,7 +326,7 @@ test('checkPrerequisites: /god-launch blocks unresolved critical findings', () =
   const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-critical-test-'));
   markTier3Ready(proj);
   fs.mkdirSync(path.join(proj, '.godpowers', 'harden'), { recursive: true });
-  fs.writeFileSync(path.join(proj, '.godpowers', 'harden', 'FINDINGS.md'), [
+  fs.writeFileSync(path.join(proj, '.godpowers', 'harden', 'FINDINGS.mdx'), [
     '# Security Findings',
     '',
     '| Severity | Count |',
@@ -354,7 +355,7 @@ test('checkPrerequisites: /god-launch allows passed harden gate', () => {
   const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-critical-test-'));
   markTier3Ready(proj);
   fs.mkdirSync(path.join(proj, '.godpowers', 'harden'), { recursive: true });
-  fs.writeFileSync(path.join(proj, '.godpowers', 'harden', 'FINDINGS.md'), [
+  fs.writeFileSync(path.join(proj, '.godpowers', 'harden', 'FINDINGS.mdx'), [
     '# Security Findings',
     '',
     '| Severity | Count |',

@@ -8,7 +8,7 @@ metadata:
 
 prerequisites:
   required:
-    - check: file:.godpowers/HANDOFF.md
+    - check: file:.godpowers/HANDOFF.mdx
 
 execution:
   spawns: [built-in]

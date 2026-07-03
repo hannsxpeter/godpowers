@@ -54,6 +54,15 @@ Fail.
 Sentences that read fine but say nothing measurable, decidable, or testable.
 Fail.
 
+### U-13 MDX-unsafe artifact content
+Artifact body contains content that breaks MDX compilation or violates the
+ASCII policy: a bare `<` followed by a letter outside code, a bare `{` or `}`
+outside code, an HTML comment (`<!--`) outside code, or a banned character
+(em dash U+2014, en dash U+2013, smart quotes U+2018/U+2019/U+201C/U+201D,
+ellipsis U+2026, unicode arrows, emoji). Inline code spans and fenced code
+blocks are exempt from the structural checks; banned characters fail
+everywhere. Fail.
+
 ---
 
 ## Tier 0: Orchestration Have-Nots
@@ -589,7 +598,7 @@ Updates applied without reading changelog for breaking changes. Fail.
 
 ## Reference Tally
 
-- Universal: 12
+- Universal: 13
 - Tier 0 Orchestration: 10
 - Tier 1 PRD: 15
 - Tier 1 Architecture: 13
@@ -608,7 +617,7 @@ Updates applied without reading changelog for breaking changes. Fail.
 - Workflow Docs: 5
 - Workflow Deps: 6
 
-**Total: 156 named have-nots.**
+**Total: 157 named have-nots.**
 
 Each is grep-testable. Each is a documented failure mode. Together they form
 the mechanical quality definition for Godpowers output.

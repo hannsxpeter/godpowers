@@ -18,8 +18,8 @@ workflow.
 ## Process
 
 1. Resolve whether this is a new project run or a resume:
-   - If `.godpowers/state.json`, `.godpowers/PROGRESS.md`, or
-     `.godpowers/CHECKPOINT.md` exists, this is a resume. Treat `state.json`
+   - If `.godpowers/state.json`, `.godpowers/PROGRESS.mdx`, or
+     `.godpowers/CHECKPOINT.mdx` exists, this is a resume. Treat `state.json`
      as the source of truth and `PROGRESS.md` as a generated legacy fallback.
      Do not ask the user to describe the project again. Call
      `lib/pillars.pillarizeExisting(projectRoot)` first, then rehydrate intent
@@ -40,12 +40,14 @@ workflow.
 3. Load durable resume context before asking anything:
    - Pillars load set from `lib/pillars.computeLoadSet(projectRoot, taskText)`,
      starting with `agents/context.md` and `agents/repo.md`
-   - `.godpowers/CHECKPOINT.md` first, when present
+   - `.godpowers/CHECKPOINT.mdx` first, when present
    - `.godpowers/state.json`
-   - `.godpowers/PROGRESS.md` only as a generated legacy fallback when state is missing
+   - `.godpowers/PROGRESS.mdx` only as a generated legacy fallback when state is missing
    - `.godpowers/intent.yaml`, when present
-   - `.godpowers/prep/INITIAL-FINDINGS.md`, when present
-   - `.godpowers/prep/IMPORTED-CONTEXT.md`, when present
+   - `.godpowers/prep/INITIAL-FINDINGS.mdx`, when present
+   - `.godpowers/prep/IMPORTED-CONTEXT.mdx`, when present
+   - `.godplans/PLAN.mdx`, when present (sibling godplans master plan; read-only)
+   - `.godaudits/AUDIT.mdx`, when present (sibling godaudits audit; read-only)
    - Existing tier artifacts on disk
 
    If these files contain enough information to identify the project and next
@@ -72,19 +74,31 @@ workflow.
    - `--greenfield` (force greenfield, skip archaeology even if code exists)
 
 5. Create a private disk handoff before spawning the orchestrator:
-   - Path: `.godpowers/runs/<run-id>/ORCHESTRATOR-HANDOFF.md`
+   - Path: `.godpowers/runs/<run-id>/ORCHESTRATOR-HANDOFF.mdx`
    - Create parent directories if needed.
    - Put all detailed orchestration context in this file, including:
      - The user's project description, or durable intent recovered from disk
      - The detected mode (A/B/C/E)
      - The active flags
      - Instruction that existing `.godpowers` state means resume, not prompt
-     - Instruction to read `.godpowers/state.json` from disk, using `.godpowers/PROGRESS.md` only as generated legacy fallback when state is missing
-     - Instruction to read `.godpowers/prep/INITIAL-FINDINGS.md` and
-       `.godpowers/prep/IMPORTED-CONTEXT.md` if present before choosing the
+     - Instruction to read `.godpowers/state.json` from disk, using `.godpowers/PROGRESS.mdx` only as generated legacy fallback when state is missing
+     - Instruction to read `.godpowers/prep/INITIAL-FINDINGS.mdx` and
+       `.godpowers/prep/IMPORTED-CONTEXT.mdx` if present before choosing the
        first planning or build step
-     - Instruction to read `.godpowers/preflight/PREFLIGHT.md` if present
+     - Instruction to read `.godpowers/preflight/PREFLIGHT.mdx` if present
        before choosing the first brownfield or bluefield action
+     - Instruction to read `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx` if
+       present before choosing the first step. When PLAN.mdx exists and
+       Godpowers tiers are pending, prefer importing plan seeds via
+       `/god-migrate` over re-running god-pm or god-architect from scratch,
+       and honor the plan's GP task checkboxes as already-planned work. When
+       AUDIT.mdx exists, feed its open GA remediation tasks into the repair
+       loop instead of rediscovering them. Both files are read-only for
+       Godpowers except when executing GP/GA tasks, in which case the
+       executing agent follows the executor rules embedded in the files
+       themselves; all other write-back goes through the managed
+       `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`
+       companions.
      - Instruction to compute and load the Pillars load set before every major
        command, because Pillars is the native project context layer
      - Instruction to run `/god-design` after `/god-prd` and before
@@ -112,10 +126,10 @@ workflow.
        until staging is requested or final sign-off begins.
      - Instruction that brownfield and bluefield greenfield simulation audits
        must be acted on by god-greenfieldifier. The greenfieldifier writes
-       `.godpowers/audit/GREENFIELDIFY-PLAN.md`, pauses before risky canonical
+       `.godpowers/audit/GREENFIELDIFY-PLAN.mdx`, pauses before risky canonical
        artifact rewrites, and updates every affected artifact after approval.
      - Instruction that brownfield and bluefield arcs run `/god-preflight`
-       automatically when `.godpowers/preflight/PREFLIGHT.md` is absent.
+       automatically when `.godpowers/preflight/PREFLIGHT.mdx` is absent.
        Greenfield project runs skip preflight unless the user explicitly requests it.
      - Instruction to run routing prerequisites through `lib/router.js`
        `checkPrerequisites` before every direct command dispatch. If

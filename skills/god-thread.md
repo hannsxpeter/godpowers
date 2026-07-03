@@ -14,7 +14,7 @@ Manage persistent context threads.
 ## Subcommands
 
 ### `/god-thread new <name>`
-Create a new thread. Records initial context to `.godpowers/threads/<name>.md`.
+Create a new thread. Records initial context to `.godpowers/threads/<name>.mdx`.
 
 ### `/god-thread list`
 List all threads with last-updated timestamps.

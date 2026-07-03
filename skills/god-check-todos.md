@@ -1,7 +1,7 @@
 ---
 name: god-check-todos
 description: |
-  List pending todos from .godpowers/todos/TODOS.md. Optionally select one
+  List pending todos from .godpowers/todos/TODOS.mdx. Optionally select one
   to work on (routes to appropriate workflow).
 
   Triggers on: "god check todos", "/god-check-todos", "show todos", "what's pending"
@@ -13,7 +13,7 @@ List todos and optionally route to a workflow.
 
 ## Process
 
-1. Read `.godpowers/todos/TODOS.md`
+1. Read `.godpowers/todos/TODOS.mdx`
 2. Display open todos grouped by priority
 3. Ask: "Want to work on one of these?"
 4. If yes: route to the right workflow based on todo nature:

@@ -19,7 +19,7 @@ or when explicitly invoked.
 Plan the next sprint from the roadmap:
 1. Read ROADMAP.md and current progress
 2. Identify slices that fit in the sprint window based on past velocity
-3. Create `.godpowers/sprints/sprint-<N>/PLAN.md`:
+3. Create `.godpowers/sprints/sprint-<N>/PLAN.mdx`:
    - Goal (substitution-tested)
    - Slices committed
    - Capacity (engineers x days x focus factor)
@@ -52,7 +52,7 @@ Conduct a retrospective at sprint end:
    - Slices that took longer than estimated (and why)
    - Slices that came in faster (and why)
    - Blockers encountered
-3. Write `.godpowers/sprints/sprint-<N>/RETRO.md`:
+3. Write `.godpowers/sprints/sprint-<N>/RETRO.mdx`:
    - What went well
    - What didn't
    - Specific actions for next sprint (concrete, not "communicate better")

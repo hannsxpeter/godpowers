@@ -135,9 +135,9 @@ Skip `/god-mode` and run individual commands:
 ... etc
 ```
 
-After `/god-init`, Godpowers writes `.godpowers/prep/INITIAL-FINDINGS.md` with
+After `/god-init`, Godpowers writes `.godpowers/prep/INITIAL-FINDINGS.mdx` with
 what it found in the codebase. If it detects legacy planning, Superpowers, BMAD, or similar
-planning context, it also writes `.godpowers/prep/IMPORTED-CONTEXT.md` as
+planning context, it also writes `.godpowers/prep/IMPORTED-CONTEXT.mdx` as
 supporting preparation material for PRD, architecture, roadmap, and stack
 decisions.
 
@@ -208,7 +208,7 @@ intent, no checkpoint, and no completed artifact to recover from.
 5. Brand voice / final headline
 
 Add `--yolo` to skip pauses except Critical security. Auto-decisions log to
-`.godpowers/YOLO-DECISIONS.md` for review.
+`.godpowers/YOLO-DECISIONS.mdx` for review.
 
 Mechanical failures are not pauses. If tests, lint, typecheck, build, or check
 commands fail, `/god-mode` records the diagnostics, repairs the failure, reruns

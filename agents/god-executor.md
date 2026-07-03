@@ -8,9 +8,10 @@ description: |
   Spawned by: god-orchestrator (one per slice, parallel waves)
 tools: Read, Write, Edit, Bash, Grep, Glob
 inputs:
-  - "one slice from .godpowers/build/PLAN.md"
+  - "one slice from .godpowers/build/PLAN.mdx"
   - "relevant architecture excerpts"
-  - ".godpowers/stack/DECISION.md"
+  - ".godpowers/stack/DECISION.mdx"
+  - "references/building/BUILD-ANTIPATTERNS.md"
 outputs:
   - "source code changes"
   - "tests and regression coverage"
@@ -30,7 +31,7 @@ Implement ONE slice. Fresh context. Strict TDD. No exceptions.
 ## Input (provided by orchestrator)
 
 You receive:
-- The specific slice plan from `.godpowers/build/PLAN.md`
+- The specific slice plan from `.godpowers/build/PLAN.mdx`
 - Relevant ARCH context (only what's needed for this slice)
 - Stack DECISION (tooling)
 - The slice's dependencies (what must already exist)
@@ -38,6 +39,10 @@ You receive:
   and files implicated by a previous verification run
 - Optional source-grounding report: pass/fail status for existing files and
   symbols cited by the slice plan
+
+Before editing, read `references/building/BUILD-ANTIPATTERNS.md`; the
+have-nots below name the same failure patterns it explains with samples and
+fixes.
 
 ## TDD Sequence (mandatory)
 

@@ -17,7 +17,7 @@
 
 ## Boundary
 
-- [DECISION] MCP mutation tools are out of scope through the 3.14.0 release.
+- [DECISION] MCP mutation tools are out of scope through the 4.0.0 release.
 - [DECISION] The companion does not expose state mutation, artifact writes, route edits, or package publish actions.
 - [DECISION] The companion resolves the Godpowers runtime from `--runtime-root`, `GODPOWERS_RUNTIME_ROOT`, a local checkout, or an installed `godpowers` package.
 
@@ -25,7 +25,7 @@
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@3.14.0 -p @godpowers/mcp@3.14.0 godpowers-mcp serve --project=.
+npx -y -p godpowers@4.0.0 -p @godpowers/mcp@4.0.0 godpowers-mcp serve --project=.
 ```
 
 - [DECISION] `godpowers mcp-info` is read-only and does not load the MCP SDK.
@@ -34,8 +34,8 @@ npx -y -p godpowers@3.14.0 -p @godpowers/mcp@3.14.0 godpowers-mcp serve --projec
 ## Codex Registration
 
 ```bash
-npx -y -p godpowers@3.14.0 -p @godpowers/mcp@3.14.0 godpowers-mcp setup --host=codex --project=.
-npx -y -p godpowers@3.14.0 -p @godpowers/mcp@3.14.0 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@4.0.0 -p @godpowers/mcp@4.0.0 godpowers-mcp setup --host=codex --project=.
+npx -y -p godpowers@4.0.0 -p @godpowers/mcp@4.0.0 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 - [DECISION] The first setup command prints the managed Codex config block without writing files.

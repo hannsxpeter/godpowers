@@ -44,7 +44,7 @@ Godpowers is a meta-prompting framework. Security concerns include:
 When using Godpowers in a sensitive context:
 
 1. **Review `--yolo` decisions**: Before merging or deploying, read
-   `.godpowers/YOLO-DECISIONS.md` to verify auto-picked defaults match intent
+   `.godpowers/YOLO-DECISIONS.mdx` to verify auto-picked defaults match intent
 2. **Never accept Critical findings under `--yolo`**: This is enforced by the
    framework but worth re-checking
 3. **Keep `.godpowers/` out of public repos** if it contains sensitive PRD
@@ -73,7 +73,8 @@ When using Godpowers in a sensitive context:
 
 | Version | Supported |
 |---------|-----------|
-| 3.14.x  | Yes |
+| 4.0.x   | Yes |
+| 3.14.x  | Security fixes only |
 | 3.13.x  | Security fixes only |
 | 3.12.x  | Security fixes only |
 | 3.11.x  | Security fixes only |

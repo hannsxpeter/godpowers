@@ -13,13 +13,13 @@ Spawn the **god-architect** agent in a fresh context via the host platform's nat
 
 ## Setup
 
-1. Verify `.godpowers/prd/PRD.md` exists. If not, tell user to run `/god-prd` first.
+1. Verify `.godpowers/prd/PRD.mdx` exists. If not, tell user to run `/god-prd` first.
 2. Spawn god-auditor briefly to verify PRD passes have-nots. If fails, report and stop.
-3. If `.godpowers/design/DESIGN.md` or `.godpowers/design/PRODUCT.md` exists,
+3. If `.godpowers/design/DESIGN.mdx` or `.godpowers/design/PRODUCT.mdx` exists,
    include it as input. Design is optional, but when present it informs UI
    containers, routes, flows, and tradeoffs.
 4. Spawn god-architect with the PRD path and full context window
-5. The agent writes `.godpowers/arch/ARCH.md` and ADRs to `.godpowers/arch/adr/`
+5. The agent writes `.godpowers/arch/ARCH.mdx` and ADRs to `.godpowers/arch/adr/`
 
 ## Verification
 
@@ -27,7 +27,7 @@ After god-architect returns:
 1. Verify ARCH.md and ADRs exist on disk
 2. Spawn god-auditor to verify have-nots pass
 3. Run `npx godpowers gate --tier=arch --project=.` and do not proceed on a non-zero exit
-4. Run `npx godpowers state advance --step=arch --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.md`.
+4. Run `npx godpowers state advance --step=arch --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.mdx`.
 
 ## Pause Format
 
@@ -36,7 +36,7 @@ Relay any pauses from god-architect using the standard format (What/Why/Options/
 ## On Completion
 
 ```
-Architecture complete: .godpowers/arch/ARCH.md
+Architecture complete: .godpowers/arch/ARCH.mdx
 
 Suggested next: /god-roadmap (sequence the work) or /god-stack (pick the tech)
 Both are gated on ARCH and can run in either order.
@@ -45,7 +45,7 @@ Both are gated on ARCH and can run in either order.
 
 ## Re-invocation contract
 
-What happens if `/god-arch` is run when `.godpowers/arch/ARCH.md` already exists:
+What happens if `/god-arch` is run when `.godpowers/arch/ARCH.mdx` already exists:
 
 | Existing state | Behavior |
 |---|---|

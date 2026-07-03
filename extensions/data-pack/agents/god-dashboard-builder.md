@@ -42,7 +42,7 @@ If a chart doesn't answer a question, delete it.
 
 ## Output
 
-Write `.godpowers/data/dashboards/<dashboard-name>/SPEC.md`.
+Write `.godpowers/data/dashboards/<dashboard-name>/SPEC.mdx`.
 
 ## Have-Nots
 

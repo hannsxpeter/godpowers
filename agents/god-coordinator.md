@@ -62,7 +62,7 @@ suite (the collection of repos), not individual repos.
 
 When spawned by a suite command, the visible spawn message may include only a
 display-safe operation summary plus a path like
-`.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.md`.
+`.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.mdx`.
 
 If a handoff path is provided:
 1. Read the handoff file before planning, spawning, or mutating suite state.
@@ -87,7 +87,7 @@ If a handoff path is provided:
 1. Run `lib/meta-linter.checkByteIdentical(hubPath)` to find drifted files
 2. For each drifted file, ask user which version is canonical
 3. Copy canonical content to all other siblings (bytes-identical)
-4. Append to `.godpowers/suite/SYNC-LOG.md` with the operation
+4. Append to `.godpowers/suite/SYNC-LOG.mdx` with the operation
 5. Refresh suite state
 
 ### Mode 3: release (`/god-suite-release`)
@@ -151,7 +151,7 @@ create a private handoff in that repo first, then spawn that repo's
 `god-orchestrator` via the host platform's native agent spawning mechanism with only a display-safe pointer.
 
 Per-repo handoff path:
-`.godpowers/runs/<run-id>/COORDINATOR-ORCHESTRATOR-HANDOFF.md`
+`.godpowers/runs/<run-id>/COORDINATOR-ORCHESTRATOR-HANDOFF.mdx`
 
 Put the version-bump directive, patch directive, suite impact analysis,
 affected dependency facts, release notes, and repo-specific notes in the
@@ -176,8 +176,8 @@ enabling cross-repo work.
 ## State updates you own
 
 - `.godpowers/suite/state.json` (suite aggregate)
-- `.godpowers/suite/STATE.md` (human-readable mirror)
-- `.godpowers/suite/SYNC-LOG.md` (append-only operations log)
+- `.godpowers/suite/STATE.mdx` (human-readable mirror)
+- `.godpowers/suite/SYNC-LOG.mdx` (append-only operations log)
 
 You do NOT touch:
 - `.godpowers/suite-config.yaml` (only `/god-suite-init` and explicit

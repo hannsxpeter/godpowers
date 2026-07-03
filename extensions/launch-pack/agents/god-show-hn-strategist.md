@@ -64,7 +64,7 @@ The post body OR your first comment should include:
 
 ## Output
 
-Write `.godpowers/launch/show-hn/PLAN.md`:
+Write `.godpowers/launch/show-hn/PLAN.mdx`:
 
 ```markdown
 # Show HN Launch Plan

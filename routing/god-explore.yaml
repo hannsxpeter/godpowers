@@ -14,7 +14,7 @@ execution:
   spawns: [god-explorer]
   context: fresh
   writes:
-    - .godpowers/explore/<slug>.md
+    - .godpowers/explore/<slug>.mdx
 
 
 success-path:

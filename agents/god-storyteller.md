@@ -38,7 +38,7 @@ features into incremental, shippable slices.
 
 ## Outputs
 
-Single file at `.godpowers/stories/<feature-slug>/STORY-<NNN>.md`:
+Single file at `.godpowers/stories/<feature-slug>/STORY-<NNN>.mdx`:
 
 ```yaml
 ---
@@ -81,7 +81,7 @@ As a [persona], I want [capability] so that [outcome].
      mention it in the acceptance criteria) so the story traces back to the PRD
      requirement and the deliverable ledger.
 3. Determine next ID number:
-   - List `.godpowers/stories/<feature-slug>/STORY-*.md`
+   - List `.godpowers/stories/<feature-slug>/STORY-*.mdx`
    - Use max + 1, zero-padded to 3 digits
 4. Write STORY.md:
    - Validate user-story format ("As a X, I want Y so that Z")

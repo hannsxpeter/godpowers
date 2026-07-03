@@ -16,7 +16,7 @@ Spawn the **god-deploy-engineer** agent in a fresh context via the host platform
 1. Verify build is complete through `.godpowers/state.json` `tier-2.build.status == done` and passing build verification commands.
 2. Verify all tests pass.
 3. Spawn god-deploy-engineer with ARCH and stack DECISION paths.
-4. The agent returns structured deploy evidence for `.godpowers/state.json`; the generated `.godpowers/deploy/STATE.md` view refreshes after state mutation.
+4. The agent returns structured deploy evidence for `.godpowers/state.json`; the generated `.godpowers/deploy/STATE.mdx` view refreshes after state mutation.
 
 ## Verification
 
@@ -28,18 +28,18 @@ After god-deploy-engineer returns:
    - local staging harness tested with equivalent health, smoke, and rollback
      commands
    - local/CI deploy readiness complete with deployed staging verification
-     deferred in `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md`
+     deferred in `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx`
 4. Run `npx godpowers state advance --step=deploy --status=done --project=.`
    only when a tested real target or tested local staging harness exists. If
    deployed staging is deferred, record the waiting artifact path in
-   `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md` and keep that evidence
+   `.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx` and keep that evidence
    in `state.json` through the owning deploy command rather than editing the
    generated progress or deploy state views.
 
 ## On Completion
 
 ```
-Deploy pipeline complete: .godpowers/deploy/STATE.md (generated view)
+Deploy pipeline complete: .godpowers/deploy/STATE.mdx (generated view)
 
 Suggested next: /god-observe (wire SLOs, alerts, runbooks)
 ```
@@ -48,7 +48,7 @@ Under `/god-mode --yolo`, do not stop with a provider checklist. Create or
 update the deploy scripts, smoke command, rollback command, health endpoints,
 env manifest, and local staging harness first. If real external access is still
 required, record the single access bundle in
-`.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.md` and continue until the user
+`.godpowers/deploy/WAITING-FOR-EXTERNAL-ACCESS.mdx` and continue until the user
 requests staging or final sign-off begins.
 
 The single access bundle must be incremental. Do not ask for

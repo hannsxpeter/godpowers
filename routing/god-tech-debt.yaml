@@ -13,7 +13,7 @@ execution:
   spawns: [god-debt-assessor]
   context: fresh
   writes:
-    - .godpowers/tech-debt/REPORT.md
+    - .godpowers/tech-debt/REPORT.mdx
 
 success-path:
   next-recommended: /god-status

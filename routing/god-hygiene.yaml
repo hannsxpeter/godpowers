@@ -15,7 +15,7 @@ execution:
   context: fresh
   secondary-spawns: [god-deps-auditor, god-docs-writer]
   writes:
-    - .godpowers/HYGIENE-REPORT.md
+    - .godpowers/HYGIENE-REPORT.mdx
 
 
 success-path:

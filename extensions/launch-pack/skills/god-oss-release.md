@@ -20,7 +20,7 @@ Plan an open source library release.
 
 ## Verification
 
-- `.godpowers/launch/oss/PLAN.md` exists
+- `.godpowers/launch/oss/PLAN.mdx` exists
 - README has all required sections
 - All code examples in README verified to run
 - Version is v0.1.0 (not jumping to v1.0)
@@ -30,7 +30,7 @@ Plan an open source library release.
 ## On Completion
 
 ```
-OSS release plan ready: .godpowers/launch/oss/PLAN.md
+OSS release plan ready: .godpowers/launch/oss/PLAN.mdx
 
 Library: [name]
 Version: v0.1.0

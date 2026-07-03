@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-3.14.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-4.0.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -204,7 +204,7 @@ Run individual commands. After each one finishes, Godpowers tells you what to
 run next based on disk state:
 
 ```
-PRD complete: .godpowers/prd/PRD.md
+PRD complete: .godpowers/prd/PRD.mdx
 
 Suggested next: /god-arch (design the architecture)
 ```
@@ -221,7 +221,7 @@ You can also ask any time:
 /god-next
 ```
 
-This reads `.godpowers/state.json`, treats `.godpowers/PROGRESS.md` as a
+This reads `.godpowers/state.json`, treats `.godpowers/PROGRESS.mdx` as a
 generated human view, scans disk, reconciles any drift, and suggests the next
 logical command with a compact action brief. The SessionStart hook does the
 same thing when you open a new session in a Godpowers project.
@@ -244,6 +244,22 @@ shows the complete catalog. Leaf commands remain direct shortcuts.
 | Ship a release | `/god-ship`, `/god-sync`, `/god-docs`, `/god-version`, `npm run release:check` |
 | Maintain project health | `/god-hygiene`, `/god-update-deps`, `/god-docs`, `/god-check-todos` |
 | Extend Godpowers | `/god-extend scaffold --name=@godpowers/my-pack --output=.`, `/god-extend test`, `/god-extend add`, `/god-extend list` |
+
+### Works with godplans and godaudits
+
+If a project already has a godplans master plan (`.godplans/PLAN.mdx`) or a
+godaudits report (`.godaudits/AUDIT.mdx`), Godpowers detects it and builds on
+it instead of starting over:
+
+```
+/god-migrate    # import the plan or audit as seeds (ids preserved verbatim)
+/god-fix        # dispatch an open GA remediation task from the audit
+```
+
+`/god-init` auto-invokes the same import when it detects sibling context. The
+sibling files stay read-only; progress flows back through managed
+`GODPOWERS-SYNC.mdx` companion files, and Godpowers flags when an import has
+drifted from the live plan or audit.
 
 ### Outcome Metrics
 
@@ -321,14 +337,14 @@ dependency to the main `godpowers` package:
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@3.14.0 -p @godpowers/mcp@3.14.0 godpowers-mcp serve --project=.
+npx -y -p godpowers@4.0.0 -p @godpowers/mcp@4.0.0 godpowers-mcp serve --project=.
 ```
 
 The companion exposes `status`, `next`, `gate_check`, `lint_artifact`, and
 `trace_requirement`. Host registration is opt-in:
 
 ```bash
-npx -y -p godpowers@3.14.0 -p @godpowers/mcp@3.14.0 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@4.0.0 -p @godpowers/mcp@4.0.0 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 See [MCP Companion](https://github.com/aihxp/godpowers/blob/main/docs/mcp.md) for package boundaries and setup details.
@@ -420,7 +436,7 @@ run takes. To resume a manual handoff created by `/god-pause-work`, use
 
 Under `--yolo`, Godpowers also auto-applies Pillars sync proposals when
 durable `.godpowers` artifacts change project truth. The decision is logged to
-`.godpowers/YOLO-DECISIONS.md`.
+`.godpowers/YOLO-DECISIONS.mdx`.
 
 Every completing command now ends with a **Godpowers Dashboard**. It shows the
 current phase, tier, step count, workflow progress, PRD and roadmap visibility,
@@ -434,7 +450,7 @@ separate scores rather than being reused as workflow progress.
 That dashboard reports **workflow progress** (which pipeline stage you are on).
 For **deliverable progress** (how much of the actual product is built), run
 `/god-progress`: it lists every PRD requirement as done, in progress, or not
-started, groups them by roadmap increment, and writes a `.godpowers/REQUIREMENTS.md`
+started, groups them by roadmap increment, and writes a `.godpowers/REQUIREMENTS.mdx`
 checklist you can open or share. Status is derived from the linkage map (code
 that implements each requirement), so it can never drift from what is actually
 on disk. The dashboard also surfaces a `Deliverable progress` line, and during a
@@ -471,7 +487,7 @@ Godpowers can migrate from adjacent planning systems:
 
 This detects legacy planning `.planning/` or `.legacy-planning/`, BMAD `_bmad-output/` or `.bmad/`,
 and Superpowers specs or plans. It writes
-`.godpowers/prep/IMPORTED-CONTEXT.md`, optional imported seed artifacts, and
+`.godpowers/prep/IMPORTED-CONTEXT.mdx`, optional imported seed artifacts, and
 managed sync-back files such as `.planning/GODPOWERS-SYNC.md`,
 `_bmad-output/GODPOWERS-SYNC.md`, or
 `docs/superpowers/GODPOWERS-SYNC.md`.
@@ -504,7 +520,7 @@ You type:        /god-prd
 Skill loads:     skills/god-prd.md
 Skill spawns:    god-pm agent (fresh 200K context)
 Agent reads:     .godpowers/state.json + .godpowers/intent.yaml
-Agent writes:    .godpowers/prd/PRD.md
+Agent writes:    .godpowers/prd/PRD.mdx
 Skill verifies:  artifact exists, have-nots pass
 Skill updates:   state.json via godpowers state advance
 ```
@@ -522,21 +538,21 @@ Skill updates:   state.json via godpowers state advance
 
 ```
 .godpowers/state.json          Machine-readable project state
-.godpowers/PROGRESS.md         Generated cross-tier progress view
-.godpowers/REQUIREMENTS.md     Requirement checklist (done / in progress / not started)
-.godpowers/prd/PRD.md          Product Requirements Document
-.godpowers/domain/GLOSSARY.md  Domain vocabulary and resolved ambiguities
-.godpowers/arch/ARCH.md        System Architecture
+.godpowers/PROGRESS.mdx         Generated cross-tier progress view
+.godpowers/REQUIREMENTS.mdx     Requirement checklist (done / in progress / not started)
+.godpowers/prd/PRD.mdx          Product Requirements Document
+.godpowers/domain/GLOSSARY.mdx  Domain vocabulary and resolved ambiguities
+.godpowers/arch/ARCH.mdx        System Architecture
 .godpowers/arch/adr/           Architecture Decision Records
-.godpowers/roadmap/ROADMAP.md  Sequenced Roadmap
-.godpowers/stack/DECISION.md   Stack Decision (with flip points)
-.godpowers/repo/AUDIT.md       Repo Scaffold Audit
-.godpowers/build/PLAN.md       Build Plan (slices, waves)
-.godpowers/build/STATE.md      Generated build state view
-.godpowers/deploy/STATE.md     Generated deploy state view
-.godpowers/observe/STATE.md    Generated observability state view
-.godpowers/launch/STATE.md     Generated launch state view
-.godpowers/harden/FINDINGS.md  Security Findings
+.godpowers/roadmap/ROADMAP.mdx  Sequenced Roadmap
+.godpowers/stack/DECISION.mdx   Stack Decision (with flip points)
+.godpowers/repo/AUDIT.mdx       Repo Scaffold Audit
+.godpowers/build/PLAN.mdx       Build Plan (slices, waves)
+.godpowers/build/STATE.mdx      Generated build state view
+.godpowers/deploy/STATE.mdx     Generated deploy state view
+.godpowers/observe/STATE.mdx    Generated observability state view
+.godpowers/launch/STATE.mdx     Generated launch state view
+.godpowers/harden/FINDINGS.mdx  Security Findings
 ```
 
 Godpowers projects also include native Pillars context:

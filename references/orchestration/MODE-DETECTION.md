@@ -12,6 +12,14 @@
 
 **Behavior**: run all tiers from PRD onwards.
 
+**Greenfield-with-plan**: an empty repo plus `.godplans/PLAN.mdx` is still
+Mode A, but not a bare one. The arc imports the plan as Tier 1 seeds
+(`lib/planning-systems.importPlanningContext`; seeds marked `imported` with
+GP/R ids preserved) and routes to execution, so god-pm and god-architect
+harden the imported seeds instead of interviewing from zero. PLAN.mdx stays
+read-only; Godpowers edits it only when executing GP tasks under the plan's
+own embedded executor rules.
+
 ## Mode B: Gap-fill
 
 **Signals**:
@@ -20,6 +28,9 @@
 - User describes an existing project they want to add Godpowers to
 - legacy planning, BMAD, or Superpowers planning context is detected and should be imported
   into Godpowers preparation artifacts
+- `.godplans/PLAN.mdx` or `.godaudits/AUDIT.mdx` -> sibling superskill
+  artifacts; import before planning (`/god-migrate`), never reconstruct over
+  an existing master plan
 
 **Behavior**:
 1. For each canonical artifact path: check existence on disk
@@ -35,6 +46,9 @@ Codebase signals (for inferring partial completion):
 - `Dockerfile` + deploy config -> Deploy tier may be done
 - `.planning/`, `.legacy-planning/`, `_bmad-output/`, `.bmad/`, or Superpowers specs ->
   source-system import and managed sync-back may be needed
+- `.godplans/PLAN.mdx` or `.godaudits/AUDIT.mdx` -> sibling plan/audit import
+  needed; sync-back goes through `.godplans/GODPOWERS-SYNC.mdx` or
+  `.godaudits/GODPOWERS-SYNC.mdx` only
 
 ## Mode C: Audit
 

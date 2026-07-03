@@ -78,8 +78,8 @@ test('verify records an executed pass: ledger + rollup + gate.pass event', () =>
   assert(gatePass.attrs.tier === 'tier-2', `event tier: ${gatePass.attrs.tier}`);
   assert(events.verifyChain(events.eventsPath(project, run.runId)).valid, 'event chain broke');
 
-  const log = path.join(project, '.godpowers', 'ledger', 'LEDGER-LOG.md');
-  assert(fs.existsSync(log), 'LEDGER-LOG.md missing');
+  const log = path.join(project, '.godpowers', 'ledger', 'LEDGER-LOG.mdx');
+  assert(fs.existsSync(log), 'LEDGER-LOG.mdx missing');
   assert(fs.readFileSync(log, 'utf8').includes('verify PASS'), 'log missing PASS line');
 });
 
@@ -543,16 +543,16 @@ asyncTest('appendJsonlAtomic keeps every record under concurrent writers (ERR-00
   assert(parsed.length === WRITERS * PER_WRITER, 'every appended record should be a complete, parseable line');
 });
 
-test('LEDGER-LOG.md command echo masks obvious secret shapes; jsonl record stays exact (SEC-003)', () => {
+test('LEDGER-LOG.mdx command echo masks obvious secret shapes; jsonl record stays exact (SEC-003)', () => {
   const project = mkProject('godpowers-evidence-redact-');
   state.init(project, 'evidence-redact');
   const token = 'ghp_' + 'a'.repeat(36);
   const command = `echo deploying && true --token=${token}`;
   evidence.verify(command, { substep: 'tier-2.build', claim: 'redact', projectRoot: project });
 
-  const log = fs.readFileSync(path.join(project, '.godpowers', 'ledger', 'LEDGER-LOG.md'), 'utf8');
-  assert(!log.includes(token), 'LEDGER-LOG.md must not echo the raw token');
-  assert(log.includes('***REDACTED***'), 'LEDGER-LOG.md should show a redaction marker');
+  const log = fs.readFileSync(path.join(project, '.godpowers', 'ledger', 'LEDGER-LOG.mdx'), 'utf8');
+  assert(!log.includes(token), 'LEDGER-LOG.mdx must not echo the raw token');
+  assert(log.includes('***REDACTED***'), 'LEDGER-LOG.mdx should show a redaction marker');
 
   // The durable audit record keeps the exact command (source of truth).
   const records = ledgerRecords(project);

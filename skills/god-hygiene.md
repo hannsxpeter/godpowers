@@ -32,19 +32,19 @@ top-level summary.
 
 ### 1. Artifact Quality Audit
 Spawn **god-auditor** with audit-only mode.
-Output: `.godpowers/AUDIT-REPORT.md`
+Output: `.godpowers/AUDIT-REPORT.mdx`
 
 ### 2. Dependency Audit
 Spawn **god-deps-auditor** in audit-only mode (no updates applied).
-Output: `.godpowers/deps/AUDIT.md`
+Output: `.godpowers/deps/AUDIT.mdx`
 
 ### 3. Docs Verification
 Spawn **god-docs-writer** in verify-only mode (no edits applied).
-Output: `.godpowers/docs/UPDATE-LOG.md` with drift list
+Output: `.godpowers/docs/UPDATE-LOG.mdx` with drift list
 
 ## Composite Report
 
-After all three complete, write `.godpowers/HYGIENE-REPORT.md`:
+After all three complete, write `.godpowers/HYGIENE-REPORT.mdx`:
 
 ```markdown
 # Project Hygiene Report
@@ -83,7 +83,7 @@ Overall: [composite score 0-100]
 
 ```
 Hygiene check complete.
-Report: .godpowers/HYGIENE-REPORT.md
+Report: .godpowers/HYGIENE-REPORT.mdx
 
 Health score: [%]
 

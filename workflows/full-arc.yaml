@@ -24,11 +24,19 @@ metadata:
 on: [/god-mode]
 
 jobs:
+  # The context job also runs sibling-artifact detection. When
+  # .godplans/PLAN.mdx exists in an otherwise greenfield repo
+  # (greenfield-with-plan), lib/planning-systems.importPlanningContext seeds
+  # tier-1 artifacts as status 'imported' before god-pm runs, so god-pm and
+  # god-architect harden the imported plan seeds instead of interviewing from
+  # zero. PLAN.mdx stays read-only; parsing via lib/sibling-artifacts.js.
   context:
     tier: 0
     uses: god-orchestrator@^1.0.0
     local-helper-groups:
       - context-bootstrap
+    local-helpers:
+      - sibling-artifact-import
     with:
       action: pillars-bootstrap
 

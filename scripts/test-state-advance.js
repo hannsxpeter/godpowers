@@ -120,7 +120,7 @@ test('advance replaces tampered managed progress view and reports warning', () =
 test('advance replaces tampered managed per-tier view and reports warning', () => {
   const tmp = mkProject('godpowers-state-advance-tier-tamper-');
   state.init(tmp, 'advance-tier-tamper-demo');
-  const file = stateViewFile(tmp, '.godpowers/deploy/STATE.md');
+  const file = stateViewFile(tmp, '.godpowers/deploy/STATE.mdx');
   const tampered = fs.readFileSync(file, 'utf8').replace('Status: `pending`.', 'Status: `done`.');
   fs.writeFileSync(file, tampered);
 
@@ -133,9 +133,9 @@ test('advance replaces tampered managed per-tier view and reports warning', () =
   const parsed = stateViews.parseManaged(file);
 
   assert(result.verdict === 'pass', `verdict: ${result.verdict}`);
-  assert(result.warnings.some(warning => warning.includes('.godpowers/deploy/STATE.md')),
+  assert(result.warnings.some(warning => warning.includes('.godpowers/deploy/STATE.mdx')),
     `warnings: ${JSON.stringify(result.warnings)}`);
-  assert(result.summary.views.includes('.godpowers/deploy/STATE.md'),
+  assert(result.summary.views.includes('.godpowers/deploy/STATE.mdx'),
     `views: ${JSON.stringify(result.summary.views)}`);
   assert(parsed.validChecksum === true, 'repaired per-tier checksum should validate');
   assert(repaired.includes('Status: `done`.'), 'advanced status missing from repaired per-tier view');

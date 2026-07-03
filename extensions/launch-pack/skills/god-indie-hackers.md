@@ -20,7 +20,7 @@ Plan an Indie Hackers launch post.
 
 ## Verification
 
-- `.godpowers/launch/indie-hackers/PLAN.md` exists
+- `.godpowers/launch/indie-hackers/PLAN.mdx` exists
 - Specific numbers included (or honest pre-revenue disclosure)
 - 3+ specific mistakes listed
 - Real (non-rhetorical) community question
@@ -28,7 +28,7 @@ Plan an Indie Hackers launch post.
 ## On Completion
 
 ```
-Indie Hackers post drafted: .godpowers/launch/indie-hackers/PLAN.md
+Indie Hackers post drafted: .godpowers/launch/indie-hackers/PLAN.mdx
 
 Hook: [the specific number / surprising lesson]
 

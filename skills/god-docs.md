@@ -52,7 +52,7 @@ Drift found and corrected: N
 New docs created: N
 Existing docs updated: N
 
-Update log: .godpowers/docs/UPDATE-LOG.md
+Update log: .godpowers/docs/UPDATE-LOG.mdx
 
 Suggested next: /god-status or continue with feature work
 ```
@@ -72,7 +72,7 @@ Godpowers may invoke docs work proactively in two ways:
 When auto-invoked, show a concise default note:
 
 ```text
-Checked docs against changed code. Details were written to .godpowers/docs/UPDATE-LOG.md.
+Checked docs against changed code. Details were written to .godpowers/docs/UPDATE-LOG.mdx.
 ```
 
 Use a detailed `Auto-invoked:` card only with `--verbose` or release-gate

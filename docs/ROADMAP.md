@@ -2,8 +2,8 @@
 
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
-> Last updated: 2026-06-16
-> Current shipped: v3.14.0
+> Last updated: 2026-07-03
+> Current shipped: v4.0.0
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.
@@ -12,9 +12,18 @@ This roadmap tracks releases, what's shipped, and what is frozen during the
 
 ## Shipped releases
 
-### Current surface (v3.14.0)
+### Current surface (v4.0.0)
 
-3.14.0 is a maintenance release: it shares one check-builder across the `*-sync`
+4.0.0 is a breaking release: the canonical artifact extension changed from
+`.md` to `.mdx` (reads keep a legacy `.md` fallback; installed runtimes must
+be refreshed with `npx godpowers install`). It also ships the sibling
+superskill interop: detection and import of `.godplans/PLAN.mdx` and
+`.godaudits/AUDIT.mdx`, plan-aware arcs, GA-task remediation dispatch,
+managed `GODPOWERS-SYNC.mdx` sync-back companions, and import staleness drift
+checks via `lib/sibling-artifacts.js`, plus an MDX-safety artifact lint
+(have-not U-13) and gap fixes (safe-sync gate wiring, quarterback review
+fallback, references wiring, agent-specs completeness).
+3.14.0 was a maintenance release: it shares one check-builder across the `*-sync`
 modules, adds a per-file coverage floor, types the corrupt-state error, removes
 dead helpers, and guards the MCP module loader and YAML parser. 3.13.1 fixed a
 ledger record-loss race, hardened the outcome verifier and the pre-tool-use hook,
@@ -46,7 +55,7 @@ What works today:
   `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`,
   `work_report`, `route`, and `verification_history`
 - **One-directional state authority**: `.godpowers/state.json` is the
-  Godpowers decision source, while `.godpowers/PROGRESS.md` and
+  Godpowers decision source, while `.godpowers/PROGRESS.mdx` and
   Godpowers-owned per-tier `STATE.md` files are generated human views.
 - **Locked state mutation helper**: `godpowers state advance --step=<step>
   --status=<status> --project=.` updates tracked steps and regenerates managed
@@ -109,7 +118,7 @@ What works today:
   drive findings to zero with an independent reviewer and an `evidence.outcome`
   budget; "clean" is an evidence-backed re-audit, un-fixable findings pause.
 - **Deliverable progress tracking**: `/god-progress` and the
-  `.godpowers/REQUIREMENTS.md` ledger report which requirements and roadmap
+  `.godpowers/REQUIREMENTS.mdx` ledger report which requirements and roadmap
   increments are done, in progress, or not started, derived from the linkage map
 - **15-runtime installer**: Claude, Codex, Cursor, Windsurf, Gemini, OpenCode,
   Copilot, Augment, Trae, Cline, Kilo, Antigravity, Qwen, CodeBuddy, Pi
@@ -229,7 +238,7 @@ What works today:
 - **Direct release gate enforcement**: Tier 3 commands, `/god-mode`, and
   `/god-mode --yolo` honor safe sync and Critical harden blockers
 - **Transcript-safe God Mode spawn handoff**: `/god-mode` writes detailed
-  orchestration context to `.godpowers/runs/<run-id>/ORCHESTRATOR-HANDOFF.md`
+  orchestration context to `.godpowers/runs/<run-id>/ORCHESTRATOR-HANDOFF.mdx`
   and spawns `god-orchestrator` with only a display-safe pointer
 - **Transcript-safe init and suite handoffs**: `/god-init` and Mode D suite
   coordinator paths use private handoff files before orchestrator or
@@ -249,7 +258,7 @@ What works today:
 - **Reverse-sync** writing fenced "Implementation Linkage" footers
 - **Native Pillars project context**: `AGENTS.md` plus routed
   `agents/*.md` pillar files created for every Godpowers project
-- **Domain precision layer**: `.godpowers/domain/GLOSSARY.md` plus DG-01 through
+- **Domain precision layer**: `.godpowers/domain/GLOSSARY.mdx` plus DG-01 through
   DG-05 linter checks for canonical terms, aliases, ambiguity, and relationships
 - **Existing-project Pillar-ization**: current `.godpowers` artifacts become
   managed source references with extracted durable signals in relevant pillars
@@ -403,7 +412,7 @@ Deferred until adoption feedback:
 Shipped earlier-than-roadmapped and combined:
 
 - **Context-rot protection** (new): `lib/checkpoint.js`,
-  `.godpowers/CHECKPOINT.md`, `/god-locate`, `/god-context-scan`,
+  `.godpowers/CHECKPOINT.mdx`, `/god-locate`, `/god-context-scan`,
   events.jsonl hash chain, SessionStart hook prefers CHECKPOINT
 - **Extension runtime**: `lib/extensions.js`, schema/extension-manifest.v1.json,
   `/god-extension-scaffold`, `/god-extension-add/list/info/remove`, `/god-test-extension`,

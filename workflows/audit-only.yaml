@@ -20,6 +20,7 @@ jobs:
     uses: god-auditor@^1.0.0
     with:
       mode: full-audit
+      prior-audit: .godaudits/AUDIT.mdx
 
   audit-closeout:
     tier: 0

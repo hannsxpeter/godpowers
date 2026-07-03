@@ -16,7 +16,7 @@ inputs:
   - "trigger type and recent commits"
 outputs:
   - "updated affected artifacts"
-  - ".godpowers/SYNC-LOG.md"
+  - ".godpowers/SYNC-LOG.mdx"
   - "local sync summaries"
 gates:
   - "per-artifact have-nots"
@@ -110,7 +110,7 @@ After feature work, every artifact that was impacted needs to reflect reality.
   `state.json.tiers.tier-1.design.last-hash` and `tier-1.product.last-hash`.
 - If either changed since last sync: spawn `god-design-reviewer` in
   the appropriate mode FIRST.
-  - On BLOCK verdict: append to `.godpowers/design/REJECTED.md`,
+  - On BLOCK verdict: append to `.godpowers/design/REJECTED.mdx`,
     abort reverse-sync for this run, surface to user, do NOT proceed.
   - On PASS or WARN: continue to reverse-sync below.
 - Update `last-hash` fields in state.json after the gate runs.
@@ -129,7 +129,7 @@ After feature work, every artifact that was impacted needs to reflect reality.
   `drift-count`, `review-required-items`
 - Refresh deliverable tracking from the updated linkage map:
   - Call `lib/requirements.writeLedger(projectRoot)` to regenerate
-    `.godpowers/REQUIREMENTS.md`
+    `.godpowers/REQUIREMENTS.mdx`
   - Cache the summary into `state.json.deliverables` via
     `lib/requirements.summarizeForState`
 - Emit events: `linkage.snapshot`, `drift.detected` (per finding),
@@ -149,7 +149,7 @@ After feature work, every artifact that was impacted needs to reflect reality.
   README command counts, reference counts, and shipped-version markers.
 - Narrative drift in release notes, changelog, contribution policy, security
   policy, or support docs must spawn or recommend `god-docs-writer`.
-- Emit or preserve the local log at `.godpowers/docs/REPO-DOC-SYNC.md`.
+- Emit or preserve the local log at `.godpowers/docs/REPO-DOC-SYNC.mdx`.
 - Report:
   - status: fresh, stale, applied, or skipped
   - safe fixes applied
@@ -164,7 +164,7 @@ After feature work, every artifact that was impacted needs to reflect reality.
   route quality, release surface, and repository documentation drift.
 - Safe local fixes may write missing routing stubs only when explicitly allowed
   by the caller.
-- Emit or preserve the local log at `.godpowers/surface/REPO-SURFACE-SYNC.md`.
+- Emit or preserve the local log at `.godpowers/surface/REPO-SURFACE-SYNC.mdx`.
 - Report:
   - status: fresh, stale, applied, or skipped
   - stale checks by area
@@ -217,7 +217,7 @@ After feature work, every artifact that was impacted needs to reflect reality.
   `lib/pillars.applyArtifactSync(projectRoot, changedArtifacts, { yolo })`.
 - Default mode may report the pillar updates as proposed review items when the
   change is interpretive. Under `--yolo`, apply the managed source sections
-  immediately and log the decision to `.godpowers/YOLO-DECISIONS.md`.
+  immediately and log the decision to `.godpowers/YOLO-DECISIONS.mdx`.
 - Never read every file in `agents/` as project context. Only files with
   `pillar:` frontmatter are Pillars files.
 - Report whether Pillars work was initialized, applied, proposed, skipped, or
@@ -238,7 +238,7 @@ After feature work, every artifact that was impacted needs to reflect reality.
   no-oped, or skipped because the project opted out.
 
 ### Checkpoint sync
-- After state changes, refresh `.godpowers/CHECKPOINT.md` from disk state using
+- After state changes, refresh `.godpowers/CHECKPOINT.mdx` from disk state using
   `lib/checkpoint.syncFromState(projectRoot, { nextCommand, nextReason })`
   when the runtime is available.
 - If checkpoint sync is unavailable in the host tool, say it was skipped and
@@ -248,7 +248,7 @@ After feature work, every artifact that was impacted needs to reflect reality.
 
 ## Output
 
-Write summary to `.godpowers/SYNC-LOG.md` (append-only). The summary must
+Write summary to `.godpowers/SYNC-LOG.mdx` (append-only). The summary must
 include both user-visible status and machine-checkable counts:
 
 ```markdown
@@ -261,7 +261,7 @@ Sync status:
 - Agent: god-updater
 - Reverse-sync: scanned [N] files, updated [N] footers, created [N] review items
 - Pillars sync: [applied/proposed/no-op/skipped], [N] pillar files
-- Checkpoint sync: [created/updated/no-op/skipped] .godpowers/CHECKPOINT.md
+- Checkpoint sync: [created/updated/no-op/skipped] .godpowers/CHECKPOINT.mdx
 - Context refresh: [spawned god-context-writer/no-op/skipped], [N] files
 - Repo docs sync: [fresh/applied/stale/skipped], [N] safe fixes, [N] docs-writer paths
 - Repo surface sync: [fresh/applied/stale/skipped], [N] stale checks, [N] spawn recommendations
@@ -306,7 +306,7 @@ Sync status:
     + context-refresh: <spawned, no-op, or skipped>
     + host-capabilities: <full, degraded, or unknown>
   Artifacts: <changed files or no-op>
-  Log: .godpowers/SYNC-LOG.md
+  Log: .godpowers/SYNC-LOG.mdx
 
 Next:
   Recommended: /god-status

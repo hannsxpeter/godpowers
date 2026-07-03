@@ -13,7 +13,7 @@ inputs:
   - "git history"
   - "repository documentation"
 outputs:
-  - ".godpowers/archaeology/REPORT.md"
+  - ".godpowers/archaeology/REPORT.mdx"
 gates:
   - "archaeology have-nots"
   - "evidence-backed history and risk claims"
@@ -95,7 +95,7 @@ Document what you can infer; flag what you can't.
 
 ### 6. Output
 
-Write `.godpowers/archaeology/REPORT.md`:
+Write `.godpowers/archaeology/REPORT.mdx`:
 
 ```markdown
 # Archaeological Report

@@ -88,7 +88,7 @@ Default: If you say "go", I'll pick [X] because [Y].
 
 ### --yolo
 Pass through to orchestrator. Orchestrator picks defaults at every pause point
-and logs decisions to `.godpowers/YOLO-DECISIONS.md`. Pillar sync proposals
+and logs decisions to `.godpowers/YOLO-DECISIONS.mdx`. Pillar sync proposals
 generated from durable Godpowers artifact changes are auto-applied in this
 mode and logged as YOLO decisions.
 
@@ -97,9 +97,9 @@ to `/god-reconcile Release Truth And Safe Sync`. If harden has unresolved
 Critical findings, pause even under `--yolo`.
 
 For brownfield and bluefield, `--yolo` still runs `/god-preflight` first when
-`.godpowers/preflight/PREFLIGHT.md` is absent. The orchestrator then follows
+`.godpowers/preflight/PREFLIGHT.mdx` is absent. The orchestrator then follows
 the preflight report's safest recommended route automatically, logging that
-choice to `.godpowers/YOLO-DECISIONS.md`. Preflight may only pause under
+choice to `.godpowers/YOLO-DECISIONS.mdx`. Preflight may only pause under
 `--yolo` for Critical security findings or a contradiction that makes route
 selection impossible.
 
@@ -174,14 +174,14 @@ Sync status:
     + checkpoint-sync: <created, updated, no-op, or skipped>
     + context-refresh: <spawned, no-op, or skipped>
   Artifacts: <changed files or no-op>
-  Log: .godpowers/SYNC-LOG.md
+  Log: .godpowers/SYNC-LOG.mdx
 ```
 
 The sync step also reconciles native Pillars context. When `.godpowers`
 artifacts create or change durable project truth, Godpowers maps those changes
 to relevant pillar files through `lib/pillars.planArtifactSync`. Default mode
 proposes pillar updates for review. `--yolo` applies them immediately and logs
-the action to `.godpowers/YOLO-DECISIONS.md`.
+the action to `.godpowers/YOLO-DECISIONS.mdx`.
 
 When `/god-mode` resumes an existing `.godpowers` project, it auto-invokes
 `lib/feature-awareness.run(projectRoot)` before the final sync report. This
@@ -225,7 +225,7 @@ Sync status:
     + checkpoint-sync: <created, updated, no-op, or skipped>
     + context-refresh: <spawned, no-op, or skipped>
   Artifacts: <changed files or no-op>
-  Log: .godpowers/SYNC-LOG.md
+  Log: .godpowers/SYNC-LOG.mdx
 
 Current status:
   State: complete
@@ -240,16 +240,16 @@ Planning visibility:
   Completion: <pct>% <brief basis, for example done steps over total tracked steps>
 
 Artifacts on disk:
-  + PRD           .godpowers/prd/PRD.md
-  + Architecture  .godpowers/arch/ARCH.md
-  + Roadmap       .godpowers/roadmap/ROADMAP.md
-  + Stack         .godpowers/stack/DECISION.md
-  + Repo          .godpowers/repo/AUDIT.md
-  + Build         .godpowers/build/STATE.md
-  + Deploy        .godpowers/deploy/STATE.md
-  + Observe       .godpowers/observe/STATE.md
-  + Launch        .godpowers/launch/STATE.md
-  + Harden        .godpowers/harden/FINDINGS.md
+  + PRD           .godpowers/prd/PRD.mdx
+  + Architecture  .godpowers/arch/ARCH.mdx
+  + Roadmap       .godpowers/roadmap/ROADMAP.mdx
+  + Stack         .godpowers/stack/DECISION.mdx
+  + Repo          .godpowers/repo/AUDIT.mdx
+  + Build         .godpowers/build/STATE.mdx
+  + Deploy        .godpowers/deploy/STATE.mdx
+  + Observe       .godpowers/observe/STATE.mdx
+  + Launch        .godpowers/launch/STATE.mdx
+  + Harden        .godpowers/harden/FINDINGS.mdx
 
 Built. Tested. Shipped. Hardened.
 

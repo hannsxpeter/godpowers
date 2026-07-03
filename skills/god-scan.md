@@ -92,14 +92,17 @@ Re-running /god-scan replaces the fence with current linkage state
 
 Updates:
 - `.godpowers/links/{artifact-to-code,code-to-artifact}.json`
-- `.godpowers/links/LINKAGE-LOG.md` (append)
+- `.godpowers/links/LINKAGE-LOG.mdx` (append)
 - Fenced sections in PRD.md / ARCH.md / ROADMAP.md / STACK/DECISION.md / DESIGN.md
 - `REVIEW-REQUIRED.md` (append, if drift / impeccable findings)
-- `.godpowers/events.jsonl` (append: linkage events)
+- `.godpowers/runs/<run-id>/events.jsonl` (append: linkage events to the current run's ledger, per `lib/events.js`)
 
 User content outside fences is never modified.
 
-## Output to events.jsonl
+## Output to the run event ledger
+
+Events append to the run-scoped ledger at `.godpowers/runs/<run-id>/events.jsonl`
+(the only location `lib/event-reader.js` and `lib/otel-exporter.js` read):
 
 ```json
 { "name": "scan.start" }

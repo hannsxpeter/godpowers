@@ -43,7 +43,7 @@ Add or remove a manual link between an artifact ID and a code file.
 3. Resolve the file path relative to project root.
 4. Call `lib/linkage.addLink(projectRoot, artifactId, filePath)` or
    `removeLink(...)`.
-5. Append to `.godpowers/links/LINKAGE-LOG.md`.
+5. Append to `.godpowers/links/LINKAGE-LOG.mdx`.
 6. Report.
 
 ## When to use this vs comment annotations
@@ -69,7 +69,7 @@ Use `/god-link` when:
 Updates:
 - `.godpowers/links/artifact-to-code.json`
 - `.godpowers/links/code-to-artifact.json`
-- `.godpowers/links/LINKAGE-LOG.md` (append)
+- `.godpowers/links/LINKAGE-LOG.mdx` (append)
 
 No source files are modified by this skill.
 

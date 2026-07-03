@@ -36,7 +36,7 @@ Run quality gate check on an artifact.
 Display the standards-check verdict:
 
 ```
-Standards check: .godpowers/prd/PRD.md
+Standards check: .godpowers/prd/PRD.mdx
 
 Substitution test:    PASS
 Three-label test:     PASS

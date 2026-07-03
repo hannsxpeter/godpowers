@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v3.14.0.
+Complete command, agent, and artifact reference for v4.0.0.
 
 ## Slash commands (120 total)
 
@@ -85,16 +85,16 @@ recommendation signals. Longer runs use `/god-metrics`, `/god-trace`, and
 - `/god-status` - Re-derive project state from disk.
 - `/god-status --lifecycle` - Show project phase and fitting workflows.
 - `/god-status --locate` - Orient a fresh AI session from checkpoint, handoff, and disk evidence.
-- `/god-progress` - Deliverable progress: which requirements and roadmap increments are done, in progress, or not started. Refreshes `.godpowers/REQUIREMENTS.md`.
+- `/god-progress` - Deliverable progress: which requirements and roadmap increments are done, in progress, or not started. Refreshes `.godpowers/REQUIREMENTS.mdx`.
 - `/god-plan` - Route planning intent to PRD, design, architecture, roadmap, stack, or reconstruction.
-- `/god-fix` - Route bug and outage intent to debug or hotfix.
+- `/god-fix` - Route bug and outage intent to debug or hotfix, including open godaudits GA remediation tasks from `.godaudits/AUDIT.mdx`.
 - `/god-ship` - Route shipping intent to deploy, observe, or launch.
 - `/god-capture` - Route notes, todos, backlog items, and seeds.
 - `/god-extend` - Route extension authoring, install, inspection, removal, and testing.
 - `/god-automation-status` - Show host automation provider support.
 - `/god-automation-setup` - Prepare opt-in automation setup.
 - `/god-surface` - Preview or apply a runtime command surface profile after install.
-- `/god-migrate` - Detect legacy planning, BMAD, and Superpowers context, import seeds, and sync back progress.
+- `/god-migrate` - Detect legacy planning, BMAD, Superpowers, godplans, and godaudits context, import seeds, and sync back progress.
 
 ### Installer CLI helpers
 - `godpowers status --project .` - Render the shared dashboard from disk state.
@@ -136,7 +136,7 @@ runtime.
 The companion exposes eight read-only tools: `status`, `next`, `gate_check`,
 `lint_artifact`, `trace_requirement`, `work_report`, `route`, and
 `verification_history`. Mutating tools such as state advance, verify, artifact
-writes, and route edits are intentionally absent through 3.14.0; verification
+writes, and route edits are intentionally absent through 4.0.0; verification
 stays on the CLI and orchestrator path.
 
 Run `godpowers mcp-info --project .` for host setup instructions. Codex
@@ -207,7 +207,7 @@ diff churn that cannot be traced to the request or slice plan.
 - `/god-review-changes` - Walk REVIEW-REQUIRED.md interactively.
 - `/god-reconcile` - Comprehensive reconciliation across all impacted artifacts.
 - `/god-reconstruct` - Reverse-engineer planning artifacts from existing code.
-- `/god-migrate` - Convert adjacent planning-system context into Godpowers prep and seed artifacts.
+- `/god-migrate` - Convert adjacent planning-system context (including sibling `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx`) into Godpowers prep and seed artifacts.
 
 ### Verification
 - `/god-lint` - Mechanical validation against have-nots catalog.
@@ -215,7 +215,7 @@ diff churn that cannot be traced to the request or slice plan.
 - `/god-test-runtime` - Headless browser verification (design audit + flow assertions).
 - `/god-dogfood` - Run messy-repo dogfood scenarios for migration, host, extension, and suite readiness.
 - `/god-preflight` - Read-only intake audit before arc-ready and pillars.
-- `/god-audit` - Score existing artifacts against all have-nots.
+- `/god-audit` - Score existing artifacts against all have-nots, cross-referencing a prior `.godaudits/AUDIT.mdx` when present.
 - `/god-agent-audit` - Validate every agents/*.md against the agent contract.
 
 ### Recovery

@@ -257,8 +257,8 @@ test('quick proof names the accountable outputs', () => {
     'host guarantees',
     'next action',
     '.godpowers/state.json',
-    '.godpowers/PROGRESS.md',
-    '.godpowers/harden/FINDINGS.md'
+    '.godpowers/PROGRESS.mdx',
+    '.godpowers/harden/FINDINGS.mdx'
   ]) {
     assertIncludes('docs/quick-proof.md', phrase);
   }

@@ -435,9 +435,9 @@ test('summarize counts severities and codes', () => {
 // ============================================================================
 
 test('linter detectType identifies PRD path', () => {
-  if (linter.detectType('.godpowers/prd/PRD.md') !== 'prd') throw new Error('PRD detection');
-  if (linter.detectType('/foo/.godpowers/arch/ARCH.md') !== 'arch') throw new Error('ARCH detection');
-  if (linter.detectType('/foo/.godpowers/domain/GLOSSARY.md') !== 'domain') throw new Error('domain detection');
+  if (linter.detectType('.godpowers/prd/PRD.mdx') !== 'prd') throw new Error('PRD detection');
+  if (linter.detectType('/foo/.godpowers/arch/ARCH.mdx') !== 'arch') throw new Error('ARCH detection');
+  if (linter.detectType('/foo/.godpowers/domain/GLOSSARY.mdx') !== 'domain') throw new Error('domain detection');
   if (linter.detectType('DESIGN.md') !== 'design') throw new Error('DESIGN detection');
   if (linter.detectType('PRODUCT.md') !== 'product') throw new Error('PRODUCT detection');
 });
@@ -603,6 +603,58 @@ test('end-to-end: clean PRD produces zero errors', () => {
   if (result.summary.errors !== 0) {
     throw new Error(`expected 0 errors, got ${result.summary.errors}: ${JSON.stringify(result.findings.filter(f => f.severity === 'error'))}`);
   }
+});
+
+// ============================================================================
+// U-13 MDX safety
+// ============================================================================
+
+test('U-13 flags a bare < before a letter as JSX risk', () => {
+  const findings = linter.checkMdxSafety('The threshold is <5ms but <no more.\n');
+  const hits = findingsByCode(findings, 'U-13');
+  if (hits.length !== 1) throw new Error(`expected 1 finding for <no, got ${hits.length}`);
+  if (hits[0].severity !== 'warning') throw new Error('JSX risk should be a warning');
+});
+
+test('U-13 flags bare braces in prose', () => {
+  const findings = linter.checkMdxSafety('Interpolation like {user.name} breaks MDX.\n');
+  const hits = findingsByCode(findings, 'U-13');
+  if (hits.length !== 2) throw new Error(`expected 2 brace findings, got ${hits.length}`);
+});
+
+test('U-13 flags an HTML comment outside code', () => {
+  const findings = linter.checkMdxSafety('Before\n<!-- hidden note -->\nAfter\n');
+  const hits = findingsByCode(findings, 'U-13');
+  if (!hits.some(f => f.line === 2 && f.message.includes('HTML comment'))) {
+    throw new Error('HTML comment not flagged');
+  }
+});
+
+test('U-13 flags an em dash as an error even inside code', () => {
+  const findings = linter.checkMdxSafety('```\nnot a real \u2014 code dash\n```\n');
+  const hits = findingsByCode(findings, 'U-13');
+  if (hits.length !== 1) throw new Error(`expected 1 banned-char finding, got ${hits.length}`);
+  if (hits[0].severity !== 'error') throw new Error('banned char should be an error');
+});
+
+test('U-13 ignores unsafe tokens inside fenced code blocks', () => {
+  const content = '```jsx\n<Component prop={value} />\n<!-- comment -->\n```\nplain prose after.\n';
+  const findings = linter.checkMdxSafety(content);
+  if (findings.length !== 0) throw new Error(`expected 0 findings, got ${JSON.stringify(findings)}`);
+});
+
+test('U-13 ignores unsafe tokens inside inline code spans', () => {
+  const findings = linter.checkMdxSafety('Use `<div>` and `{token}` in templates.\n');
+  if (findings.length !== 0) throw new Error(`expected 0 findings, got ${JSON.stringify(findings)}`);
+});
+
+test('U-13 findings surface through lintFile on any artifact type', () => {
+  const tmp = mkTmp();
+  fs.mkdirSync(path.join(tmp, '.godpowers', 'prd'), { recursive: true });
+  const file = path.join(tmp, '.godpowers', 'prd', 'PRD.mdx');
+  fs.writeFileSync(file, '# PRD\n\nA generic type like Promise<string> in prose.\n');
+  const result = linter.lintFile(file, { projectRoot: tmp });
+  if (!hasFinding(result.findings, 'U-13')) throw new Error('lintFile did not run MDX safety');
 });
 
 report();

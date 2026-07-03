@@ -20,7 +20,7 @@ Plan a Show HN launch with channel-specific expertise.
 
 ## Verification
 
-- `.godpowers/launch/show-hn/PLAN.md` exists
+- `.godpowers/launch/show-hn/PLAN.mdx` exists
 - Title passes substitution test
 - Honesty disclosures included
 - No marketing-speak
@@ -28,7 +28,7 @@ Plan a Show HN launch with channel-specific expertise.
 ## On Completion
 
 ```
-Show HN plan ready: .godpowers/launch/show-hn/PLAN.md
+Show HN plan ready: .godpowers/launch/show-hn/PLAN.mdx
 
 Title: [chosen variant]
 Launch time: [date/time ET]

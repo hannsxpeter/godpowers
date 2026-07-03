@@ -65,7 +65,7 @@ The lint layer. Mechanical checks against the catalog of failure modes.
 - [DECISION] Build gates require `.godpowers/state.json` to record exact
   verification commands that passed under `tiers.tier-2.build.verification.commands`.
 - [DECISION] Harden gates fail unresolved Critical findings and blocked launch
-  gates in `.godpowers/harden/FINDINGS.md`.
+  gates in `.godpowers/harden/FINDINGS.mdx`.
 - [DECISION] `/god-mode` runs the matching gate after each tier skill returns
   and before starting downstream tier work.
 
@@ -113,9 +113,9 @@ DESIGN-specific (via `lib/design-spec`):
 
 ### Mechanical vs interpretive
 
-Of the 156 documented have-nots in `references/HAVE-NOTS.md`:
+Of the 157 documented have-nots in `references/HAVE-NOTS.md`:
 - **~30 are mechanical** (regex-checkable; in `lib/have-nots-validator.js`)
-- **~126 are interpretive** (judgment-required; documented for human + AI review)
+- **~127 are interpretive** (judgment-required; documented for human + AI review)
 
 The mechanical 30 are caught by `/god-lint`. The interpretive checks are
 the responsibility of `god-auditor` (retroactive scoring) and the
@@ -128,7 +128,7 @@ hand. Interpretive checks should never be claimed to be mechanical.
 
 ```bash
 /god-lint                                    # All known artifacts
-/god-lint .godpowers/prd/PRD.md             # One file
+/god-lint .godpowers/prd/PRD.mdx             # One file
 /god-lint --json                            # Structured output
 /god-lint --errors-only                     # Skip warnings
 ```
@@ -138,7 +138,7 @@ Returns structured findings:
 {
   "results": [
     {
-      "path": ".godpowers/prd/PRD.md",
+      "path": ".godpowers/prd/PRD.mdx",
       "type": "prd",
       "summary": { "errors": 2, "warnings": 1, "infos": 0 },
       "findings": [
@@ -278,7 +278,7 @@ catches breakage.
 - `lib/browser-bridge.js` - runtime backend cascade
 - `lib/runtime-audit.js` - design verification on rendered DOM
 - `lib/runtime-test.js` - PRD acceptance flow assertions
-- `references/HAVE-NOTS.md` - the catalog of 156 named failure modes
+- `references/HAVE-NOTS.md` - the catalog of 157 named failure modes
 - [change-propagation.md](./change-propagation.md) - how findings flow
 - [linkage.md](./linkage.md) - stable IDs and discovery mechanisms
 - [design-md.md](./design-md.md) - DESIGN.md format and lifecycle

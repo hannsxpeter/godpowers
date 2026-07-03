@@ -2,13 +2,13 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-roadmap-update
-  description: Update ROADMAP.md after feature work or priority changes
+  description: Update ROADMAP.mdx after feature work or priority changes
   tier: 1
   family: maintain
 
 prerequisites:
   required:
-    - check: file:.godpowers/roadmap/ROADMAP.md
+    - check: file:.godpowers/roadmap/ROADMAP.mdx
       auto-complete: /god-roadmap
       human-required: true
 
@@ -16,10 +16,10 @@ execution:
   spawns: [god-roadmap-updater]
   context: fresh
   reads:
-    - .godpowers/roadmap/ROADMAP.md
-    - .godpowers/prd/PRD.md
+    - .godpowers/roadmap/ROADMAP.mdx
+    - .godpowers/prd/PRD.mdx
   writes:
-    - .godpowers/roadmap/ROADMAP.md
+    - .godpowers/roadmap/ROADMAP.mdx
     - Roadmap Changelog section appended
 
 standards:

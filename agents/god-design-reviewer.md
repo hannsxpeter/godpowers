@@ -15,7 +15,7 @@ inputs:
   - "PRD and design context"
 outputs:
   - "design review verdict"
-  - ".godpowers/design/REJECTED.md on block"
+  - ".godpowers/design/REJECTED.mdx on block"
   - "design.review-verdict event"
 gates:
   - "impeccable critique when available"
@@ -84,7 +84,7 @@ Verdict for stage 2: **passes | warnings | errors**
 
 ## On BLOCK
 
-Append an entry to `.godpowers/design/REJECTED.md`:
+Append an entry to `.godpowers/design/REJECTED.mdx`:
 
 ```markdown
 ## Rejected: [timestamp]

@@ -20,7 +20,7 @@ execution:
   context: fresh
   secondary-spawns: [god-executor, god-spec-reviewer, god-quality-reviewer]
   writes:
-    - .godpowers/build/PLAN.md
+    - .godpowers/build/PLAN.mdx
     - .godpowers/state.json
     - source code
 

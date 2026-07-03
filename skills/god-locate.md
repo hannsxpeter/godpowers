@@ -32,12 +32,12 @@ Orient a new session against disk reality. Single-screen output.
 
 ## What it reads (in priority order)
 
-1. `.godpowers/CHECKPOINT.md` (the pin)
+1. `.godpowers/CHECKPOINT.mdx` (the pin)
 2. `.godpowers/state.json` (authoritative facts)
 3. `.godpowers/runs/<latest>/events.jsonl` last 20 events
 4. `.godpowers/log` last 5 reflog entries
 5. `.godpowers/intent.yaml` (project intent)
-6. `.godpowers/HANDOFF.md` if it exists (paused-work context)
+6. `.godpowers/HANDOFF.mdx` if it exists (paused-work context)
 
 ## Output (single screen)
 
@@ -47,7 +47,7 @@ GODPOWERS LOCATE
 Project: <name>  Mode: <A/B/C/E>  Suite: <yes/no>
 Lifecycle: <phase>  Current: <tier>/<substep>
 Progress: <pct>% (<complete> of <total> steps complete; current step <n> of <total>)
-Deliverables: <done>/<total> requirements done (state.json cache; full list in .godpowers/REQUIREMENTS.md)
+Deliverables: <done>/<total> requirements done (state.json cache; full list in .godpowers/REQUIREMENTS.mdx)
 
 Last action: <name> by <actor> at <ts>
 Last user instruction: <if available>
