@@ -140,7 +140,7 @@ Pause for human ONLY on:
 ## YOLO Handling
 
 With `--yolo`, write the launch artifacts using your best judgment. Do NOT
-pause. Log to YOLO-DECISIONS.md so the user can revise:
+pause. Log to YOLO-DECISIONS.mdx so the user can revise:
 
 ```markdown
 ## god-launch-strategist: Brand voice

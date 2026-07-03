@@ -152,7 +152,7 @@ Pause ONLY if:
 
 ## YOLO Handling
 
-With `--yolo`, do NOT pause. Auto-pick defaults and log to YOLO-DECISIONS.md.
+With `--yolo`, do NOT pause. Auto-pick defaults and log to YOLO-DECISIONS.mdx.
 
 Defaults for god-architect:
 - **Tied architectures**: pick the simpler one. Complexity is hard to remove later.

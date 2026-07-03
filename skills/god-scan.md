@@ -4,7 +4,7 @@ description: |
   Manually trigger a full reverse-sync of the codebase. Scans for
   linkage annotations, updates the linkage map, runs drift detection,
   appends fenced footers to artifacts, and surfaces findings to
-  REVIEW-REQUIRED.md.
+  REVIEW-REQUIRED.mdx.
 
   Triggers on: "god scan", "/god-scan", "rescan code", "rebuild linkage",
   "scan codebase"
@@ -21,7 +21,7 @@ Because `/god-scan` calls the local reverse-sync runtime directly, keep the
 default message concise:
 
 ```
-Scanning code links and drift. Review items will be written to REVIEW-REQUIRED.md if found.
+Scanning code links and drift. Review items will be written to REVIEW-REQUIRED.mdx if found.
 ```
 
 Use a detailed `Auto-invoked:` card only with `--verbose` or debugging.
@@ -46,7 +46,7 @@ Use a detailed `Auto-invoked:` card only with `--verbose` or debugging.
    - If impeccable installed and UI files touched: run `npx impeccable detect`
    - Append fenced footers to PRD, ARCH, ROADMAP, STACK, DESIGN via
      `lib/reverse-sync.appendFooters`
-   - Surface drift + impeccable findings to REVIEW-REQUIRED.md
+   - Surface drift + impeccable findings to REVIEW-REQUIRED.mdx
 3. Report:
    - Files scanned, links discovered/added
    - Drift findings (errors, warnings, infos)
@@ -60,8 +60,8 @@ Sync status:
   Agent: none, local runtime only
   Local syncs:
     + reverse-sync: <scanned N files, updated M footers, populated K review items>
-  Artifacts: <changed linkage files, fenced artifacts, REVIEW-REQUIRED.md, or no-op>
-  Log: <REVIEW-REQUIRED.md or none>
+  Artifacts: <changed linkage files, fenced artifacts, REVIEW-REQUIRED.mdx, or no-op>
+  Log: <REVIEW-REQUIRED.mdx or none>
 ```
 
 ## Fence rules
@@ -82,10 +82,10 @@ Re-running /god-scan replaces the fence with current linkage state
 
 | Artifact | Footer content |
 |---|---|
-| PRD.md | Each requirement (P-MUST, P-SHOULD, P-COULD) lists implementing files |
-| ARCH.md | Each container lists Source: directories; each ADR lists Pattern: files |
-| ROADMAP.md | Each milestone lists implementing files |
-| STACK/DECISION.md | Each S- decision shows usage count |
+| PRD.mdx | Each requirement (P-MUST, P-SHOULD, P-COULD) lists implementing files |
+| ARCH.mdx | Each container lists Source: directories; each ADR lists Pattern: files |
+| ROADMAP.mdx | Each milestone lists implementing files |
+| STACK/DECISION.mdx | Each S- decision shows usage count |
 | DESIGN.md | Each token shows usage count; each component shows Implements: files |
 
 ## Output
@@ -93,8 +93,8 @@ Re-running /god-scan replaces the fence with current linkage state
 Updates:
 - `.godpowers/links/{artifact-to-code,code-to-artifact}.json`
 - `.godpowers/links/LINKAGE-LOG.mdx` (append)
-- Fenced sections in PRD.md / ARCH.md / ROADMAP.md / STACK/DECISION.md / DESIGN.md
-- `REVIEW-REQUIRED.md` (append, if drift / impeccable findings)
+- Fenced sections in PRD.mdx / ARCH.mdx / ROADMAP.mdx / STACK/DECISION.mdx / DESIGN.md
+- `REVIEW-REQUIRED.mdx` (append, if drift / impeccable findings)
 - `.godpowers/runs/<run-id>/events.jsonl` (append: linkage events to the current run's ledger, per `lib/events.js`)
 
 User content outside fences is never modified.

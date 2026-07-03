@@ -72,7 +72,7 @@ Use the detailed helper list only with `--verbose` or release-gate debugging.
 
 After god-updater returns:
 1. Verify each touched artifact passes its tier's have-nots
-2. Verify SYNC-LOG.md was appended
+2. Verify SYNC-LOG.mdx was appended
 3. Verify Pillars source sections were updated for any changed durable
    artifact. Under `--yolo`, pillar updates are auto-applied and logged.
 4. Verify state.json reflects new tier statuses
@@ -96,7 +96,7 @@ Sync status:
     + recipe-coverage-sync: <checked high-frequency intent recipes, no-op, or recommended god-reconciler>
     + release-surface-sync: <checked badges/changelog/release/package guards, no-op, or recommended god-docs-writer>
     + pillars-sync: <updated N pillar files, no-op, or proposed>
-    + checkpoint-sync: <CHECKPOINT.md updated or skipped>
+    + checkpoint-sync: <CHECKPOINT.mdx updated or skipped>
     + context-refresh: <updated AGENTS.md/tool pointers, no-op, or skipped by setting>
   Artifacts: <changed files, no-op, or deferred>
   Log: .godpowers/SYNC-LOG.mdx
@@ -116,7 +116,7 @@ Updated:
   - threads/auth-migration.md (progress note)
 
 Have-nots: all passing
-SYNC-LOG.md updated.
+SYNC-LOG.mdx updated.
 
 Current status:
   State: <complete | partial | blocked | no-op>

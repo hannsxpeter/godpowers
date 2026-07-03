@@ -147,7 +147,7 @@ Roadmap FAILS if:
 
 ## YOLO Handling
 
-With `--yolo`, do NOT pause. Auto-pick defaults and log to YOLO-DECISIONS.md.
+With `--yolo`, do NOT pause. Auto-pick defaults and log to YOLO-DECISIONS.mdx.
 
 Defaults for god-roadmapper:
 - **Capacity unknown**: assume 1 engineer at 0.5 slices/day baseline. Tag the

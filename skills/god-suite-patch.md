@@ -39,7 +39,7 @@ locally; the coordinator tracks atomicity.
      directive
    - Track success/failure
 6. Coordinator aggregates results:
-   - All succeeded: report success; append to SYNC-LOG.md
+   - All succeeded: report success; append to SYNC-LOG.mdx
    - Some failed: report partial; suggest manual continuation OR
      rollback (`/god-suite-patch --rollback <patch-id>`)
 

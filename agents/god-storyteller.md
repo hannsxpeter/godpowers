@@ -33,7 +33,7 @@ features into incremental, shippable slices.
 
 - User prompt describing what to build (story-shaped)
 - Optional: feature slug if this story belongs to a larger feature
-- Optional: existing STORY-*.md files to chain into (deps)
+- Optional: existing STORY-*.mdx files to chain into (deps)
 - PRD.md and ARCH.md for context
 
 ## Outputs

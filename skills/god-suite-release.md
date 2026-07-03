@@ -52,7 +52,7 @@ A version bump that knows about dependents. Different from `/god-launch`
 - Updates the bumped repo's version (via its orchestrator)
 - For each dependent: updates its package.json declared version
 - Updates suite-config.yaml version-table
-- Appends release entry to SYNC-LOG.md
+- Appends release entry to SYNC-LOG.mdx
 - Triggers per-repo `/god-launch` (or equivalent) only when the user
   explicitly confirms each launch
 

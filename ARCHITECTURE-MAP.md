@@ -640,7 +640,7 @@ godpowers/
 ├── README.md, CHANGELOG.md, LICENSE, CONTRIBUTING.md, SECURITY.md, USERS.md
 ├── ARCHITECTURE.md                <- Design doc
 ├── ARCHITECTURE-MAP.md            <- This file
-├── package.json (v4.0.0)
+├── package.json (v4.0.1)
 ├── .github/workflows/              <- CI + npm publish workflows
 │
 ├── bin/install.js                 <- CLI installer (15 runtimes)
@@ -736,7 +736,7 @@ godpowers/
 
 ---
 
-## Numbers (as of v4.0.0)
+## Numbers (as of v4.0.1)
 
 | Component | Count |
 |-----------|-------|
@@ -748,7 +748,7 @@ godpowers/
 | Workflows (core YAMLs) | 13 |
 | Intent recipes | 44 |
 | Have-nots | 157 documented + 30+ mechanically validated by linter |
-| Templates | 16 |
+| Templates | 14 |
 | Reference documents | 39 |
 | JSON Schemas | 7 |
 | **JS runtime modules** | **92** |
@@ -756,7 +756,7 @@ godpowers/
 | Hooks | 2 |
 | Dogfood scenarios | 5 |
 | Documentation pages | 34 under docs/ plus reference material |
-| **Test suites** | **59 script files plus integration tests** |
+| **Test suites** | **80 script files plus integration tests** |
 | **Tests** | **Full behavioral suite gated by npm test** |
 | Supported AI runtimes | 15+ |
 | Verification axes | **3**: static (lint, design-spec, have-nots), linkage (drift, reverse-sync), runtime (headless browser audit + functional test) |

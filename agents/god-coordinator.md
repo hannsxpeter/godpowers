@@ -99,7 +99,7 @@ If a handoff path is provided:
    `version-bump` directive (NOT a full project run)
 4. Aggregate results into a release report
 5. Update `.godpowers/suite-config.yaml` version-table
-6. Append to SYNC-LOG.md
+6. Append to SYNC-LOG.mdx
 
 ### Mode 4: patch (`/god-suite-patch`)
 
@@ -109,7 +109,7 @@ If a handoff path is provided:
    patch directive
 3. Coordinate atomicity: if any repo fails, mark the suite-level
    patch as incomplete and report
-4. Append to SYNC-LOG.md
+4. Append to SYNC-LOG.mdx
 
 ### Mode 5: init (`/god-suite-init`)
 

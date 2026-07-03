@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.1] - 2026-07-03
+
+Patch release from a post-publish adversarial review of 4.0.0. No surface,
+schema, or behavior change for correct inputs; counts are unchanged
+(120 / 40 / 13 / 44, 92 lib modules, 157 have-nots).
+
+### Fixed
+
+- Managed state-view writer (`lib/state-views.js`) no longer deletes a legacy
+  `.md` twin when both twins exist and the legacy holds out-of-fence content the
+  `.mdx` never absorbed. The twin is retired only when its content is already
+  represented in the written `.mdx`, otherwise it is left in place with a
+  warning. Prevents a silent edge-case loss of human notes around a generated
+  view.
+- Legacy `.md`-to-`.mdx` log-absorb writes go through an atomic write
+  (`lib/sync-fs.js` now uses `writeFileAtomic`), so a crash mid-migration can no
+  longer leave a truncated `.mdx` that shadows and then deletes the intact `.md`.
+- Prose extension drift: `SYNC-LOG`, `HANDOFF`, `CHECKPOINT`, `YOLO-DECISIONS`,
+  `REVIEW-REQUIRED`, `PROGRESS`, and `STORY` artifact references in skill and
+  agent operational instructions now name the canonical `.mdx` the runtime
+  writes; the `god-fix` example id is corrected to the `GA-<phase><two-digits>`
+  contract form.
+- Doc counts: `ARCHITECTURE-MAP.md` template count (14) and test-suite count
+  (80) corrected; `RELEASE.md` no longer pins a stale test-file count.
+
 ## [4.0.0] - 2026-07-03
 
 Sibling superskill integration and mdx-first artifacts. Godpowers now detects

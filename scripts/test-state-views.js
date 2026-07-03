@@ -141,6 +141,42 @@ test('tampered managed per-tier state fence emits a warning and is replaced', ()
   assert(repaired.includes('Status: `pending`.'), 'expected per-tier managed body missing');
 });
 
+test('divergent legacy .md twin is preserved (not deleted) with a warning', () => {
+  const tmp = mkProject('godpowers-state-views-twin-keep-');
+  const current = state.init(tmp, 'twin-demo');
+  const mdxFile = progressFile(tmp);
+  const legacyFile = mdxFile.replace(/\.mdx$/, '.md');
+  // A legacy .md reappears next to the .mdx, carrying human notes the .mdx
+  // never absorbed. Retiring it would lose those notes.
+  fs.writeFileSync(legacyFile, `${readProgress(tmp)}\n\n## My notes\nREMEMBER-THIS-NOTE-XYZ\n`);
+  const warnings = [];
+
+  stateViews.writeAll(tmp, current, { onWarning: warning => warnings.push(warning) });
+
+  assert(fs.existsSync(legacyFile), 'divergent legacy twin should be preserved');
+  assert(fs.readFileSync(legacyFile, 'utf8').includes('REMEMBER-THIS-NOTE-XYZ'),
+    'legacy out-of-fence content should survive');
+  assert(warnings.some(w => w.includes('left in place')),
+    `expected preservation warning, got: ${JSON.stringify(warnings)}`);
+});
+
+test('benign legacy .md twin (no unique content) is retired', () => {
+  const tmp = mkProject('godpowers-state-views-twin-retire-');
+  const current = state.init(tmp, 'twin-retire-demo');
+  const mdxFile = progressFile(tmp);
+  const legacyFile = mdxFile.replace(/\.mdx$/, '.md');
+  // The legacy twin is a stale copy whose out-of-fence content is already
+  // represented in the .mdx, so it is safe to retire.
+  fs.writeFileSync(legacyFile, readProgress(tmp));
+  const warnings = [];
+
+  stateViews.writeAll(tmp, current, { onWarning: warning => warnings.push(warning) });
+
+  assert(!fs.existsSync(legacyFile), 'benign legacy twin should be retired');
+  assert(!warnings.some(w => w.includes('left in place')),
+    `should not warn for a benign twin, got: ${JSON.stringify(warnings)}`);
+});
+
 test('state.updateSubStep refreshes PROGRESS.md from state.json', () => {
   const tmp = mkProject('godpowers-state-views-refresh-');
   state.init(tmp, 'refresh-demo');

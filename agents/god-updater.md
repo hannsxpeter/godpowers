@@ -318,7 +318,7 @@ Next:
 Sync FAILS if:
 - An artifact the reconciler said "needs update" wasn't touched
 - An artifact was touched but didn't pass have-nots after
-- SYNC-LOG.md not updated (no audit trail)
+- SYNC-LOG.mdx not updated (no audit trail)
 - Cross-artifact divergence created (e.g., feature in roadmap, not in PRD)
 - Backlog entry marked resolved without referencing the actual commit
 

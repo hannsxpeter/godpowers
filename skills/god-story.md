@@ -31,7 +31,7 @@ Add a new story under `.godpowers/stories/<feature-slug>/`.
 
 ## Output
 
-`.godpowers/stories/<feature-slug>/STORY-{slug}-{NNN}.md`
+`.godpowers/stories/<feature-slug>/STORY-{slug}-{NNN}.mdx`
 
 ## Suggested next
 

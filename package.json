@@ -1,6 +1,6 @@
 {
   "name": "godpowers",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "AI-powered development system: 120 slash commands and 40 specialist agents that take a project from raw idea to hardened production. Runs inside Claude Code, Codex, Cursor, Windsurf, Gemini, and 10+ other AI coding tools.",
   "bin": {
     "godpowers": "./bin/install.js"

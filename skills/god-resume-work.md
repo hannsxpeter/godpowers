@@ -20,7 +20,7 @@ Load context and continue.
    - If exists: read it, summarize for user, ask if context is correct
    - If not: fall back to /god-status (re-derive from disk)
 
-2. If HANDOFF.md exists:
+2. If HANDOFF.mdx exists:
    - Display "Where We Were", "Active Work", "Open Threads"
    - Confirm with user: "Pick up here?"
    - If yes: route to the specific next action
@@ -29,7 +29,7 @@ Load context and continue.
    - Run the same logic as /god-next
    - Suggest the next command based on re-derived state
 
-4. After resuming, archive HANDOFF.md:
+4. After resuming, archive HANDOFF.mdx:
    - Move to `.godpowers/archive/HANDOFF-[timestamp].md` so the trail is preserved
    - Reset `.godpowers/HANDOFF.mdx` (or delete) so future pauses start clean
 

@@ -30,7 +30,7 @@ Resolve the Godpowers runtime root before inspecting routes:
 
 Default to `/god-debug` when urgency is unclear.
 
-The GA row enables `god fix GA-12`. Rules for that row:
+The GA row enables `god fix GA-101`. Rules for that row:
 
 - Parse the GA task and its Fixes findings via `lib/sibling-artifacts.js`
   (remediationTasks).

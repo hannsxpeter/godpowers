@@ -134,7 +134,7 @@ Pause ONLY if:
 
 ## YOLO Handling
 
-With `--yolo`, do NOT pause. Auto-pick defaults and log to YOLO-DECISIONS.md.
+With `--yolo`, do NOT pause. Auto-pick defaults and log to YOLO-DECISIONS.mdx.
 
 Defaults for god-stack-selector:
 - **Tied scores within 10%**: pick the option with lower lock-in cost. Ties
