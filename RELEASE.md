@@ -1,6 +1,6 @@
 # Godpowers 4.0.1 Release
 
-> Status: Ready
+> Status: Published
 > Date: 2026-07-03
 
 [DECISION] Godpowers 4.0.1 is a patch release from a post-publish adversarial review of 4.0.0. It fixes a silent edge-case data-loss path in the generated-view writer, hardens the legacy-log migration with an atomic write, and corrects `.md`/`.mdx` prose drift and stale doc counts the review surfaced.
