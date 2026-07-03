@@ -197,7 +197,7 @@ referenced), `warning` for soft drift (stack version major mismatch),
 /god-scan --footers-only                    # Rewrite fenced footers from existing map
 ```
 
-After running, `REVIEW-REQUIRED.md` is populated with new findings.
+After running, `REVIEW-REQUIRED.mdx` is populated with new findings.
 `/god-review-changes` walks them.
 
 ## Runtime axis
@@ -245,12 +245,12 @@ All four pause both default mode AND `--yolo`.
 
 ```
 static lint -> /god-lint output (immediate, blocks on errors)
-linkage -> REVIEW-REQUIRED.md (cumulative, batched)
+linkage -> REVIEW-REQUIRED.mdx (cumulative, batched)
 runtime -> .godpowers/runtime/<run-id>/{audit-report.json, test-report.json}
-              -> REVIEW-REQUIRED.md
+              -> REVIEW-REQUIRED.mdx
 ```
 
-`/god-review-changes` walks REVIEW-REQUIRED.md interactively. Per
+`/god-review-changes` walks REVIEW-REQUIRED.mdx interactively. Per
 locked plan answer: the file does NOT auto-clear under `--yolo`. The
 user must address or explicitly clear with `--clear`.
 

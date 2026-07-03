@@ -254,7 +254,7 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | `/god-postmortem` |
-| **Inputs** | Logs, events.jsonl (if v0.5+), git log, hotfix commit, optional HANDOFF.md |
+| **Inputs** | Logs, events.jsonl (if v0.5+), git log, hotfix commit, optional HANDOFF.mdx |
 | **Outputs** | `.godpowers/postmortems/<id>/POSTMORTEM.mdx` |
 | **Downstream consumers** | god-docs-writer (updates runbooks based on findings), action items routed to other workflows |
 | **Artifact awareness** | Whole project history; all artifacts; runbooks |
@@ -426,7 +426,7 @@ Each agent has these fields:
 | **Outputs** | Updates to any/all core artifacts, local sync logs, feature awareness, source-system summaries, and `.godpowers/SYNC-LOG.mdx` (append-only) |
 | **Downstream consumers** | (no specific consumers; this is the closure step) |
 | **Artifact awareness** | ALL core artifacts plus local runtime and repository surfaces |
-| **Handoff** | Returns when all touched artifacts pass have-nots, local sync surfaces are reported, and SYNC-LOG.md is appended |
+| **Handoff** | Returns when all touched artifacts pass have-nots, local sync surfaces are reported, and SYNC-LOG.mdx is appended |
 | **Standards check** | YES (per-artifact, per-tier) |
 
 ### god-roadmap-reconciler (legacy compatibility adapter)
@@ -626,7 +626,7 @@ Agent runs, but a finding can BLOCK downstream.
 Examples: god-harden-auditor (Critical finding blocks /god-launch even with --yolo).
 
 ### Shape 5: Auto-resolve under --yolo
-Agent has a documented default for each pause condition; under --yolo it picks the default and logs to YOLO-DECISIONS.md.
+Agent has a documented default for each pause condition; under --yolo it picks the default and logs to YOLO-DECISIONS.mdx.
 Examples: god-pm, god-architect, god-roadmapper, god-stack-selector, god-launch-strategist.
 
 ### Shape 6: Composition (calls other agents)
@@ -735,11 +735,11 @@ added during the production-ready + design + linkage push.
 | **File** | conceptually owned by `god-updater.md` (reverse-sync section); design-specific path lives in `lib/impact.js` + `lib/review-required.js` |
 | **Triggers** | DESIGN.md or PRODUCT.md change detected (mid-arc, /god-sync, post-impeccable-command) |
 | **Inputs** | DESIGN.md diff, linkage map |
-| **Outputs** | Updates DESIGN.md fence footer; populates REVIEW-REQUIRED.md with affected files; emits `runtime.review-needed` events |
+| **Outputs** | Updates DESIGN.md fence footer; populates REVIEW-REQUIRED.mdx with affected files; emits `runtime.review-needed` events |
 | **Downstream consumers** | god-design-reviewer (gates), `lib/impact.js` (computes affected files; runtime module, not a spawned agent), reverse-sync pipeline |
 | **Artifact awareness** | Reads/writes DESIGN; reads PRD, ARCH; reads/writes REVIEW-REQUIRED |
 | **Standards check** | Inherits god-design-reviewer's gate verdict |
-| **Handoff** | After PASS/WARN verdict: continues to impact analysis -> REVIEW-REQUIRED.md -> reverse-sync. After BLOCK: aborts propagation. |
+| **Handoff** | After PASS/WARN verdict: continues to impact analysis -> REVIEW-REQUIRED.mdx -> reverse-sync. After BLOCK: aborts propagation. |
 
 ### god-browser-tester
 
@@ -750,7 +750,7 @@ added during the production-ready + design + linkage push.
 | **Inputs** | URL (live dev server, deploy preview, or production); DESIGN.md (for design audit); PRD.md (for acceptance criteria); project root |
 | **Outputs** | `.godpowers/runtime/<run-id>/audit-report.json` (design verification), `test-report.json` (functional verification), `screenshots/<page>.png`, `summary.md` |
 | **Downstream consumers** | god-orchestrator (launch gate), god-updater (REVIEW-REQUIRED population), state.json runtime slot |
-| **Artifact awareness** | Reads DESIGN, PRD; writes runtime reports; populates REVIEW-REQUIRED.md |
+| **Artifact awareness** | Reads DESIGN, PRD; writes runtime reports; populates REVIEW-REQUIRED.mdx |
 | **Standards check** | WCAG AA contrast on real DOM; component drift > 10%; P-MUST-* acceptance flow failures (all are critical-finding gate triggers) |
 | **Handoff** | Returns to spawner with run ID, backend used, audit + test summaries, paths to reports; suggested next is `/god-review-changes` if findings populated |
 

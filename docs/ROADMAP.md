@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-07-03
-> Current shipped: v4.0.1
+> Current shipped: v4.0.2
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.
@@ -244,7 +244,7 @@ What works today:
   coordinator paths use private handoff files before orchestrator or
   coordinator spawns
 - **Human-readable progress reports**: `/god-status`, `/god-status --locate`,
-  `/god-next`, `/god-mode`, `CHECKPOINT.md`, and `PROGRESS.md` now surface
+  `/god-next`, `/god-mode`, `CHECKPOINT.mdx`, and `PROGRESS.mdx` now surface
   workflow progress, current step, recent work, and what happens next
 - **Proposition closeouts**: proposal, diagnostic, audit, lifecycle, status,
   reconciliation, and decision-support outputs now end with concrete next
@@ -306,7 +306,7 @@ Changed in 2.1.0:
   shell disabled).
 - Guarded runtime JSON parsing (`state.json`, `events.jsonl`) against corrupt
   or partially-written files.
-- Corrected the REVIEW-REQUIRED.md path, made data-directory installs a clean
+- Corrected the REVIEW-REQUIRED.mdx path, made data-directory installs a clean
   replace, and narrowed cache/cleanup deletion scope.
 - Added a skill/agent prose reference validator and softened brittle exact-count
   tests to floors.
@@ -433,7 +433,7 @@ Shipped:
 - **Lock + checkpoint wiring**: `lib/state-lock.js` (acquire / release /
   reclaim / withLock), `lib/checkpoint.syncFromState` (per-sub-step
   pin refresh). Orchestrator agent wired to acquire-mutate-release
-  and refresh CHECKPOINT.md on every sub-step.
+  and refresh CHECKPOINT.mdx on every sub-step.
 - **Token cost saver**: `lib/cost-tracker.js` + `lib/agent-cache.js` +
   `lib/context-budget.js` + `lib/budget.js`. New skills: `/god-cost`,
   `/god-budget` (+ `--on` / `--off` one-shot toggles), `/god-cache-

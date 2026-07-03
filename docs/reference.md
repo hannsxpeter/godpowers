@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v4.0.1.
+Complete command, agent, and artifact reference for v4.0.2.
 
 ## Slash commands (120 total)
 
@@ -204,7 +204,7 @@ diff churn that cannot be traced to the request or slice plan.
 - `/god-scan` - Manually trigger a full reverse-sync of the codebase.
 - `/god-link` - Manually add or remove a code-artifact link.
 - `/god-sync` - Sync all affected artifacts after feature work.
-- `/god-review-changes` - Walk REVIEW-REQUIRED.md interactively.
+- `/god-review-changes` - Walk REVIEW-REQUIRED.mdx interactively.
 - `/god-reconcile` - Comprehensive reconciliation across all impacted artifacts.
 - `/god-reconstruct` - Reverse-engineer planning artifacts from existing code.
 - `/god-migrate` - Convert adjacent planning-system context (including sibling `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx`) into Godpowers prep and seed artifacts.
@@ -384,8 +384,8 @@ available.
 ```
 .godpowers/
   state.json               Machine-readable project state
-  PROGRESS.md              Generated tier status view
-  REQUIREMENTS.md          Deliverable ledger (requirements done / in progress / not started, from /god-progress)
+  PROGRESS.mdx              Generated tier status view
+  REQUIREMENTS.mdx          Deliverable ledger (requirements done / in progress / not started, from /god-progress)
   intent.yaml              Project intent
   links/                   Requirement-to-code linkage map
   prep/INITIAL-FINDINGS.md Godpowers init scan and suggested next rationale
@@ -414,7 +414,7 @@ available.
   features/<slug>/PRD.md
 
   links/                   Bidirectional artifact-to-code map (two JSON files)
-  REVIEW-REQUIRED.md       Pending propagation reviews
+  REVIEW-REQUIRED.mdx       Pending propagation reviews
 
   codebase/                Codebase intelligence (mappers + archaeology)
   todos/TODOS.md
@@ -429,8 +429,8 @@ available.
   log                      Reflog
   .trash/                  Recoverable deletions
 
-  YOLO-DECISIONS.md        Auto-decisions log
-  HANDOFF.md               Pause/resume context
+  YOLO-DECISIONS.mdx        Auto-decisions log
+  HANDOFF.mdx               Pause/resume context
   AUDIT-REPORT.md          /god-audit output
   HYGIENE-REPORT.md        /god-hygiene composite
 ```

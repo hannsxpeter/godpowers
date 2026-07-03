@@ -18,7 +18,7 @@ artifacts noted as "not-yet-created"; conditional artifacts marked
 always-produced during the arc (PRD through Launch, Tiers 1-3) plus 4 lazy
 capture artifacts. Two UI-conditional design artifacts (DESIGN.md, PRODUCT.md)
 bring the total to 16 categories. The arc emits 10 of these (12 when a UI is
-present). The 3 Tier-0 files (`state.json`, `PROGRESS.md`, `intent.yaml`) are
+present). The 3 Tier-0 files (`state.json`, `PROGRESS.mdx`, `intent.yaml`) are
 orchestration state, not counted as artifact categories.
 
 ## What `/god-mode` creates (3 orchestration state files plus up to 12 arc artifacts)
@@ -102,7 +102,7 @@ to ensure final consistency. This applies regardless of flags:
 The mandatory final sync ensures:
 - All 10 produced artifacts pass their have-nots
 - 4 capture artifacts noted as "not-yet-created" (gracefully)
-- SYNC-LOG.md gets the arc completion entry
+- SYNC-LOG.mdx gets the arc completion entry
 - state.json reflects final tier statuses
 
 This is true for every full-arc run, including autonomous --yolo runs. The

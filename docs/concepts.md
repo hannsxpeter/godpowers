@@ -7,7 +7,7 @@ Four things to understand: the Quarterback, tiers, agents, and quality gates.
 There is exactly one orchestrator: `god-orchestrator`. Think of it as the
 quarterback. It reads the defense (mode + scale detection), calls the play
 (spawns the right specialist for each tier sub-step), owns the playbook
-(`state.json`, generated `PROGRESS.md` view, `intent.yaml`, `events.jsonl`),
+(`state.json`, generated `PROGRESS.mdx` view, `intent.yaml`, `events.jsonl`),
 and manages the clock (mandatory final sync at end of project run).
 
 Three skills sit on the sideline and read the same playbook without calling

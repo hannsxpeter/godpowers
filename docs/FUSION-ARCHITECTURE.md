@@ -32,11 +32,11 @@ building toward.
   `lib/workflow-runner.js:9-18`: "'execute' doesn't shell out; the orchestrator
   agent reads the plan and dispatches agents inside its AI context."
 - **State.** `lib/state.js` is the sole write gateway for `.godpowers/state.json`
-  (`state.write()` at `state.js:175` regenerates `PROGRESS.md` views). State is
+  (`state.write()` at `state.js:175` regenerates `PROGRESS.mdx` views). State is
   otherwise federated by domain: `lib/linkage.js` owns `links/*.json` +
-  append-only `LINKAGE-LOG.md`; `lib/requirements.js` derives a ledger and rolls
+  append-only `LINKAGE-LOG.mdx`; `lib/requirements.js` derives a ledger and rolls
   up into `state.deliverables`; `lib/events.js` owns hash-chained
-  `runs/<id>/events.jsonl`. `PROGRESS.md` is a generated projection, not truth.
+  `runs/<id>/events.jsonl`. `PROGRESS.mdx` is a generated projection, not truth.
 - **Evidence skeleton, no producer.** `schema/state.v1.json:341-369` defines
   `SubStep.verification.commands[]` = `{command, status, exitCode, ranAt,
   durationMs, diagnostics}`. `lib/gate.js:270-317` (`checkBuildEvidence`)
@@ -247,9 +247,9 @@ next and how it declares done.
 Current loop (`GOD-ORCHESTRATOR-RUNBOOK.md:480-496`):
 
 ```
-read PROGRESS.md -> first non-done substep -> verify upstream gate ->
+read PROGRESS.mdx -> first non-done substep -> verify upstream gate ->
 spawn specialist -> verify output exists -> have-nots + gate-command ->
-update PROGRESS.md to done -> repeat
+update PROGRESS.mdx to done -> repeat
 ```
 
 Refactored loop:
@@ -305,8 +305,8 @@ the MCP is a read-only veneer.
 .godpowers/
   state.json                 # +verification.commands reliably populated (rollup)
   intent.yaml
-  PROGRESS.md                # generated view (unchanged)
-  REQUIREMENTS.md
+  PROGRESS.mdx                # generated view (unchanged)
+  REQUIREMENTS.mdx
   ledger/                    # NEW (peer to links/)
     verifications.jsonl      # NEW append-only evidence (source of truth)
     reflections.jsonl        # NEW

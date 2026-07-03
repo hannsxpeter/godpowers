@@ -17,7 +17,7 @@ directions cover every change surface:
 
 | File | Owner | Job |
 |---|---|---|
-| `REVIEW-REQUIRED.md` | god-updater (auto-populates) | Append-only registry of pending reviews. User clears via `/god-review-changes`. |
+| `REVIEW-REQUIRED.mdx` | god-updater (auto-populates) | Append-only registry of pending reviews. User clears via `/god-review-changes`. |
 | `.godpowers/design/REJECTED.mdx` | god-design-reviewer (BLOCK verdicts) | Append-only audit trail of design changes that were rejected. |
 | `.godpowers/links/{artifact-to-code,code-to-artifact}.json` | god-updater (via lib/code-scanner) | Bidirectional linkage map. |
 
@@ -42,7 +42,7 @@ artifact change detected
   -> lib/cross-artifact-impact.suggestArtifactReviews
        returns: which other artifacts may need review
   -> lib/review-required.appendBatch
-       writes: REVIEW-REQUIRED.md with affected files + suggestions
+       writes: REVIEW-REQUIRED.mdx with affected files + suggestions
   -> events.jsonl: review-required.populated event
 ```
 
@@ -81,7 +81,7 @@ code change committed
   -> lib/reverse-sync.appendFooters
        writes fenced "Implementation Linkage" sections to PRD/ARCH/
        ROADMAP/STACK/DESIGN.md
-  -> findings flow to REVIEW-REQUIRED.md
+  -> findings flow to REVIEW-REQUIRED.mdx
   -> events.jsonl: linkage.snapshot, drift.detected, agents-md.refreshed
 ```
 
@@ -121,9 +121,9 @@ Six rule classes are defined:
 - STACK UI framework change -> DESIGN token review (info)
 - DESIGN component changes -> ARCH UI surface description review (info)
 
-These suggestions surface as additional items in `REVIEW-REQUIRED.md`.
+These suggestions surface as additional items in `REVIEW-REQUIRED.mdx`.
 
-## REVIEW-REQUIRED.md walkthrough
+## REVIEW-REQUIRED.mdx walkthrough
 
 When you run `/god-review-changes`, you see something like:
 
@@ -147,7 +147,7 @@ Batch 2: reverse-sync
 Address now / defer / mark resolved? [a/d/r]
 ```
 
-Per plan question 3: REVIEW-REQUIRED.md does NOT auto-clear. The user
+Per plan question 3: REVIEW-REQUIRED.mdx does NOT auto-clear. The user
 must walk through and address (or explicitly clear with `--clear`).
 This forces a look at every change.
 

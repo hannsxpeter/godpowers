@@ -26,10 +26,10 @@ Agent claims a tier is "done" but the artifact is missing from disk. Fail.
 A tier is invoked before its upstream artifact exists on disk. Fail.
 
 ### U-05 Rubber-stamp orchestration
-PROGRESS.md says "done" with no corresponding artifact on disk. Fail.
+PROGRESS.mdx says "done" with no corresponding artifact on disk. Fail.
 
 ### U-06 Silence as skip
-A tier is absent from PROGRESS.md (neither done nor skipped). Fail.
+A tier is absent from PROGRESS.mdx (neither done nor skipped). Fail.
 
 ### U-07 Paper artifact
 The document exists but the mechanism it describes does not. Example: a runbook
@@ -68,13 +68,13 @@ everywhere. Fail.
 ## Tier 0: Orchestration Have-Nots
 
 ### O-01 Mode not detected
-PROGRESS.md missing the Mode field. Fail.
+PROGRESS.mdx missing the Mode field. Fail.
 
 ### O-02 Scale not detected
-PROGRESS.md missing the Scale field. Fail.
+PROGRESS.mdx missing the Scale field. Fail.
 
 ### O-03 Tier missing from ledger
-A canonical tier is absent from the PROGRESS.md tier table. Fail.
+A canonical tier is absent from the PROGRESS.mdx tier table. Fail.
 
 ### O-04 Status outside vocabulary
 A tier's status is not one of: pending, in-flight, done, skipped, imported,

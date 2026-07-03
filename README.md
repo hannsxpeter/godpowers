@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-4.0.1-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-4.0.2-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -266,7 +266,9 @@ it instead of starting over:
 `/god-init` auto-invokes the same import when it detects sibling context. The
 sibling files stay read-only; progress flows back through managed
 `GODPOWERS-SYNC.mdx` companion files, and Godpowers flags when an import has
-drifted from the live plan or audit.
+drifted from the live plan or audit. Full details, including the import
+confidence rules and the read-only-except-executor-rules boundary, are in
+[docs/planning-system-migration.md](https://github.com/aihxp/godpowers/blob/main/docs/planning-system-migration.md).
 
 ### Outcome Metrics
 
@@ -344,14 +346,14 @@ dependency to the main `godpowers` package:
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@4.0.1 -p @godpowers/mcp@4.0.1 godpowers-mcp serve --project=.
+npx -y -p godpowers@4.0.2 -p @godpowers/mcp@4.0.2 godpowers-mcp serve --project=.
 ```
 
 The companion exposes `status`, `next`, `gate_check`, `lint_artifact`, and
 `trace_requirement`. Host registration is opt-in:
 
 ```bash
-npx -y -p godpowers@4.0.1 -p @godpowers/mcp@4.0.1 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@4.0.2 -p @godpowers/mcp@4.0.2 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 See [MCP Companion](https://github.com/aihxp/godpowers/blob/main/docs/mcp.md) for package boundaries and setup details.
@@ -394,7 +396,7 @@ See [MCP Companion](https://github.com/aihxp/godpowers/blob/main/docs/mcp.md) fo
 | `/god-scan` | Rebuild linkage map from code; run reverse-sync | (built-in) |
 | `/god-link` | Manually add or remove a code-artifact link | (built-in) |
 | `/god-design-impact` | What-if analysis on DESIGN.md changes | (built-in) |
-| `/god-review-changes` | Walk REVIEW-REQUIRED.md interactively | (built-in) |
+| `/god-review-changes` | Walk REVIEW-REQUIRED.mdx interactively | (built-in) |
 | `/god-context` | Manage AGENTS.md / CLAUDE.md / GEMINI.md fences | god-context-writer |
 | `/god-test-runtime` | Headless browser audit + functional tests | god-browser-tester |
 
@@ -435,10 +437,10 @@ block speculative flexibility, unrelated cleanup, and any touched file that
 does not trace back to the request or slice plan.
 
 If `.godpowers` state already exists, plain `/god-mode` resumes the arc from
-disk (it reads `CHECKPOINT.md`) instead of asking for the project description
+disk (it reads `CHECKPOINT.mdx`) instead of asking for the project description
 again; `--yolo` is not required to resume, it only changes how many pauses the
 run takes. To resume a manual handoff created by `/god-pause-work`, use
-`/god-resume-work` (it reads `HANDOFF.md`). Either way, `/god-status` and
+`/god-resume-work` (it reads `HANDOFF.mdx`). Either way, `/god-status` and
 `/god-next` are always safe re-entry points that report where the run stands.
 
 Under `--yolo`, Godpowers also auto-applies Pillars sync proposals when

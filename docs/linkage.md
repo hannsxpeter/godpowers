@@ -23,7 +23,7 @@ Every linkage entry is one of these IDs paired with a file path.
 .godpowers/links/
   artifact-to-code.json    # forward map: { id: [files] }
   code-to-artifact.json    # reverse map: { file: [ids] }
-  LINKAGE-LOG.md           # append-only history
+  LINKAGE-LOG.mdx           # append-only history
 ```
 
 ## Discovery: 6 mechanisms
@@ -214,7 +214,7 @@ cannot drift from the code that is actually linked.
 - **ARCH container drift**: cross-container imports that may violate the
   declared responsibility split (info-level signal; user verifies)
 
-Findings flow to `REVIEW-REQUIRED.md`.
+Findings flow to `REVIEW-REQUIRED.mdx`.
 
 ## Conventions checklist
 

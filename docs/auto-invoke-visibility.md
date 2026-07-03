@@ -75,8 +75,8 @@ Route closeouts that use contextual or choice-based next values must use
 
 | Area | Current trigger | Visibility requirement |
 |---|---|---|
-| Final sync | `/god-mode` completion | Show a concise sync note and `SYNC-LOG.md` path when artifacts changed |
-| Feature sync | Feature-addition recipes | Show `/god-sync` recommendation and `SYNC-LOG.md` path when review is needed |
+| Final sync | `/god-mode` completion | Show a concise sync note and `SYNC-LOG.mdx` path when artifacts changed |
+| Feature sync | Feature-addition recipes | Show `/god-sync` recommendation and `SYNC-LOG.mdx` path when review is needed |
 | Reverse-sync | `/god-sync`, `/god-scan`, code-touching workflows | Log helper details, show findings only when links or review items changed |
 | Pillars sync | Artifact truth changes | Show changed pillar files, otherwise log no-op |
 | Repo documentation sync | `/god-sync`, `/god-docs`, `/god-doctor`, `/god-status`, `/god-mode` | Show only fixes or recommendations that change the next command |
@@ -99,7 +99,7 @@ Route closeouts that use contextual or choice-based next values must use
 | Checkpoint refresh | After any state.json write | Makes new sessions resume accurately | Never overwrite user content outside checkpoint |
 | Context refresh dry-run | After AGENTS.md or pillar changes | Shows whether tool pointers would change | Default to no-op unless configured |
 | Repo docs refresh | After README, release, contribution, security, support, or public count surfaces change | Keeps public repo docs aligned with runtime facts | Auto-fix mechanical claims only |
-| `/god-review-changes` suggestion | When REVIEW-REQUIRED.md gains entries | Gives the user a concrete review path | Do not auto-clear review items |
+| `/god-review-changes` suggestion | When REVIEW-REQUIRED.mdx gains entries | Gives the user a concrete review path | Do not auto-clear review items |
 | `/god-hygiene` suggestion | After a full project run or every 30 days | Keeps docs, deps, and quality current | Suggest by default, auto-run only when requested |
 | Runtime verification | After frontend-visible changes | Catches blank screens and layout regressions | Auto-run only when local app target is known |
 | Host capability detection | Dashboard, next-route, doctor, sync, and release surfaces | Makes host limits explicit before users rely on automation | Read-only only |
@@ -122,11 +122,11 @@ Run or compute these by default in closeouts:
 
 - `/god-next` after successful commands.
 - `/god-status` style summary after `/god-sync`, `/god-scan`, and `/god-mode`.
-- `/god-review-changes` suggestion when `REVIEW-REQUIRED.md` has pending
+- `/god-review-changes` suggestion when `REVIEW-REQUIRED.mdx` has pending
   entries.
 - `/god-hygiene` suggestion after full project runs, long idle periods, or stale
   review queues.
-- `/god-locate` suggestion when `CHECKPOINT.md` is missing, stale, or conflicts
+- `/god-locate` suggestion when `CHECKPOINT.mdx` is missing, stale, or conflicts
   with `state.json`.
 
 ## Level 2 Auto-Run Local Helpers
@@ -135,7 +135,7 @@ Run these automatically when the trigger is direct, then log details. Display a
 concise note only when artifacts changed, review items were created, or the
 recommendation changed:
 
-- `lib/checkpoint.syncFromState` after `state.json` or `PROGRESS.md` changes.
+- `lib/checkpoint.syncFromState` after `state.json` or `PROGRESS.mdx` changes.
 - Lightweight reverse-sync or linkage scan after code or artifact edits.
 - Pillars sync planning after durable artifact truth changes.
 - Context refresh dry-run after AI tool instruction files change.

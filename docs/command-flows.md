@@ -620,10 +620,10 @@ Sprint ceremonies (optional, scale=large+).
 Multi-persona collaboration.
 
 ### /god-pause-work
-Save HANDOFF.md.
+Save HANDOFF.mdx.
 
 ### /god-resume-work
-Load HANDOFF.md.
+Load HANDOFF.mdx.
 
 ### /god-workstream new|list|switch|merge
 Parallel worktree management.

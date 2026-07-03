@@ -71,7 +71,7 @@ back to steady. This document walks every meaningful integration path.
 1. god-orchestrator marks all tiers `done` in state.json
 2. lifecycle-phase transitions: `in-arc` -> `steady-state-active`
 3. Orchestrator emits transition message listing 11 ongoing workflows
-4. PROGRESS.md gets a footer pointing to /god-feature, /god-hotfix, etc.
+4. PROGRESS.mdx gets a footer pointing to /god-feature, /god-hotfix, etc.
 
 **State changes**:
 ```
@@ -513,11 +513,11 @@ god-orchestrator runs with yolo=true
    ├── god-auditor called with mode=preflight for brownfield/bluefield
    |   -> Writes .godpowers/preflight/PREFLIGHT.mdx
    |   -> Auto-follows safest recommended route
-   |   -> Logs route choice to YOLO-DECISIONS.md
+   |   -> Logs route choice to YOLO-DECISIONS.mdx
    |
    ├── god-pm called with yolo=true
    |   -> Auto-picks default at every pause
-   |   -> Logs to YOLO-DECISIONS.md
+   |   -> Logs to YOLO-DECISIONS.mdx
    |
    ├── god-architect called with yolo=true
    |   -> Same pattern

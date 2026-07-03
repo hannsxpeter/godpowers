@@ -151,7 +151,7 @@ diff detected
        lib/impact.forDesign() computes affected files
        lib/reverse-sync.run() updates linkage and writes Implementation
        footers to DESIGN.md
-       findings flow to REVIEW-REQUIRED.md
+       findings flow to REVIEW-REQUIRED.mdx
        /god-review-changes walks them
 ```
 

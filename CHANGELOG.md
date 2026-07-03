@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.2] - 2026-07-03
+
+Documentation release. Completes the `.md` to `.mdx` migration in the
+user-facing and shipped documentation; no code, surface, or schema change.
+
+### Fixed
+
+- Documentation drift: generated-view and ledger artifact names
+  (`PROGRESS`, `REQUIREMENTS`, `CHECKPOINT`, `HANDOFF`, `SYNC-LOG`,
+  `REVIEW-REQUIRED`, `YOLO-DECISIONS`, `LINKAGE-LOG`) now consistently use the
+  canonical `.mdx` the runtime writes, across `README.md`, `SKILL.md`,
+  `references/HAVE-NOTS.md`, and the `docs/` set. Foreign planning-system files
+  (a legacy `.planning/REQUIREMENTS.md`) correctly stay `.md`.
+
+### Changed
+
+- `README.md`: the "Works with godplans and godaudits" section now links to
+  `docs/planning-system-migration.md` for the full import-confidence and
+  read-only-boundary rules.
+
 ## [4.0.1] - 2026-07-03
 
 Patch release from a post-publish adversarial review of 4.0.0. No surface,

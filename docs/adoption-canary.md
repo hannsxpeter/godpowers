@@ -88,7 +88,7 @@ If the repo has an obvious small feature, run the smallest safe feature path:
   count, and whether status plus next both rendered recommendations.
 - [DECISION] Capture any term Godpowers added or should have added to
   `.godpowers/domain/GLOSSARY.mdx`.
-- [DECISION] Capture whether `.godpowers/PROGRESS.mdx` and `CHECKPOINT.md`
+- [DECISION] Capture whether `.godpowers/PROGRESS.mdx` and `CHECKPOINT.mdx`
   helped resume the run.
 - [DECISION] Capture one confusing moment from the first 10 minutes, even if
   the run succeeded.

@@ -367,8 +367,8 @@ Never auto-run these from inference alone:
   reports success
 
 Every auto-invoke decision must be explainable from one of these inputs:
-changed files, Godpowers artifacts, `state.json`, generated `PROGRESS.md`
-view, `CHECKPOINT.md`, `SYNC-LOG.md`, `REVIEW-REQUIRED.md`, routing YAML,
+changed files, Godpowers artifacts, `state.json`, generated `PROGRESS.mdx`
+view, `CHECKPOINT.mdx`, `SYNC-LOG.mdx`, `REVIEW-REQUIRED.mdx`, routing YAML,
 recipe YAML, or explicit user intent.
 
 ---
@@ -775,7 +775,7 @@ See individual tier sections above.
 ```
 .godpowers/
   state.json           # Machine-readable source of truth
-  PROGRESS.md          # Generated cross-tier progress view
+  PROGRESS.mdx          # Generated cross-tier progress view
   prd/
     PRD.md             # Product Requirements Document
   domain/

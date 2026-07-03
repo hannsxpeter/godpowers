@@ -110,7 +110,7 @@ unclear.
 ### Returning to a project after a long break
 
 ```
-/god-resume-work      <- if HANDOFF.md exists
+/god-resume-work      <- if HANDOFF.mdx exists
 /god-status           <- see current state from disk
 /god-hygiene          <- check what may have drifted while away
 /god-next             <- pick up where you left off
@@ -910,7 +910,7 @@ changes and you want to check the live app.
 2. `/god-test-runtime audit [url]` - design audit only
 3. `/god-test-runtime test [url]` - functional acceptance flows
 4. `/god-test-runtime` - both pipelines in one browser session
-5. Critical findings flow to REVIEW-REQUIRED.md and pause arc
+5. Critical findings flow to REVIEW-REQUIRED.mdx and pause arc
 6. `/god-review-changes` walks them
 
 Runs headless (agent-browser preferred; Playwright fallback). Backends
