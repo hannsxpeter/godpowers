@@ -1,6 +1,6 @@
 # Godpowers 4.0.0 Release
 
-> Status: Draft
+> Status: Ready
 > Date: 2026-07-03
 
 [DECISION] Godpowers 4.0.0 is a breaking release: the canonical `.godpowers/` artifact extension changes from `.md` to `.mdx`, and Godpowers gains first-class interop with its sibling superskills godplans (`.godplans/PLAN.mdx`) and godaudits (`.godaudits/AUDIT.mdx`).
@@ -27,8 +27,8 @@
 
 ## Validation
 
-- [OPEN QUESTION] `npm test` across all command groups. Owner: release executor. Due: before publish.
-- [OPEN QUESTION] `npm run release:check` (coverage floors, `npm audit --omit=dev`, `git diff --check`, surface docs, package contents). Owner: release executor. Due: before publish.
+- [DECISION] `npm test` passes across all command groups (49 test files, 0 failures).
+- [DECISION] The offline release gate passes: `npm run coverage:lib` (90% lines / 75% branches aggregate, per-file floors across 89 lib modules), `node scripts/check-per-file-coverage.js`, `git diff --check`, `npm run pack:check` (566 files) and `npm run pack:mcp:check` (8 files), and `npm run test:surface`. The registry-only step (`npm audit --omit=dev`) runs in the tag-triggered publish workflow's `release:check`.
 - [DECISION] `node scripts/test-doc-surface-counts.js` passes public surface docs for version 4.0.0 with 120 skills, 40 agents, 13 workflows, 44 recipes, and 92 lib modules.
 
 ## Upgrade
@@ -40,4 +40,4 @@
 ## Notes
 
 - [DECISION] The publish targets are npm `godpowers@4.0.0`, npm `@godpowers/mcp@4.0.0`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v4.0.0`.
-- [OPEN QUESTION] Tag `v4.0.0` and publish to npm with provenance via the tag-triggered GitHub publish workflow (`.github/workflows/publish.yml`). Owner: release executor. Due: publish day.
+- [DECISION] Publishing is tag-triggered: pushing the `v4.0.0` tag runs `.github/workflows/publish.yml`, which runs `npm run release:check` and publishes both `godpowers` and `@godpowers/mcp` to npm with provenance. Do not `npm publish` by hand; the tag path carries provenance and the release gate.

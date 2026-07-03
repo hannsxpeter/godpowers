@@ -17,6 +17,7 @@ New to Godpowers? Read these in roughly this order.
 - [host-capabilities.md](./host-capabilities.md) - what each AI tool can and cannot do.
 - [mcp.md](./mcp.md) - the optional read-only `@godpowers/mcp` companion.
 - [brownfield-bluefield.md](./brownfield-bluefield.md) - adopting Godpowers in an existing repo or org.
+- [planning-system-migration.md](./planning-system-migration.md) - importing a godplans plan, a godaudits report, or a foreign planning system.
 - [automation-providers.md](./automation-providers.md) - opt-in host automation.
 - [design-md.md](./design-md.md) - the DESIGN.md / PRODUCT.md design contract.
 - [agent-specs.md](./agent-specs.md) - the specialist agents and what each owns.
@@ -44,7 +45,6 @@ Not required to use the product.
 - [dogfooding.md](./dogfooding.md) - the messy-repo dogfood scenarios.
 - [accountability-hardening-plan.md](./accountability-hardening-plan.md) - the accountability hardening plan.
 - [adoption-canary.md](./adoption-canary.md) and [proof-transcript.md](./proof-transcript.md) - adoption evidence internals.
-- [planning-system-migration.md](./planning-system-migration.md) - migrating from other planning systems.
 - [phase-4-state-read-inventory.md](./phase-4-state-read-inventory.md) - a state-read inventory snapshot.
 - [suite-release-dry-run.md](./suite-release-dry-run.md) - multi-repo suite release dry run.
 - [RFC/](./RFC/) - design RFCs (state model, workflow YAML, research brief).

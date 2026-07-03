@@ -12,6 +12,13 @@ idea to hardened production. It runs as **slash commands inside your AI coding
 tool** (Claude Code, Codex, Cursor, etc.) that orchestrate **specialist agents**
 in fresh contexts to do the work.
 
+It is the builder in a three-part family: [godplans](https://github.com/aihxp/godplans)
+plans everything up front (`.godplans/PLAN.mdx`), [godaudits](https://github.com/aihxp/godaudits)
+scores what was built (`.godaudits/AUDIT.mdx`), and Godpowers builds, imports either
+one when it finds it, and ships. Its own artifacts live under `.godpowers/` as
+`.mdx`, human-readable and machine-parseable, with a legacy `.md` fallback for
+projects created before 4.0.
+
 ## Quick start
 
 ```bash
