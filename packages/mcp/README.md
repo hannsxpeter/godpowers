@@ -2,9 +2,9 @@
 
 - [DECISION] `@godpowers/mcp` is the first-party read-only MCP companion package for Godpowers.
 - [DECISION] The main `godpowers` package stays dependency-free at runtime, and the MCP SDK dependency lives only in this companion package.
-- [DECISION] Version 4.0.2 exposes eight read-only tools: `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`, `work_report`, `route`, and `verification_history`.
-- [DECISION] Mutation tools are intentionally absent through the 4.0.2 release.
-- [DECISION] Runtime skew caveat: 4.0.2 reads `.mdx`-canonical project artifacts (with legacy `.md` fallback). Pair it with a `godpowers` runtime at 4.0.0 or later; a pre-4.0 runtime cannot see `.mdx` artifacts, so mixed versions report incomplete state.
+- [DECISION] Version 5.0.0 exposes nine read-only tools: `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`, `work_report`, `change_metrics`, `route`, and `verification_history`.
+- [DECISION] Mutation tools are intentionally absent through the 5.0.0 release; the MCP surface stays read-only and external write actions are delegated to host connectors (see `/god-connect`).
+- [DECISION] Runtime skew caveat: 5.0.0 reads `.mdx`-canonical project artifacts (with legacy `.md` fallback). Pair it with a `godpowers` runtime at 4.0.0 or later; a pre-4.0 runtime cannot see `.mdx` artifacts, so mixed versions report incomplete state.
 
 ## Install
 
@@ -37,5 +37,6 @@ godpowers-mcp setup --host=codex --project=. --write
 - [DECISION] `lint_artifact` wraps `lib/artifact-linter.js` for one file inside the project root.
 - [DECISION] `trace_requirement` wraps `lib/requirements.js` and returns requirement, roadmap, linkage, and ledger evidence.
 - [DECISION] `work_report` wraps `lib/work-report.js` and returns the verification play-by-play (read-only; never advances the report cursor).
+- [DECISION] `change_metrics` wraps `lib/change-metrics.js` and returns the loop accepted-change rate (accepted vs rejected changes) derived from the event ledger.
 - [DECISION] `route` wraps `lib/quarterback.js` and classifies a prompt into an entry play without mutating state.
 - [DECISION] `verification_history` wraps `lib/evidence.js` and returns ledger records, optionally filtered to one substep.

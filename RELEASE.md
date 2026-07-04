@@ -1,54 +1,41 @@
-# Godpowers 4.0.2 Release
+# Godpowers 5.0.0 Release
 
-> Status: Published
-> Date: 2026-07-03
+> Status: Ready to publish
+> Date: 2026-07-04
 
-[DECISION] Godpowers 4.0.2 is a documentation release. It completes the `.md` to `.mdx` migration in the user-facing and shipped documentation, so every reference to a generated view or ledger names the canonical `.mdx` the runtime actually writes.
-[DECISION] There is no code, surface, or schema change. Counts are unchanged: 120 slash commands, 40 specialist agents, 13 workflows, 44 recipes, 92 lib modules, 157 have-nots. No migration is required; upgrade with `npm install -g godpowers@4.0.2` or `npx godpowers@4.0.2`.
+[DECISION] Godpowers 5.0.0 is the loop-native release. It makes the autonomous loop a first-class mode rather than only a human-launched arc, and closes the three gaps a loop-engineering comparison surfaced: no accepted-change metric, no external write connectors, and no permission re-audit cadence.
+[DECISION] The release is additive over 4.x. Existing commands, artifacts, schemas, and the direct-to-`main` maintainer workflow are unchanged; no project migration is required. New counts: 122 slash commands, 40 specialist agents, 13 workflows, 44 recipes, 95 lib modules, 157 have-nots. The `@godpowers/mcp` companion moves from eight to nine read-only tools.
 
-## What's fixed in 4.0.2
+## What's new in 5.0.0
 
-- [DECISION] Documentation extension drift completed: `PROGRESS`, `REQUIREMENTS`, `CHECKPOINT`, `HANDOFF`, `SYNC-LOG`, `REVIEW-REQUIRED`, `YOLO-DECISIONS`, and `LINKAGE-LOG` references in `README.md`, `SKILL.md`, `references/HAVE-NOTS.md`, and the `docs/` set now name the canonical `.mdx`. Foreign planning-system files (a legacy `.planning/REQUIREMENTS.md`) correctly stay `.md`, and historical case studies and RFCs are preserved as written.
-- [DECISION] `README.md` "Works with godplans and godaudits" links to `docs/planning-system-migration.md` for the full import-confidence and read-only-boundary rules.
-
-## What was fixed in 4.0.1
-
-- [DECISION] `lib/state-views.js`: when both a legacy `.md` twin and the canonical `.mdx` exist, the writer retires the legacy twin only when its out-of-fence content is already represented in the `.mdx`; otherwise it leaves the twin in place and warns, instead of deleting human notes the `.mdx` never absorbed. Covered by two new `scripts/test-state-views.js` cases.
-- [DECISION] `lib/sync-fs.js` `write()` now uses `writeFileAtomic` (temp file plus rename), so a crash during a legacy-log absorb can no longer leave a truncated `.mdx` that shadows and then deletes the intact `.md`.
-- [DECISION] Prose extension drift corrected across skills and agents: `SYNC-LOG`, `HANDOFF`, `CHECKPOINT`, `YOLO-DECISIONS`, `REVIEW-REQUIRED`, `PROGRESS`, and `STORY` operational references now name the canonical `.mdx`; the `god-fix` example id follows the `GA-<phase><two-digits>` contract form.
-- [DECISION] Doc counts corrected: `ARCHITECTURE-MAP.md` template count (14) and test-suite count (80); `RELEASE.md` no longer pins a stale test-file count.
-
-## 4.0.0 feature set (refined by this patch)
-
-- [DECISION] Breaking artifact extension change: every Godpowers-owned `.godpowers/` artifact is written as `.mdx`. Reads are mdx-first with legacy `.md` fallback (`lib/sync-fs.js` `resolveArtifact`/`readArtifact`); lib-owned generated files absorb a legacy `.md` twin on first write. Exemptions stay `.md`: root `DESIGN.md`/`PRODUCT.md`, `.godpowers/cache/`, foreign planning-system markers, and host pointer files.
-- [DECISION] godplans/godaudits interop: `lib/sibling-artifacts.js` detects and parses `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx` (GP/GA checkbox tasks, findings, R-/A- domain id mirroring across the 18 shared domain codes), recomputing every count from the checkbox body because frontmatter counters are cached digests.
-- [DECISION] Import and plan-aware arcs: `/god-migrate` imports godplans and godaudits seeds with GP task ids and R-<DOM>-n ids preserved verbatim; arcs consume the imported plan context; `/god-fix` dispatches open GA remediation tasks with the finding's evidence file:line and the GA Verify command as the done-check.
-- [DECISION] Sync-back companions and read-only boundary: write-back happens only through the managed `.godplans/GODPOWERS-SYNC.mdx` and `.godaudits/GODPOWERS-SYNC.mdx` companions; sibling files stay read-only except when executing plan or audit tasks under the executor rules embedded in PLAN.mdx/AUDIT.mdx themselves.
-- [DECISION] Staleness drift checks: imports record a content hash and `sibling-artifacts.staleness` compares it against the live sibling artifact, so drift surfaces as an explicit signal instead of silently stale context.
-- [DECISION] MDX-safety lint: new have-not U-13 (MDX-unsafe artifact content) with a mechanical artifact-linter check.
-- [DECISION] Gap fixes: the safe-sync gate's `.godpowers/sync/` markers are now written by the documented remediation flow; the quarterback review play falls back to `/god-review` instead of the phantom `/god-code-review`; unreferenced planning/building/shipping/orchestration references are wired to their consuming agents; `docs/agent-specs.md` covers all 40 product agents.
+- [DECISION] `/god-loop` stands up the minimum viable loop: one automation (heartbeat), one skill (work), one state file (memory), one objective gate (brake). It refuses to wire a loop that has no hard stop, and keeps the maker separate from the checker.
+- [DECISION] `/god-connect` detects and scopes external connectors (GitHub, Linear, Slack, Sentry, Notion). Godpowers delegates every action to the host's MCP connector and never vendors an API client, so credentials stay on the host. Reads are allowed by default; writes require an explicit per-connector opt-in in `.godpowers/connectors.json`.
+- [DECISION] Accepted-change rate: `lib/change-metrics.js` derives the loop's accepted-vs-rejected change rate from the hash-chained event ledger (default 50% target). It is surfaced through `/god-metrics` and the new read-only MCP `change_metrics` tool.
+- [DECISION] Permission re-audit cadence: `lib/reaudit.js` tracks how stale the last permission and attack-surface audit is (default 30-day cadence) and reports when a re-audit is due. It is surfaced through `/god-harden` and a read-only `permission-reaudit` automation template.
 
 ## Changes
 
-- [DECISION] `package.json` and `packages/mcp/package.json` now publish the 4.0.2 version.
-- [DECISION] One new runtime module (`lib/sibling-artifacts.js`, lib module count 91 -> 92). No public command/agent/workflow/recipe surface change.
-- [DECISION] CHANGELOG, RELEASE notes, README, roadmap, reference, architecture, the architecture map, MCP docs, and the have-nots counts in concepts/validation/agent-specs now reflect 4.0.2 and the 157 have-nots.
-- [DECISION] `ARCHITECTURE.md` gains section 17 documenting the sibling superskill interop contract and the artifact extension policy.
-- [DECISION] `packages/mcp/README.md` documents the runtime-skew caveat: pair `@godpowers/mcp` 4.0.0 with a `godpowers` runtime at 4.0.0 or later.
+- [DECISION] Three new runtime modules (`lib/change-metrics.js`, `lib/connectors.js`, `lib/reaudit.js`; lib module count 92 -> 95), each with a dedicated test wired into `scripts/run-tests.js`.
+- [DECISION] Two new skills (`/god-loop`, `/god-connect`; slash-command count 120 -> 122) with routing metadata, command-family membership, and install-profile assignment (`god-loop` in builder and maintainer, `god-connect` in maintainer).
+- [DECISION] Event vocabulary gains `change.proposed`, `change.accepted`, and `change.rejected` in `lib/events.js`.
+- [DECISION] `lib/host-capabilities.js` reports external connector availability; `lib/automation-providers.js` adds the read-only `permission-reaudit` template.
+- [DECISION] `@godpowers/mcp` adds the read-only `change_metrics` tool (nine tools total) and stays read-only; external write actions are delegated to host connectors via `/god-connect`.
+- [DECISION] `package.json` and `packages/mcp/package.json` publish the 5.0.0 version; extension pack manifests widen `engines.godpowers` to `>=2.0.0 <6.0.0`.
+- [DECISION] `README.md` was rewritten for newcomers (two-minute on-ramp, plain-English glossary, loop-engineering model up front); CHANGELOG, roadmap, reference, architecture, the architecture map, MCP docs, security supported-versions, and the surface counts now reflect 5.0.0.
 
 ## Validation
 
 - [DECISION] `npm test` passes across all command groups (the full `scripts/run-tests.js` suite, 0 failures).
-- [DECISION] The offline release gate passes: `npm run coverage:lib` (90% lines / 75% branches aggregate, per-file floors across 89 lib modules), `node scripts/check-per-file-coverage.js`, `git diff --check`, `npm run pack:check` (566 files) and `npm run pack:mcp:check` (8 files), and `npm run test:surface`. The registry-only step (`npm audit --omit=dev`) runs in the tag-triggered publish workflow's `release:check`.
-- [DECISION] `node scripts/test-doc-surface-counts.js` passes public surface docs for version 4.0.2 with 120 skills, 40 agents, 13 workflows, 44 recipes, and 92 lib modules.
+- [DECISION] The offline release gate passes: `npm run coverage:lib` (90% lines / 75% branches aggregate, per-file floors), `node scripts/check-per-file-coverage.js`, `git diff --check`, `npm run pack:check`, `npm run pack:mcp:check`, and `npm run test:surface`. The registry-only step (`npm audit --omit=dev`) runs in the tag-triggered publish workflow's `release:check`.
+- [DECISION] `node scripts/test-doc-surface-counts.js` passes public surface docs for version 5.0.0 with 122 skills, 40 agents, 13 workflows, 44 recipes, and 95 lib modules.
 
 ## Upgrade
 
-- [DECISION] Use `npm install -g godpowers@4.0.2` or `npx godpowers@4.0.2`.
-- [DECISION] Upgrading from 4.0.0 needs no re-install; this patch changes no artifact format. Upgrading from a pre-4.0 runtime still requires re-running `npx godpowers install` (or your runtime flags, e.g. `npx godpowers --claude --global`) so installed runtimes and hooks understand `.mdx` projects.
-- [DECISION] Existing projects need no manual file renames: legacy `.md` artifacts remain readable, and lib-owned generated files migrate their legacy twin on first write.
+- [DECISION] Use `npm install -g godpowers@5.0.0` or `npx godpowers@5.0.0`.
+- [DECISION] Upgrading from 4.x needs no artifact-format change. Re-run `npx godpowers install` (or your runtime flags, e.g. `npx godpowers --claude --global`) so installed runtimes pick up the two new skills.
+- [DECISION] Loops, connectors, and the re-audit cadence are opt-in: no existing project behavior changes until you run `/god-loop`, `/god-connect`, or `/god-harden`.
 
 ## Notes
 
-- [DECISION] The publish targets are npm `godpowers@4.0.2`, npm `@godpowers/mcp@4.0.2`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v4.0.2`.
-- [DECISION] Publishing is tag-triggered: pushing the `v4.0.2` tag runs `.github/workflows/publish.yml`, which runs `npm run release:check` and publishes both `godpowers` and `@godpowers/mcp` to npm with provenance. Do not `npm publish` by hand; the tag path carries provenance and the release gate.
+- [DECISION] The publish targets are npm `godpowers@5.0.0`, npm `@godpowers/mcp@5.0.0`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v5.0.0`.
+- [DECISION] Publishing is tag-triggered: pushing the `v5.0.0` tag runs `.github/workflows/publish.yml`, which runs `npm run release:check` and publishes both `godpowers` and `@godpowers/mcp` to npm with provenance. Do not `npm publish` by hand; the tag path carries provenance and the release gate.

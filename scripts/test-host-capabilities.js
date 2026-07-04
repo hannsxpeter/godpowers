@@ -71,6 +71,19 @@ test('detect reports MCP availability from workspace package', () => {
   assert(hostCapabilities.summary(report).includes('MCP available via workspace package'));
 });
 
+test('detect surfaces external connector availability', () => {
+  const tmp = mkProject();
+  const report = hostCapabilities.detect(tmp, {
+    homeDir: path.join(tmp, 'home'),
+    env: { SHELL: '/bin/zsh' },
+    connectorMcpServers: ['github', 'linear']
+  });
+  assert.equal(report.guarantees.connectors.available, 2);
+  assert.equal(report.guarantees.connectors.total, 5);
+  assert(report.guarantees.connectors.summary.includes('2 of 5'));
+  assert(hostCapabilities.render(report).includes('Connectors:'));
+});
+
 test('render summarizes gaps without banned dash characters', () => {
   const tmp = mkProject();
   const report = hostCapabilities.detect(tmp, {

@@ -44,6 +44,7 @@ package-level integrations.
 | `evidence-import.js` | Import an existing `.mythify/` ledger into `.godpowers/ledger/`. |
 | `work-report.js` | Render the verification play-by-play from the evidence ledger. |
 | `adoption-metrics.js` | Derive adoption and outcome metrics from event streams. |
+| `change-metrics.js` | Derive the loop accepted-change rate (accepted vs rejected changes) from the event ledger. |
 
 ## Routing and execution
 
@@ -94,6 +95,7 @@ package-level integrations.
 | `extension-authoring.js` | Scaffold publishable extension packs with manifest, package, README, skill, agent, and workflow files. |
 | `package-legitimacy.js` | Assess third-party package metadata for existence, typo risk, recency, and repository signals. |
 | `pillars.js` | Manage the Pillars project-context layer (`AGENTS.md` plus routed `agents/*.md`). |
+| `connectors.js` | Registry, detection, and write-scope policy for external connectors (GitHub, Linear, Slack, Sentry, Notion) that loops act through by delegating to host MCP servers. |
 
 ## Repository and graph helpers
 
@@ -128,6 +130,7 @@ package-level integrations.
 | `installer-runtimes.js` | Map supported runtimes to their config directories. |
 | `package-identity.js` | Centralize package name, version, repository, docs, and command identity. |
 | `automation-providers.js` | Detect and configure host-native automation providers. |
+| `reaudit.js` | Track permission/attack-surface audit staleness and report when a loop is due for a re-audit (default 30-day cadence). |
 | `dashboard.js` | Compute the next-step action brief and host guarantee line. |
 | `quick-proof.js` | Render the shipped proof fixture for `godpowers quick-proof`. |
 

@@ -1,17 +1,19 @@
 ---
 name: god-metrics
 description: |
-  Aggregate per-tier statistics across runs: agent count, duration,
-  pauses, errors. Useful for spotting slow tiers, frequent pause
-  points, or error-prone steps.
+  Aggregate per-tier statistics across runs (agent count, duration,
+  pauses, errors) plus the loop accepted-change rate. Useful for
+  spotting slow tiers, frequent pause points, error-prone steps, or a
+  loop that is thrashing instead of shipping.
 
   Triggers on: "god metrics", "/god-metrics", "stats", "how long
-  does tier-1 take", "performance"
+  does tier-1 take", "performance", "accepted-change rate", "is the
+  loop healthy"
 ---
 
 # /god-metrics
 
-Per-tier aggregate stats across one or all runs.
+Per-tier aggregate stats and the accepted-change rate across one or all runs.
 
 ## Usage
 
@@ -39,13 +41,26 @@ Per tier:
   tier-3  count=12  avg=18.5s  total=3.7m   pauses=0  errors=0
 
 Totals: 3 runs, 36 agent spawns, 3 pauses, 1 error, 32.6m elapsed
+
+Accepted-change rate: 82% (healthy, >= 50%)  proposed=17 accepted=14 rejected=3
 ```
+
+## Accepted-change rate
+
+The loop-health signal: of the changes proposed, what fraction survived review
+instead of being rejected or rolled back. Above target (default 50%) means the
+loop's first attempts hold up; below target means it is thrashing. It respects
+the same `--since=<duration>` window as the per-tier stats.
 
 ## Implementation
 
-Built-in. Calls `lib/event-reader.js metrics(...)`.
+Built-in. Calls `lib/event-reader.js metrics(...)` for the per-tier stats and
+`lib/change-metrics.js compute(...)` / `render(...)` for the accepted-change rate
+(derived from the `change.*`, `gate.pass`/`gate.fail`, and `state.rollback`
+events in the ledger).
 
 ## Related
 
+- `/god-loop` - the autonomous loop this rate measures
 - `/god-logs` - readable event timeline
 - `/god-trace <tier>` - one tier in detail

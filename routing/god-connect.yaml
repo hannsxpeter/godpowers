@@ -1,0 +1,30 @@
+apiVersion: godpowers/v1
+kind: CommandRouting
+metadata:
+  command: /god-connect
+  description:
+  tier: 0
+  family: configure
+
+prerequisites:
+  required: []
+
+execution:
+  spawns: [built-in]
+  context: fresh
+  writes: [.godpowers/connectors.json]
+
+success-path:
+  next-recommended: varies
+  outcome:
+    type: contextual
+    label: Context-specific next route
+    reason: The next route depends on which connectors are available and scoped.
+    allowed-next: [/god-loop, /god-harden, /god-status]
+
+failure-path:
+  on-error: /god-doctor
+
+endoff:
+  state-update: none
+  events: [agent.start, agent.end]

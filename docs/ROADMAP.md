@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-07-03
-> Current shipped: v4.0.2
+> Current shipped: v5.0.0
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.
@@ -45,15 +45,15 @@ quarterback, work report, reflections, memory, lessons, outcome loops, MCP read
 tools, and ledger importer) shipped across 3.1.0-3.11.0.
 
 What works today:
-- **120 slash commands** as thin orchestrators (front door, first-run, demo, surface control, lifecycle, planning,
+- **122 slash commands** as thin orchestrators (front door, first-run, demo, surface control, lifecycle, planning,
   building, shipping, design, runtime, linkage, story-file, suite, recovery,
   observability, capture, knowledge, process, configuration, utility,
   automation, migration, extension management, release support)
 - **40 specialist agents** in fresh contexts
 - **13 executable workflows** and **44 intent recipes**
-- Optional `@godpowers/mcp` companion package with eight read-only tools:
+- Optional `@godpowers/mcp` companion package with nine read-only tools:
   `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`,
-  `work_report`, `route`, and `verification_history`
+  `work_report`, `change_metrics`, `route`, and `verification_history`
 - **One-directional state authority**: `.godpowers/state.json` is the
   Godpowers decision source, while `.godpowers/PROGRESS.mdx` and
   Godpowers-owned per-tier `STATE.md` files are generated human views.

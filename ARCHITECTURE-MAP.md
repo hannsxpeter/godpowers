@@ -1,8 +1,8 @@
 # Godpowers Architecture Map
 
 > Visual reference for how everything connects.
-> 4 layers, 120 slash commands, 40 agents, 13 workflows, 44 recipes, executable release gates.
-> (120 = 119 `god-*` commands + the `/god` natural-language front door.)
+> 4 layers, 122 slash commands, 40 agents, 13 workflows, 44 recipes, executable release gates.
+> (122 = 121 `god-*` commands + the `/god` natural-language front door.)
 
 ---
 
@@ -640,12 +640,12 @@ godpowers/
 ├── README.md, CHANGELOG.md, LICENSE, CONTRIBUTING.md, SECURITY.md, USERS.md
 ├── ARCHITECTURE.md                <- Design doc
 ├── ARCHITECTURE-MAP.md            <- This file
-├── package.json (v4.0.2)
+├── package.json (v5.0.0)
 ├── .github/workflows/              <- CI + npm publish workflows
 │
 ├── bin/install.js                 <- CLI installer (15 runtimes)
 │
-├── skills/                        <- 120 slash-command skill files
+├── skills/                        <- 122 slash-command skill files
 │   ├── god-mode.md, god-init.md, god-prd.md, god-arch.md, ...
 │   └── (one .md per slash command)
 │
@@ -673,7 +673,7 @@ godpowers/
 │   ├── events.v1.json
 │   └── workflow.v1.json
 │
-├── lib/                           <- Real JS runtime (92 modules)
+├── lib/                           <- Real JS runtime (95 modules)
 │   ├── state.js                   <- state model + drift detection
 │   ├── events.js                  <- OTel-shape event log + hash chain
 │   ├── router.js                  <- command routing
@@ -736,14 +736,14 @@ godpowers/
 
 ---
 
-## Numbers (as of v4.0.2)
+## Numbers (as of v5.0.0)
 
 | Component | Count |
 |-----------|-------|
 | Layers | 4 |
 | Tiers | 4 (0-3) |
 | Sub-steps (per tier) | 13: PRD, ARCH, ROADMAP, STACK, **DESIGN, PRODUCT**, REPO, BUILD, DEPLOY, OBSERVE, LAUNCH, HARDEN, plus orchestration |
-| Slash commands | 120 |
+| Slash commands | 122 |
 | Specialist agents | 40 |
 | Workflows (core YAMLs) | 13 |
 | Intent recipes | 44 |
@@ -751,7 +751,7 @@ godpowers/
 | Templates | 14 |
 | Reference documents | 39 |
 | JSON Schemas | 7 |
-| **JS runtime modules** | **92** |
+| **JS runtime modules** | **95** |
 | **External integrations** | **5** (all detect-and-delegate; none vendored): Google Labs design.md, Impeccable, awesome-design-md, SkillUI, vercel-labs/agent-browser + Playwright |
 | Hooks | 2 |
 | Dogfood scenarios | 5 |

@@ -1,0 +1,30 @@
+apiVersion: godpowers/v1
+kind: CommandRouting
+metadata:
+  command: /god-loop
+  description:
+  tier: 0
+  family: operate
+
+prerequisites:
+  required: []
+
+execution:
+  spawns: [built-in]
+  context: fresh
+  writes: [.godpowers/automations.json]
+
+success-path:
+  next-recommended: varies
+  outcome:
+    type: contextual
+    label: Context-specific next route
+    reason: The next route depends on the chosen heartbeat, work skill, and gate.
+    allowed-next: [/god-automation-setup, /god-metrics, /god-connect]
+
+failure-path:
+  on-error: /god-doctor
+
+endoff:
+  state-update: none
+  events: [agent.start, agent.end]

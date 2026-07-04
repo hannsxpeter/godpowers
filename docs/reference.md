@@ -1,10 +1,10 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v4.0.2.
+Complete command, agent, and artifact reference for v5.0.0.
 
-## Slash commands (120 total)
+## Slash commands (122 total)
 
-The 120 total is 119 `god-*` commands plus the `/god` natural-language front
+The 122 total is 121 `god-*` commands plus the `/god` natural-language front
 door (a thin router that classifies intent rather than doing work itself).
 
 ### Command families
@@ -133,11 +133,12 @@ metrics and should be labeled separately in closeouts.
 SDK dependency, while the main `godpowers` package remains dependency-free at
 runtime.
 
-The companion exposes eight read-only tools: `status`, `next`, `gate_check`,
-`lint_artifact`, `trace_requirement`, `work_report`, `route`, and
-`verification_history`. Mutating tools such as state advance, verify, artifact
-writes, and route edits are intentionally absent through 4.0.0; verification
-stays on the CLI and orchestrator path.
+The companion exposes nine read-only tools: `status`, `next`, `gate_check`,
+`lint_artifact`, `trace_requirement`, `work_report`, `change_metrics`, `route`,
+and `verification_history`. Mutating tools such as state advance, verify,
+artifact writes, and route edits are intentionally absent; external write
+actions are delegated to host connectors via `/god-connect`, so the MCP surface
+stays read-only and verification stays on the CLI and orchestrator path.
 
 Run `godpowers mcp-info --project .` for host setup instructions. Codex
 registration is written only when `godpowers-mcp setup --host=codex --project=. --write` is invoked explicitly.

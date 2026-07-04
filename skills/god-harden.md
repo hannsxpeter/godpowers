@@ -68,6 +68,25 @@ Use /god-debug if you need help with the fix.
 ```
 
 
+## Permission re-audit cadence
+
+An unattended loop accumulates permission creep: connectors gain write scope,
+automations gain reach, credentials linger. `/god-harden` therefore tracks a
+recurring permission and attack-surface re-audit, default every 30 days, backed
+by `lib/reaudit.js`.
+
+1. After a harden pass completes with no unresolved Critical findings, record the
+   audit so the cadence clock resets:
+   `reaudit.record(projectRoot, { scope: ['connectors', 'automations', 'credentials', 'permissions'] })`
+   (written to `.godpowers/harden/reaudit.json`).
+2. On any later run, report staleness: if the last audit is older than the
+   cadence, surface a `re-audit due` line and review external connector write
+   scope in `.godpowers/connectors.json` (see `/god-connect`), automation reach
+   in `.godpowers/automations.json`, credential handling, and host sandbox scope.
+3. A read-only `permission-reaudit` automation template (from
+   `/god-automation-setup`) can run this check on schedule and report drift
+   without changing any scope.
+
 ## Re-invocation contract
 
 What happens if `/god-harden` is run when `.godpowers/harden/FINDINGS.mdx` already exists:

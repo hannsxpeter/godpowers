@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0] - 2026-07-04
+
+Loop-native release. Godpowers becomes a first-class autonomous loop, not only a
+human-launched orchestrator, and closes the three gaps surfaced by a
+loop-engineering comparison: no accepted-change metric, no external write
+connectors, and no permission re-audit cadence. Counts move to 122 skills, 40
+agents, 13 workflows, 44 recipes, 95 lib modules; the MCP companion moves from
+eight to nine read-only tools. Additive over 4.x: existing commands, artifacts,
+and the direct-to-`main` workflow are unchanged.
+
+### Added
+
+- `/god-loop`: stand up the minimum viable loop (one automation, one skill, one
+  state file, one objective gate). Refuses to wire a loop without a hard stop.
+- `/god-connect`: detect and scope external connectors (GitHub, Linear, Slack,
+  Sentry, Notion). Godpowers delegates every action to the host's MCP connector
+  and never vendors an API client; reads are allowed by default and writes
+  require an explicit per-connector opt-in in `.godpowers/connectors.json`.
+- `lib/change-metrics.js`: accepted-change rate derived from the event ledger
+  (accepted vs rejected changes), with a default 50% target. Surfaced through
+  `/god-metrics` and the new read-only MCP `change_metrics` tool.
+- `lib/connectors.js`: connector registry, host detection, and write-scope
+  policy gate. Surfaced in `lib/host-capabilities.js` reporting.
+- `lib/reaudit.js`: permission re-audit cadence (default 30 days), surfaced
+  through `/god-harden` and a read-only `permission-reaudit` automation template.
+- Event vocabulary: `change.proposed`, `change.accepted`, `change.rejected`.
+
+### Changed
+
+- `@godpowers/mcp` exposes nine read-only tools; `change_metrics` is added and the
+  surface stays read-only (external writes are delegated to host connectors).
+- `README.md` rewritten for newcomers: a two-minute on-ramp, a plain-English
+  glossary, and the loop-engineering model up front.
+- `/god-harden` now tracks and reports permission re-audit staleness.
+
 ## [4.0.2] - 2026-07-03
 
 Documentation release. Completes the `.md` to `.mdx` migration in the

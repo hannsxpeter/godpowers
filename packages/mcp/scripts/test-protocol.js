@@ -85,6 +85,7 @@ async function main() {
     const listed = await client.listTools();
     const names = listed.tools.map((tool) => tool.name).sort();
     assert.deepEqual(names, [
+      'change_metrics',
       'gate_check',
       'lint_artifact',
       'next',
@@ -139,6 +140,13 @@ async function main() {
     }));
     assert(workReport.report && workReport.report.summary, 'work_report missing report summary');
     assert(Array.isArray(workReport.report.records), 'work_report records should be an array');
+
+    const changeMetrics = parseToolJson(await client.callTool({
+      name: 'change_metrics',
+      arguments: { project: PROJECT, since: 'all' }
+    }));
+    assert(changeMetrics.metric && typeof changeMetrics.metric.accepted === 'number', 'change_metrics missing accepted count');
+    assert('rate' in changeMetrics.metric, 'change_metrics missing rate field');
 
     const route = parseToolJson(await client.callTool({
       name: 'route',

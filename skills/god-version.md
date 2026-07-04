@@ -16,7 +16,7 @@ Print version and a short capability summary.
 ```
 Godpowers v2.3.1
 Install: /Users/.../.claude/  (matches package.json)
-Surface: 120 skills, 40 agents, 13 workflows, 44 recipes
+Surface: 122 skills, 40 agents, 13 workflows, 44 recipes
 Schema: intent.v1, state.v1, events.v1, workflow.v1, routing.v1, recipe.v1
 External integrations available: impeccable, agent-browser (others lazy)
 Feature awareness: planning-system migration, source-system sync-back, context refresh, dashboard status labels, repo documentation sync, repo surface sync, quick proof, request trace, release hardening, maintenance hardening

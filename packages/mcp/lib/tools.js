@@ -10,6 +10,7 @@ const TOOL_NAMES = [
   'lint_artifact',
   'trace_requirement',
   'work_report',
+  'change_metrics',
   'route',
   'verification_history'
 ];
@@ -126,6 +127,13 @@ function workReportTool(input = {}, opts = {}) {
   return { project: projectRoot, report };
 }
 
+function changeMetricsTool(input = {}, opts = {}) {
+  const projectRoot = projectRootFor(input, opts);
+  const changeMetrics = runtime.requireRuntime('change-metrics', opts);
+  const metric = changeMetrics.compute(projectRoot, { since: input.since || 'all' });
+  return { project: projectRoot, metric };
+}
+
 function routeTool(input = {}, opts = {}) {
   const projectRoot = projectRootFor(input, opts);
   const quarterback = runtime.requireRuntime('quarterback', opts);
@@ -230,6 +238,20 @@ function registerTools(server, opts = {}) {
     }
   }, async (input) => withErrors(() => workReportTool(input, opts)));
 
+  server.registerTool('change_metrics', {
+    title: 'Godpowers accepted-change rate',
+    description: 'Read the loop accepted-change rate (accepted vs rejected changes) derived from the event ledger.',
+    inputSchema: {
+      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      since: z.string().optional().describe("Window such as '7d', '30d', an ISO date, or 'all'. Defaults to all.")
+    },
+    annotations: {
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true
+    }
+  }, async (input) => withErrors(() => changeMetricsTool(input, opts)));
+
   server.registerTool('route', {
     title: 'Godpowers route',
     description: 'Classify a prompt into an entry play via the quarterback (read-only; never mutates state).',
@@ -269,6 +291,7 @@ module.exports = {
   lintTool,
   traceRequirementTool,
   workReportTool,
+  changeMetricsTool,
   routeTool,
   verificationHistoryTool,
   toolResult,
