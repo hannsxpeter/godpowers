@@ -1,6 +1,6 @@
 # Godpowers 5.0.0 Release
 
-> Status: Ready to publish
+> Status: Published
 > Date: 2026-07-04
 
 [DECISION] Godpowers 5.0.0 is the loop-native release. It makes the autonomous loop a first-class mode rather than only a human-launched arc, and closes the three gaps a loop-engineering comparison surfaced: no accepted-change metric, no external write connectors, and no permission re-audit cadence.
