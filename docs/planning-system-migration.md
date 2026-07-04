@@ -8,10 +8,10 @@ and can write its own progress back.
 Two kinds of prior planning are supported:
 
 1. **Sibling superskills** (first-class, structured, machine-authored):
-   - [godplans](https://github.com/aihxp/godplans) emits `.godplans/PLAN.mdx`, a
+   - [godplans](https://github.com/hannsxpeter/godplans) emits `.godplans/PLAN.mdx`, a
      master plan with `GP-` checkbox tasks, `R-<DOM>-n` requirements, and
      embedded executor rules.
-   - [godaudits](https://github.com/aihxp/godaudits) emits `.godaudits/AUDIT.mdx`,
+   - [godaudits](https://github.com/hannsxpeter/godaudits) emits `.godaudits/AUDIT.mdx`,
      a scored audit with `A-<DOM>-n` checks, `F-<DOM>-n` findings, and `GA-`
      remediation tasks.
 2. **Foreign planning systems** (evidence-based import): legacy planning, BMAD,

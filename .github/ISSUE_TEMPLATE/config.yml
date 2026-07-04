@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: Documentation
-    url: https://github.com/aihxp/godpowers/tree/main/docs
+    url: https://github.com/hannsxpeter/godpowers/tree/main/docs
     about: Read the docs before opening an issue
   - name: Discussions
-    url: https://github.com/aihxp/godpowers/discussions
+    url: https://github.com/hannsxpeter/godpowers/discussions
     about: Ask questions or share usage patterns
   - name: Security
-    url: https://github.com/aihxp/godpowers/security/advisories/new
+    url: https://github.com/hannsxpeter/godpowers/security/advisories/new
     about: Report a security vulnerability privately

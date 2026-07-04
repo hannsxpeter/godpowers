@@ -37,5 +37,5 @@
 
 ## Notes
 
-- [DECISION] The publish targets are npm `godpowers@5.0.0`, npm `@godpowers/mcp@5.0.0`, and GitHub release `https://github.com/aihxp/godpowers/releases/tag/v5.0.0`.
+- [DECISION] The publish targets are npm `godpowers@5.0.0`, npm `@godpowers/mcp@5.0.0`, and GitHub release `https://github.com/hannsxpeter/godpowers/releases/tag/v5.0.0`.
 - [DECISION] Publishing is tag-triggered: pushing the `v5.0.0` tag runs `.github/workflows/publish.yml`, which runs `npm run release:check` and publishes both `godpowers` and `@godpowers/mcp` to npm with provenance. Do not `npm publish` by hand; the tag path carries provenance and the release gate.

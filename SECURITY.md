@@ -9,7 +9,7 @@ responsibly.
 
 1. Do NOT open a public GitHub issue
 2. Use GitHub's private vulnerability reporting:
-   https://github.com/aihxp/godpowers/security/advisories/new
+   https://github.com/hannsxpeter/godpowers/security/advisories/new
 3. Include:
    - Description of the vulnerability
    - Steps to reproduce

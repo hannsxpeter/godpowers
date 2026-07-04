@@ -1,6 +1,6 @@
 # Godpowers
 
-[![CI](https://github.com/aihxp/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/aihxp/godpowers/actions/workflows/ci.yml)
+[![CI](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-5.0.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
@@ -74,7 +74,7 @@ in the tool:
   in chat history.
 
 You do not need to memorize these. `/god-help` explains anything in context, and
-the full list lives in [docs/concepts.md](https://github.com/aihxp/godpowers/blob/main/docs/concepts.md).
+the full list lives in [docs/concepts.md](https://github.com/hannsxpeter/godpowers/blob/main/docs/concepts.md).
 
 ---
 
@@ -100,8 +100,8 @@ It fuses several disciplines into one workflow:
 - **Accountability** - the current state is on disk, the next action is derived
   from it, and every change traces back to a request.
 
-It is the builder in a three-part family: [godplans](https://github.com/aihxp/godplans)
-plans everything up front (`.godplans/PLAN.mdx`), [godaudits](https://github.com/aihxp/godaudits)
+It is the builder in a three-part family: [godplans](https://github.com/hannsxpeter/godplans)
+plans everything up front (`.godplans/PLAN.mdx`), [godaudits](https://github.com/hannsxpeter/godaudits)
 scores what was built (`.godaudits/AUDIT.mdx`), and Godpowers builds, imports
 either one when it finds it, and ships. Its own artifacts live under
 `.godpowers/` as `.mdx`, human-readable and machine-parseable, with a legacy
@@ -229,7 +229,7 @@ rather than pretending a background agent ran.
 | Other install targets | Skills and agent contracts install; host-native spawning depends on the tool. |
 | Degraded hosts | Godpowers reports local-only or simulated behavior instead of hiding it. |
 
-Full details: [Host capabilities](https://github.com/aihxp/godpowers/blob/main/docs/host-capabilities.md).
+Full details: [Host capabilities](https://github.com/hannsxpeter/godpowers/blob/main/docs/host-capabilities.md).
 
 ---
 
@@ -343,7 +343,7 @@ npx -y -p godpowers@5.0.0 -p @godpowers/mcp@5.0.0 godpowers-mcp setup --host=cod
 
 External **write** actions never go through this MCP surface; they are delegated
 to host connectors via `/god-connect`. See
-[MCP Companion](https://github.com/aihxp/godpowers/blob/main/docs/mcp.md).
+[MCP Companion](https://github.com/hannsxpeter/godpowers/blob/main/docs/mcp.md).
 
 ---
 
@@ -390,15 +390,15 @@ and agent contracts install but host-native spawning depends on the tool.
 
 ## Full reference
 
-- [Getting Started](https://github.com/aihxp/godpowers/blob/main/docs/getting-started.md)
-- [Concepts](https://github.com/aihxp/godpowers/blob/main/docs/concepts.md)
-- [Loop engineering](https://github.com/aihxp/godpowers/blob/main/docs/loop-engineering.md)
-- [Quick Proof](https://github.com/aihxp/godpowers/blob/main/docs/quick-proof.md)
-- [First 10 Minute Proof Case Study](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/first-10-minute-proof.md)
-- [Adoption Canary](https://github.com/aihxp/godpowers/blob/main/docs/adoption-canary.md)
-- [Command reference (all 122 skills + 40 agents)](https://github.com/aihxp/godpowers/blob/main/docs/reference.md)
-- [Host capabilities](https://github.com/aihxp/godpowers/blob/main/docs/host-capabilities.md)
-- [Roadmap](https://github.com/aihxp/godpowers/blob/main/docs/ROADMAP.md)
+- [Getting Started](https://github.com/hannsxpeter/godpowers/blob/main/docs/getting-started.md)
+- [Concepts](https://github.com/hannsxpeter/godpowers/blob/main/docs/concepts.md)
+- [Loop engineering](https://github.com/hannsxpeter/godpowers/blob/main/docs/loop-engineering.md)
+- [Quick Proof](https://github.com/hannsxpeter/godpowers/blob/main/docs/quick-proof.md)
+- [First 10 Minute Proof Case Study](https://github.com/hannsxpeter/godpowers/blob/main/docs/case-studies/first-10-minute-proof.md)
+- [Adoption Canary](https://github.com/hannsxpeter/godpowers/blob/main/docs/adoption-canary.md)
+- [Command reference (all 122 skills + 40 agents)](https://github.com/hannsxpeter/godpowers/blob/main/docs/reference.md)
+- [Host capabilities](https://github.com/hannsxpeter/godpowers/blob/main/docs/host-capabilities.md)
+- [Roadmap](https://github.com/hannsxpeter/godpowers/blob/main/docs/ROADMAP.md)
 - [Release Notes](RELEASE.md)
 - [Changelog](CHANGELOG.md)
 - [Inspiration](INSPIRATION.md)

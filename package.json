@@ -68,11 +68,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aihxp/godpowers.git"
+    "url": "git+https://github.com/hannsxpeter/godpowers.git"
   },
-  "homepage": "https://github.com/aihxp/godpowers#readme",
+  "homepage": "https://github.com/hannsxpeter/godpowers#readme",
   "bugs": {
-    "url": "https://github.com/aihxp/godpowers/issues"
+    "url": "https://github.com/hannsxpeter/godpowers/issues"
   },
   "files": [
     "bin/",

@@ -21,12 +21,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aihxp/godpowers.git",
+    "url": "git+https://github.com/hannsxpeter/godpowers.git",
     "directory": "packages/mcp"
   },
-  "homepage": "https://github.com/aihxp/godpowers/tree/main/packages/mcp#readme",
+  "homepage": "https://github.com/hannsxpeter/godpowers/tree/main/packages/mcp#readme",
   "bugs": {
-    "url": "https://github.com/aihxp/godpowers/issues"
+    "url": "https://github.com/hannsxpeter/godpowers/issues"
   },
   "engines": {
     "node": ">=18.0.0"

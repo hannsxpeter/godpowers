@@ -88,8 +88,8 @@ function starterCommands(text) {
 console.log('\n  Quick proof documentation tests\n');
 
 test('README links to the quick proof and adoption canary', () => {
-  assertIncludes('README.md', '[Quick Proof](https://github.com/aihxp/godpowers/blob/main/docs/quick-proof.md)');
-  assertIncludes('README.md', '[Adoption Canary](https://github.com/aihxp/godpowers/blob/main/docs/adoption-canary.md)');
+  assertIncludes('README.md', '[Quick Proof](https://github.com/hannsxpeter/godpowers/blob/main/docs/quick-proof.md)');
+  assertIncludes('README.md', '[Adoption Canary](https://github.com/hannsxpeter/godpowers/blob/main/docs/adoption-canary.md)');
 });
 
 test('README exposes starter paths before the full reference', () => {
@@ -152,7 +152,7 @@ test('README names runtime expectations near install', () => {
   assertIncludes('README.md', 'Claude Code');
   assertIncludes('README.md', 'Codex');
   assertIncludes('README.md', 'Degraded hosts');
-  assertIncludes('README.md', '[Host capabilities](https://github.com/aihxp/godpowers/blob/main/docs/host-capabilities.md)');
+  assertIncludes('README.md', '[Host capabilities](https://github.com/hannsxpeter/godpowers/blob/main/docs/host-capabilities.md)');
 });
 
 test('quick proof covers proof, transcripts, starters, and runtime expectations', () => {
@@ -330,7 +330,7 @@ test('proof transcript captures the runnable quick-proof output', () => {
 });
 
 test('first proof case study is linked and keeps claims scoped', () => {
-  assertIncludes('README.md', '[First 10 Minute Proof Case Study](https://github.com/aihxp/godpowers/blob/main/docs/case-studies/first-10-minute-proof.md)');
+  assertIncludes('README.md', '[First 10 Minute Proof Case Study](https://github.com/hannsxpeter/godpowers/blob/main/docs/case-studies/first-10-minute-proof.md)');
   assertIncludes('docs/quick-proof.md', '[First 10 Minute Proof Case Study](case-studies/first-10-minute-proof.md)');
   assertIncludes('docs/adoption-canary.md', '[First 10 Minute Proof Case Study](case-studies/first-10-minute-proof.md)');
   assertIncludes('docs/case-studies/first-10-minute-proof.md', '# First 10 Minute Proof Case Study');

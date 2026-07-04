@@ -11,7 +11,7 @@ test('package identity mirrors package metadata', () => {
 });
 
 test('repoSlug derives owner and repo from repository url', () => {
-  assert(identity.repoSlug() === 'aihxp/godpowers', `repo slug: ${identity.repoSlug()}`);
+  assert(identity.repoSlug() === 'hannsxpeter/godpowers', `repo slug: ${identity.repoSlug()}`);
 });
 
 test('npxCommand uses canonical package name', () => {

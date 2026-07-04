@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aihxp/godpowers.git",
+    "url": "git+https://github.com/hannsxpeter/godpowers.git",
     "directory": "extensions/data-pack"
   },
-  "homepage": "https://github.com/aihxp/godpowers/tree/main/extensions/data-pack#readme",
+  "homepage": "https://github.com/hannsxpeter/godpowers/tree/main/extensions/data-pack#readme",
   "bugs": {
-    "url": "https://github.com/aihxp/godpowers/issues"
+    "url": "https://github.com/hannsxpeter/godpowers/issues"
   },
   "publishConfig": {
     "access": "public"
