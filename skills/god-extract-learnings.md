@@ -58,3 +58,14 @@ Capture institutional knowledge from a completed phase or milestone.
 - Generic lessons ("communicate better")
 - No flip-point references (decisions without context)
 - Missing surprises (everything went perfectly: implausible)
+
+## Applying recalled lessons
+
+Recorded lessons and memory (the `lib/evidence.js` lessons and memory stores)
+are applied silently on later runs, per the Voice and Craft contract
+(`references/shared/VOICE.md`). Do the right thing the lesson implies; do not
+narrate the recall with "based on your memory" or "according to prior runs".
+Surface a recalled fact only when the person asks what you remember, or when it
+changes a decision, and then state the decision, not the retrieval. A recalled
+lesson reflects what was true when recorded, so verify any file, flag, or command
+it names still exists before acting on it.

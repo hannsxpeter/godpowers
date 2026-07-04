@@ -10,6 +10,8 @@ Cross-tier reference content used by multiple agents.
 - [GLOSSARY.md](GLOSSARY.md): standardized vocabulary across tiers.
 - [DASHBOARD-CONTRACT.md](DASHBOARD-CONTRACT.md): shared dashboard and `Next commands:` output contract.
 - [LOCKING.md](LOCKING.md): shared state-lock contract for mutating commands.
+- [VOICE.md](VOICE.md): voice and craft contract (constraint tiers, honest
+  anti-sycophancy voice, minimal formatting, example-driven rules, silent memory).
 
 ## Planned content
 

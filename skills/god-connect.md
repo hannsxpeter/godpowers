@@ -58,11 +58,29 @@ Every action passes `lib/connectors.js` first:
 - Godpowers only names the connector and the action; the host MCP connector
   performs it, so credentials never pass through Godpowers.
 
+## Priority ladder
+
+When more than one connector can serve a task, Godpowers walks a capability
+ladder in priority order and stops at the first connector that is both available
+on the host and enabled in config. It prefers a purpose-built connector over a
+general one.
+
+| Capability | Priority order |
+|------------|----------------|
+| `track-work` (issues, tickets) | Linear, then GitHub |
+| `open-pr` | GitHub |
+| `notify` | Slack |
+| `triage-errors` | Sentry |
+| `document` | Notion, then GitHub |
+
+A disabled connector is skipped, not chosen. Backed by
+`connectors.pickConnector(capability)` in `lib/connectors.js`.
+
 ## Implementation
 
-Built-in. Backed by `lib/connectors.js` (registry, detection, and policy) and
-surfaced in host capability reporting (`lib/host-capabilities.js`). Config lives
-in `.godpowers/connectors.json`.
+Built-in. Backed by `lib/connectors.js` (registry, detection, policy, and the
+capability ladder) and surfaced in host capability reporting
+(`lib/host-capabilities.js`). Config lives in `.godpowers/connectors.json`.
 
 ## Related
 

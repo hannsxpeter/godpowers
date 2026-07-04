@@ -109,6 +109,35 @@ test('readConfig reads and tolerates a malformed file', () => {
   assert(Object.keys(connectors.readConfig(project).connectors).length === 0, 'malformed -> empty');
 });
 
+test('pickConnector walks the ladder and stops at the first available connector', () => {
+  // Both linear and github available: track-work prefers linear.
+  const both = connectors.pickConnector('track-work', { report: connectors.detect('/tmp/x', { mcpServers: ['github', 'linear'] }) });
+  assert(both.connector === 'linear', `expected linear, got ${both.connector}`);
+  assert(both.candidates.join(',') === 'linear,github', `candidates=${both.candidates}`);
+
+  // Only github available: track-work falls through to github.
+  const fallback = connectors.pickConnector('track-work', { report: connectors.detect('/tmp/x', { mcpServers: ['github'] }) });
+  assert(fallback.connector === 'github', `expected github fallback, got ${fallback.connector}`);
+});
+
+test('pickConnector skips a disabled connector and reports when none qualify', () => {
+  const report = connectors.detect('/tmp/x', {
+    mcpServers: ['linear', 'github'],
+    config: { connectors: { linear: { enabled: false } } }
+  });
+  const chosen = connectors.pickConnector('track-work', { report });
+  assert(chosen.connector === 'github', `disabled linear should skip to github, got ${chosen.connector}`);
+
+  const none = connectors.pickConnector('notify', { report: connectors.detect('/tmp/x', { mcpServers: [] }) });
+  assert(none.connector === null, 'no slack -> null');
+  assert(/no available/.test(none.reason), `reason=${none.reason}`);
+});
+
+test('pickConnector rejects an unknown capability', () => {
+  const r = connectors.pickConnector('teleport', { report: connectors.detect('/tmp/x', { mcpServers: ['github'] }) });
+  assert(r.connector === null && /unknown capability/.test(r.reason), JSON.stringify(r));
+});
+
 test('render lists connectors and safety rules', () => {
   const text = connectors.render(connectors.detect('/tmp/x', { mcpServers: ['github'] }));
   assert(text.includes('GitHub'), 'lists github');

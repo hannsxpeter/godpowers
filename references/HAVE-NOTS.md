@@ -15,9 +15,21 @@ that contradicts this document, this document wins.
 Output passes the substitution test. Replace the product name with a competitor's;
 if the sentence still reads true, the content decides nothing. Fail.
 
+- **Bad**: "Our platform delivers a seamless, best-in-class user experience."
+  Swap in any competitor and it still reads true, so it decides nothing.
+- **Good**: "Checkout completes in two taps because we store the card token after
+  the first purchase; a competitor asking for full card entry cannot claim this."
+  It names a specific mechanism a rival could not copy verbatim.
+
 ### U-02 Unlabeled sentence
 A sentence is not tagged DECISION, HYPOTHESIS, or OPEN QUESTION. Anything
 unlabeled is theater. Fail.
+
+- **Bad**: "We will probably use Postgres." Unlabeled and hedged; the reader
+  cannot tell if it is a decision, a guess, or an open question.
+- **Good**: "DECISION: Use Postgres for the primary store (relational data, team
+  familiarity); flip to DynamoDB if sustained writes exceed 5k/s." One label, a
+  rationale, and a flip point.
 
 ### U-03 Phantom resume
 Agent claims a tier is "done" but the artifact is missing from disk. Fail.
@@ -27,6 +39,11 @@ A tier is invoked before its upstream artifact exists on disk. Fail.
 
 ### U-05 Rubber-stamp orchestration
 PROGRESS.mdx says "done" with no corresponding artifact on disk. Fail.
+
+- **Bad**: the orchestrator marks tier-1.prd done because the PM agent replied
+  "PRD complete", but `.godpowers/prd/PRD.mdx` does not exist on disk.
+- **Good**: the orchestrator confirms `.godpowers/prd/PRD.mdx` exists and clears
+  the have-nots gate before advancing state; the agent's claim is not the proof.
 
 ### U-06 Silence as skip
 A tier is absent from PROGRESS.mdx (neither done nor skipped). Fail.

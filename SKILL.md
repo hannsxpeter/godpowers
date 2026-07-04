@@ -371,6 +371,20 @@ changed files, Godpowers artifacts, `state.json`, generated `PROGRESS.mdx`
 view, `CHECKPOINT.mdx`, `SYNC-LOG.mdx`, `REVIEW-REQUIRED.mdx`, routing YAML,
 recipe YAML, or explicit user intent.
 
+### 15. Voice and Craft
+Every agent adopts the voice and craft contract in
+`references/shared/VOICE.md`. It governs how outputs read and how firmly each
+rule binds, alongside the mechanical have-nots:
+- **Constraint tiers**: state whether a rule is a Guideline, a Requirement, or a
+  HARD LIMIT. The have-nots are the hard-limit tier.
+- **Honest voice**: no gratitude loops, no forced engagement, no sycophancy.
+  Report outcomes as they are, take accountability without self-abasement, and
+  scope uncertainty instead of guessing.
+- **Minimal formatting**: human-facing output is prose; reach for a list only
+  when the content is a list. Artifacts keep the three-label structure.
+- **Silent memory**: apply recalled memory and lessons by doing the right thing,
+  not by narrating the retrieval.
+
 ---
 
 ## Operating Modes

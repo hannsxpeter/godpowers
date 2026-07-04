@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.0] - 2026-07-04
+
+Craft and connectors release. Adopts a set of proven agent-prompting patterns as
+a shared voice and craft contract, and extends the 5.0 connector work with a
+priority ladder. Additive over 5.0; no surface counts change (122 skills, 40
+agents, 95 lib modules).
+
+### Added
+
+- `references/shared/VOICE.md`: a voice and craft contract every agent adopts,
+  wired as Core Principle 15 in `SKILL.md`. It covers constraint tiers
+  (Guideline / Requirement / HARD LIMIT, with the have-nots as the hard-limit
+  tier), an honest anti-sycophancy voice, minimal formatting, example-driven
+  rules, and silent application of memory and lessons.
+- Worked good/bad example pairs on the highest-traffic have-nots (U-01
+  substitution, U-02 three-label, U-05 rubber-stamp) in `references/HAVE-NOTS.md`.
+- `connectors.pickConnector(capability)` in `lib/connectors.js`: a capability
+  ladder that picks the highest-priority available, enabled connector and stops
+  at the first match (documented in `/god-connect`).
+
+### Changed
+
+- `skills/god-extract-learnings.md` documents silent application of recalled
+  lessons (no "based on your memory" narration), pointing at `VOICE.md`.
+
 ## [5.0.0] - 2026-07-04
 
 Loop-native release. Godpowers becomes a first-class autonomous loop, not only a
