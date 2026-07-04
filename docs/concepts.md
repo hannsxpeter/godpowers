@@ -103,7 +103,7 @@ is preparation context for PRD, ARCH, ROADMAP, STACK, and docs. It does not
 replace those artifacts.
 
 ### Have-nots
-157 named failure modes. ~30 are mechanical (regex-checkable);
+158 named failure modes. ~30 are mechanical (regex-checkable);
 the rest are interpretive. Examples:
 - P-01: Generic problem statement (passes substitution test)
 - A-04: ADR without flip point

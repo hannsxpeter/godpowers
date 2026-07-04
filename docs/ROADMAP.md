@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-07-03
-> Current shipped: v5.1.0
+> Current shipped: v5.2.0
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.

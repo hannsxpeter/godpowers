@@ -293,6 +293,22 @@ test('command skills treat PROGRESS views as generated or legacy fallback only',
   }
 });
 
+test('shipped skill and agent prose has no sycophancy filler (U-14 self-dogfood)', () => {
+  const voiceLint = require('../lib/voice-lint');
+  const offenders = [];
+  for (const dir of ['skills', 'agents']) {
+    const base = path.join(ROOT, dir);
+    for (const file of fs.readdirSync(base).filter(name => name.endsWith('.md')).sort()) {
+      for (const hit of voiceLint.scan(fs.readFileSync(path.join(base, file), 'utf8'))) {
+        offenders.push(`${dir}/${file}:${hit.line} ("${hit.phrase}")`);
+      }
+    }
+  }
+  if (offenders.length > 0) {
+    throw new Error(`U-14 sycophancy or gratitude loop in shipped prose: ${offenders.join(', ')}`);
+  }
+});
+
 test('state-backed gates do not require markdown STATE view artifacts', () => {
   const artifactMap = require('../lib/artifact-map');
   const expected = {

@@ -72,6 +72,7 @@ package-level integrations.
 | `artifact-diff.js` | Compare artifact changes for review and release workflows. |
 | `gate.js` | Run executable artifact gates for Phase 1 tier completion checks. |
 | `have-nots-validator.js` | Check artifacts against known failure modes. |
+| `voice-lint.js` | Detect sycophancy and gratitude-loop filler (have-not U-14); backs the artifact linter and the shipped-prose self-dogfood. |
 | `meta-linter.js` | Validate Godpowers documentation and skill metadata. |
 | `story-validator.js` | Validate story artifacts and story lifecycle state. |
 

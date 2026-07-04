@@ -80,6 +80,19 @@ ellipsis U+2026, unicode arrows, emoji). Inline code spans and fenced code
 blocks are exempt from the structural checks; banned characters fail
 everywhere. Fail.
 
+### U-14 Sycophancy or gratitude loop
+Output contains gratitude-loop or forced-engagement filler: thanking the person
+merely for their message, praising the question, help-eagerness ("happy to
+help"), a "hope this helps" sign-off, or soliciting continued engagement ("let
+me know if you", "feel free to reach out", "is there anything else"). This is the
+mechanical enforcement of the honest-voice section of `references/shared/VOICE.md`
+via `lib/voice-lint.js`. Fail.
+
+- **Bad**: "Great question! Happy to help. Let me know if you'd like anything
+  else." Three filler phrases, zero information.
+- **Good**: "Done. Tests pass; the migration is reversible. Next: run `/god-ship`."
+  States the outcome and the next step, nothing else.
+
 ---
 
 ## Tier 0: Orchestration Have-Nots
@@ -615,7 +628,7 @@ Updates applied without reading changelog for breaking changes. Fail.
 
 ## Reference Tally
 
-- Universal: 13
+- Universal: 14
 - Tier 0 Orchestration: 10
 - Tier 1 PRD: 15
 - Tier 1 Architecture: 13
@@ -634,7 +647,7 @@ Updates applied without reading changelog for breaking changes. Fail.
 - Workflow Docs: 5
 - Workflow Deps: 6
 
-**Total: 157 named have-nots.**
+**Total: 158 named have-nots.**
 
 Each is grep-testable. Each is a documented failure mode. Together they form
 the mechanical quality definition for Godpowers output.

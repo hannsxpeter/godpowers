@@ -329,7 +329,7 @@ Each agent has these fields:
 | **Inputs** | Any artifact in `.godpowers/<tier>/`; for preflight mode, repo structure, org context, docs, tests, CI, deploy, and agent instruction signals |
 | **Outputs** | `.godpowers/preflight/PREFLIGHT.mdx` (preflight) OR `.godpowers/AUDIT-REPORT.mdx` (full audit) OR PASS/FAIL verdict (gate check) |
 | **Downstream consumers** | Orchestrator (for routing decisions), tier agents (for gate checks) |
-| **Artifact awareness** | All 157 have-nots; all tier artifact contracts; preflight lens for arc-ready, pillars, Godpowers, suite, and refactor risk |
+| **Artifact awareness** | All 158 have-nots; all tier artifact contracts; preflight lens for arc-ready, pillars, Godpowers, suite, and refactor risk |
 | **Handoff** | Returns score per artifact + prioritized remediation. |
 | **Standards check** | This IS the standards check |
 

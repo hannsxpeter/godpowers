@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.0] - 2026-07-04
+
+Voice gate release. Promotes the anti-sycophancy half of the 5.1 voice contract
+from prose guidance to a mechanical gate: a new have-not (U-14) backed by a
+phrase detector, wired into both the artifact linter and a self-dogfood check on
+the framework's own shipped prose.
+
+### Added
+
+- `lib/voice-lint.js`: a high-precision detector for sycophancy and
+  gratitude-loop filler (praising the question, thanking for the message,
+  help-eagerness, hope-this-helps, forced engagement). Reusable by agents on
+  their own drafted output.
+- Have-not **U-14 (sycophancy or gratitude loop)** in `references/HAVE-NOTS.md`,
+  wired as a universal check in `lib/have-nots-validator.js` (warning severity on
+  generated artifacts) with a good/bad worked example.
+- Self-dogfood gate in `scripts/static-check.js` and `scripts/test-voice-lint.js`:
+  the shipped `skills/` and `agents/` prose must contain no gratitude-loop filler,
+  enforced in CI. The current surface is already clean, so this locks it in.
+
+### Changed
+
+- Have-not count moves from 157 to 158; lib module count from 95 to 96. No public
+  command, agent, workflow, or recipe surface change.
+
 ## [5.1.0] - 2026-07-04
 
 Craft and connectors release. Adopts a set of proven agent-prompting patterns as

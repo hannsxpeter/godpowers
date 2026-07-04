@@ -27,6 +27,7 @@ const TEST_COMMANDS = [
   [node, ['scripts/test-context-writer.js']],
   [node, ['scripts/test-pillars.js']],
   [node, ['scripts/test-artifact-linter.js']],
+  [node, ['scripts/test-voice-lint.js']],
   [node, ['scripts/test-artifact-diff.js']],
   [node, ['scripts/test-design-foundation.js']],
   [node, ['scripts/test-linkage.js']],
