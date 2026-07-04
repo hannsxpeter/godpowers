@@ -1,6 +1,6 @@
 # Godpowers 5.1.0 Release
 
-> Status: Ready to publish
+> Status: Published
 > Date: 2026-07-04
 
 [DECISION] Godpowers 5.1.0 is the craft and connectors release. It adopts a set of proven agent-prompting patterns (drawn from studying a current Anthropic system prompt) as a single shared voice and craft contract, and extends the 5.0 connector work with a capability priority ladder.
