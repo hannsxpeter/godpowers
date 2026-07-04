@@ -1,6 +1,6 @@
 # Godpowers 5.2.0 Release
 
-> Status: Ready to publish
+> Status: Published
 > Date: 2026-07-04
 
 [DECISION] Godpowers 5.2.0 is the voice gate release. It promotes the anti-sycophancy half of the 5.1 voice and craft contract from prose guidance to a mechanical gate, closing the caveat that the voice contract was prompt-level and unenforced.
