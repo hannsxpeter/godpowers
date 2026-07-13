@@ -11,4 +11,7 @@
 - [DECISION] `npm run release:check` passed after state, checkpoint, feature awareness, Pillars, and repository surface synchronization.
 - [DECISION] The final release gate passed aggregate coverage, per-file coverage across all 96 expected non-browser runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks.
 - [DECISION] Independent code and security audits confirm that every repository-controlled 5.3.0 finding is resolved.
-- [DECISION] Publication is authorized through the tag workflow after merged-main identity verification.
+- [DECISION] Pull request 60 passed the Node 18, 20, and 22 matrix plus the package gate and was squash-merged as commit `9c6efed128b22df6458273c9428d0ceb0a0b0312`.
+- [DECISION] GitHub Release `v5.3.0` contains both package tarballs with recorded SHA-256 digests.
+- [DECISION] The provenance workflow published npm `godpowers@5.3.0` and npm `@godpowers/mcp@5.3.0`, and both registry integrity values match the release tarballs.
+- [DECISION] Published root installation and the MCP executable pass post-publication verification.

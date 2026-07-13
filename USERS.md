@@ -1,6 +1,6 @@
 # Users and Community
 
-The current source version is v5.3.0, prepared for release. The latest published release remains v5.2.0 until the user-owned tag and npm workflow complete.
+The current source version is v5.3.0, and the latest published release is v5.3.0.
 
 ## Track record
 

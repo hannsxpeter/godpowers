@@ -1,6 +1,6 @@
 # Godpowers 5.3.0 Release
 
-> Status: Approved for publication
+> Status: Published
 > Date: 2026-07-13
 
 - [DECISION] Godpowers 5.3.0 is the product trust hardening release.
@@ -31,8 +31,9 @@
 - [DECISION] Existing 5.x projects need no artifact migration because MDX-first reads retain legacy Markdown fallback.
 - [DECISION] Re-run the installer for each host runtime so the narrowed core profile and updated skills replace installed copies.
 
-## Publication Boundary
+## Publication Evidence
 
-- [DECISION] Publication is authorized for npm `godpowers@5.3.0`, npm `@godpowers/mcp@5.3.0`, GitHub tag `v5.3.0`, and a GitHub Release containing both package tarballs.
-- [DECISION] The tag-triggered workflow verifies that the tag matches both package versions and belongs to merged main before it runs `npm run release:check` and npm publication with provenance.
-- [DECISION] Published-install verification is required before the release is recorded as complete.
+- [DECISION] GitHub tag `v5.3.0` and the GitHub Release point to merged main commit `9c6efed128b22df6458273c9428d0ceb0a0b0312`.
+- [DECISION] The GitHub Release contains the exact 577-file root tarball and 8-file MCP tarball whose integrity values match the npm registry.
+- [DECISION] The tag-triggered workflow verified both package versions and merged-main ancestry, passed the complete release gate, and published npm `godpowers@5.3.0` plus npm `@godpowers/mcp@5.3.0` with provenance.
+- [DECISION] Registry verification, root published-install verification, Claude and Codex installation, and the published MCP executable all pass.
