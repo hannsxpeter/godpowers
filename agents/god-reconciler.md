@@ -175,10 +175,14 @@ Source: `.godpowers/state.json` `tier-3.launch`.
 - If conflicts exist: recommend greenfieldifier review before writes.
 
 #### SIBLING PLAN (`.godplans/PLAN.mdx`)
-- Does the intent match an existing GP task in the plan? (read-only; parse
-  via `lib/sibling-artifacts.js`)
-- Verdict: not-applicable / planned-in-godplans (with GP id) / not-in-plan /
-  plan-conflict
+- Does `.godplans/validate-plan.sh` complete the pinned Godplans 1.1 contract,
+  and is lifecycle status eligible for execution? Inspect read-only through
+  `lib/sibling-artifacts.loadPlan`.
+- Does the intent match an existing GP task in the plan?
+- Verdict: not-applicable / contract-incomplete / awaiting-approval / closed /
+  planned-in-godplans (with GP id) / not-in-plan / plan-conflict
+- Only `ready-for-validator` may recommend execution, and its action must run
+  `bash .godplans/validate-plan.sh .godplans/PLAN.mdx` before the GP task.
 - If plan-conflict: the plan is authored intent; surface the GP/R id and ask
   the user before proceeding.
 
@@ -242,7 +246,7 @@ Return structured JSON to the orchestrating skill:
   "repo_surface": { "status": "needs-surface-sync", "action": "run repo-surface-sync" },
   "feature_awareness": { "status": "needs-awareness-refresh", "action": "run feature-awareness" },
   "source_sync_back": { "status": "not-applicable" },
-  "sibling_plan": { "status": "planned-in-godplans", "match": "GP-204", "action": "execute under the plan's embedded executor rules" },
+  "sibling_plan": { "status": "planned-in-godplans", "match": "GP-204", "action": "run the pinned validator, then execute under the plan's lifecycle rules" },
   "sibling_audit": { "status": "addresses-ga-task", "match": "GA-102", "action": "route via /god-fix GA-102 with the finding's Verify command as done-check" },
   "host_capability": { "status": "degraded", "gap": "fresh-context agent spawn not detected" },
   "safe_sync": { "status": "clear" },

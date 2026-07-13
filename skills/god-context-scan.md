@@ -50,7 +50,8 @@ called drifts.
    `.godpowers/CHECKPOINT.mdx` frontmatter + facts.
 3. `lib/state.detectDrift(projectRoot)` cross-checks artifacts on
    disk match their recorded hashes. This includes source-systems
-   import hashes for sibling artifacts: when `.godplans/PLAN.mdx` or canonical
+   import hashes for sibling artifacts: when `.godplans/PLAN.mdx` plus its
+   recorded validator companion, or canonical
    `.godaudits/AUDIT.json` no longer matches the hash recorded at
    import (the user re-ran godplans/godaudits mid-session), report a
    WARN drift "sibling artifact changed since import" with suggested

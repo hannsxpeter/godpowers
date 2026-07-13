@@ -21,11 +21,13 @@ Derive planning artifacts from existing code.
 
 ## Setup
 
-0. Check for `.godplans/PLAN.mdx`. If present, route to `/god-migrate` import
-   first: PLAN.mdx is authored planning, strictly better than
-   reverse-engineering. Reconstruction should then only fill gaps the plan
-   does not cover, using the plan as HIGH-confidence intent evidence (cite
-   GP/R ids) for those gaps. The plan file itself stays read-only.
+0. Check for `.godplans/PLAN.mdx`. If present, inspect its
+   `.godplans/validate-plan.sh` companion and route to `/god-migrate` import
+   first. A complete Godplans 1.1 contract is authored planning, strictly
+   better than reverse-engineering. Reconstruction should then only fill gaps
+   the plan does not cover, using GP/R ids for those gaps. A legacy or
+   incomplete contract remains hypothesis-grade context and does not authorize
+   GP execution. Both files stay read-only here.
 1. Verify codebase exists (Mode B)
 2. Optional: run /god-archaeology first for richer input
 3. Spawn god-reconstructor in fresh context

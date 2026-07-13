@@ -27,7 +27,7 @@
 - [HYPOTHESIS] Legacy planning context found: [paths or "none detected"].
 - [HYPOTHESIS] Superpowers context found: [paths or "none detected"].
 - [HYPOTHESIS] BMAD context found: [paths or "none detected"].
-- [HYPOTHESIS] godplans master plan found: [.godplans/PLAN.mdx or "none detected"].
+- [HYPOTHESIS] Godplans master plan contract found: [.godplans/PLAN.mdx plus validator status, legacy PLAN-only, or "none detected"].
 - [HYPOTHESIS] godaudits audit found: [.godaudits/AUDIT.json, legacy AUDIT.mdx, or "none detected"].
 - [HYPOTHESIS] Pillars context health: [present / partial / initialized].
 - [HYPOTHESIS] Imported context artifact: [.godpowers/prep/IMPORTED-CONTEXT.mdx or "not created"].
@@ -59,6 +59,6 @@
 - [DECISION] If this artifact conflicts with `.godpowers/intent.yaml`, `.godpowers/state.json`, `PROGRESS.md`, or a completed Godpowers artifact, the Godpowers artifact wins.
 - [DECISION] Pillars files under `agents/*.md` are the native project context layer for Godpowers commands.
 - [DECISION] Imported legacy planning, Superpowers, and BMAD signals must be converted into Godpowers-native artifacts, not preserved as parallel state.
-- [DECISION] Sibling `.godplans/PLAN.mdx` and canonical `.godaudits/AUDIT.json` artifacts stay owned by their products: import seeds from them, keep source and generated views read-only outside task execution, and write back only through `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`.
+- [DECISION] Sibling Godplans PLAN plus validator and canonical `.godaudits/AUDIT.json` artifacts stay owned by their products: import seeds from them, keep source and generated views read-only outside lifecycle-gated task execution, and write back only through `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`.
 - [DECISION] Managed sync-back files may be written only by Godpowers-owned fences or companion paths.
 - [DECISION] Host capability and dogfood findings inform routing, but completed Godpowers artifacts remain authoritative.

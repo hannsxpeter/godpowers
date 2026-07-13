@@ -43,9 +43,11 @@ It answers:
    - README, docs, ADRs, architecture notes, env examples, AGENTS.md
    - test presence, test command discoverability, coverage signals
    - deploy, observability, security, dependency, and ownership signals
-   - `.godplans/PLAN.mdx` and `.godaudits/AUDIT.json` presence (sibling
-     superskill artifacts; a master plan is direct arc-readiness evidence,
-     validated audit state provides score plus coverage; both are read-only)
+   - `.godplans/PLAN.mdx`, `.godplans/validate-plan.sh`, and
+     `.godaudits/AUDIT.json` presence (a Godplans 1.1 master plan is direct
+     arc-readiness evidence only when its pinned validator companion is
+     regular, executable, structurally valid, and lifecycle-consistent;
+     validated audit state provides score plus coverage; all are read-only)
 4. Produce `.godpowers/preflight/PREFLIGHT.mdx`.
 5. Do not edit source files, planning artifacts, configs, or docs outside
    `.godpowers/preflight/`.
@@ -59,7 +61,7 @@ Use these dimensions:
 | Dimension | Looks for |
 |---|---|
 | Repo shape | Project type, framework, package manager, entry points, source layout |
-| Arc readiness | Product direction, architecture notes, roadmap, deploy story, decision records, godplans master plan (`.godplans/PLAN.mdx`) |
+| Arc readiness | Product direction, architecture notes, roadmap, deploy story, decision records, complete Godplans contract (`.godplans/PLAN.mdx` plus validator) |
 | Pillar readiness | Tests, security, docs, observability, maintainability, UX, deployability |
 | Godpowers readiness | Disk artifacts, AGENTS.md, commands, progress state, safe agent boundaries |
 | Refactor risk | Coupling, missing tests, unclear ownership, ambiguous runtime paths |
@@ -134,7 +136,7 @@ Use the report to choose the next pass:
 |---|---|
 | Missing basic project state | `/god-init` |
 | Unknown legacy structure | `/god-archaeology` |
-| godplans `PLAN.mdx` exists | `/god-migrate` (import the plan; do NOT reconstruct) |
+| Godplans `PLAN.mdx` exists | inspect validator, then `/god-migrate`; incomplete contracts stay context-only |
 | godaudits `AUDIT.json` exists | `/god-migrate` then `/god-audit` in prior-audit mode (consume validated state, do not re-derive) |
 | Existing code lacks planning artifacts | `/god-reconstruct` |
 | Debt dominates delivery risk | `/god-tech-debt` |

@@ -44,7 +44,8 @@ needs to specify a mode.
        `.claude/skills/`, `.codex/skills/`
      - BMAD: `.bmad-core/`, `bmad-core/`, `.bmad/`, `BMAD.md`,
        `docs/prd.md`, `docs/architecture.md`, `docs/roadmap.md`
-     - godplans: `.godplans/PLAN.mdx` (godplans master plan)
+     - godplans: `.godplans/PLAN.mdx` plus `.godplans/validate-plan.sh`
+       (Godplans 1.1 master plan contract; PLAN-only inputs are legacy context)
      - godaudits: `.godaudits/AUDIT.json` (canonical 2.x audit state), with
        `.godaudits/AUDIT.mdx` as a generated or legacy fallback
    - If any are detected, summarize useful signals into
@@ -55,8 +56,9 @@ needs to specify a mode.
      detected, and record the systems in `state.json` `source-systems`. Report
      this as `Agent: none, local runtime only`.
    - godplans and godaudits are sibling superskills, not legacy systems.
-     Announce them plainly: "Detected: a godplans master plan. I will import
-     it instead of re-planning." or "Detected: a godaudits audit report. I
+     Announce them plainly: "Detected: a Godplans master plan. I will verify
+     its plan and validator contract, then import it instead of re-planning."
+     or "Detected: a godaudits audit report. I
      will import its findings instead of rediscovering them." Their artifacts
      are read-only for Godpowers except when executing GP/GA tasks; use
      `lib/sibling-artifacts.js` (detect, summarize) for parsing.
@@ -129,7 +131,7 @@ needs to specify a mode.
    - Run Scale Detection (trivial/small/medium/large/enterprise)
    - Write `.godpowers/prep/INITIAL-FINDINGS.mdx`
    - Run planning-system context detection for legacy planning, Superpowers,
-     BMAD, godplans (`.godplans/PLAN.mdx`), and godaudits
+     BMAD, godplans (`.godplans/PLAN.mdx` plus validator), and godaudits
      (`.godaudits/AUDIT.json`, with legacy `.godaudits/AUDIT.mdx` fallback)
    - Write `.godpowers/prep/IMPORTED-CONTEXT.mdx` when useful context exists
    - Run automatic planning-system import through
@@ -215,7 +217,8 @@ If legacy planning, Superpowers, BMAD, godplans, godaudits, or similar
 planning context is detected, create `.godpowers/prep/IMPORTED-CONTEXT.mdx`.
 This artifact is preparation context, not source of truth. It feeds PRD,
 architecture, roadmap, and stack decisions as hypothesis-level input only,
-with one carve-out: facts read from `.godplans/PLAN.mdx` or canonical
+with one carve-out: facts read from a complete Godplans 1.1 PLAN plus pinned
+validator contract, or canonical
 `.godaudits/AUDIT.json` (GP/GA task status, R-<DOM>-n and A-<DOM>-n ids,
 compiled scores and coverage) may be cited as [DECISION]-grade authored state;
 product claims inferred beyond the plan stay [HYPOTHESIS].

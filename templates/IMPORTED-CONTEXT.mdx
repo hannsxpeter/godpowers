@@ -36,6 +36,9 @@
 ## Executable Plan Signals (godplans only)
 
 - [DECISION] Plan file: [.godplans/PLAN.mdx or "not detected"].
+- [DECISION] Validator companion: [.godplans/validate-plan.sh status: pinned executable / missing / non-regular / not executable / unsupported].
+- [DECISION] Godplans contract: [complete / incomplete with reason].
+- [DECISION] Lifecycle: [planning awaiting approval / approved / executing / done closed / invalid].
 - [DECISION] GP task counts: [total / done, recounted from checkboxes, not frontmatter].
 - [DECISION] Requirement id domains present: [`R-<DOM>-n` domains, e.g. `R-SEC`, `R-DB`, or "none"].
 - [DECISION] Executor rules block present: [yes / no].
@@ -56,7 +59,7 @@
 - [DECISION] This artifact must not override native Pillars files under `agents/*.md`.
 - [DECISION] If imported context conflicts with user intent or a Godpowers artifact, the Godpowers artifact wins and the conflict becomes an open question.
 - [DECISION] PRD, architecture, roadmap, and stack agents should cite imported signals as `[HYPOTHESIS]` until confirmed by Godpowers artifacts or the user.
-- [DECISION] Carve-out: facts read from `.godplans/PLAN.mdx` or `.godaudits/AUDIT.json` (GP/GA task status, `R-<DOM>-n` and `A-<DOM>-n` ids, compiled scores and coverage) are `[DECISION]`-grade citations of authored state when cited by id; product claims inferred beyond the plan stay `[HYPOTHESIS]`.
-- [DECISION] `.godplans/` and `.godaudits/` artifacts are read-only for Godpowers except during explicit GP/GA task execution; a godaudits 2.x completion updates and validates AUDIT.json, then regenerates derived views, while all other write-back uses only `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`.
+- [DECISION] Carve-out: facts from a complete Godplans 1.1 PLAN plus pinned validator contract, or `.godaudits/AUDIT.json` (GP/GA task status, `R-<DOM>-n` and `A-<DOM>-n` ids, compiled scores and coverage) are `[DECISION]`-grade citations when cited by id; legacy or incomplete PLAN facts and product claims inferred beyond the sources stay `[HYPOTHESIS]`.
+- [DECISION] `.godplans/` and `.godaudits/` artifacts are read-only for Godpowers except during lifecycle-gated GP/GA task execution; validate-plan.sh is never edited, a godaudits 2.x completion updates and validates AUDIT.json then regenerates derived views, and all other write-back uses only `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`.
 - [DECISION] Open GA tasks are mirrored into a replaceable managed section of `.godpowers/todos/TODOS.mdx`; user-owned todo content outside that section is preserved.
 - [DECISION] Sync-back must preserve source-system context through managed companion files or fences, not by overwriting arbitrary source-system artifacts.

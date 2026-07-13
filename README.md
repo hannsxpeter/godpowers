@@ -108,7 +108,8 @@ It fuses several disciplines into one workflow:
   from it, and every change traces back to a request.
 
 It is the builder in a three-part family: [godplans](https://github.com/hannsxpeter/godplans)
-plans everything up front (`.godplans/PLAN.mdx`), [godaudits](https://github.com/hannsxpeter/godaudits)
+plans everything up front (`.godplans/PLAN.mdx` plus its self-contained
+validator), [godaudits](https://github.com/hannsxpeter/godaudits)
 scores what was built (canonical `.godaudits/AUDIT.json` plus a generated
 `AUDIT.mdx` report), and Godpowers builds, imports
 either one when it finds it, and ships. Its own artifacts live under

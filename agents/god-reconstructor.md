@@ -45,9 +45,10 @@ intent is lost) but it gives Godpowers something to work with.
 - Project root
 - Optional: archaeology report from god-archaeologist
 - Optional: any existing partial artifacts (README, ADRs, comments)
-- Optional: `.godplans/PLAN.mdx` (authored godplans master plan; treat as
-  HIGH-confidence intent, cite by GP/R id, never edit it; parse via
-  `lib/sibling-artifacts.js`)
+- Optional: `.godplans/PLAN.mdx` plus `.godplans/validate-plan.sh`. Treat GP/R
+  facts as HIGH-confidence intent only when `loadPlan` reports a complete
+  Godplans 1.1 contract. Otherwise use them as hypothesis-grade migration
+  context. Never edit either file during reconstruction.
 
 ## Process
 
@@ -63,9 +64,10 @@ From the code, derive:
     within its priority (P-MUST-01, P-MUST-02, P-SHOULD-01, P-COULD-01), placed
     at the start of the bullet. These ids are load-bearing for the deliverable
     ledger and the linkage map.
-- When `.godplans/PLAN.mdx` is present, derive the problem statement, users,
-  and requirements from the plan FIRST (confidence HIGH; these are
-  [DECISION]-grade citations of authored intent), and code evidence second.
+- When a complete Godplans 1.1 contract is present, derive the problem
+  statement, users, and requirements from the plan FIRST (confidence HIGH;
+  these are [DECISION]-grade citations of authored intent), and code evidence
+  second. An incomplete or legacy plan stays [HYPOTHESIS]-grade.
   Preserve the source R-<DOM>-n id alongside the minted P-* id, e.g.
   `P-MUST-01 (plan: R-AUTH-2)`, so linkage back to the plan survives.
 - **Non-functional requirements**: what NFRs are enforced? (from rate limits, caching, indexes)
@@ -96,9 +98,10 @@ From git history + current state:
 - **Next**: TODOs at module level, unimplemented endpoints, stubs
 - **Later**: high-level themes from issue tracker if accessible
 
-When `.godplans/PLAN.mdx` is present, map its GP task checkbox state to the
-roadmap instead of inferring solely from git history: `- [x] GP-` tasks feed
-Done, `- [ ] GP-` tasks feed Next, in the plan's phase and wave order.
+When a complete Godplans 1.1 contract is present, map its GP task checkbox
+state to the roadmap instead of inferring solely from git history: `- [x] GP-`
+tasks feed Done, `- [ ] GP-` tasks feed Next, in phase and wave order. For an
+incomplete contract, record those states as hypotheses pending repair.
 
 Give each delivery increment a stable `M-<slug>` id, a `**Status**:` field
 (pending/building/done), and a `**Features (from PRD)**:` list of the

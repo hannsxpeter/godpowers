@@ -25,11 +25,13 @@ on: [/god-mode]
 
 jobs:
   # The context job also runs sibling-artifact detection. When
-  # .godplans/PLAN.mdx exists in an otherwise greenfield repo
-  # (greenfield-with-plan), lib/planning-systems.importPlanningContext seeds
+  # .godplans/PLAN.mdx exists in an otherwise greenfield repo, the helper
+  # inspects its pinned executable .godplans/validate-plan.sh companion.
+  # For a greenfield-with-plan run, planning-system import seeds
   # tier-1 artifacts as status 'imported' before god-pm runs, so god-pm and
   # god-architect harden the imported plan seeds instead of interviewing from
-  # zero. PLAN.mdx stays read-only; parsing via lib/sibling-artifacts.js.
+  # zero. Incomplete or lifecycle-ineligible plans never dispatch GP work.
+  # Both Godplans files stay read-only outside explicit plan execution.
   context:
     tier: 0
     uses: god-orchestrator@^1.0.0

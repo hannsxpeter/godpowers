@@ -28,6 +28,7 @@ execution:
     - .godpowers/todos/TODOS.mdx
     - .godpowers/threads/
     - .godplans/PLAN.mdx
+    - .godplans/validate-plan.sh
     - .godaudits/AUDIT.json
     - .godaudits/AUDIT.mdx
     - .godaudits/AUDIT.md

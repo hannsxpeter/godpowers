@@ -2,7 +2,7 @@
 
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
-> Last updated: 2026-07-03
+> Last updated: 2026-07-13
 > Current source: v5.3.1. Latest published: v5.3.1.
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
@@ -45,6 +45,10 @@ quarterback, work report, reflections, memory, lessons, outcome loops, MCP read
 tools, and ledger importer) shipped across 3.1.0-3.11.0.
 
 What works today:
+- **Godplans 1.1 interoperability**: PLAN plus pinned executable validator
+  contract detection, non-executing structural preflight, lifecycle-safe GP
+  routing, exact pre-execution validator gate, complete GP/R seed traceability,
+  large-plan reads, two-file staleness, and legacy hypothesis-grade fallback.
 - **Godaudits 2.x interoperability**: canonical `.godaudits/AUDIT.json`
   detection and import, generated and legacy MDX fallback, compiled score and
   coverage signals, typed GA remediation dispatch, managed todo synchronization,

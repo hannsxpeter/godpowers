@@ -26,12 +26,14 @@ see_also: [quality, deploy]
 - [DECISION] `ARCHITECTURE-MAP.md` keeps a complete core command supplement so all 122 shipped skills appear in the human-readable map.
 - [DECISION] Workflow plans use canonical helper IDs such as `source-sync-back` and `pillars-sync-plan`, while `/god-sync` output may show the shorter aliases `source-sync` and `pillars-sync`.
 - [DECISION] Godaudits 2.x interoperability reads `.godaudits/AUDIT.json` as canonical machine state, imports explicit check outcomes, evidence metadata, compliance, accepted risks, open questions, score caps, coverage, findings, and typed GA tasks, and uses generated or legacy AUDIT.mdx only as a fallback.
+- [DECISION] Godplans 1.1 interoperability treats `.godplans/PLAN.mdx` plus the pinned executable `.godplans/validate-plan.sh` as one contract, mirrors structural validation without executing repository shell during import, blocks GP dispatch outside `approved` or `executing`, and requires the official validator to pass immediately before work.
 - [DECISION] The current executable audit status is fresh for repo surface, route quality, recipe coverage, and workflow planning.
 
 ## Watchouts
 
 - [HYPOTHESIS] Runtime behavior depends on host AI tools exposing skill and agent capabilities consistently.
 - [HYPOTHESIS] Local helper work must stay visible in closeouts so automatic work does not become hidden orchestration.
+- [HYPOTHESIS] A future Godplans validator hash requires an explicit Godpowers compatibility update so new shell bytes cannot become trusted silently.
 
 <!-- godpowers:pillar-sync:begin -->
 ## Godpowers artifact sources

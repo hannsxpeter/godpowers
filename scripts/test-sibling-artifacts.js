@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const siblingArtifacts = require('../lib/sibling-artifacts');
 const planningSystems = require('../lib/planning-systems');
@@ -82,6 +83,70 @@ const PLAN_FIXTURE = [
   '',
   '- 2026-07-01 planned phase 1.'
 ].join('\n');
+
+function godplans11Plan(status = 'approved', taskCount = 1) {
+  const taskLines = [];
+  for (let number = 1; number <= taskCount; number++) {
+    const id = `GP-${100 + number}`;
+    taskLines.push(
+      `- [ ] ${id} [W1.1] Verify release condition ${number}`,
+      '  - Files: package.json',
+      '  - Depends on: none',
+      '  - Reuses: existing release check from package.json',
+      '  - Acceptance: release check exits zero; package metadata remains valid',
+      '  - Verify: `npm run release:check`',
+      '  - Requirements: R-1.1, R-CODE-1, R-SEC-1',
+      ''
+    );
+  }
+  return [
+    '---',
+    'name: demo',
+    'plan_version: 2',
+    `status: ${status}`,
+    'created: 2026-07-01',
+    'updated: 2026-07-13',
+    'mode: replan',
+    'archetype: cli-tool',
+    'domains_applicable: [product, security, code-quality]',
+    'domains_excluded: []',
+    'progress:',
+    '  phases_total: 1',
+    '  phases_done: 0',
+    `  tasks_total: ${taskCount}`,
+    '  tasks_done: 0',
+    '---',
+    '',
+    '# Demo master plan',
+    '',
+    'Done means the release verification command passes.',
+    '',
+    '## Requirements',
+    '',
+    'R-1.1: WHEN the maintainer verifies the release THE SYSTEM SHALL exit zero.',
+    '',
+    '## Phases',
+    '',
+    '## Phase 1: Verification',
+    '',
+    '### Wave 1.1',
+    '',
+    ...taskLines,
+    'Checkpoint: the release gate passes.',
+    '',
+    '## Open Questions',
+    '',
+    '## Rules for executing agents',
+    '',
+    'Run the validator before execution.',
+    '',
+    '## Session log',
+    '',
+    '- 2026-07-13 replanned with godplans v1.1.0.'
+  ].join('\n');
+}
+
+const TEST_PLAN_VALIDATOR = '#!/usr/bin/env bash\nexit 0\n';
 
 const AUDIT_FIXTURE = [
   '---',
@@ -424,6 +489,135 @@ test('parsePlan tolerates empty text and missing sections', () => {
   assert(Object.keys(bare.frontmatter).length === 0, 'missing frontmatter should be {}');
 });
 
+test('validatePlanText mirrors the Godplans 1.1 structural and lifecycle gate', () => {
+  const valid = siblingArtifacts.validatePlanText(godplans11Plan('approved'));
+  assert(valid.valid, `valid plan errors: ${valid.errors.join('; ')}`);
+  assert(valid.derived.tasks_total === 1 && valid.derived.phases_total === 1,
+    `derived counters: ${JSON.stringify(valid.derived)}`);
+
+  const executionBlocked = siblingArtifacts.validatePlanText(
+    godplans11Plan('planning'),
+    { allowPlanning: false }
+  );
+  assert(executionBlocked.errors.some((error) => error.includes('execution requires status')),
+    `execution lifecycle error missing: ${executionBlocked.errors.join('; ')}`);
+
+  const missingReuse = godplans11Plan().replace(
+    '  - Reuses: existing release check from package.json\n',
+    ''
+  );
+  const invalid = siblingArtifacts.validatePlanText(missingReuse);
+  assert(!invalid.valid && invalid.errors.includes('GP-101 missing required field: Reuses'),
+    `Reuses validation missing: ${invalid.errors.join('; ')}`);
+});
+
+test('loadPlan verifies the two-artifact contract without executing shell', () => {
+  const tmp = mkProject('godpowers-plan-contract-');
+  writeRel(tmp, '.godplans/PLAN.mdx', godplans11Plan('approved'));
+
+  let loaded = siblingArtifacts.loadPlan(tmp);
+  assert(!loaded.contract.complete && loaded.contract.reason === 'validator-missing',
+    `missing validator reason: ${loaded.contract.reason}`);
+
+  writeRel(tmp, '.godplans/validate-plan.sh', TEST_PLAN_VALIDATOR);
+  fs.chmodSync(path.join(tmp, '.godplans', 'validate-plan.sh'), 0o755);
+  loaded = siblingArtifacts.loadPlan(tmp);
+  assert(!loaded.contract.complete && loaded.contract.reason === 'validator-unsupported',
+    `unknown validator reason: ${loaded.contract.reason}`);
+
+  const hash = `sha256:${crypto.createHash('sha256').update(TEST_PLAN_VALIDATOR).digest('hex')}`;
+  loaded = siblingArtifacts.loadPlan(tmp, {
+    trustedValidatorHashes: { [hash]: 'test-1.1.0' }
+  });
+  assert(loaded.contract.complete && loaded.contract.executionEligible,
+    `trusted contract: ${JSON.stringify(loaded.contract)}`);
+  assert(loaded.contract.reason === 'ready-for-validator', `reason: ${loaded.contract.reason}`);
+  assert(loaded.contract.validatorCommand === 'bash .godplans/validate-plan.sh .godplans/PLAN.mdx',
+    `command: ${loaded.contract.validatorCommand}`);
+});
+
+test('loadPlan rejects non-executable and symlinked validator companions', () => {
+  const tmp = mkProject('godpowers-plan-validator-safety-');
+  writeRel(tmp, '.godplans/PLAN.mdx', godplans11Plan());
+  writeRel(tmp, '.godplans/validate-plan.sh', TEST_PLAN_VALIDATOR);
+  fs.chmodSync(path.join(tmp, '.godplans', 'validate-plan.sh'), 0o644);
+  let loaded = siblingArtifacts.loadPlan(tmp);
+  assert(loaded.contract.reason === 'validator-not-executable',
+    `non-executable reason: ${loaded.contract.reason}`);
+
+  fs.rmSync(path.join(tmp, '.godplans', 'validate-plan.sh'));
+  const outside = mkProject('godpowers-plan-validator-outside-');
+  writeRel(outside, 'validate-plan.sh', TEST_PLAN_VALIDATOR);
+  fs.symlinkSync(
+    path.join(outside, 'validate-plan.sh'),
+    path.join(tmp, '.godplans', 'validate-plan.sh')
+  );
+  loaded = siblingArtifacts.loadPlan(tmp);
+  assert(loaded.contract.reason === 'validator-unreadable-or-non-regular',
+    `symlink reason: ${loaded.contract.reason}`);
+});
+
+test('planExecutionState blocks planning and done plans before GP dispatch', () => {
+  const hash = `sha256:${crypto.createHash('sha256').update(TEST_PLAN_VALIDATOR).digest('hex')}`;
+  const opts = { trustedValidatorHashes: { [hash]: 'test-1.1.0' } };
+  for (const [status, reason] of [
+    ['planning', 'awaiting-explicit-approval'],
+    ['done', 'plan-closed']
+  ]) {
+    const tmp = mkProject(`godpowers-plan-${status}-`);
+    let planText = godplans11Plan(status);
+    if (status === 'done') {
+      planText = planText
+        .replace('  phases_done: 0', '  phases_done: 1')
+        .replace('  tasks_done: 0', '  tasks_done: 1')
+        .replace('- [ ] GP-101', '- [x] GP-101');
+    }
+    writeRel(tmp, '.godplans/PLAN.mdx', planText);
+    writeRel(tmp, '.godplans/validate-plan.sh', TEST_PLAN_VALIDATOR);
+    fs.chmodSync(path.join(tmp, '.godplans', 'validate-plan.sh'), 0o755);
+    const execution = siblingArtifacts.planExecutionState(tmp, opts);
+    assert(!execution.executionEligible && execution.reason === reason,
+      `${status} gate: ${JSON.stringify(execution)}`);
+    assert(execution.nextTasks.length === 0, `${status} dispatched GP work`);
+  }
+});
+
+test('loadPlan rejects a done lifecycle that still has open tasks', () => {
+  const tmp = mkProject('godpowers-plan-inconsistent-done-');
+  writeRel(tmp, '.godplans/PLAN.mdx', godplans11Plan('done'));
+  writeRel(tmp, '.godplans/validate-plan.sh', TEST_PLAN_VALIDATOR);
+  fs.chmodSync(path.join(tmp, '.godplans', 'validate-plan.sh'), 0o755);
+  const hash = `sha256:${crypto.createHash('sha256').update(TEST_PLAN_VALIDATOR).digest('hex')}`;
+  const loaded = siblingArtifacts.loadPlan(tmp, {
+    trustedValidatorHashes: { [hash]: 'test-1.1.0' }
+  });
+  assert(!loaded.contract.complete && loaded.contract.reason === 'lifecycle-inconsistent',
+    `inconsistent done gate: ${JSON.stringify(loaded.contract)}`);
+  assert(loaded.plan.lifecycle.errors.some((error) => error.includes('open task')),
+    `lifecycle errors: ${loaded.plan.lifecycle.errors.join('; ')}`);
+});
+
+test('planExecutionState dispatches the first eligible task from an approved plan', () => {
+  const tmp = mkProject('godpowers-plan-approved-dispatch-');
+  writeRel(tmp, '.godplans/PLAN.mdx', godplans11Plan('approved', 2));
+  writeRel(tmp, '.godplans/validate-plan.sh', TEST_PLAN_VALIDATOR);
+  fs.chmodSync(path.join(tmp, '.godplans', 'validate-plan.sh'), 0o755);
+  const hash = `sha256:${crypto.createHash('sha256').update(TEST_PLAN_VALIDATOR).digest('hex')}`;
+  const execution = siblingArtifacts.planExecutionState(tmp, {
+    trustedValidatorHashes: { [hash]: 'test-1.1.0' }
+  });
+  assert(execution.executionEligible && execution.reason === 'ready-for-validator',
+    `approved execution gate: ${JSON.stringify(execution)}`);
+  assert(execution.nextTasks.length === 1 && execution.nextTasks[0].id === 'GP-101',
+    `next tasks: ${execution.nextTasks.map((task) => task.id).join(', ')}`);
+});
+
+test('the trusted Godplans validator catalog pins version 1.1.0', () => {
+  const expected = 'sha256:cec8691bb32f272bfe29acdab435be6f95d55405a914fc6ff33277aca5c8eb6b';
+  assert(siblingArtifacts.GODPLANS_VALIDATOR_HASHES[expected] === '1.1.0',
+    'official Godplans 1.1.0 validator hash missing');
+});
+
 test('parseAudit recounts GA tasks and parses the finding grammar', () => {
   const audit = siblingArtifacts.parseAudit(AUDIT_FIXTURE);
   assert(audit.counts.total === 2 && audit.counts.done === 1 && audit.counts.open === 1,
@@ -727,6 +921,29 @@ test('staleness matches the recorded import hash and flags edits', () => {
   assert(stale[0].recordedHash !== stale[0].currentHash, 'hashes should differ');
 });
 
+test('godplans staleness hashes PLAN and validator but ignores sync-back', () => {
+  const tmp = mkProject('godpowers-plan-staleness-');
+  state.init(tmp, 'godplans-contract-staleness-test');
+  writeRel(tmp, '.godplans/PLAN.mdx', godplans11Plan());
+  writeRel(tmp, '.godplans/validate-plan.sh', TEST_PLAN_VALIDATOR);
+  fs.chmodSync(path.join(tmp, '.godplans', 'validate-plan.sh'), 0o755);
+  planningSystems.importPlanningContext(tmp);
+
+  writeRel(tmp, '.godplans/GODPOWERS-SYNC.mdx', '# Generated sync back\n');
+  let drift = siblingArtifacts.staleness(tmp, state.read(tmp));
+  assert(drift.length === 1 && drift[0].stale === false,
+    'sync-back companion caused false Godplans drift');
+
+  fs.chmodSync(path.join(tmp, '.godplans', 'validate-plan.sh'), 0o644);
+  drift = siblingArtifacts.staleness(tmp, state.read(tmp));
+  assert(drift[0].stale === true, 'validator executable-mode drift was missed');
+
+  fs.chmodSync(path.join(tmp, '.godplans', 'validate-plan.sh'), 0o755);
+  fs.appendFileSync(path.join(tmp, '.godplans', 'validate-plan.sh'), '# changed\n');
+  drift = siblingArtifacts.staleness(tmp, state.read(tmp));
+  assert(drift[0].stale === true, 'changed validator did not stale the import');
+});
+
 test('state.detectDrift emits WARN sibling-stale drift after a plan edit', () => {
   const tmp = mkProject('godpowers-sibling-');
   state.init(tmp, 'sibling-drift-test');
@@ -762,6 +979,36 @@ test('godaudits staleness follows canonical JSON and ignores generated MDX chang
 });
 
 console.log('\n  Planning-system integration for sibling artifacts\n');
+
+test('planning-systems reads Godplans beyond the foreign-file sampling cap', () => {
+  const tmp = mkProject('godpowers-large-plan-');
+  const filler = `${'Plan-specific context stays readable.\n'.repeat(4000)}\n`;
+  const plan = godplans11Plan().replace('## Requirements', `${filler}## Requirements`);
+  assert(Buffer.byteLength(plan) > 80 * 1024, 'large PLAN fixture is not large');
+  writeRel(tmp, '.godplans/PLAN.mdx', plan);
+  const detection = planningSystems.detect(tmp);
+  const godplans = detection.systems.find((system) => system.id === 'godplans');
+  const record = godplans && godplans.files.find((file) => file.path === '.godplans/PLAN.mdx');
+  assert(record && record.bytes === Buffer.byteLength(plan),
+    `PLAN bytes were truncated: ${record && record.bytes}`);
+  assert(record.plan && record.plan.validation.valid,
+    `large PLAN validation: ${record && record.plan.validation.errors.join('; ')}`);
+});
+
+test('plan-derived seeds preserve GP tasks beyond the old six-signal cap', () => {
+  const tmp = mkProject('godpowers-plan-seed-depth-');
+  state.init(tmp, 'godplans-seed-depth-test');
+  writeRel(tmp, '.godplans/PLAN.mdx', godplans11Plan('approved', 10));
+  planningSystems.importPlanningContext(tmp);
+  const roadmap = fs.readFileSync(path.join(tmp, '.godpowers', 'roadmap', 'ROADMAP.mdx'), 'utf8');
+  const build = fs.readFileSync(path.join(tmp, '.godpowers', 'prep', 'IMPORTED-BUILD-STATE.mdx'), 'utf8');
+  const prd = fs.readFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.mdx'), 'utf8');
+  assert(roadmap.includes('GP-110'), 'roadmap seed dropped the tenth GP task');
+  assert(build.includes('GP-110'), 'build seed dropped the tenth GP task');
+  assert(prd.includes('GP-110'), 'PRD seed dropped GP traceability');
+  assert(roadmap.includes('Verify: npm run release:check'), 'Verify command was not preserved');
+  assert(roadmap.includes('Reuses: existing release check'), 'Reuses field was not preserved');
+});
 
 test('planning-systems detects godplans with forced high confidence', () => {
   const tmp = mkProject('godpowers-sibling-');
@@ -915,7 +1162,8 @@ test('importPlanningContext preserves GP/R ids in plan-derived seeds', () => {
   assert(result.writtenArtifacts.includes('prd/PRD.mdx'), 'PRD seed not written');
   const seed = fs.readFileSync(path.join(tmp, '.godpowers', 'prd', 'PRD.mdx'), 'utf8');
   assert(seed.includes('GP-102'), 'GP id not preserved verbatim in seed');
-  assert(seed.includes('[DECISION] Imported signal'), 'plan signals should be decision-grade');
+  assert(seed.includes('[HYPOTHESIS] Imported signal'),
+    'legacy plan without validator should remain hypothesis-grade');
 });
 
 test('IMPORTED-CONTEXT carries recounted sibling sections and enumeration', () => {

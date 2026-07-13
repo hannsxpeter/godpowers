@@ -46,7 +46,8 @@ workflow.
    - `.godpowers/intent.yaml`, when present
    - `.godpowers/prep/INITIAL-FINDINGS.mdx`, when present
    - `.godpowers/prep/IMPORTED-CONTEXT.mdx`, when present
-   - `.godplans/PLAN.mdx`, when present (sibling godplans master plan; read-only)
+   - `.godplans/PLAN.mdx` and `.godplans/validate-plan.sh`, when present
+     (the Godplans 1.1 two-artifact contract; read-only until explicit GP execution)
    - `.godaudits/AUDIT.json`, when present (canonical sibling godaudits state;
      read-only except during explicit GA remediation)
    - `.godaudits/AUDIT.mdx` only as a generated or legacy fallback
@@ -89,12 +90,26 @@ workflow.
        first planning or build step
      - Instruction to read `.godpowers/preflight/PREFLIGHT.mdx` if present
        before choosing the first brownfield or bluefield action
-     - Instruction to read `.godplans/PLAN.mdx` and canonical
+     - Instruction to inspect `.godplans/PLAN.mdx` plus
+       `.godplans/validate-plan.sh` through
+       `lib/sibling-artifacts.loadPlan(projectRoot)` and canonical
        `.godaudits/AUDIT.json` if present before choosing the first step. When
        PLAN.mdx exists and
        Godpowers tiers are pending, prefer importing plan seeds via
        `/god-migrate` over re-running god-pm or god-architect from scratch,
-       and honor the plan's GP task checkboxes as already-planned work. When
+       and honor the plan's GP task checkboxes as already-planned work only
+       when the static contract is complete. A missing, non-executable, or
+       unknown validator, invalid plan structure, `planning` status, or `done`
+       status blocks GP dispatch. Legacy or incomplete plans remain read-only
+       hypothesis-grade migration context. For an `approved` or `executing`
+       plan, run `bash .godplans/validate-plan.sh .godplans/PLAN.mdx`
+       immediately before GP work and stop if it exits non-zero. The first
+       executor changes `approved` to `executing`; each passing task updates
+       its checkbox, derived counters, `updated` date, and session log in the
+       same edit. Only a completed final Verification phase may change the
+       plan to `done`. A material scope change returns it to `planning`, bumps
+       `plan_version`, preserves completed tasks, and requires fresh approval.
+       When
        AUDIT.json exists, feed its open typed GA remediation tasks into the
        repair loop instead of rediscovering them. A legacy AUDIT.mdx is a
        fallback only. Sibling sources are read-only except during explicit
