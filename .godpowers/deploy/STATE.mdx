@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:1041dc55bb122c8a8dcf232ebb0179d280acadeaa414957d2c890026d714cf45 -->
+<!-- godpowers:checksum sha256:9d4c95871e9eb144214d589b2b06a21de66ca2fdbda7ba8a950a384f7ee70f55 -->
 # Godpowers Deploy State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.deploy`.
@@ -9,8 +9,8 @@
 - [DECISION] Step: Shipping: Deploy.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/deploy/STATE.mdx`.
-- [DECISION] Updated: 2026-07-13T05:55:15.000Z.
-- [DECISION] Notes: Godpowers 5.3.0 and the MCP companion are published with provenance from merged main and their registry integrity matches the GitHub Release assets..
+- [DECISION] Updated: 2026-07-13T07:06:46.000Z.
+- [DECISION] Notes: Local and CI-verifiable npm deployment readiness is complete and the 5.3.1 publication path is authorized..
 
 ## Verification Commands
 
@@ -28,9 +28,9 @@
 
 | Field | Value |
 |---|---|
-| publication-targets | https://github.com/hannsxpeter/godpowers/releases/tag/v5.3.0, npm godpowers@5.3.0, and npm @godpowers/mcp@5.3.0 |
-| rollback-evidence | The v5.2.0 tag resolves locally as the prior release rollback reference. |
-| target-evidence | GitHub Release assets and npm registry packages share exact integrity values; published CLI and MCP executable verification passed. |
-| verified-target-type | published-npm-release |
+| publication-targets | npm root package, npm MCP package, GitHub tag, and GitHub Release assets |
+| rollback-evidence | The v5.3.0 tag resolves locally as the prior release rollback reference. |
+| target-evidence | Root and MCP package allowlists pass against npm pack output on the Godaudits 2.0 integration tree. |
+| verified-target-type | authorized-release-candidate |
 
 <!-- godpowers:state-view:end -->

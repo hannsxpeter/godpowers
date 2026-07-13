@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.1] - 2026-07-13
+
+Godaudits 2.0 interoperability patch. This release makes the canonical JSON
+audit ledger authoritative throughout Godpowers migration, remediation, and
+staleness workflows while retaining generated and legacy report fallbacks.
+
 ### Added
 
 - Regression coverage for canonical godaudits 2.x JSON detection, parsing,
