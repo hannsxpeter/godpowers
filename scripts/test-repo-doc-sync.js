@@ -85,6 +85,22 @@ test('run applies only safe mechanical updates and leaves narrative docs stale',
   assert(result.after.prose.some((check) => check.path === 'RELEASE.md'));
 });
 
+test('published versions cannot retain release-candidate architecture status', () => {
+  const tmp = mkFixture();
+  writeRel(tmp, 'USERS.md',
+    'The current source version is v9.8.7, and the latest published release is v9.8.7.\n');
+  writeRel(tmp, 'ARCHITECTURE.md',
+    'STABLE v9.8.7 release candidate\nCore: 4 skills, 2 agents, 1 workflows\n');
+
+  const before = repoDocSync.detect(tmp);
+  assert(before.stale.some((check) => check.id === 'architecture-publication-status'));
+
+  repoDocSync.run(tmp, { log: false });
+  const architecture = readRel(tmp, 'ARCHITECTURE.md');
+  assert(architecture.includes('STABLE v9.8.7 published release'));
+  assert(!architecture.includes('release candidate'));
+});
+
 test('run writes a Godpowers repo-doc sync log', () => {
   const tmp = mkFixture();
   repoDocSync.run(tmp);
