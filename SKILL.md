@@ -1,6 +1,5 @@
 ---
 name: godpowers
-version: 2.2.0
 description: |
   AI-powered development system that takes a project from raw idea to hardened
   production. Fuses artifact discipline, execution engine, quality enforcement,
@@ -12,6 +11,13 @@ description: |
   "god review", "god smite", "godpowers", "start a project", "build this",
   "ship this", "take this from idea to production", "one-shot the whole thing",
   "autonomous build", "full arc", "idea to deploy"
+license: MIT
+compatibility: "Works with Agent Skills compatible file-system agents. Supported hosts include Claude Code, Codex, Cursor, Windsurf, Gemini, OpenCode, Copilot, Augment, Trae, Cline, Kilo, Antigravity, Qwen, CodeBuddy, and Pi."
+metadata:
+  version: "5.5.0"
+  updated: "2026-07-13"
+  changelog: "CHANGELOG.md"
+  tier: "full-arc"
 ---
 
 # Godpowers
@@ -95,6 +101,14 @@ artifacts, challenge it against project vocabulary. If a code or doc scan can
 answer a question, inspect first. When a term is resolved, record it in
 `.godpowers/domain/GLOSSARY.mdx` with canonical spelling, avoided aliases,
 relationships, and any unresolved ambiguity.
+
+### 8.1 Product Form Before Domain
+Select exactly one primary product form before product archetype, industry, or
+regulatory guidance. Use `lib/product-routing.js`,
+`references/building/PRODUCT-FORM-ROUTER.md`, and
+`references/building/DOMAIN-COMPOSITION-REGISTRY.md`. Preserve this order:
+product form, product archetype, industry overlay, regulatory overlay. Build
+completion uses the selected form's evidence, not a web-only default.
 
 ### 9. Next Commands Closeout
 When you answer with a recommendation, proposal, status report, diagnostic,
@@ -287,8 +301,8 @@ Run these local runtime helpers automatically when their trigger is present:
   managed progress view refresh.
 - Lightweight reverse-sync or linkage scan after code or artifact edits.
 - Pillars sync planning after durable artifact truth changes.
-- `lib/planning-systems.importPlanningContext` when legacy planning, BMAD, or
-  Superpowers planning context is detected during `/god-init` or
+- `lib/planning-systems.importPlanningContext` when legacy planning, BMAD,
+  Superpowers, or Arc-Ready planning context is detected during `/god-init` or
   `/god-migrate`.
 - `lib/source-sync.run` when `state.json` records enabled `source-systems`
   entries and `/god-sync`, `/god-scan`, or `/god-migrate` closes a workflow.
@@ -341,7 +355,7 @@ Spawn these agents only when the trigger is direct and scope is bounded:
 - `god-automation-engineer` after the user approves provider, template,
   cadence, and scope for multi-template, write-capable, background-agent,
   scriptable-scheduler, or provider-uncertain automation setup.
-- `god-greenfieldifier` when imported legacy planning, BMAD, or Superpowers context has
+- `god-greenfieldifier` when imported legacy planning, BMAD, Superpowers, or Arc-Ready context has
   low confidence, conflicting systems, or missing canonical Godpowers seed
   artifacts after local import.
 - `god-greenfieldifier` when feature-awareness detects unimported or imported
@@ -462,7 +476,12 @@ Silence is not a status. Every tier must have an explicit entry.
 
 **Process**:
 1. Elicit the user's vision through targeted questions (not open-ended)
-2. Draft the PRD with these required sections:
+2. Select one primary product form before applying product archetype,
+   industry, or regulatory guidance. Record an open question on ambiguity
+   instead of defaulting to a web application.
+3. Compose and record the four domain axes in order, including explicit
+   none-evidenced values.
+4. Draft the PRD with these required sections:
    - Problem statement (substitution-tested)
    - Target users (specific, not "developers")
    - Success metrics (measurable, time-bound)
@@ -471,10 +490,10 @@ Silence is not a status. Every tier must have an explicit entry.
    - Scope and explicit no-gos
    - Appetite (time/resource constraints)
    - Open questions (with owners and due dates)
-3. Run substitution test on every claim
-4. Run three-label test on every sentence
-5. Write to `.godpowers/prd/PRD.mdx`
-6. Run `npx godpowers state advance --step=prd --status=done --project=.`
+5. Run substitution test on every claim
+6. Run three-label test on every sentence
+7. Write to `.godpowers/prd/PRD.mdx`
+8. Run `npx godpowers state advance --step=prd --status=done --project=.`
 
 **Have-nots (PRD fails if any are true)**:
 - Problem statement passes substitution test (reads the same for any product)
@@ -594,23 +613,29 @@ Silence is not a status. Every tier must have an explicit entry.
 
 **Process**:
 1. Read roadmap, select current milestone
-2. Break milestone into vertical slices
-3. For each slice, create a plan:
+2. Load the ordered product route and the primary form's vertical-slice and
+   completion-evidence contract.
+3. Break milestone into form-appropriate vertical slices. A CLI or SDK uses a
+   clean consumer round trip, an API uses a contract path, Data or ML uses a
+   reproducible pipeline, and Infrastructure or IaC uses plan, policy,
+   simulation, and rollback evidence.
+4. For each slice, create a plan:
    - Files to create/modify (exact paths)
    - Tests to write FIRST
    - Implementation steps
    - Verification criteria
-4. Detect dependencies between slices
-5. Group independent slices into parallel waves
-6. Execute waves:
+5. Detect dependencies between slices
+6. Group independent slices into parallel waves
+7. Execute waves:
    - Each agent gets fresh context (full 200K budget)
    - Agent writes tests first (RED)
    - Agent implements until tests pass (GREEN)
    - Agent refactors (REFACTOR)
    - Two-stage review: spec compliance, then code quality
    - Atomic commit on pass
-7. Record build verification evidence in `.godpowers/state.json`
-8. Run `npx godpowers state advance --step=build --status=done --project=.` to regenerate the build state view
+8. Verify the primary form's completion evidence and record it with the build
+   verification commands in `.godpowers/state.json`.
+9. Run `npx godpowers state advance --step=build --status=done --project=.` to regenerate the build state view
 
 **TDD Enforcement**:
 - If a subagent writes implementation before tests, flag the violation
@@ -673,6 +698,10 @@ Silence is not a status. Every tier must have an explicit entry.
 4. Launch-day telemetry (source attribution on every signup)
 5. D-7 to D+7 runbook
 6. Record launch evidence in `.godpowers/state.json` and regenerate the launch state view
+7. Immediately before any public release action, re-read hardening evidence,
+   record `.godpowers/launch/PREPUBLICATION.mdx` with its exact content hash,
+   and run `node <runtimeRoot>/lib/prepublication-gate.js --check --project=.`.
+   Any later hardening change invalidates this gate.
 
 **Have-nots**:
 - Landing copy passes substitution test (reads generic)
@@ -685,7 +714,9 @@ Silence is not a status. Every tier must have an explicit entry.
 **Runs in parallel with**: Launch prep (but gates launch completion)
 
 **Process**:
-1. OWASP Top 10 walkthrough (not scanner output, actual review)
+1. OWASP Web Top 10:2025 walkthrough using
+   `references/shipping/HARDEN-OWASP-2025-ROUTER.md` and reproducible manual
+   evidence for all ten current categories
 2. Auth/authz boundary verification
 3. Input validation audit
 4. Dependency vulnerability scan

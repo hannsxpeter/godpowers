@@ -14,8 +14,16 @@ Spawn the **god-stack-selector** agent in a fresh context via the host platform'
 ## Setup
 
 1. Verify `.godpowers/arch/ARCH.mdx` exists. If not, tell user to run `/god-arch` first.
-2. Spawn god-stack-selector with the ARCH path.
-3. The agent writes `.godpowers/stack/DECISION.mdx`.
+2. Read the product route recorded by PRD or Architecture. If absent, select
+   the product form before applying archetype, industry, or regulatory
+   guidance through `lib/product-routing`.
+3. Load `references/building/DOMAIN-COMPOSITION-REGISTRY.md`. Score the primary
+   stack profile first, then add only hard constraints from secondary
+   profiles. Do not average complete profile matrices.
+4. Verify current regulatory obligations and provider capabilities before
+   making a freshness-sensitive commitment.
+5. Spawn god-stack-selector with the ARCH path and ordered product route.
+6. The agent writes `.godpowers/stack/DECISION.mdx`.
 
 ## Verification
 

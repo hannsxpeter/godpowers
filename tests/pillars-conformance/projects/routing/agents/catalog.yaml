@@ -1,0 +1,5 @@
+version: 1
+absent:
+  - identity: release
+    covers: [version publication]
+    triggers: [release, publish]

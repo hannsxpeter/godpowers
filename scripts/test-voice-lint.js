@@ -81,9 +81,9 @@ test('U-14 is registered as a universal check', () => {
   assert(validator.UNIVERSAL_CHECKS.some((c) => c.code === 'U-14'), 'U-14 in UNIVERSAL_CHECKS');
 });
 
-test('shipped skill and agent prose is already clean (self-dogfood)', () => {
+test('shipped skill, specialist, and Pillars prose is already clean (self-dogfood)', () => {
   const offenders = [];
-  for (const dir of ['skills', 'agents']) {
+  for (const dir of ['skills', 'specialists', 'agents']) {
     const base = path.join(ROOT, dir);
     for (const file of fs.readdirSync(base).filter((name) => name.endsWith('.md'))) {
       for (const hit of voiceLint.scan(fs.readFileSync(path.join(base, file), 'utf8'))) {

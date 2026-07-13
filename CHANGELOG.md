@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.5.0] - 2026-07-13
+
+Arc-Ready and Pillars conformance release. This release makes product shape,
+domain composition, public activation, and project context mechanically
+testable across the full Godpowers lifecycle.
+
+### Added
+
+- Product-form routing for web applications, APIs and services, CLIs and SDKs,
+  mobile and desktop products, data and ML systems, and infrastructure or IaC.
+- Four-axis domain composition across product form, archetype, industry, and
+  regulatory overlays, with form-specific vertical slices and completion
+  evidence.
+- A hash-bound pre-publication gate that re-reads hardening evidence, records
+  Critical counts and timestamps, and invalidates after any authoritative
+  hardening change.
+- Arc-Ready 1.1 artifact detection, read-only import, and managed sync-back
+  through `.arc-ready/GODPOWERS-SYNC.md`.
+- Pillars 1.1 catalog, path identity, portable matcher, nested scope,
+  exclusion, dependency, budget, and official conformance-fixture support.
+- Pinned official Agent Skills validation in CI and every release check.
+
+### Changed
+
+- OWASP hardening now follows the 2025 Web Top 10, including Software Supply
+  Chain Failures and Mishandling of Exceptional Conditions.
+- Specialist source contracts moved from `agents/` to `specialists/`, while
+  installed host contracts retain the portable `agents/` destination.
+- Repository Pillars now use the normative eight-section body, `present` or
+  `stub` status, explicit cataloged absences, and new development, release, and
+  privacy context.
+- Arc workflows select exactly one primary product form before applying domain
+  or regulatory overlays.
+
 ## [5.4.0] - 2026-07-13
 
 Godplans 1.1 interoperability release. This release recognizes the complete

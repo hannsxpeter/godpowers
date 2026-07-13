@@ -1185,7 +1185,7 @@ test('IMPORTED-CONTEXT enumeration covers godplans/godaudits when nothing found'
   state.init(tmp, 'sibling-empty-test');
   planningSystems.importPlanningContext(tmp);
   const imported = fs.readFileSync(path.join(tmp, '.godpowers', 'prep', 'IMPORTED-CONTEXT.mdx'), 'utf8');
-  assert(imported.includes('No legacy planning, BMAD, Superpowers, godplans, or godaudits planning context was detected.'),
+  assert(imported.includes('No legacy planning, BMAD, Superpowers, Arc-Ready, godplans, or godaudits planning context was detected.'),
     'updated enumeration string missing');
   assert(imported.includes('No godplans master plan was detected.'), 'plan absence line missing');
 });

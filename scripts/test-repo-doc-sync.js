@@ -31,8 +31,8 @@ function mkFixture() {
   }, null, 2));
   writeRel(tmp, 'skills/god-one.md', '# one\n');
   writeRel(tmp, 'skills/god-two.md', '# two\n');
-  writeRel(tmp, 'agents/god-alpha.md', '# alpha\n');
-  writeRel(tmp, 'agents/god-beta.md', '# beta\n');
+  writeRel(tmp, 'specialists/god-alpha.md', '# alpha\n');
+  writeRel(tmp, 'specialists/god-beta.md', '# beta\n');
   writeRel(tmp, 'workflows/full.yaml', 'name: full\n');
   writeRel(tmp, 'routing/recipes/green.yaml', 'name: green\n');
   writeRel(tmp, 'README.md',

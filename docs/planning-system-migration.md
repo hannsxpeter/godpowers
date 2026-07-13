@@ -16,8 +16,8 @@ Two kinds of prior planning are supported:
      `.godaudits/AUDIT.json` plus generated `.godaudits/AUDIT.mdx`, with
      `A-<DOM>-n` checks, `F-<DOM>-n` findings, compiled score and coverage, and
      typed `GA-` remediation tasks.
-2. **Foreign planning systems** (evidence-based import): legacy planning, BMAD,
-   and Superpowers.
+2. **Adjacent and foreign systems** (evidence-based import): Arc-Ready, legacy
+   planning, BMAD, and Superpowers.
 
 ## Why the siblings are different
 
@@ -59,6 +59,7 @@ recomputes counts only for legacy MDX, and never writes to sibling files.
 | legacy planning | `.planning/`, `.legacy-planning/`, `LEGACY-PLANNING.md`, `legacy-planning*.md` | `PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, phase files | evidence-based |
 | BMAD | `_bmad/`, `_bmad-output/`, `.bmad-core/`, `.bmad/`, `BMAD.md` | `PRD.md`, `architecture.md`, epics, stories, `sprint-status.yaml`, `project-context.md` | evidence-based |
 | Superpowers | `docs/superpowers/`, `.superpowers/`, `SUPERPOWERS.md`, project-local skills | specs, plans, TDD and review skill files | evidence-based |
+| Arc-Ready | `.arc-ready/PROGRESS.md`, `.prd-ready/PRD.md`, `.architecture-ready/ARCH.md`, and other `.*-ready/` artifacts | stable per-tier artifact files, including prepublication and hardening evidence | high when a canonical marker exists |
 
 Detection is evidence-based for the foreign systems: marker folders raise
 confidence, but Godpowers also reads likely planning files and classifies them
@@ -73,6 +74,7 @@ separately enforces the two-artifact and lifecycle gates.
 |---|---|---|
 | `.godplans/PLAN.mdx` plus validator | `/god-migrate` | verify contract identity and structure, then import complete GP/R traceability as tier seeds |
 | `.godaudits/AUDIT.json` | `/god-migrate` then `/god-audit` | consume validated prior audit state instead of re-deriving it |
+| `.arc-ready/PROGRESS.md` plus tier artifacts | `/god-migrate` | import matching PRD, architecture, roadmap, stack, build-state, and harden seeds without modifying Arc-Ready canon |
 | an open finding | `/god-fix GA-<n>` | dispatch the remediation task with its evidence and `Verify` command as the done-check |
 | an empty repo plus a complete approved PLAN contract | `/god-mode` | import tier seeds, run the plan validator, then execute in wave order |
 
@@ -126,11 +128,12 @@ Sync-back writes a managed companion file per system:
 - legacy planning: `.planning/GODPOWERS-SYNC.md` or `.legacy-planning/GODPOWERS-SYNC.md`
 - BMAD: `_bmad-output/GODPOWERS-SYNC.md` or `.bmad/GODPOWERS-SYNC.md`
 - Superpowers: `docs/superpowers/GODPOWERS-SYNC.md` or `.superpowers/GODPOWERS-SYNC.md`
+- Arc-Ready: `.arc-ready/GODPOWERS-SYNC.md`
 
 Companions in the sibling `.godplans/`/`.godaudits/` directories are `.mdx` (the
 sibling family convention); companions in foreign directories stay `.md`. The
-`PLAN.mdx`, `validate-plan.sh`, `AUDIT.json`, and `AUDIT.mdx` are never
-modified by sync-back.
+`PLAN.mdx`, `validate-plan.sh`, `AUDIT.json`, `AUDIT.mdx`, and Arc-Ready
+canonical artifacts are never modified by sync-back.
 
 ## Read-Only Boundary And Untrusted Commands
 

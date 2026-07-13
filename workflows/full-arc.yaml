@@ -48,6 +48,7 @@ jobs:
     uses: god-pm@^1.0.0
     with:
       template: PRD.md
+      routing-order: [product-form, product-archetype, industry, regulatory]
 
   arch:
     tier: 1
@@ -69,6 +70,7 @@ jobs:
     uses: god-stack-selector@^1.0.0
     with:
       template: STACK-DECISION.md
+      domain-composition: primary-profile-then-secondary-hard-constraints
 
   repo:
     tier: 2
@@ -79,6 +81,8 @@ jobs:
     tier: 2
     needs: [roadmap, repo]
     uses: god-planner@^1.0.0
+    with:
+      completion-gate: selected-product-form
     review:
       stages:
         - uses: god-spec-reviewer@^1.0.0

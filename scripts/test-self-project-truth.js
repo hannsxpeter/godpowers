@@ -16,7 +16,7 @@ function validProject() {
   }));
   writeRel(root, 'skills/god.md', 'one');
   writeRel(root, 'skills/god-mode.md', 'two');
-  writeRel(root, 'agents/god-orchestrator.md', 'agent');
+  writeRel(root, 'specialists/god-orchestrator.md', 'agent');
   writeRel(root, 'workflows/full.yaml', 'name: full');
   writeRel(root, 'routing/recipes/start.yaml', 'name: start');
   const counts = '2 slash commands, 1 agents, 1 workflows, 1 recipes';

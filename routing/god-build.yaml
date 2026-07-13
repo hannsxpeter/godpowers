@@ -18,6 +18,9 @@ prerequisites:
 execution:
   spawns: [god-planner]
   context: fresh
+  reads:
+    - references/building/PRODUCT-FORM-ROUTER.md
+    - references/building/DOMAIN-COMPOSITION-REGISTRY.md
   secondary-spawns: [god-executor, god-spec-reviewer, god-quality-reviewer]
   writes:
     - .godpowers/build/PLAN.mdx

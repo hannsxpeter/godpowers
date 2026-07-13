@@ -51,13 +51,15 @@ fi
 if matches 'npm +publish'; then
   echo "WARNING: npm publish is a public release action."
   echo "Confirm release checklist, repo-doc-sync, repo-surface-sync,"
-  echo "release-surface-sync, package contents, and installer smoke first."
+  echo "release-surface-sync, package contents, installer smoke, and"
+  echo "the fresh hash-bound pre-publication gate first."
   exit 1
 fi
 
 if matches 'gh +release +create'; then
   echo "WARNING: gh release create publishes public release notes."
-  echo "Confirm README, badges, CHANGELOG, RELEASE, package, tag, and npm version agree."
+  echo "Confirm README, badges, CHANGELOG, RELEASE, package, tag, npm version,"
+  echo "and the fresh hash-bound pre-publication gate agree."
   exit 1
 fi
 

@@ -1,89 +1,101 @@
-# OWASP Top 10 Manual Walkthrough
+# OWASP Web Top 10:2025 Manual Walkthrough
 
-> Worksheets for each of the OWASP Top 10. Use during /god-harden.
+Use during `/god-harden` after reading
+`references/shipping/HARDEN-OWASP-2025-ROUTER.md`. Record the exact request,
+fault injection, fixture, or reproduction procedure and observed result for
+every applicable category. A code-read or scanner result can support evidence,
+but cannot replace the manual procedure.
 
-## A01: Broken Access Control
+## A01:2025 Broken Access Control
 
-For each protected endpoint:
-- [ ] What permission is required?
-- [ ] Is the permission check present and correct?
-- [ ] Test: unauthenticated user hitting endpoint -> 401
-- [ ] Test: authenticated user without permission -> 403
-- [ ] Test: authenticated user WITH permission -> 200
+- [ ] Inventory object, function, tenant, and administrative authorization boundaries.
+- [ ] Probe unauthenticated, wrong-user, wrong-tenant, and wrong-role access.
+- [ ] Test user-controlled URLs against localhost, private networks, cloud metadata, redirects, and alternate IP encodings.
+- [ ] Confirm denial occurs at the service boundary and leaves no unauthorized state change.
 
-```
-Endpoint: GET /api/users/:id
-Required: authenticated AND (user_id == :id OR role == admin)
-Implementation: src/api/users.ts:45 (permission check is line 47)
-Tested: yes (test_users_self_access, test_users_other_403, test_users_admin_other_200)
-```
+## A02:2025 Security Misconfiguration
 
-## A02: Cryptographic Failures
+- [ ] Verify production framework, cloud, storage, CORS, proxy, and error configuration.
+- [ ] Remove default accounts, sample data, debug endpoints, and unnecessary features.
+- [ ] Exercise verbose errors and confirm sensitive internals are not returned.
+- [ ] Verify security headers and environment separation where the form uses HTTP.
 
-- [ ] All ePHI / PII / financial data encrypted at rest? (DB-level, not just app-level)
-- [ ] All transmissions over TLS 1.2+? (verify with `nmap --script ssl-enum-ciphers`)
-- [ ] No hardcoded secrets? (run `grep -ri "sk_live\|api_key\|secret" src/`)
-- [ ] No weak algorithms? (no MD5, no SHA1 for security; AES-256 minimum for symmetric; RSA-2048 minimum for asymmetric)
-- [ ] Random number generation cryptographically secure? (crypto.randomBytes, not Math.random)
+## A03:2025 Software Supply Chain Failures
 
-## A03: Injection
+- [ ] Run the ecosystem dependency audit and classify every unresolved result.
+- [ ] Verify lockfile or equivalent dependency identity and registry provenance.
+- [ ] Inspect CI identities, action or image pinning, secret scope, and build isolation.
+- [ ] Verify release artifact integrity, signing or provenance, package substitution defenses, and distribution identity.
 
-For each input source (user form, URL param, header, file upload, third-party webhook):
-- [ ] SQL: parameterized queries only? (no string concat)
-- [ ] XSS: output encoded? CSP headers in place?
-- [ ] Command injection: never pass user input to shell commands?
-- [ ] Template injection: safe template engines? No `eval()` of user data?
-- [ ] LDAP/XML/NoSQL injection: parameterized?
+## A04:2025 Cryptographic Failures
 
-```
-Input: req.body.email (signup endpoint)
-Validation: src/auth/signup.ts:23 (zod schema)
-Used in: SQL via Prisma (parameterized) - safe
-```
+- [ ] Verify current algorithms, parameter sizes, password hashing, and random generation.
+- [ ] Trace key creation, storage, rotation, revocation, backup, and destruction.
+- [ ] Verify nonce or IV uniqueness and authenticated encryption where applicable.
+- [ ] Verify transport policy and the handling of sensitive data at rest and in logs.
 
-## A04: Insecure Design
+## A05:2025 Injection
 
-- [ ] Rate limiting on auth endpoints?
-- [ ] Bulk operation safeguards (e.g., delete-all has confirmation)?
-- [ ] Race condition risks? (TOCTOU on account balance, e.g.)
-- [ ] Business logic flaws? (negative quantities, sign-up bypass, etc.)
+- [ ] Inventory user, URL, header, file, webhook, queue, and imported-data inputs.
+- [ ] Trace each untrusted value through SQL, shell, template, HTML, LDAP, XML, and other interpreters.
+- [ ] Verify parameterization, contextual output encoding, schema validation, and command argument boundaries.
+- [ ] Probe malformed, nested, oversized, and encoded payloads through the real boundary.
 
-## A05: Security Misconfiguration
+## A06:2025 Insecure Design
 
-- [ ] Default credentials removed?
-- [ ] Verbose error messages disabled in production?
-- [ ] Security headers present? (CSP, HSTS, X-Frame-Options, X-Content-Type-Options)
-- [ ] Unnecessary features disabled? (debug endpoints, sample data)
-- [ ] Cloud bucket permissions? (no public-by-default S3)
+- [ ] Map threat actors, trust boundaries, abuse cases, and high-impact state transitions.
+- [ ] Exercise rate limits, anti-automation controls, bulk-operation safeguards, and step-up controls.
+- [ ] Probe race conditions, negative values, repeated actions, and business-rule bypasses.
+- [ ] Confirm secure defaults and failure behavior match the deployed architecture.
 
-## A06: Vulnerable Components
+## A07:2025 Authentication Failures
 
-- [ ] `npm audit` (or equivalent) clean for high+critical?
-- [ ] Dependencies updated within last 12 months?
-- [ ] Pinned versions or version ranges?
+- [ ] Probe credential stuffing, enumeration, throttling, lockout, and recovery paths.
+- [ ] Verify session fixation defense, expiry, rotation, revocation, logout, and concurrent-session policy.
+- [ ] Verify MFA and step-up behavior for sensitive accounts or operations where required.
+- [ ] Confirm tokens are scoped, time-bound, securely stored, and invalid after revocation.
 
-## A07: Authentication Failures
+## A08:2025 Software or Data Integrity Failures
 
-- [ ] Strong password policy?
-- [ ] MFA available for sensitive accounts?
-- [ ] Session fixation prevented? (rotate session ID on login)
-- [ ] Credential stuffing protection? (rate limit, account lockout, captcha)
-- [ ] Forgot-password flow secure? (token expiry, single-use)
+- [ ] Identify code, update, artifact, serialized-content, webhook, and critical-data trust boundaries.
+- [ ] Verify signatures, hashes, MACs, allowlists, or equivalent integrity checks at those boundaries.
+- [ ] Probe unsafe deserialization, unsigned updates, replay, and tampered import data.
+- [ ] Confirm integrity failure blocks the operation and produces actionable evidence.
 
-## A08: Data Integrity Failures
+## A09:2025 Security Logging and Alerting Failures
 
-- [ ] Updates signed/verified? (e.g., software updates from upstream)
-- [ ] No unsafe deserialization? (no `pickle.loads(user_input)` or equivalent)
-- [ ] Critical data has integrity checks? (HMAC, signature)
+- [ ] Verify authentication, authorization, administrative, integrity, and abuse events are recorded.
+- [ ] Confirm logs exclude secrets and unauthorized sensitive data.
+- [ ] Trigger one controlled suspicious event through the production-equivalent telemetry path.
+- [ ] Verify detection, alert delivery, owner acknowledgment, and the linked response procedure.
 
-## A09: Logging Failures
+## A10:2025 Mishandling of Exceptional Conditions
 
-- [ ] Security events logged? (auth, authz failures, admin actions)
-- [ ] No sensitive data in logs? (no passwords, no full tokens, no PII unless required and redacted)
-- [ ] Alerts on suspicious activity? (e.g., 100 failed logins in 5 min)
+Inventory every external dependency, state transition, asynchronous job,
+transaction boundary, parser, and resource limit. Exercise applicable cases:
 
-## A10: SSRF
+1. Timeout, connection reset, malformed response, and dependency unavailability.
+2. Partial success across a multi-step write, including retry and duplicate delivery.
+3. Disk, memory, queue, connection-pool, file-descriptor, and request-size exhaustion.
+4. Unexpected enum values, nulls, empty collections, oversized values, and invalid transitions.
+5. Authorization, policy, or validation dependency failure.
+6. Rollback failure and recovery after restart between steps.
 
-- [ ] User-supplied URLs validated? (no localhost, no internal IPs)
-- [ ] Internal services not reachable from user-facing endpoints?
-- [ ] Cloud metadata endpoints blocked? (169.254.169.254 in AWS, etc.)
+A pass requires secure failure, bounded resource use, no unauthorized state
+transition, no sensitive error leakage, idempotent or compensating recovery
+where required, and an observable alert for operator action. A catch-all that
+returns success, silently drops work, or bypasses a control is a finding.
+
+## Completion evidence
+
+The walkthrough passes only when all ten 2025 rows contain:
+
+- The exact manual procedure or justified Not Applicable scope.
+- The observed result and evidence location.
+- A linked finding when the result does not pass.
+- A reviewer and review timestamp.
+
+For non-web forms, retain the current 2025 category names and adapt the manual
+boundary to the product form. For example, test command arguments and package
+distribution for a CLI or SDK, pipeline inputs and lineage for Data or ML, and
+plan, state, provider, and policy boundaries for Infrastructure or IaC.

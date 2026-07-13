@@ -1,7 +1,7 @@
 ---
 name: god-agent-audit
 description: |
-  Validates every `agents/god-*.md` against the agent contract:
+  Validates every `specialists/god-*.md` source contract:
   required frontmatter, structured contract frontmatter, recommended
   sections (Have-Nots, Inputs, Outputs, Handoff), hand-off targets exist,
   no dual-ownership of output paths. Lenient by design: most issues are

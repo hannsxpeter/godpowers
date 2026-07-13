@@ -242,8 +242,8 @@ vendored. If SkillUI isn't installed, the bridge returns
 - `lib/design-spec.js` - Google Labs format parser and linter
 - `lib/impeccable-bridge.js` - command dispatch layer
 - `lib/awesome-design.js` - 71-site catalog + lookup + fetch
-- `agents/god-designer.md` - lifecycle owner
-- `agents/god-design-reviewer.md` - two-stage review gate
+- `specialists/god-designer.md` - lifecycle owner
+- `specialists/god-design-reviewer.md` - two-stage review gate
 - `references/design/DESIGN-ANATOMY.md` - what good DESIGN.md looks like
 - `references/design/DESIGN-ANTIPATTERNS.md` - what to avoid
 - [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) - upstream catalog

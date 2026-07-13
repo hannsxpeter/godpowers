@@ -51,17 +51,17 @@ done
 # 3. All specialist agent files have frontmatter, name, description.
 # Project Pillars may also live under agents/ (context.md, repo.md, etc.),
 # but those are context files, not spawnable specialist agents.
-for agent in "$ROOT/agents/"/god-*.md; do
+for agent in "$ROOT/specialists/"/god-*.md; do
   name="$(basename "$agent")"
   if head -1 "$agent" | grep -q "^---"; then
-    pass "agents/$name has frontmatter"
+    pass "specialists/$name has frontmatter"
   else
-    fail "agents/$name missing frontmatter"
+    fail "specialists/$name missing frontmatter"
   fi
   if grep -q "^name:" "$agent"; then
-    pass "agents/$name has name field"
+    pass "specialists/$name has name field"
   else
-    fail "agents/$name missing name field"
+    fail "specialists/$name missing name field"
   fi
 done
 
@@ -88,7 +88,7 @@ for path in [sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]]:
                 if '\u2013' in line or '\u2014' in line:
                     hits.append(f'{fp}:{i}')
 print('\n'.join(hits))
-" "$ROOT/SKILL.md" "$ROOT/skills" "$ROOT/agents" "$ROOT/README.md" 2>/dev/null)"
+" "$ROOT/SKILL.md" "$ROOT/skills" "$ROOT/specialists" "$ROOT/agents" "$ROOT/README.md" 2>/dev/null)"
 
 if [ -n "$DASH_HITS" ]; then
   echo "$DASH_HITS"
@@ -147,7 +147,7 @@ god-update-deps:god-deps-auditor
 while IFS=: read -r skill_name agent_name; do
   [ -z "$skill_name" ] && continue
   skill_file="$ROOT/skills/${skill_name}.md"
-  agent_file="$ROOT/agents/${agent_name}.md"
+  agent_file="$ROOT/specialists/${agent_name}.md"
 
   if [ -f "$skill_file" ] && grep -q "$agent_name" "$skill_file"; then
     pass "skills/${skill_name}.md spawns ${agent_name}"
@@ -156,9 +156,9 @@ while IFS=: read -r skill_name agent_name; do
   fi
 
   if [ -f "$agent_file" ]; then
-    pass "agents/${agent_name}.md exists"
+    pass "specialists/${agent_name}.md exists"
   else
-    fail "agents/${agent_name}.md missing"
+    fail "specialists/${agent_name}.md missing"
   fi
 done <<EOF
 $PAIRS
@@ -166,24 +166,24 @@ EOF
 
 # 8. Tier 1+ agents document have-nots (the actual quality definitions)
 for tier_agent in god-pm god-architect god-roadmapper god-stack-selector god-repo-scaffolder god-deploy-engineer god-observability-engineer god-launch-strategist god-harden-auditor; do
-  agent_file="$ROOT/agents/${tier_agent}.md"
+  agent_file="$ROOT/specialists/${tier_agent}.md"
   if [ -f "$agent_file" ]; then
     if grep -qi "have-not" "$agent_file"; then
-      pass "agents/${tier_agent}.md documents have-nots"
+      pass "specialists/${tier_agent}.md documents have-nots"
     else
-      fail "agents/${tier_agent}.md missing have-nots section"
+      fail "specialists/${tier_agent}.md missing have-nots section"
     fi
   fi
 done
 
 # 9. Tier 1+ agents document gate checks
 for gated_agent in god-architect god-roadmapper god-stack-selector god-repo-scaffolder god-planner god-deploy-engineer god-observability-engineer god-launch-strategist god-harden-auditor; do
-  agent_file="$ROOT/agents/${gated_agent}.md"
+  agent_file="$ROOT/specialists/${gated_agent}.md"
   if [ -f "$agent_file" ]; then
     if grep -qi "gate check" "$agent_file"; then
-      pass "agents/${gated_agent}.md has gate check"
+      pass "specialists/${gated_agent}.md has gate check"
     else
-      fail "agents/${gated_agent}.md missing gate check"
+      fail "specialists/${gated_agent}.md missing gate check"
     fi
   fi
 done
@@ -224,19 +224,19 @@ fi
 
 # 13. YOLO handling: every pause-capable agent documents YOLO behavior
 for yolo_agent in god-pm god-architect god-roadmapper god-stack-selector god-launch-strategist god-harden-auditor; do
-  agent_file="$ROOT/agents/${yolo_agent}.md"
+  agent_file="$ROOT/specialists/${yolo_agent}.md"
   if [ -f "$agent_file" ]; then
     if grep -qi "yolo" "$agent_file"; then
-      pass "agents/${yolo_agent}.md documents YOLO handling"
+      pass "specialists/${yolo_agent}.md documents YOLO handling"
     else
-      fail "agents/${yolo_agent}.md missing YOLO handling"
+      fail "specialists/${yolo_agent}.md missing YOLO handling"
     fi
   fi
 done
 
 # 14. Critical-finding carve-out: harden auditor must NOT auto-resolve Criticals
-if grep -qi "Critical findings.*cannot.*auto" "$ROOT/agents/god-harden-auditor.md" || \
-   grep -qi "yolo CANNOT auto-resolve" "$ROOT/agents/god-harden-auditor.md"; then
+if grep -qi "Critical findings.*cannot.*auto" "$ROOT/specialists/god-harden-auditor.md" || \
+   grep -qi "yolo CANNOT auto-resolve" "$ROOT/specialists/god-harden-auditor.md"; then
   pass "harden-auditor preserves Critical-finding pause under --yolo"
 else
   fail "harden-auditor missing Critical-finding --yolo carve-out"
@@ -303,10 +303,10 @@ for routing_file in "$ROOT/routing/"*.yaml; do
 done
 
 # 20. god-standards-check agent exists with required fields
-if [ -f "$ROOT/agents/god-standards-check.md" ]; then
-  pass "agents/god-standards-check.md exists"
+if [ -f "$ROOT/specialists/god-standards-check.md" ]; then
+  pass "specialists/god-standards-check.md exists"
 else
-  fail "agents/god-standards-check.md missing"
+  fail "specialists/god-standards-check.md missing"
 fi
 
 # 21. /god-standards skill exists

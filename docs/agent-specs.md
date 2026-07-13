@@ -706,7 +706,7 @@ added during the production-ready + design + linkage push.
 
 | Field | Value |
 |---|---|
-| **File** | `agents/god-designer.md` |
+| **File** | `specialists/god-designer.md` |
 | **Triggers** | `/god-design`, `/god-design teach`, `/god-design from <site>`, `/god-design suggest`, `/god-design refresh`, `/god-design polish [...]`, `/god-mode` Tier 1 (when UI detected) |
 | **Inputs** | PRD.md (target users, register), ARCH.md (UI surface), STACK/DECISION.md (UI framework), state.json |
 | **Outputs** | `DESIGN.md` (project root, Google Labs spec), `PRODUCT.md` (when impeccable installed), `.godpowers/state.json` design evidence, generated `.godpowers/design/STATE.mdx` |
@@ -719,7 +719,7 @@ added during the production-ready + design + linkage push.
 
 | Field | Value |
 |---|---|
-| **File** | `agents/god-design-reviewer.md` |
+| **File** | `specialists/god-design-reviewer.md` |
 | **Triggers** | Spawned by god-design-updater BEFORE impact analysis; spawned by god-orchestrator on mid-arc DESIGN/PRODUCT change detection |
 | **Inputs** | DESIGN.md diff (old vs new), PRODUCT.md (for register, brand, anti-references) |
 | **Outputs** | Verdict: PASS / WARN / BLOCK; appends to `.godpowers/design/REJECTED.mdx` on BLOCK |
@@ -745,7 +745,7 @@ added during the production-ready + design + linkage push.
 
 | Field | Value |
 |---|---|
-| **File** | `agents/god-browser-tester.md` |
+| **File** | `specialists/god-browser-tester.md` |
 | **Triggers** | `/god-test-runtime`, `/god-build` (post-wave, optional), `/god-launch` (mandatory gate), `/god-harden` (a11y portion), `/god-design` (post-change runtime audit) |
 | **Inputs** | URL (live dev server, deploy preview, or production); DESIGN.md (for design audit); PRD.md (for acceptance criteria); project root |
 | **Outputs** | `.godpowers/runtime/<run-id>/audit-report.json` (design verification), `test-report.json` (functional verification), `screenshots/<page>.png`, `summary.md` |
@@ -758,7 +758,7 @@ added during the production-ready + design + linkage push.
 
 | Field | Value |
 |---|---|
-| **File** | `agents/god-context-writer.md` |
+| **File** | `specialists/god-context-writer.md` |
 | **Triggers** | `/god-context on/off/status`, `/god-init` (automatic quiet write), generic init triggers (one-time consent prompt, then quiet write), `/god-sync` (quiet auto-refresh unless never-ask) |
 | **Inputs** | state.json (project name, mode, scale, linkage state), DESIGN.md and PRODUCT.md presence, detected AI tools |
 | **Outputs** | Fenced sections in AGENTS.md (canonical), CLAUDE.md, GEMINI.md, .cursor/rules/godpowers.mdc, .windsurfrules, .github/copilot-instructions.md, .clinerules, .roo/, .continue/ (only when their tool is detected) |
@@ -778,7 +778,7 @@ greenfieldification, and host-automation agents added after v0.11.
 
 | Field | Value |
 |---|---|
-| **File** | `agents/god-coordinator.md` |
+| **File** | `specialists/god-coordinator.md` |
 | **Triggers** | `/god-suite-init`, `/god-suite-status`, `/god-suite-sync`, `/god-suite-release`, `/god-suite-patch` |
 | **Inputs** | Suite manifest (`.godpowers/suite-config.yaml` at the hub), per-repo `state.json` files, suite operation request, optional `.godpowers/runs/<run-id>/COORDINATOR-HANDOFF.mdx` |
 | **Outputs** | Suite coordination state (`lib/suite-state.refreshFromRepos`), per-repo orchestrator handoff files, suite release or sync report |
@@ -791,7 +791,7 @@ greenfieldification, and host-automation agents added after v0.11.
 
 | Field | Value |
 |---|---|
-| **File** | `agents/god-storyteller.md` |
+| **File** | `specialists/god-storyteller.md` |
 | **Triggers** | `/god-story`, `/god-feature --with-stories` |
 | **Inputs** | User story prompt or feature decomposition; PRD.md and ARCH.md for context; optional existing STORY-*.md files to chain into (deps) |
 | **Outputs** | `.godpowers/stories/<feature-slug>/STORY-<NNN>.mdx` (user story, acceptance criteria, initial slice plan) |
@@ -804,7 +804,7 @@ greenfieldification, and host-automation agents added after v0.11.
 
 | Field | Value |
 |---|---|
-| **File** | `agents/god-greenfieldifier.md` |
+| **File** | `specialists/god-greenfieldifier.md` |
 | **Triggers** | brownfield-arc and bluefield-arc workflows, god-orchestrator, `/god-migrate` (conditional spawn for low-confidence or conflicting imports) |
 | **Inputs** | `.godpowers/audit/GREENFIELD-SIMULATION.mdx`, `.godpowers/prep/INITIAL-FINDINGS.mdx` and `IMPORTED-CONTEXT.mdx` (when present), existing canonical artifacts, `.godpowers/state.json` |
 | **Outputs** | `.godpowers/audit/GREENFIELDIFY-PLAN.mdx` (written before any artifact edit), approved canonical artifact updates |
@@ -817,7 +817,7 @@ greenfieldification, and host-automation agents added after v0.11.
 
 | Field | Value |
 |---|---|
-| **File** | `agents/god-automation-engineer.md` |
+| **File** | `specialists/god-automation-engineer.md` |
 | **Triggers** | `/god-automation-setup` (after the user approves provider, template ids, cadence, and scope) |
 | **Inputs** | Approved automation setup plan, host provider choice, `.godpowers/state.json`, existing `.godpowers/automations.json` |
 | **Outputs** | `.godpowers/automations.json` (successful automations only), host-native automation configuration |

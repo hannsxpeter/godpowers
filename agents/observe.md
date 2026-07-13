@@ -1,6 +1,6 @@
 ---
 pillar: observe
-status: active
+status: present
 always_load: false
 covers: [events, metrics, traces, checkpoints, logs]
 triggers: [observe, observability, events, checkpoint, trace, metrics, logs]
@@ -12,7 +12,9 @@ see_also: [quality]
 
 - [DECISION] This pillar captures observability mechanisms inside Godpowers itself.
 
-## Signals
+## Context
+
+### Signals
 
 - [DECISION] `lib/events.js` writes hash-chained JSONL events under `.godpowers/runs/<run-id>/events.jsonl`.
 - [DECISION] `lib/checkpoint.js` writes `.godpowers/CHECKPOINT.mdx` as the durable orientation pin for future sessions.
@@ -21,13 +23,33 @@ see_also: [quality]
 - [DECISION] `lib/dashboard.js` renders disk-derived project status, action brief, proactive checks, and host guarantees.
 - [DECISION] Event vocabulary includes local helper, dashboard, host capability, dogfood, source-system import, sync-back, repo-doc sync, and repo-surface sync events.
 
+## Decisions
+
+(none)
+
+## Rules
+
+(none)
+
+## Workflows
+
+(none)
+
 ## Watchouts
 
 - [HYPOTHESIS] Checkpoint drift can confuse future sessions if state changes without `lib/checkpoint.syncFromState`.
 - [HYPOTHESIS] Event vocabulary drift can break OTel export, dashboard closeouts, and recovery if schemas and runtime events diverge.
 
+## Touchpoints
+
+- [DECISION] Observability context synchronizes from authoritative state through the managed section below.
+
+## Gaps
+
+(none)
+
 <!-- godpowers:pillar-sync:begin -->
-## Godpowers artifact sources
+### Godpowers artifact sources
 
 - Sync mode: auto-applied by yolo.
 - Related artifact: `.godpowers/state.json`.

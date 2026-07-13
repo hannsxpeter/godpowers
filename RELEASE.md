@@ -1,46 +1,42 @@
-# Godpowers 5.4.0 Release
+# Godpowers 5.5.0 Release
 
-> Status: Published
+> Status: Release candidate
 > Date: 2026-07-13
 
-- [DECISION] Godpowers 5.4.0 is the Godplans 1.1 interoperability release.
-- [DECISION] The public surface contains 122 slash commands, 40 agents, 13 workflows, and 44 recipes.
-- [DECISION] The core package contains 98 runtime library modules and keeps zero production dependencies.
-- [DECISION] The `@godpowers/mcp` companion remains read-only and shares version 5.4.0.
+- [DECISION] Godpowers 5.5.0 is the Arc-Ready and Pillars conformance release.
+- [DECISION] The public surface contains 122 slash commands, 40 specialist agents, 13 workflows, and 44 recipes.
+- [DECISION] The core package contains 100 runtime library modules and keeps zero production dependencies.
+- [DECISION] The `@godpowers/mcp` companion remains read-only and shares version 5.5.0.
 
 ## Changes
 
-- [DECISION] `lib/sibling-artifacts.js` recognizes the Godplans 1.1 PLAN plus validator contract, mirrors its structural rules without executing repository-owned shell, and pins the official validator by exact SHA-256 identity.
-- [DECISION] GP execution is blocked for planning, done, invalid, incomplete, unsupported-validator, non-executable, symlinked, and lifecycle-inconsistent contracts.
-- [DECISION] Approved or executing plans expose only dependency-ready tasks, and parallel dispatch remains inside one wave with disjoint file ownership.
-- [DECISION] `lib/planning-systems.js` preserves the complete GP task ledger, phases, waves, statuses, `Reuses`, `Verify`, story requirements, and domain requirements during migration.
-- [DECISION] Godplans staleness covers PLAN content, validator content, and validator executable mode while ignoring Godpowers-owned sync companions.
-- [DECISION] Legacy and incomplete plans remain readable as hypothesis-grade migration context but cannot become execution authority.
-- [DECISION] Planning, migration, preflight, doctor, context, reconciliation, reconstruction, orchestration, routing, workflow, template, architecture, and reference documentation now describe the Godplans 1.1 contract.
+- [DECISION] Product routing selects one of six forms before applying product archetype, industry, or regulatory overlays.
+- [DECISION] Each product form carries a distinct vertical slice and completion-evidence contract, so web assumptions do not leak into API, CLI, mobile, data, or infrastructure work.
+- [DECISION] OWASP hardening uses the 2025 Web Top 10 and routes supply-chain failures plus exceptional-condition handling as first-class checks.
+- [DECISION] Public activation requires `.godpowers/launch/PREPUBLICATION.mdx`, bound to the exact hardening findings hash, authoritative hardening timestamp, and Critical count.
+- [DECISION] Godpowers imports Arc-Ready 1.1 canonical tier artifacts as read-only migration evidence and writes sync-back only to `.arc-ready/GODPOWERS-SYNC.md`.
+- [DECISION] Pillars 1.1 support includes path-derived identities, recursive sub-pillars, nested scopes, exact portable matching, local catalogs, exclusions, dependency depth, budgets, and all official routing fixtures.
+- [DECISION] Specialist source contracts live under `specialists/`, while host installation still writes portable contracts to the host `agents/` registry.
+- [DECISION] The pinned official Agent Skills validator runs in release checks and GitHub publication workflows.
 
 ## Validation
 
-- [DECISION] `npm run release:check` passes on the final 5.4.0 release-candidate tree.
-- [DECISION] Aggregate coverage is 94.65% lines, 79.28% branches, and 96.93% functions.
-- [DECISION] Per-file line coverage is at least 70% across all 96 expected non-browser runtime modules.
-- [DECISION] `npm run lint` passes all static release-sensitive checks.
-- [DECISION] The sibling integration suite passes 59 checks, including official validator identity, structural parity, lifecycle gates, companion safety, staleness, large-plan reads, and full GP and requirement traceability.
-- [DECISION] A live parity probe passes the same Godplans fixture through the official 1.1.0 validator and the Godpowers static mirror.
-- [DECISION] Node 18, Node 20, Node 22, and the package check pass in GitHub Actions run `29233469337` for pull request 67.
-- [DECISION] Repository documentation, repository surface, route quality, recipe coverage, and release surface detectors report no stale checks.
-- [DECISION] Root package validation covers 577 files and MCP package validation covers 8 files.
-- [DECISION] The self-project truth gate passes 141 checks and fails closed on stale source versions, generated state, artifact hashes, roadmap provenance, lifecycle status, and public surface claims.
+- [DECISION] Product routing passes 11 focused tests across six forms and four composition axes.
+- [DECISION] The pre-publication gate passes 12 focused tests for recording, hash drift, timestamp drift, Critical policy, malformed authority, and fail-closed behavior.
+- [DECISION] Pillars passes 14 native behavior tests, all 6 official portable routing fixtures, and the official Pillars repository validator with 0 errors and 0 warnings.
+- [DECISION] The official Agent Skills validator accepts the absolute Godpowers repository path.
+- [DECISION] The complete release gate passes with 94.64 percent line coverage, 79.26 percent branch coverage, 96.77 percent function coverage, and at least 70 percent line coverage across 98 included runtime modules.
+- [DECISION] The dependency audit reports 0 vulnerabilities and self-project truth passes 141 checks.
+- [DECISION] Package verification records 582 files in `godpowers` and 8 files in `@godpowers/mcp`.
+- [HYPOTHESIS] Pull-request CI and publication evidence will be recorded after the release candidate is merged and published.
 
 ## Upgrade
 
-- [DECISION] Install with `npm install -g godpowers@5.4.0` or `npx godpowers@5.4.0`.
-- [DECISION] Existing 5.x projects need no Godpowers artifact migration.
-- [DECISION] Projects using Godplans 1.1 should keep `.godplans/PLAN.mdx` beside its emitted executable `.godplans/validate-plan.sh` companion.
-- [DECISION] Re-run the installer for each host runtime so updated skills and runtime helpers replace installed copies.
+- [DECISION] After publication, install with `npm install -g godpowers@5.5.0` or `npx godpowers@5.5.0`.
+- [DECISION] Existing 5.x projects need no `.godpowers` artifact migration.
+- [DECISION] Re-run the installer for each host runtime so updated skills, specialists, routes, references, and runtime helpers replace installed copies.
+- [DECISION] Repository contributors should treat `agents/` as Pillars context and `specialists/` as portable specialist source contracts.
 
 ## Publication Evidence
 
-- [DECISION] GitHub tag `v5.4.0` and the GitHub Release point to merged main commit `13c0ce2905b870846c8170673eaed5415e09b235`.
-- [DECISION] GitHub Actions run `29234078146` verified release identity, passed the complete release gate, and published npm `godpowers@5.4.0` plus npm `@godpowers/mcp@5.4.0` with provenance.
-- [DECISION] The 577-file root tarball and 8-file MCP tarball attached to the GitHub Release exactly match npm registry integrity, and `SHA256SUMS` records their GitHub asset digests.
-- [DECISION] npm latest resolves both packages to 5.4.0, and isolated published verification passes for Quick Proof, read-only project inspection, dashboard, next route, Claude, Codex, and the MCP executable.
+- [HYPOTHESIS] Git tag, GitHub Release, asset checksums, npm provenance, and isolated published-install verification are pending the merged release commit.

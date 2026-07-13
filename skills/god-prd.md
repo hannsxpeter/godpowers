@@ -16,13 +16,22 @@ Spawn the **god-pm** agent in a fresh context via the host platform's native age
 1. If `.godpowers/state.json` does not exist: tell the user to run `/god-init` first.
 2. Read `.godpowers/prep/INITIAL-FINDINGS.mdx` if present.
 3. Read `.godpowers/prep/IMPORTED-CONTEXT.mdx` if present.
-4. Spawn god-pm with the user's project description from `state.json`,
+4. Select the primary product form before applying domain assumptions. Use
+   `lib/product-routing.selectProductForm` with the durable intent, then load
+   `references/building/PRODUCT-FORM-ROUTER.md` and
+   `references/building/DOMAIN-COMPOSITION-REGISTRY.md`. If the result is
+   ambiguous, record an open question instead of defaulting to a web app.
+5. Compose the route in this order: product form, product archetype, industry
+   overlay, regulatory overlay. Record an explicit none-evidenced value for an
+   empty axis and verify freshness-sensitive regulatory claims.
+6. Spawn god-pm with the user's project description from `state.json`,
    `.godpowers/intent.yaml`, and any prep artifacts. Prep artifacts are
-   context, not source of truth.
-5. The agent writes `.godpowers/prd/PRD.mdx`
-6. The agent runs have-nots checks before declaring done
-7. If god-pm pauses for a human question: relay to user using pause format
-8. If prep artifacts or the PRD show UI or product-experience signals, route
+   context, not source of truth. Include the ordered product route and the
+   selected form-specific completion evidence.
+7. The agent writes `.godpowers/prd/PRD.mdx`
+8. The agent runs have-nots checks before declaring done
+9. If god-pm pauses for a human question: relay to user using pause format
+10. If prep artifacts or the PRD show UI or product-experience signals, route
    to `/god-design` next so DESIGN.md can shape architecture. Otherwise route
    to `/god-arch`.
 

@@ -27,7 +27,7 @@ function fixture() {
   writeRel(tmp, 'package.json', JSON.stringify({
     name: 'godpowers',
     version: '7.0.0',
-    files: ['bin/', 'skills/', 'agents/god-*.md', 'routing/', 'workflows/', 'schema/', 'lib/', 'extensions/', 'RELEASE.md', 'SKILL.md', 'AGENTS.md', 'CHANGELOG.md', 'LICENSE'],
+    files: ['bin/', 'skills/', 'specialists/', 'routing/', 'workflows/', 'schema/', 'lib/', 'extensions/', 'RELEASE.md', 'SKILL.md', 'AGENTS.md', 'CHANGELOG.md', 'LICENSE'],
     scripts: { test: 'node scripts/test-repo-surface-sync.js' }
   }, null, 2));
   writeRel(tmp, 'package-lock.json', JSON.stringify({ name: 'godpowers', version: '7.0.0' }, null, 2));
@@ -37,7 +37,7 @@ function fixture() {
   writeRel(tmp, 'skills/god-beta.md', '---\nname: god-beta\ndescription: |\n  Triggers on: beta\n---\n# beta\n');
   writeRel(tmp, 'routing/god-alpha.yaml',
     'apiVersion: godpowers/v1\nkind: CommandRouting\nmetadata:\n  command: /god-alpha\nexecution:\n  spawns: [god-missing]\n');
-  writeRel(tmp, 'agents/god-alpha-agent.md', '---\nname: god-alpha-agent\ndescription: x\ntools: Read\n---\n');
+  writeRel(tmp, 'specialists/god-alpha-agent.md', '---\nname: god-alpha-agent\ndescription: x\ntools: Read\n---\n');
   writeRel(tmp, 'docs/agent-specs.md', 'god-alpha-agent\n');
   writeRel(tmp, 'workflows/full-arc.yaml', 'apiVersion: godpowers/v1\nname: full-arc\n');
   writeRel(tmp, 'routing/recipes/demo.yaml', 'apiVersion: godpowers/v1\ncommands:\n  - /god-alpha\n');

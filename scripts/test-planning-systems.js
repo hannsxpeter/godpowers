@@ -80,6 +80,29 @@ test('detect finds Superpowers specs and plans', () => {
   assert(superpowers.files.some((file) => file.path.includes('plans')), 'plan missing');
 });
 
+test('detect and import preserve Arc-Ready canonical artifact evidence', () => {
+  const tmp = mkProject();
+  write(path.join(tmp, '.arc-ready', 'PROGRESS.md'), '# Progress\n\nCurrent tier: build\n');
+  write(path.join(tmp, '.prd-ready', 'PRD.md'), '# PRD\n\n## Acceptance criteria\n');
+  write(path.join(tmp, '.architecture-ready', 'ARCH.md'), '# Architecture\n\n## Trust boundaries\n');
+  write(path.join(tmp, '.roadmap-ready', 'ROADMAP.md'), '# Roadmap\n\n## Phase 1\n');
+  write(path.join(tmp, '.stack-ready', 'STACK.md'), '# Stack\n\n## Runtime\n');
+  write(path.join(tmp, '.harden-ready', 'FINDINGS.md'), '# Findings\n\n## Critical\n');
+
+  const detection = planningSystems.detect(tmp);
+  const arcReady = detection.systems.find((system) => system.id === 'arc-ready');
+  assert(arcReady, 'Arc-Ready not detected');
+  assert(arcReady.confidence === 'high', `unexpected confidence: ${arcReady.confidence}`);
+  assert(arcReady.files.some((file) => file.path === '.prd-ready/PRD.md'), 'Arc-Ready PRD missing');
+
+  const result = planningSystems.importPlanningContext(tmp, { detection });
+  assert(result.writtenArtifacts.includes('prd/PRD.mdx'), 'Arc-Ready PRD seed missing');
+  assert(result.writtenArtifacts.includes('arch/ARCH.mdx'), 'Arc-Ready architecture seed missing');
+  assert(result.writtenArtifacts.includes('roadmap/ROADMAP.mdx'), 'Arc-Ready roadmap seed missing');
+  assert(result.writtenArtifacts.includes('stack/DECISION.mdx'), 'Arc-Ready stack seed missing');
+  assert(result.writtenArtifacts.includes('harden/FINDINGS.mdx'), 'Arc-Ready findings seed missing');
+});
+
 test('importPlanningContext writes prep context and Godpowers seed artifacts', () => {
   const tmp = mkProject();
   write(path.join(tmp, '.planning', 'REQUIREMENTS.md'), '# Requirements\n\n## Login\n');
@@ -140,6 +163,22 @@ test('sourceSync is idempotent', () => {
   assert(first === second, 'sync-back changed on second run');
   const count = (second.match(/godpowers:source-sync:begin/g) || []).length;
   assert(count === 1, `expected one fence, got ${count}`);
+});
+
+test('sourceSync writes an Arc-Ready companion without changing canonical artifacts', () => {
+  const tmp = mkProject();
+  const progress = '# Arc-Ready Progress\n\nCanonical progress stays here.\n';
+  write(path.join(tmp, '.arc-ready', 'PROGRESS.md'), progress);
+  write(path.join(tmp, '.prd-ready', 'PRD.md'), '# PRD\n\n## Outcome\n');
+  planningSystems.importPlanningContext(tmp);
+
+  const result = sourceSync.run(tmp);
+  const synced = result.results.find((entry) => entry.system === 'arc-ready');
+  assert(synced, 'Arc-Ready sync result missing');
+  assert(synced.companion === '.arc-ready/GODPOWERS-SYNC.md', 'wrong Arc-Ready companion');
+  assert(synced.pointers.length === 0, 'Arc-Ready must not receive pointer edits');
+  assert(fs.readFileSync(path.join(tmp, '.arc-ready', 'PROGRESS.md'), 'utf8') === progress,
+    'Arc-Ready canonical progress was changed');
 });
 
 report();

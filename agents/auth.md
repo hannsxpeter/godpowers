@@ -41,13 +41,13 @@ see_also: []
 - This pillar is a stub. Ask before making durable auth decisions.
 
 <!-- godpowers:pillar-sync:begin -->
-## Godpowers artifact sources
+### Godpowers artifact sources
 
 - Sync mode: auto-applied by yolo.
 - Related artifact: `.godpowers/harden/FINDINGS.mdx`.
 - Rule: keep this pillar aligned when these artifacts change durable auth truth.
 
-## Extracted durable signals
+### Extracted durable signals
 
 From `.godpowers/harden/FINDINGS.mdx`:
 - [DECISION] Date: 2026-07-13.

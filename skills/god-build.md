@@ -23,6 +23,10 @@ Orchestrate the build via specialist agents.
    `lib/pillars.computeLoadSet(projectRoot, taskText)`. Always load
    `agents/context.md` and `agents/repo.md`, then pass only task-relevant
    pillars into each planner or executor context.
+4. Load `references/building/PRODUCT-FORM-ROUTER.md` and the ordered product
+   route from PRD or Architecture. Select one primary form before domain
+   overlays and pass its vertical-slice definition plus completion evidence to
+   the planner, executors, and both reviewers.
 
 ## Orchestration
 
@@ -80,8 +84,13 @@ After all waves:
 5. Record the exact verification commands that passed in `.godpowers/state.json`
    under `tiers.tier-2.build.verification.commands`
 6. Run `npx godpowers gate --tier=build --project=.` and do not proceed on a non-zero exit
-7. Run `npx godpowers state advance --step=build --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.mdx` plus `.godpowers/build/STATE.mdx`.
-8. If the build plan or implementation establishes durable conventions, plan
+7. Verify the primary form's completion evidence. A generic test pass cannot
+   replace a clean consumer install for CLI or SDK, contract evidence for API,
+   browser and accessibility evidence for web, platform evidence for mobile or
+   desktop, reproducibility and lineage for data or ML, or plan, policy,
+   simulation, and rollback evidence for infrastructure or IaC.
+8. Run `npx godpowers state advance --step=build --status=done --project=.` to update `state.json` and regenerate `.godpowers/PROGRESS.mdx` plus `.godpowers/build/STATE.mdx`.
+9. If the build plan or implementation establishes durable conventions, plan
    pillar updates through `lib/pillars.planArtifactSync`. Under
    `/god-mode --yolo`, apply those updates immediately and log the decision.
 

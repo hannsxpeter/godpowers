@@ -57,7 +57,7 @@ building toward.
 - **Verification today** is a mix: build tier genuinely enforces evidence via the
   gate; other tiers rest on artifact-existence + have-nots lint + reviewer-agent
   PROSE verdicts (`god-spec-reviewer`, `god-quality-reviewer`) returned to the
-  orchestrator. TDD is prompt-attested (`agents/god-executor.md:42-99`), not
+  orchestrator. TDD is prompt-attested (`specialists/god-executor.md:42-99`), not
   mechanically proven.
 
 ### Mythify (v3.6.2)

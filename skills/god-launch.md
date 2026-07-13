@@ -13,11 +13,22 @@ Spawn the **god-launch-strategist** agent in a fresh context via the host platfo
 
 ## Setup
 
-1. Verify `.godpowers/harden/FINDINGS.mdx` exists with NO unresolved Critical findings.
-2. If Critical findings exist: REFUSE to proceed. Tell user to resolve or
-   explicitly accept the risk first.
+1. Verify `.godpowers/harden/FINDINGS.mdx` exists with NO unresolved or
+   accepted Critical findings.
+2. If Critical findings exist, REFUSE public activation. Launch asset work may
+   remain complete, but a Critical must be resolved and re-verified or public
+   activation must be removed from scope.
 3. Spawn god-launch-strategist with PRD path and harden FINDINGS.md path.
 4. The agent returns structured launch evidence for `.godpowers/state.json` plus landing copy artifacts; the generated `.godpowers/launch/STATE.mdx` view refreshes after state mutation.
+5. Immediately before any public release action, run:
+   `node <runtimeRoot>/lib/prepublication-gate.js --record --project=.`
+   followed by:
+   `node <runtimeRoot>/lib/prepublication-gate.js --check --project=.`
+   The first command records `.godpowers/launch/PREPUBLICATION.mdx` against the
+   exact hardening findings hash and authoritative hardening update. The second
+   command must pass in the same release attempt.
+6. If hardening changes after the record, the revision or timestamp check
+   fails. Re-run hardening as needed, then record and check a fresh gate.
 
 ## Verification
 
@@ -29,7 +40,9 @@ After god-launch-strategist returns:
    - launch target is live and smoke checked
    - local launch-readiness harness passed and external access bundle is the
      only missing item
-5. Run `npx godpowers state advance --step=launch --status=done --project=.`
+5. For public activation, verify the pre-publication gate after every other
+   release-readiness check and immediately before the external write.
+6. Run `npx godpowers state advance --step=launch --status=done --project=.`
    only when live launch or explicit local launch-readiness scope is complete.
    If external access is missing, record the waiting artifact path in launch
    state through the owning command wrapper rather than editing the generated

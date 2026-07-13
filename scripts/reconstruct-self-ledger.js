@@ -27,16 +27,16 @@ const ROOT = path.resolve(__dirname, '..');
 // Requirement id -> the real file(s) that implement it. Kept deliberately small
 // (the primary implementing surface), not an exhaustive file list.
 const MAP = {
-  'P-MUST-01': ['agents/god-orchestrator.md'],
+  'P-MUST-01': ['specialists/god-orchestrator.md'],
   'P-MUST-02': ['lib/state.js'],
   'P-MUST-03': ['lib/multi-repo-detector.js'],
-  'P-MUST-04': ['agents/god-pm.md'],
-  'P-MUST-05': ['agents/god-architect.md'],
-  'P-MUST-06': ['agents/god-roadmapper.md'],
-  'P-MUST-07': ['agents/god-stack-selector.md'],
-  'P-MUST-08': ['agents/god-repo-scaffolder.md'],
-  'P-MUST-09': ['agents/god-executor.md', 'agents/god-planner.md'],
-  'P-MUST-10': ['agents/god-spec-reviewer.md', 'agents/god-quality-reviewer.md'],
+  'P-MUST-04': ['specialists/god-pm.md'],
+  'P-MUST-05': ['specialists/god-architect.md'],
+  'P-MUST-06': ['specialists/god-roadmapper.md'],
+  'P-MUST-07': ['specialists/god-stack-selector.md'],
+  'P-MUST-08': ['specialists/god-repo-scaffolder.md'],
+  'P-MUST-09': ['specialists/god-executor.md', 'specialists/god-planner.md'],
+  'P-MUST-10': ['specialists/god-spec-reviewer.md', 'specialists/god-quality-reviewer.md'],
   'P-MUST-11': ['lib/have-nots-validator.js'],
   'P-MUST-12': ['lib/artifact-linter.js'],
   'P-MUST-13': ['lib/linkage.js'],
@@ -48,18 +48,18 @@ const MAP = {
   'P-MUST-19': ['lib/requirements.js', 'skills/god-progress.md'],
   'P-MUST-20': ['lib/checkpoint.js'],
   'P-MUST-21': ['lib/installer-core.js', 'bin/install.js'],
-  'P-MUST-22': ['agents/god-harden-auditor.md'],
-  'P-SHOULD-01': ['agents/god-deploy-engineer.md'],
-  'P-SHOULD-02': ['agents/god-observability-engineer.md'],
-  'P-SHOULD-03': ['agents/god-launch-strategist.md'],
-  'P-SHOULD-04': ['agents/god-updater.md'],
+  'P-MUST-22': ['specialists/god-harden-auditor.md'],
+  'P-SHOULD-01': ['specialists/god-deploy-engineer.md'],
+  'P-SHOULD-02': ['specialists/god-observability-engineer.md'],
+  'P-SHOULD-03': ['specialists/god-launch-strategist.md'],
+  'P-SHOULD-04': ['specialists/god-updater.md'],
   'P-SHOULD-05': ['lib/host-capabilities.js'],
   'P-SHOULD-06': ['lib/runtime-test.js'],
   'P-SHOULD-07': ['lib/source-sync.js'],
-  'P-COULD-01': ['agents/god-coordinator.md'],
-  'P-COULD-02': ['agents/god-automation-engineer.md'],
+  'P-COULD-01': ['specialists/god-coordinator.md'],
+  'P-COULD-02': ['specialists/god-automation-engineer.md'],
   'P-COULD-03': ['lib/otel-exporter.js'],
-  'P-COULD-04': ['agents/god-spike-runner.md']
+  'P-COULD-04': ['specialists/god-spike-runner.md']
 };
 
 function fail(msg) {

@@ -22,10 +22,10 @@ function write(filePath, content) {
 
 console.log('\n  Pillars tests\n');
 
-test('detect does not treat Godpowers specialist agents as pillars', () => {
+test('detect keeps specialist source contracts outside the Pillars scope', () => {
   const tmp = mkTmp();
   write(path.join(tmp, 'AGENTS.md'), '# Godpowers\n');
-  write(path.join(tmp, 'agents', 'god-pm.md'), `---
+  write(path.join(tmp, 'specialists', 'god-pm.md'), `---
 name: god-pm
 description: Product manager agent.
 ---
@@ -62,7 +62,7 @@ test('init creates native Pillars protocol and floor pillars', () => {
 
 test('computeLoadSet loads always pillars and task-routed dependencies', () => {
   const tmp = mkTmp();
-  pillars.init(tmp, { corePillars: [] });
+  pillars.init(tmp, { corePillars: ['auth'] });
   write(path.join(tmp, 'agents', 'auth.md'), `---
 pillar: auth
 status: present
@@ -153,6 +153,54 @@ Secrets live in env vars.
   for (const expected of ['auth', 'config', 'context', 'repo']) {
     if (!names.includes(expected)) throw new Error(`${expected} not loaded: ${names.join(', ')}`);
   }
+});
+
+test('portable matcher uses contiguous ASCII tokens without substring matches', () => {
+  assert(pillars.selectorMatches('Apply a schema-change safely', 'Schema change'));
+  assert(!pillars.selectorMatches('Improve capitalization', 'api'));
+  assert(!pillars.selectorMatches('Change the schema migration', 'schema change'));
+});
+
+test('local catalog reports task-relevant absent concerns', () => {
+  const tmp = mkTmp();
+  pillars.init(tmp, { corePillars: [] });
+  const load = pillars.computeLoadSet(tmp, 'Add privacy retention and deletion controls');
+  assert(load.absent.some((item) => item.pillar === 'privacy'), JSON.stringify(load));
+});
+
+test('path-qualified sub-pillars load through hard dependencies', () => {
+  const tmp = mkTmp();
+  pillars.init(tmp, { corePillars: [] });
+  write(path.join(tmp, 'agents', 'auth', 'agent-registration.md'), pillars.pillarStub(
+    'agent-registration',
+    { covers: ['agent registration protocol'], triggers: ['agent registration'] },
+    { status: 'present', must_read_with: ['auth'] }
+  ));
+  write(path.join(tmp, 'agents', 'auth.md'), pillars.pillarStub(
+    'auth',
+    { covers: ['identity and access'], triggers: ['auth'] },
+    { status: 'present' }
+  ));
+  const listed = pillars.listPillars(tmp);
+  assert(listed.some((item) => item.identity === 'auth/agent-registration'));
+  const load = pillars.computeLoadSet(tmp, 'Update the agent registration protocol');
+  assert(load.loadSet.some((item) => item.identity === 'auth/agent-registration'), JSON.stringify(load));
+  assert(load.loadSet.some((item) => item.identity === 'auth'), JSON.stringify(load));
+});
+
+test('nested scopes preserve ancestor always pillars and nearest-scope routing', () => {
+  const tmp = mkTmp();
+  pillars.init(tmp, { corePillars: ['ui'] });
+  const child = path.join(tmp, 'packages', 'web');
+  pillars.init(child, { corePillars: ['ui'] });
+  const load = pillars.computeLoadSet(tmp, 'Update the UI component layout', {
+    target: 'packages/web/src/page.js'
+  });
+  const labels = load.loadSet.map((item) => `${item.scopeLabel}::${item.identity}`);
+  assert(labels.includes('root::context'), JSON.stringify(labels));
+  assert(labels.includes('packages/web::context'), JSON.stringify(labels));
+  assert(labels.includes('root::ui'), JSON.stringify(labels));
+  assert(labels.includes('packages/web::ui'), JSON.stringify(labels));
 });
 
 test('planArtifactSync proposes by default and auto-applies under yolo', () => {

@@ -204,7 +204,20 @@ test('harden gate passes with no criticals and an executed pass', () => {
     '|---|---:|',
     '| Critical | 0 |',
     '',
-    '[DECISION] Launch gate: PASSED.'
+    '[DECISION] Launch gate: PASSED.',
+    '',
+    '| Category | Manual procedure | Result | Evidence or finding |',
+    '|---|---|---|---|',
+    '| A01:2025 Broken Access Control | authorization probe | pass | test evidence |',
+    '| A02:2025 Security Misconfiguration | configuration probe | pass | test evidence |',
+    '| A03:2025 Software Supply Chain Failures | supply-chain probe | pass | test evidence |',
+    '| A04:2025 Cryptographic Failures | cryptography probe | pass | test evidence |',
+    '| A05:2025 Injection | injection probe | pass | test evidence |',
+    '| A06:2025 Insecure Design | abuse-case probe | pass | test evidence |',
+    '| A07:2025 Authentication Failures | authentication scope review | Not Applicable, no auth surface | test evidence |',
+    '| A08:2025 Software or Data Integrity Failures | integrity probe | pass | test evidence |',
+    '| A09:2025 Security Logging and Alerting Failures | alert exercise | pass | test evidence |',
+    '| A10:2025 Mishandling of Exceptional Conditions | failure injection | pass | test evidence |'
   ].join('\n'));
   initState(project, (current) => {
     current.tiers['tier-3'].harden = {

@@ -3,7 +3,7 @@
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
 > Last updated: 2026-07-13
-> Current source: v5.4.0. Latest published: v5.4.0.
+> Current source: v5.5.0. Latest published: v5.4.0.
 
 This roadmap tracks releases, what's shipped, and what is frozen during the
 3.x public adoption window. Everything user-facing remains slash-command based.
@@ -45,6 +45,12 @@ quarterback, work report, reflections, memory, lessons, outcome loops, MCP read
 tools, and ledger importer) shipped across 3.1.0-3.11.0.
 
 What works today:
+- **Arc-Ready 1.1 leverage**: six product forms, four-axis domain composition,
+  OWASP 2025 routing, hash-bound pre-publication checks, read-only tier-artifact
+  import, and managed `.arc-ready/GODPOWERS-SYNC.md` sync-back.
+- **Pillars 1.1 conformance**: path identities, portable matching, nested
+  scopes, cataloged absences, exclusions, dependency and budget validation,
+  specialist-source separation, and all official routing fixtures.
 - **Godplans 1.1 interoperability**: PLAN plus pinned executable validator
   contract detection, non-executing structural preflight, lifecycle-safe GP
   routing, exact pre-execution validator gate, complete GP/R seed traceability,
@@ -265,7 +271,8 @@ What works today:
 - **Bidirectional linkage map** with 7 stable ID types
 - **Reverse-sync** writing fenced "Implementation Linkage" footers
 - **Native Pillars project context**: `AGENTS.md` plus routed
-  `agents/*.md` pillar files created for every Godpowers project
+  `agents/*.md` pillar files created for every Godpowers project, with
+  Pillars 1.1 catalogs, nested scopes, portable matching, and sub-pillars
 - **Domain precision layer**: `.godpowers/domain/GLOSSARY.mdx` plus DG-01 through
   DG-05 linter checks for canonical terms, aliases, ambiguity, and relationships
 - **Existing-project Pillar-ization**: current `.godpowers` artifacts become
