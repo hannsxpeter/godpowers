@@ -1,6 +1,6 @@
 # Godpowers 5.4.0 Release
 
-> Status: Approved for publication
+> Status: Published
 > Date: 2026-07-13
 
 - [DECISION] Godpowers 5.4.0 is the Godplans 1.1 interoperability release.
@@ -33,13 +33,14 @@
 
 ## Upgrade
 
-- [DECISION] After publication, install with `npm install -g godpowers@5.4.0` or `npx godpowers@5.4.0`.
+- [DECISION] Install with `npm install -g godpowers@5.4.0` or `npx godpowers@5.4.0`.
 - [DECISION] Existing 5.x projects need no Godpowers artifact migration.
 - [DECISION] Projects using Godplans 1.1 should keep `.godplans/PLAN.mdx` beside its emitted executable `.godplans/validate-plan.sh` companion.
 - [DECISION] Re-run the installer for each host runtime so updated skills and runtime helpers replace installed copies.
 
-## Publication Boundary
+## Publication Evidence
 
-- [DECISION] Publication is authorized for npm `godpowers@5.4.0`, npm `@godpowers/mcp@5.4.0`, GitHub tag `v5.4.0`, and a GitHub Release containing both verified package tarballs.
-- [DECISION] The tag-triggered workflow must verify that the tag matches both package versions and belongs to merged main before it runs the complete release gate and npm publication with provenance.
-- [DECISION] Published-install verification is required before this release is recorded as complete.
+- [DECISION] GitHub tag `v5.4.0` and the GitHub Release point to merged main commit `13c0ce2905b870846c8170673eaed5415e09b235`.
+- [DECISION] GitHub Actions run `29234078146` verified release identity, passed the complete release gate, and published npm `godpowers@5.4.0` plus npm `@godpowers/mcp@5.4.0` with provenance.
+- [DECISION] The 577-file root tarball and 8-file MCP tarball attached to the GitHub Release exactly match npm registry integrity, and `SHA256SUMS` records their GitHub asset digests.
+- [DECISION] npm latest resolves both packages to 5.4.0, and isolated published verification passes for Quick Proof, read-only project inspection, dashboard, next route, Claude, Codex, and the MCP executable.
