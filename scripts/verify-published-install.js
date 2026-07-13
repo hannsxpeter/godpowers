@@ -55,12 +55,17 @@ function main() {
   assertIncludes(quickProof, 'Next: /god-prd', 'quick-proof');
   console.log('  + quick-proof command rendered shipped fixture');
 
+  const inspectedProof = run('npx', [...npxArgs, 'quick-proof', '--project', project, '--inspect-project', '--brief'], { env });
+  assertIncludes(inspectedProof, 'Source: current project inspection (read-only)', 'quick-proof inspect-project');
+  assertIncludes(inspectedProof, 'Next: /god-init', 'quick-proof inspect-project');
+  console.log('  + quick-proof read-only project inspection rendered current state');
+
   const status = run('npx', [...npxArgs, 'status', '--project', project, '--brief'], { env });
   assertIncludes(status, 'Godpowers Dashboard', 'status');
   console.log('  + status command rendered dashboard');
 
   const next = run('npx', [...npxArgs, 'next', '--project', project, '--brief'], { env });
-  assertIncludes(next, 'Suggested next command:', 'next');
+  assertIncludes(next, 'Recommended: /god-init', 'next');
   console.log('  + next command rendered recommendation');
 
   run('npx', [...npxArgs, '--claude', '--global'], { env });

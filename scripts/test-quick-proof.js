@@ -320,6 +320,9 @@ test('release checklist includes published install verification', () => {
 
 test('published install verification script exercises quick-proof and runtime installs', () => {
   assertIncludes('scripts/verify-published-install.js', 'quick-proof');
+  assertIncludes('scripts/verify-published-install.js', '--inspect-project');
+  assertIncludes('scripts/verify-published-install.js', 'Source: current project inspection (read-only)');
+  assertIncludes('scripts/verify-published-install.js', 'Recommended: /god-init');
   assertIncludes('scripts/verify-published-install.js', '--claude');
   assertIncludes('scripts/verify-published-install.js', '--codex');
   assertIncludes('scripts/verify-published-install.js', 'god-orchestrator.toml');
