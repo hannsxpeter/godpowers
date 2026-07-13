@@ -70,8 +70,8 @@
         "status": "done",
         "artifact": "SYNC-LOG.mdx",
         "artifact-hash": "sha256:c8c11458826463e04d569455dfac45f43ab27b827dee4366caa13de1dc5941fd",
-        "updated": "2026-07-13T05:56:21.000Z",
-        "notes": "Version, surface, state, GitHub Release, npm publication, integrity, and published-install evidence are synchronized."
+        "updated": "2026-07-13T07:06:46.000Z",
+        "notes": "Version, surface, state, and Godaudits 2.0 release-candidate documentation are synchronized."
       }
     },
     "tier-1": {
@@ -102,9 +102,9 @@
       "roadmap": {
         "status": "done",
         "artifact": "roadmap/ROADMAP.mdx",
-        "artifact-hash": "sha256:907cfcfb5548bca771053b0d5508cfc268d71ae36ca5b08168fca30eb39d3a0a",
-        "updated": "2026-07-13T05:57:20.000Z",
-        "notes": "Roadmap provenance is pinned to current source hashes and version 5.3.0."
+        "artifact-hash": "sha256:86758390bb9c9037b958168c3b5402d204a48141ccc0e1ad51d7469af995d063",
+        "updated": "2026-07-13T07:06:46.000Z",
+        "notes": "Roadmap provenance is pinned to current source hashes and version 5.3.1."
       },
       "stack": {
         "status": "done",
@@ -164,7 +164,7 @@
             }
           ]
         },
-        "release-version": "5.3.0"
+        "release-candidate-version": "5.3.1"
       }
     },
     "tier-3": {
@@ -172,8 +172,8 @@
         "status": "done",
         "artifact": "deploy/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T05:55:15.000Z",
-        "notes": "Godpowers 5.3.0 and the MCP companion are published with provenance from merged main and their registry integrity matches the GitHub Release assets.",
+        "updated": "2026-07-13T07:06:46.000Z",
+        "notes": "Local and CI-verifiable npm deployment readiness is complete and the 5.3.1 publication path is authorized.",
         "verification": {
           "commands": [
             {
@@ -230,10 +230,10 @@
             }
           ]
         },
-        "verified-target-type": "published-npm-release",
-        "target-evidence": "GitHub Release assets and npm registry packages share exact integrity values; published CLI and MCP executable verification passed.",
-        "rollback-evidence": "The v5.2.0 tag resolves locally as the prior release rollback reference.",
-        "publication-targets": "https://github.com/hannsxpeter/godpowers/releases/tag/v5.3.0, npm godpowers@5.3.0, and npm @godpowers/mcp@5.3.0"
+        "verified-target-type": "authorized-release-candidate",
+        "target-evidence": "Root and MCP package allowlists pass against npm pack output on the Godaudits 2.0 integration tree.",
+        "rollback-evidence": "The v5.3.0 tag resolves locally as the prior release rollback reference.",
+        "publication-targets": "npm root package, npm MCP package, GitHub tag, and GitHub Release assets"
       },
       "observe": {
         "status": "done",
@@ -305,8 +305,8 @@
         "status": "done",
         "artifact": "launch/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T05:55:15.000Z",
-        "notes": "Version 5.3.0 is published on GitHub and npm, registry integrity matches the release assets, and published-install verification passes.",
+        "updated": "2026-07-13T07:06:46.000Z",
+        "notes": "The 5.3.1 launch-readiness scope is complete and publication is authorized through the verified tag workflow.",
         "verification": {
           "commands": [
             {
@@ -357,9 +357,9 @@
             }
           ]
         },
-        "launch-scope": "published-release",
-        "release-version": "5.3.0",
-        "publication-verification": "passed for GitHub Release, npm root, npm MCP, published root install, Claude, Codex, and MCP executable",
+        "launch-scope": "release-publication-approved",
+        "release-candidate-version": "5.3.1",
+        "publication-verification": "required after the tag workflow completes",
         "production-user-evidence": "unavailable; repository records zero production users"
       }
     }
@@ -514,7 +514,7 @@
   },
   "godpowers-features": {
     "feature-set-version": 1,
-    "runtime-version": "5.3.0",
+    "runtime-version": "5.3.1",
     "known": [
       "planning-system-migration",
       "source-system-sync-back",

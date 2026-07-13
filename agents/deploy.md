@@ -20,15 +20,15 @@ see_also: [security, observe]
 - [DECISION] `.github/workflows/publish-pack.yml` runs `npm run release:check` before publishing first-party extension packs.
 - [DECISION] `package.json` exposes `bin.godpowers` at `./bin/install.js`.
 - [DECISION] Manual tarball publish is a fallback only when the tag-triggered workflow cannot run, and provenance is unavailable for that publish.
-- [DECISION] Source version `5.3.0` is published through the identity-bound tag workflow from merged main commit `9c6efed128b22df6458273c9428d0ceb0a0b0312`.
-- [DECISION] npm `godpowers@5.3.0` and `@godpowers/mcp@5.3.0` are tagged `latest`, and their registry integrity values match the tarballs attached to the GitHub Release.
-- [DECISION] Published-install verification passes for the root CLI, Claude, Codex, and the MCP executable.
-- [DECISION] The prior `v5.2.0` tag remains the tested rollback reference.
+- [DECISION] Source version `5.3.1` is approved for publication through the identity-bound tag workflow.
+- [DECISION] npm `godpowers@5.3.0` and `@godpowers/mcp@5.3.0` remain tagged `latest` until the v5.3.1 workflow completes.
+- [DECISION] Published-install verification is required for the root CLI, Claude, Codex, and the MCP executable after publication.
+- [DECISION] The prior `v5.3.0` tag remains the tested rollback reference.
 
 ## Watchouts
 
 - [HYPOTHESIS] A release is incomplete until git tag, GitHub release, npm version, package tarball, README badges, CHANGELOG, RELEASE, and local install verification agree.
-- [HYPOTHESIS] Registry and published-install proof do not substitute for adoption evidence from an unaffiliated production user.
+- [HYPOTHESIS] Production install evidence for `5.3.1` becomes available only after external publication completes.
 
 <!-- godpowers:pillar-sync:begin -->
 ## Godpowers artifact sources
