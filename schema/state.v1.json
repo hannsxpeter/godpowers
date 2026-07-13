@@ -101,7 +101,7 @@
     },
     "source-systems": {
       "type": "array",
-      "description": "Detected external planning systems imported into Godpowers and eligible for managed sync-back. Includes the sibling superskill artifacts godplans (.godplans/PLAN.mdx) and godaudits (.godaudits/AUDIT.mdx).",
+      "description": "Detected external planning systems imported into Godpowers and eligible for managed sync-back. Includes the sibling superskill artifacts godplans (.godplans/PLAN.mdx) and godaudits (.godaudits/AUDIT.json, with legacy AUDIT.mdx fallback).",
       "items": {
         "type": "object",
         "required": ["id", "name", "confidence", "files", "import-hash"],

@@ -25,6 +25,7 @@ see_also: [quality, deploy]
 - [DECISION] `ARCHITECTURE-MAP.md` renders the same audit as a graph from skills to routes, agents, workflows, recipes, docs, and package checks.
 - [DECISION] `ARCHITECTURE-MAP.md` keeps a complete core command supplement so all 122 shipped skills appear in the human-readable map.
 - [DECISION] Workflow plans use canonical helper IDs such as `source-sync-back` and `pillars-sync-plan`, while `/god-sync` output may show the shorter aliases `source-sync` and `pillars-sync`.
+- [DECISION] Godaudits 2.x interoperability reads `.godaudits/AUDIT.json` as canonical machine state, imports explicit check outcomes, evidence metadata, compliance, accepted risks, open questions, score caps, coverage, findings, and typed GA tasks, and uses generated or legacy AUDIT.mdx only as a fallback.
 - [DECISION] The current executable audit status is fresh for repo surface, route quality, recipe coverage, and workflow planning.
 
 ## Watchouts

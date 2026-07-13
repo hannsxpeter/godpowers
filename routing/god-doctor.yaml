@@ -13,6 +13,12 @@ prerequisites:
 execution:
   spawns: [built-in]
   context: fresh
+  reads:
+    - .godpowers/state.json
+    - .godplans/PLAN.mdx
+    - .godaudits/AUDIT.json
+    - .godaudits/AUDIT.mdx
+    - .godaudits/AUDIT.md
   writes:
     []
 

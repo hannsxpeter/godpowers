@@ -28,7 +28,7 @@ Resolve the Godpowers runtime root before inspecting routes:
 | `backlog`, `later`, `someday`, `future` | `/god-add-backlog` |
 | `when`, `if`, `after`, `once`, `trigger` | `/god-plant-seed` |
 | `note`, `thought`, `remember` | `/god-note` |
-| `GP-<n>` or `GA-<n>` reference | `/god-add-todo` (or `/god-add-backlog` for deferred GP tasks) with the source id and the sibling artifact path (`.godplans/PLAN.mdx` / `.godaudits/AUDIT.mdx`) recorded on the entry, so the captured item stays traceable for later sync-back through the managed GODPOWERS-SYNC.mdx companion |
+| `GP-<n>` or `GA-<n>` reference | `/god-add-todo` (or `/god-add-backlog` for deferred GP tasks) with the source id and sibling artifact path (`.godplans/PLAN.mdx` or `.godaudits/AUDIT.json`) recorded on the entry, so the captured item stays traceable for later sync-back through the managed GODPOWERS-SYNC.mdx companion |
 
 Default to `/god-note` when no priority, backlog, or trigger signal exists.
 
@@ -44,6 +44,7 @@ Default to `/god-note` when no priority, backlog, or trigger signal exists.
 - Do not write notes, todos, backlog items, or seeds directly from this dispatcher.
 - Do not assign priority unless the user provided priority evidence.
 - Keep each capture leaf callable as a direct shortcut.
-- Never edit `.godplans/PLAN.mdx` or `.godaudits/AUDIT.mdx` from capture
+- Never edit `.godplans/PLAN.mdx`, `.godaudits/AUDIT.json`, or generated
+  `.godaudits/AUDIT.mdx` from capture
   flows; they are read-only here and sync-back happens only through the
   managed GODPOWERS-SYNC.mdx companions.

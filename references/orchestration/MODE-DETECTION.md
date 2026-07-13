@@ -28,7 +28,7 @@ own embedded executor rules.
 - User describes an existing project they want to add Godpowers to
 - legacy planning, BMAD, or Superpowers planning context is detected and should be imported
   into Godpowers preparation artifacts
-- `.godplans/PLAN.mdx` or `.godaudits/AUDIT.mdx` -> sibling superskill
+- `.godplans/PLAN.mdx` or `.godaudits/AUDIT.json` -> sibling superskill
   artifacts; import before planning (`/god-migrate`), never reconstruct over
   an existing master plan
 
@@ -46,7 +46,7 @@ Codebase signals (for inferring partial completion):
 - `Dockerfile` + deploy config -> Deploy tier may be done
 - `.planning/`, `.legacy-planning/`, `_bmad-output/`, `.bmad/`, or Superpowers specs ->
   source-system import and managed sync-back may be needed
-- `.godplans/PLAN.mdx` or `.godaudits/AUDIT.mdx` -> sibling plan/audit import
+- `.godplans/PLAN.mdx` or `.godaudits/AUDIT.json` -> sibling plan/audit import
   needed; sync-back goes through `.godplans/GODPOWERS-SYNC.mdx` or
   `.godaudits/GODPOWERS-SYNC.mdx` only
 

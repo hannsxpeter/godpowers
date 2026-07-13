@@ -86,7 +86,7 @@ recommendation signals. Longer runs use `/god-metrics`, `/god-trace`, and
 - `/god-status --locate` - Orient a fresh AI session from checkpoint, handoff, and disk evidence.
 - `/god-progress` - Deliverable progress: which requirements and roadmap increments are done, in progress, or not started. Refreshes `.godpowers/REQUIREMENTS.mdx`.
 - `/god-plan` - Route planning intent to PRD, design, architecture, roadmap, stack, or reconstruction.
-- `/god-fix` - Route bug and outage intent to debug or hotfix, including open godaudits GA remediation tasks from `.godaudits/AUDIT.mdx`.
+- `/god-fix` - Route bug and outage intent to debug or hotfix, including typed open godaudits GA remediation tasks from canonical `.godaudits/AUDIT.json`.
 - `/god-ship` - Route shipping intent to deploy, observe, or launch.
 - `/god-capture` - Route notes, todos, backlog items, and seeds.
 - `/god-extend` - Route extension authoring, install, inspection, removal, and testing.
@@ -208,7 +208,7 @@ diff churn that cannot be traced to the request or slice plan.
 - `/god-review-changes` - Walk REVIEW-REQUIRED.mdx interactively.
 - `/god-reconcile` - Comprehensive reconciliation across all impacted artifacts.
 - `/god-reconstruct` - Reverse-engineer planning artifacts from existing code.
-- `/god-migrate` - Convert adjacent planning-system context (including sibling `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx`) into Godpowers prep and seed artifacts.
+- `/god-migrate` - Convert adjacent planning-system context (including sibling `.godplans/PLAN.mdx` and canonical `.godaudits/AUDIT.json`) into Godpowers prep and seed artifacts, with open GA tasks synchronized to managed todos.
 
 ### Verification
 - `/god-lint` - Mechanical validation against have-nots catalog.
@@ -216,7 +216,7 @@ diff churn that cannot be traced to the request or slice plan.
 - `/god-test-runtime` - Headless browser verification (design audit + flow assertions).
 - `/god-dogfood` - Run messy-repo dogfood scenarios for migration, host, extension, and suite readiness.
 - `/god-preflight` - Read-only intake audit before arc-ready and pillars.
-- `/god-audit` - Score existing artifacts against all have-nots, cross-referencing a prior `.godaudits/AUDIT.mdx` when present.
+- `/god-audit` - Score existing artifacts against all have-nots, cross-referencing prior `.godaudits/AUDIT.json` score, coverage, findings, and remediation state when present.
 - `/god-agent-audit` - Validate every agents/*.md against the agent contract.
 
 ### Recovery

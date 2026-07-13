@@ -22,13 +22,16 @@ execution:
     - .bmad/**
     - docs/superpowers/**
     - .godplans/**
-    - .godaudits/**
+    - .godaudits/AUDIT.json
+    - .godaudits/AUDIT.mdx
+    - .godaudits/AUDIT.md
   writes:
     - .godpowers/prep/IMPORTED-CONTEXT.mdx
     - .godpowers/prd/PRD.mdx
     - .godpowers/arch/ARCH.mdx
     - .godpowers/roadmap/ROADMAP.mdx
     - .godpowers/stack/DECISION.mdx
+    - .godpowers/todos/TODOS.mdx
     - .godpowers/state.json
     - .planning/GODPOWERS-SYNC.md
     - .legacy-planning/GODPOWERS-SYNC.md

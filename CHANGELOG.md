@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Regression coverage for canonical godaudits 2.x JSON detection, parsing,
+  compiled score and coverage import, typed remediation dispatch, staleness,
+  large audit files, generated MDX fallback, managed todo synchronization,
+  migration seeds, MDX safety, non-regular source rejection, and impact
+  detection.
+
+### Changed
+
+- Godaudits interoperability now treats `.godaudits/AUDIT.json` as canonical
+  machine state, uses generated or legacy `AUDIT.mdx` only as a fallback, and
+  follows the godaudits validate and render workflow after GA remediation.
+- The import digest now retains check outcomes, secret-safe evidence metadata,
+  compliance, accepted risks, open questions, score caps, and coverage instead
+  of flattening Godaudits 2.x to findings and tasks.
+- Open GA tasks now synchronize into an idempotent, severity-prioritized managed
+  section in `.godpowers/todos/TODOS.mdx` without overwriting user-owned todos.
+
 ## [5.3.0] - 2026-07-13
 
 Product trust hardening release. This release makes Godpowers' own repository

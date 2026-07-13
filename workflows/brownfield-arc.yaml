@@ -32,7 +32,8 @@ jobs:
   # Local runtime call: lib/planning-systems.importPlanningContext. Imports
   # sibling godplans/godaudits artifacts (and legacy planning systems) into
   # prep context and seed artifacts before reconstruction runs. PLAN.mdx and
-  # AUDIT.mdx stay read-only; parsing via lib/sibling-artifacts.js.
+  # AUDIT.json and generated AUDIT.mdx stay read-only during import; parsing
+  # runs through lib/sibling-artifacts.js.
   import-sibling-artifacts:
     tier: 0
     needs: preflight
@@ -70,7 +71,9 @@ jobs:
       compare: existing-codebase-to-canonical-godpowers-arc
       compare-inputs:
         - .godplans/PLAN.mdx
+        - .godaudits/AUDIT.json
         - .godaudits/AUDIT.mdx
+        - .godaudits/AUDIT.md
       output: .godpowers/audit/GREENFIELD-SIMULATION.mdx
 
   greenfieldify-artifacts:

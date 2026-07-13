@@ -47,7 +47,9 @@ workflow.
    - `.godpowers/prep/INITIAL-FINDINGS.mdx`, when present
    - `.godpowers/prep/IMPORTED-CONTEXT.mdx`, when present
    - `.godplans/PLAN.mdx`, when present (sibling godplans master plan; read-only)
-   - `.godaudits/AUDIT.mdx`, when present (sibling godaudits audit; read-only)
+   - `.godaudits/AUDIT.json`, when present (canonical sibling godaudits state;
+     read-only except during explicit GA remediation)
+   - `.godaudits/AUDIT.mdx` only as a generated or legacy fallback
    - Existing tier artifacts on disk
 
    If these files contain enough information to identify the project and next
@@ -87,16 +89,18 @@ workflow.
        first planning or build step
      - Instruction to read `.godpowers/preflight/PREFLIGHT.mdx` if present
        before choosing the first brownfield or bluefield action
-     - Instruction to read `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx` if
-       present before choosing the first step. When PLAN.mdx exists and
+     - Instruction to read `.godplans/PLAN.mdx` and canonical
+       `.godaudits/AUDIT.json` if present before choosing the first step. When
+       PLAN.mdx exists and
        Godpowers tiers are pending, prefer importing plan seeds via
        `/god-migrate` over re-running god-pm or god-architect from scratch,
        and honor the plan's GP task checkboxes as already-planned work. When
-       AUDIT.mdx exists, feed its open GA remediation tasks into the repair
-       loop instead of rediscovering them. Both files are read-only for
-       Godpowers except when executing GP/GA tasks, in which case the
-       executing agent follows the executor rules embedded in the files
-       themselves; all other write-back goes through the managed
+       AUDIT.json exists, feed its open typed GA remediation tasks into the
+       repair loop instead of rediscovering them. A legacy AUDIT.mdx is a
+       fallback only. Sibling sources are read-only except during explicit
+       GP/GA execution. A completed GA task updates reciprocal AUDIT.json state,
+       validates with `godaudits validate --write`, and regenerates derived
+       views; all other write-back goes through the managed
        `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`
        companions.
      - Instruction to compute and load the Pillars load set before every major

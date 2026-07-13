@@ -109,7 +109,8 @@ It fuses several disciplines into one workflow:
 
 It is the builder in a three-part family: [godplans](https://github.com/hannsxpeter/godplans)
 plans everything up front (`.godplans/PLAN.mdx`), [godaudits](https://github.com/hannsxpeter/godaudits)
-scores what was built (`.godaudits/AUDIT.mdx`), and Godpowers builds, imports
+scores what was built (canonical `.godaudits/AUDIT.json` plus a generated
+`AUDIT.mdx` report), and Godpowers builds, imports
 either one when it finds it, and ships. Its own artifacts live under
 `.godpowers/` as `.mdx`, human-readable and machine-parseable, with a legacy
 `.md` fallback for projects created before 4.0.

@@ -15,6 +15,10 @@ execution:
   reads:
     - routing/god-debug.yaml
     - routing/god-hotfix.yaml
+    - .godpowers/todos/TODOS.mdx
+    - .godaudits/AUDIT.json
+    - .godaudits/AUDIT.mdx
+    - .godaudits/AUDIT.md
   writes: []
 
 dispatch:

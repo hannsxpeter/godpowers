@@ -169,7 +169,8 @@ Source: `.godpowers/state.json` `tier-3.launch`.
 - Did migrated source-system summaries need managed sync-back?
 - For godplans/godaudits, sync-back writes only the managed
   `.godplans/GODPOWERS-SYNC.mdx` or `.godaudits/GODPOWERS-SYNC.mdx`
-  companion; PLAN.mdx and AUDIT.mdx are never edited by this flow.
+  companion; PLAN.mdx, AUDIT.json, and generated AUDIT.mdx are never edited by
+  this flow.
 - Verdict: not-applicable / fresh / needs-sync-back / blocked-by-conflict
 - If conflicts exist: recommend greenfieldifier review before writes.
 
@@ -181,7 +182,7 @@ Source: `.godpowers/state.json` `tier-3.launch`.
 - If plan-conflict: the plan is authored intent; surface the GP/R id and ask
   the user before proceeding.
 
-#### SIBLING AUDIT (`.godaudits/AUDIT.mdx`)
+#### SIBLING AUDIT (`.godaudits/AUDIT.json`, legacy MDX fallback)
 - Does the intent address or invalidate an open GA remediation task or F
   finding? (read-only)
 - Verdict: not-applicable / addresses-ga-task (with GA id) / invalidates-finding

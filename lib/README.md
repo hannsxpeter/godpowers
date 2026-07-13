@@ -84,8 +84,8 @@ package-level integrations.
 |--------|---------|
 | `context-writer.js` | Produce tool-specific context files. |
 | `context-budget.js` | Keep generated context within budget. |
-| `planning-systems.js` | Detect and import legacy planning, BMAD, Superpowers, godplans, and godaudits planning context. |
-| `sibling-artifacts.js` | Read-only parser/consumer for the sibling superskill artifacts `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx`: detection, task and finding parsing, IMPORTED-CONTEXT digests, open GA remediation tasks, and import staleness. |
+| `planning-systems.js` | Detect and import legacy planning, BMAD, Superpowers, godplans, and godaudits context, including MDX-safe GA todo synchronization. |
+| `sibling-artifacts.js` | Read-only parser/consumer for `.godplans/PLAN.mdx` and canonical `.godaudits/AUDIT.json`, with legacy MDX fallback: check and evidence ledgers, compliance, accepted risks, score and coverage digests, typed GA dispatch, and import staleness. |
 | `source-sync.js` | Write managed Godpowers progress back to source-system companion files. |
 | `design-detector.js` | Detect design-system conventions. |
 | `design-spec.js` | Normalize design specifications. |

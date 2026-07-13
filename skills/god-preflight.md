@@ -43,9 +43,9 @@ It answers:
    - README, docs, ADRs, architecture notes, env examples, AGENTS.md
    - test presence, test command discoverability, coverage signals
    - deploy, observability, security, dependency, and ownership signals
-   - `.godplans/PLAN.mdx` and `.godaudits/AUDIT.mdx` presence (sibling
+   - `.godplans/PLAN.mdx` and `.godaudits/AUDIT.json` presence (sibling
      superskill artifacts; a master plan is direct arc-readiness evidence,
-     a prior audit is direct scoring evidence; both are read-only)
+     validated audit state provides score plus coverage; both are read-only)
 4. Produce `.godpowers/preflight/PREFLIGHT.mdx`.
 5. Do not edit source files, planning artifacts, configs, or docs outside
    `.godpowers/preflight/`.
@@ -135,7 +135,7 @@ Use the report to choose the next pass:
 | Missing basic project state | `/god-init` |
 | Unknown legacy structure | `/god-archaeology` |
 | godplans `PLAN.mdx` exists | `/god-migrate` (import the plan; do NOT reconstruct) |
-| godaudits `AUDIT.mdx` exists | `/god-migrate` then `/god-audit` in prior-audit mode (consume, do not re-derive) |
+| godaudits `AUDIT.json` exists | `/god-migrate` then `/god-audit` in prior-audit mode (consume validated state, do not re-derive) |
 | Existing code lacks planning artifacts | `/god-reconstruct` |
 | Debt dominates delivery risk | `/god-tech-debt` |
 | Artifacts exist but quality is unknown | `/god-audit` |
