@@ -44,7 +44,8 @@ Default to `/god-note` when no priority, backlog, or trigger signal exists.
 - Do not write notes, todos, backlog items, or seeds directly from this dispatcher.
 - Do not assign priority unless the user provided priority evidence.
 - Keep each capture leaf callable as a direct shortcut.
-- Never edit `.godplans/PLAN.mdx`, `.godaudits/AUDIT.json`, or generated
+- Never edit `.godplans/PLAN.mdx`, `.godplans/validate-plan.sh`,
+  `.godaudits/AUDIT.json`, or generated
   `.godaudits/AUDIT.mdx` from capture
   flows; they are read-only here and sync-back happens only through the
   managed GODPOWERS-SYNC.mdx companions.

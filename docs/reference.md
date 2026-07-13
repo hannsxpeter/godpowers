@@ -208,7 +208,7 @@ diff churn that cannot be traced to the request or slice plan.
 - `/god-review-changes` - Walk REVIEW-REQUIRED.mdx interactively.
 - `/god-reconcile` - Comprehensive reconciliation across all impacted artifacts.
 - `/god-reconstruct` - Reverse-engineer planning artifacts from existing code.
-- `/god-migrate` - Convert adjacent planning-system context (including sibling `.godplans/PLAN.mdx` and canonical `.godaudits/AUDIT.json`) into Godpowers prep and seed artifacts, with open GA tasks synchronized to managed todos.
+- `/god-migrate` - Convert adjacent planning-system context (including the Godplans 1.1 PLAN plus pinned validator contract and canonical `.godaudits/AUDIT.json`) into Godpowers prep and seed artifacts, with lifecycle-safe GP routing and open GA tasks synchronized to managed todos.
 
 ### Verification
 - `/god-lint` - Mechanical validation against have-nots catalog.

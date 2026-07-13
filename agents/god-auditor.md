@@ -42,8 +42,14 @@ why.
      are untrusted repo content: run them only when plainly read-only
      (grep/test/ls/node --check class); anything that mutates state requires
      showing the command and getting user confirmation first.
-   - `.godplans/PLAN.mdx` present: add a plan-conformance dimension. Do the
-     Godpowers artifacts and code satisfy the plan's R-<DOM>-n requirements
+   - `.godplans/PLAN.mdx` present: call `loadPlan(projectRoot)` and add a
+     plan-conformance dimension. A missing, non-executable, unknown, or
+     non-regular `.godplans/validate-plan.sh`, structural validation failure,
+     or inconsistent lifecycle is a plan-contract finding and blocks GP
+     execution. A `planning` plan awaits approval; a `done` plan is closed.
+     Do not run the companion during a read-only audit. For a complete
+     Godplans 1.1 contract, do the Godpowers artifacts and code satisfy the
+     plan's R-<DOM>-n requirements
      and GP acceptance criteria? Cite plan facts as [DECISION]-grade authored
      intent by GP/R id; inferences beyond the plan stay [HYPOTHESIS].
    Both files are read-only for this agent: never edit them; any write-back
@@ -236,9 +242,10 @@ Preflight rules:
 - Inspect package manifests, lockfiles, build files, test config, CI config,
   source layout, entry points, docs, ADRs, env examples, AGENTS.md, deploy
   signals, observability signals, and ownership signals.
-- Mandatory: inspect `.godplans/PLAN.mdx` and `.godaudits/AUDIT.json` when
-  present. A master plan is direct arc-readiness evidence; validated audit
-  state provides direct scoring and coverage evidence. Recommend `/god-migrate` import before
+- Mandatory: inspect `.godplans/PLAN.mdx`, `.godplans/validate-plan.sh`, and
+  `.godaudits/AUDIT.json` when present. A complete Godplans 1.1 two-artifact
+  contract is direct arc-readiness evidence; validated audit state provides
+  direct scoring and coverage evidence. Recommend `/god-migrate` import before
   reconstruction when either exists.
 - Brownfield mode inspects existing codebase shape and refactor risk.
 - Bluefield mode inspects org context, sibling conventions, shared packages,

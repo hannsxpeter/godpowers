@@ -35,11 +35,16 @@ Run a system-state diagnostic. Build nothing. Touch nothing. Report only.
 8. Does `state.json` know the current Godpowers feature set?
 9. Are managed AI-tool context fences present when tools are detected?
 10. When `state.json` `source-systems` contains a godplans or godaudits
-    entry, re-hash `.godplans/PLAN.mdx` or canonical `.godaudits/AUDIT.json`
+    entry, re-hash the canonical `.godplans/PLAN.mdx` plus its recorded
+    `.godplans/validate-plan.sh` companion, or canonical `.godaudits/AUDIT.json`
     and compare
     with the recorded import hash (`lib/sibling-artifacts.js` staleness). A
     mismatch means the plan was replanned or the audit re-run since import:
     report [WARN] "imported plan/audit stale; run /god-migrate to re-import".
+11. Call `lib/sibling-artifacts.loadPlan(projectRoot)` when PLAN.mdx exists.
+    Report [ERROR] for a missing, non-regular, non-executable, or unsupported
+    validator, structural errors, or inconsistent `done` state. Report [INFO]
+    for `planning` awaiting explicit approval and for a closed `done` plan.
 
 ### External integration health
 1. Is impeccable present? `node_modules/impeccable` or `~/.claude/skills/impeccable`?
@@ -113,7 +118,8 @@ as a read-only diagnostic. It reports:
 - missing managed AI-tool context fences
 - unimported legacy planning, BMAD, or Superpowers evidence that should route to
   `/god-migrate`
-- unimported sibling `.godplans/PLAN.mdx` or `.godaudits/AUDIT.json` artifacts
+- unimported sibling `.godplans/PLAN.mdx` plus validator, or
+  `.godaudits/AUDIT.json` artifacts
   that should route to `/god-migrate` (these detect at high confidence; no
   greenfieldifier judgment needed)
 - `god-greenfieldifier` recommendation when migration evidence is low

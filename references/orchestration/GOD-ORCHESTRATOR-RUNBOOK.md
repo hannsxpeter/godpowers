@@ -159,7 +159,8 @@ Detection signals:
   `.claude/skills/`, `.codex/skills/`
 - BMAD: `.bmad-core/`, `bmad-core/`, `.bmad/`, `BMAD.md`,
   `docs/prd.md`, `docs/architecture.md`, `docs/roadmap.md`
-- godplans: `.godplans/` -> godplans master plan (`PLAN.mdx`)
+- godplans: `.godplans/` -> Godplans 1.1 master plan (`PLAN.mdx`) plus its
+  self-contained validator (`validate-plan.sh`)
 - godaudits: `.godaudits/` -> canonical godaudits state (`AUDIT.json`) plus a
   generated or legacy `AUDIT.mdx` report
 
@@ -179,12 +180,16 @@ When signals are found:
 Downstream planning agents may read this artifact. They must cite it as
 supporting evidence only.
 
-godplans/godaudits carve-out: these sibling artifacts are structured and
-machine-verified (parse via `lib/sibling-artifacts.js`), so GP/GA task status
+godplans/godaudits carve-out: canonical audit state and a complete Godplans
+1.1 two-artifact contract are structured and machine-verified (inspect via
+`lib/sibling-artifacts.js`), so GP/GA task status
 and R-<DOM>-n / A-<DOM>-n ids may be cited as [DECISION]-grade source facts
 ("the plan says X", cite the GP/R id). Product intent inferred beyond what
-the plan or audit states stays [HYPOTHESIS]. Both directories are read-only
-for Godpowers except during explicit GP/GA execution. A godaudits 2.x GA
+the plan or audit states stays [HYPOTHESIS]. Legacy, incomplete, or unsupported
+Godplans contracts stay [HYPOTHESIS]-grade and never authorize GP work. Both
+directories are read-only for Godpowers except during explicit GP/GA
+execution. GP work requires `approved` or `executing` status and a passing
+`bash .godplans/validate-plan.sh .godplans/PLAN.mdx` gate. A godaudits 2.x GA
 completion updates reciprocal state in AUDIT.json, validates with `--write`,
 and regenerates derived views; generated MDX is never hand-edited. All other
 write-back happens only through the managed

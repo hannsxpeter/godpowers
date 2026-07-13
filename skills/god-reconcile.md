@@ -97,7 +97,7 @@ Runtime and repository surfaces:
   SURFACE:    [fresh | needs-surface-sync | needs-safe-fix | needs-human-review]
   FEATURES:   [fresh | needs-awareness-refresh | needs-migration-judgment]
   SOURCE:     [not-applicable | fresh | needs-sync-back | blocked-by-conflict]
-  PLAN:       [not-applicable | planned-in-godplans GP-<n> | not-in-plan | plan-conflict]
+  PLAN:       [not-applicable | contract-incomplete | awaiting-approval | closed | planned-in-godplans GP-<n> | not-in-plan | plan-conflict]
   AUDIT:      [not-applicable | addresses-ga-task GA-<n> | invalidates-finding F-<id> | unrelated]
   HOST:       [full | degraded | unknown]
 

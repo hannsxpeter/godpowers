@@ -1096,14 +1096,20 @@ v0.3 commands keep working. v1.0 freezes the public API.
 Godpowers consumes the artifacts of its two sibling superskills without owning
 them.
 
-[DECISION] The consumed contract is `.godplans/PLAN.mdx` (godplans master
-plan) and `.godaudits/AUDIT.json` (godaudits 2.x canonical machine state),
+[DECISION] The consumed contract is `.godplans/PLAN.mdx` plus the executable,
+pinned `.godplans/validate-plan.sh` companion (Godplans 1.1 master plan), and
+`.godaudits/AUDIT.json` (godaudits 2.x canonical machine state),
 with `.godaudits/AUDIT.mdx` supported as a generated report and 1.x fallback.
 `lib/sibling-artifacts.js` is the read-only parser: it detects the canonical
 source, parses `GP-nnn` plan tasks and typed `GA-nnn` remediation tasks, imports
 the explicit check-outcome ledger, secret-safe evidence metadata, compliance
 result, accepted risks, open questions, compiled score caps, and coverage, and
-recomputes counts only for legacy MDX.
+recomputes task and phase counts from plan checkboxes, and recomputes audit
+counts only for legacy MDX. For Godplans, it performs a non-executing mirror of
+the 1.1 structural gate, verifies the companion hash, file type, and executable
+mode, exposes lifecycle status, and refuses GP dispatch for incomplete,
+unsupported, `planning`, or `done` contracts. The official companion remains
+the authoritative execution gate and must pass immediately before GP work.
 Plan requirements use `R-<DOM>-n` ids and audit checks mirror them one to one
 as `A-<DOM>-n` across the 18 shared domain codes; Godpowers preserves those ids
 verbatim on import so traceability survives the handoff.
@@ -1117,7 +1123,13 @@ without writing, and canonical audit reads use a 5 MiB limit so the complete
 
 [DECISION] Sibling files are read-only for Godpowers with one carve-out: when
 Godpowers executes a GP or GA task, the executing agent follows the owning
-product's executor rules. A GP task updates PLAN.mdx. A godaudits 2.x task
+product's executor rules. A GP task may begin only from `approved` or
+`executing` after `bash .godplans/validate-plan.sh .godplans/PLAN.mdx` passes.
+The first executor moves `approved` to `executing`; passing tasks update the
+checkbox, derived counters, date, and session log atomically; only final
+Verification may move the plan to `done`. Material replans return to
+`planning`, preserve completed task history, and require fresh approval. A
+godaudits 2.x task
 updates reciprocal task, finding, check, evidence, and audit metadata in
 AUDIT.json, then runs
 `godaudits validate .godaudits/AUDIT.json --write` and regenerates AUDIT.mdx and
@@ -1126,8 +1138,10 @@ flow writes back only through `.godplans/GODPOWERS-SYNC.mdx` and
 `.godaudits/GODPOWERS-SYNC.mdx` (lib/source-sync.js); fences are never written
 into PLAN.mdx, AUDIT.json, or AUDIT.mdx.
 
-[DECISION] Imports record a content hash; `sibling-artifacts.staleness`
-compares it against the current canonical source so drift between an imported
+[DECISION] Imports record a source fingerprint; Godplans 1.1 fingerprints both
+canonical contract files plus the validator executable mode, while
+`sibling-artifacts.staleness` compares the recorded set
+against the current canonical source so drift between an imported
 digest and live sibling state surfaces explicitly. For godaudits 2.x, only
 AUDIT.json controls staleness, so regenerating AUDIT.mdx cannot create a false
 drift warning.
