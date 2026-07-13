@@ -59,19 +59,6 @@ see_also: [security, deploy]
 ### Godpowers artifact sources
 
 - Sync mode: auto-applied by yolo.
-- Related artifact: `.godpowers/roadmap/ROADMAP.mdx`.
 - Related artifact: `docs/ROADMAP.md`.
 - Rule: keep this pillar aligned when these artifacts change durable quality truth.
-
-### Extracted durable signals
-
-From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-07-13T15:55:18.000Z`.
-- [DECISION] Source version: `5.5.0`.
-- [DECISION] Source hash `package.json`: `sha256:3cdde60011cd4891c7c6109bec611176d56d6d6c1c92d3bcc28d5bba9e810f5b`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:239990ed2eb267c26d3de744bf318d6260bfd67463fec8e7ccccbc348fc1712c`.
-- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:ec90f0ec06d07fbc67c3b5ac22f3ae882a10d714ef230316f75823709e44642b`.
-- [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:cc9e9227262d9d472fa7806fbafc9a83b8e621728c3652fae1a423a867989ce3`.
-- [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, and advanced completion remain backed by the 33 linked requirements and the final release gate recorded in state.
 <!-- godpowers:pillar-sync:end -->

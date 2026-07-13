@@ -1,6 +1,6 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v5.5.0 (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
+> Status: STABLE v5.5.0 published release (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
 > Authors: Godpowers Team
 > Last updated: 2026-07-13
 

@@ -55,6 +55,7 @@ see_also: [arch, quality, deploy]
 
 - Sync mode: auto-applied by yolo.
 - Related artifact: `RELEASE.md`.
+- Related artifact: `docs/ROADMAP.md`.
 - Rule: keep this pillar aligned when these artifacts change durable context truth.
 
 ### Extracted durable signals
