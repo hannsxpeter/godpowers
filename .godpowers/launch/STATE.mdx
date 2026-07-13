@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:c4db3cbe04ac2fed35b9a44de8435f368da3ef2f65f224a8a0b26ee918a9043a -->
+<!-- godpowers:checksum sha256:b365633873f3e131eadfa6d75af7312ea8b37d0c5589ee6f6506a1dc4365e2f4 -->
 # Godpowers Launch State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.launch`.
@@ -9,27 +9,25 @@
 - [DECISION] Step: Shipping: Launch.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/launch/STATE.mdx`.
-- [DECISION] Updated: 2026-07-13T07:18:14.000Z.
-- [DECISION] Notes: Version 5.3.1 is published on GitHub and npm, registry integrity matches the release assets, and published-install verification passes..
+- [DECISION] Updated: 2026-07-13T07:56:59.000Z.
+- [DECISION] Notes: The 5.4.0 launch-readiness scope is complete and publication is authorized through the verified tag workflow..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| npm test | pass | 0 | 2026-07-13T07:14:31.000Z | 46100 | All test commands passed with 94.76% line, 79.09% branch, and 96.90% function coverage. |
-| npm run pack:check | pass | 0 | 2026-07-13T07:14:31.000Z | 700 | Root npm package contents verified: 577 files. |
-| npm run pack:mcp:check | pass | 0 | 2026-07-13T07:14:31.000Z | 400 | MCP package contents verified: 8 files. |
-| npm run release:check | pass | 0 | 2026-07-13T07:14:31.000Z | 59000 | Aggregate coverage, per-file coverage across 96 expected runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed. |
-| node scripts/verify-published-install.js godpowers@latest | pass | 0 | 2026-07-13T07:18:14.000Z | - | Published root CLI, Quick Proof, read-only project inspection, dashboard, next route, Claude install, and Codex install verification passed. |
-| npx -y -p @godpowers/mcp@latest godpowers-mcp --help | pass | 0 | 2026-07-13T07:18:14.000Z | - | The published MCP executable resolved from npm and rendered its help surface. |
+| npm test | pass | 0 | 2026-07-13T07:59:42.000Z | 44100 | All test commands passed with 94.65% line, 79.28% branch, and 96.93% function coverage. |
+| npm run pack:check | pass | 0 | 2026-07-13T07:59:42.000Z | 700 | Root npm package contents verified: 577 files. |
+| npm run pack:mcp:check | pass | 0 | 2026-07-13T07:59:42.000Z | 400 | MCP package contents verified: 8 files. |
+| npm run release:check | pass | 0 | 2026-07-13T07:59:42.000Z | 45000 | Aggregate coverage, per-file coverage across 96 expected runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed. |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
-| launch-scope | published-release |
+| launch-scope | release-publication-approved |
 | production-user-evidence | unavailable; repository records zero production users |
-| publication-verification | passed for GitHub Release, npm root, npm MCP, published root install, Claude, Codex, and MCP executable |
-| release-version | 5.3.1 |
+| publication-verification | required after the tag workflow completes |
+| release-candidate-version | 5.4.0 |
 
 <!-- godpowers:state-view:end -->
