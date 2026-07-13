@@ -38,8 +38,8 @@ function assertIncludes(text, expected, label) {
 function main() {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-published-home-'));
   const project = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-published-project-'));
+  const installRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-published-install-'));
   const env = { ...process.env, HOME: home };
-  const npxArgs = ['-y', spec];
 
   console.log(`  Verifying published install surface for ${spec}`);
 
@@ -50,31 +50,41 @@ function main() {
   assertIncludes(version, '.', 'npm view version');
   console.log(`  + npm view resolved version ${version}`);
 
-  const quickProof = run('npx', [...npxArgs, 'quick-proof', '--project', project, '--brief'], { env });
+  run('npm', [
+    'install', '--prefix', installRoot, '--ignore-scripts', '--no-audit', '--no-fund', spec
+  ], { env });
+  const cli = path.join(installRoot, 'node_modules', 'godpowers', 'bin', 'install.js');
+  assertExists(cli, `published CLI missing after isolated install: ${cli}`);
+  const runPublished = (args) => run(process.execPath, [cli, ...args], { env });
+  console.log('  + exact registry package installed in an isolated prefix');
+
+  const quickProof = runPublished(['quick-proof', '--project', project, '--brief']);
   assertIncludes(quickProof, 'Godpowers Quick Proof', 'quick-proof');
   assertIncludes(quickProof, 'Next: /god-prd', 'quick-proof');
   console.log('  + quick-proof command rendered shipped fixture');
 
-  const inspectedProof = run('npx', [...npxArgs, 'quick-proof', '--project', project, '--inspect-project', '--brief'], { env });
+  const inspectedProof = runPublished([
+    'quick-proof', '--project', project, '--inspect-project', '--brief'
+  ]);
   assertIncludes(inspectedProof, 'Source: current project inspection (read-only)', 'quick-proof inspect-project');
   assertIncludes(inspectedProof, 'Next: /god-init', 'quick-proof inspect-project');
   console.log('  + quick-proof read-only project inspection rendered current state');
 
-  const status = run('npx', [...npxArgs, 'status', '--project', project, '--brief'], { env });
+  const status = runPublished(['status', '--project', project, '--brief']);
   assertIncludes(status, 'Godpowers Dashboard', 'status');
   console.log('  + status command rendered dashboard');
 
-  const next = run('npx', [...npxArgs, 'next', '--project', project, '--brief'], { env });
+  const next = runPublished(['next', '--project', project, '--brief']);
   assertIncludes(next, 'Recommended: /god-init', 'next');
   console.log('  + next command rendered recommendation');
 
-  run('npx', [...npxArgs, '--claude', '--global'], { env });
+  runPublished(['--claude', '--global']);
   assertExists(path.join(home, '.claude', 'skills', 'god-mode.md'), 'Claude god-mode skill missing');
   assertExists(path.join(home, '.claude', 'agents', 'god-orchestrator.md'), 'Claude orchestrator agent missing');
   assertExists(path.join(home, '.claude', 'GODPOWERS_VERSION'), 'Claude version marker missing');
   console.log('  + Claude install surface verified');
 
-  run('npx', [...npxArgs, '--codex', '--global'], { env });
+  runPublished(['--codex', '--global']);
   assertExists(path.join(home, '.codex', 'skills', 'god-mode', 'SKILL.md'), 'Codex god-mode skill missing');
   assertExists(path.join(home, '.codex', 'agents', 'god-orchestrator.toml'), 'Codex orchestrator metadata missing');
   assertExists(path.join(home, '.codex', 'GODPOWERS_VERSION'), 'Codex version marker missing');

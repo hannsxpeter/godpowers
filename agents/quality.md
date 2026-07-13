@@ -46,7 +46,7 @@ see_also: [security, deploy]
 ## Extracted durable signals
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-07-13T07:56:59.000Z`.
+- [DECISION] Evidence generated at: `2026-07-13T08:08:49.000Z`.
 - [DECISION] Source version: `5.4.0`.
 - [DECISION] Source hash `package.json`: `sha256:b4408eb0bd0365433a55d2a29b23d45a52874117f7228caa7bbf487123dfa1f5`.
 - [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:239990ed2eb267c26d3de744bf318d6260bfd67463fec8e7ccccbc348fc1712c`.

@@ -326,6 +326,10 @@ test('published install verification script exercises quick-proof and runtime in
   assertIncludes('scripts/verify-published-install.js', '--claude');
   assertIncludes('scripts/verify-published-install.js', '--codex');
   assertIncludes('scripts/verify-published-install.js', 'god-orchestrator.toml');
+  assertIncludes('scripts/verify-published-install.js', '--ignore-scripts');
+  assertIncludes('scripts/verify-published-install.js', "path.join(installRoot, 'node_modules', 'godpowers', 'bin', 'install.js')");
+  const verifier = read('scripts/verify-published-install.js');
+  assert(!verifier.includes("run('npx'"), 'published verifier must not resolve an ambient npx binary');
 });
 
 test('adoption canary defines pass and failure criteria', () => {

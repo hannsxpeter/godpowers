@@ -1,6 +1,6 @@
 # Users and Community
 
-The current source version is v5.4.0, prepared for release. The latest published release remains v5.3.1 until the tag-triggered workflow completes.
+The current source version is v5.4.0, and the latest published release is v5.4.0.
 
 ## Track record
 

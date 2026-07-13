@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:6ac359713f6210e33d5d9a1e06a3cb509717890f2d49c7267022f0a056ad5c89 -->
+<!-- godpowers:checksum sha256:2c625dd8bbf744461d36b06bedb89f7cee184b7dcf4f52a53e90e291288fae37 -->
 # Godpowers Deploy State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.deploy`.
@@ -9,8 +9,8 @@
 - [DECISION] Step: Shipping: Deploy.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/deploy/STATE.mdx`.
-- [DECISION] Updated: 2026-07-13T07:56:59.000Z.
-- [DECISION] Notes: Local and CI-verifiable npm deployment readiness is complete and the 5.4.0 publication path is authorized..
+- [DECISION] Updated: 2026-07-13T08:08:49.000Z.
+- [DECISION] Notes: Godpowers 5.4.0 and the MCP companion are published with provenance from merged main, and registry integrity matches the GitHub Release assets..
 
 ## Verification Commands
 
@@ -19,14 +19,18 @@
 | npm run pack:check | pass | 0 | 2026-07-13T07:59:42.000Z | 700 | Root npm package contents verified: 577 files. |
 | npm run pack:mcp:check | pass | 0 | 2026-07-13T07:59:42.000Z | 400 | MCP package contents verified: 8 files. |
 | git cat-file -e 'v5.3.1^{commit}' | pass | 0 | 2026-07-13T07:56:59.000Z | 20 | The prior published release tag resolves as the tested rollback reference. |
+| gh run view 29234078146 | pass | 0 | 2026-07-13T08:08:49.000Z | - | The identity-bound provenance workflow completed successfully for merged main commit 13c0ce2905b870846c8170673eaed5415e09b235. |
+| npm view godpowers@5.4.0 version && npm view @godpowers/mcp@5.4.0 version | pass | 0 | 2026-07-13T08:08:49.000Z | - | Both npm packages resolve to 5.4.0 under the latest tag and match the locally packed integrity values. |
+| node scripts/verify-published-install.js godpowers@5.4.0 | pass | 0 | 2026-07-13T08:08:49.000Z | - | An isolated exact-spec install passed Quick Proof, read-only project inspection, dashboard, next route, Claude install, and Codex install verification. |
+| npx -y -p @godpowers/mcp@5.4.0 godpowers-mcp --help | pass | 0 | 2026-07-13T08:08:49.000Z | - | The published MCP executable resolved and rendered its command surface. |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
-| publication-targets | npm root package, npm MCP package, GitHub tag, and GitHub Release assets |
+| publication-targets | https://github.com/hannsxpeter/godpowers/releases/tag/v5.4.0, npm godpowers@5.4.0, and npm @godpowers/mcp@5.4.0 |
 | rollback-evidence | The v5.3.1 tag resolves locally as the prior release rollback reference. |
-| target-evidence | Root and MCP package allowlists pass against npm pack output on the Godplans 1.1 integration tree. |
-| verified-target-type | authorized-release-candidate |
+| target-evidence | GitHub Release assets and npm registry packages share exact integrity values; isolated published CLI and MCP executable verification passed. |
+| verified-target-type | published-npm-release |
 
 <!-- godpowers:state-view:end -->
