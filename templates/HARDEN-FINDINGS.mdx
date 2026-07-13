@@ -17,31 +17,34 @@ Scope: [What was reviewed: code, config, dependencies, deploy pipeline]
 
 If any Critical: BLOCKED. Launch cannot proceed until resolved or risk explicitly accepted.
 
-## OWASP Top 10 Coverage
+## OWASP Web Top 10:2025 Coverage
 
-| Category | Status | Notes |
-|----------|--------|-------|
-| A01 Broken Access Control | Reviewed | [findings ref] |
-| A02 Cryptographic Failures | Reviewed | [findings ref] |
-| A03 Injection | Reviewed | [findings ref] |
-| A04 Insecure Design | Reviewed | [findings ref] |
-| A05 Security Misconfiguration | Reviewed | [findings ref] |
-| A06 Vulnerable Components | Reviewed | [findings ref] |
-| A07 Authentication Failures | Reviewed | [findings ref] |
-| A08 Data Integrity Failures | Reviewed | [findings ref] |
-| A09 Logging Failures | Reviewed | [findings ref] |
-| A10 SSRF | Reviewed | [findings ref] |
+| Category | Manual procedure | Result | Evidence or finding |
+|----------|------------------|--------|---------------------|
+| A01:2025 Broken Access Control | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A02:2025 Security Misconfiguration | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A03:2025 Software Supply Chain Failures | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A04:2025 Cryptographic Failures | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A05:2025 Injection | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A06:2025 Insecure Design | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A07:2025 Authentication Failures | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A08:2025 Software or Data Integrity Failures | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A09:2025 Security Logging and Alerting Failures | [exact probe or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
+| A10:2025 Mishandling of Exceptional Conditions | [exact fault injection or justified Not Applicable] | [pass/fail] | [evidence or finding ref] |
 
 No category may be marked "N/A" without explicit justification.
 
 ## Findings
 
 ### [CRITICAL-001] [Short title]
-- **Category**: OWASP A01 Broken Access Control
+- **Category**: OWASP A01:2025 Broken Access Control
 - **Location**: [file:line]
 - **Description**: [What the vulnerability is]
 - **Impact**: [What happens if exploited]
 - **Reproduction**: [Step-by-step]
+- **Observed Result**: [What happened]
+- **Evidence**: [Artifact, log, test, or command]
+- **Reviewed At**: [ISO 8601 timestamp]
 - **Remediation Options**:
   - **Option A**: [Approach] -- Estimated: [time]
   - **Option B**: [Approach] -- Estimated: [time]
@@ -64,6 +67,6 @@ No category may be marked "N/A" without explicit justification.
 - [ ] Auth boundaries actively tested (not just code-read)
 - [ ] Input validation audited
 - [ ] Rate limiting verified on auth endpoints
-- [ ] All OWASP categories reviewed (no skips without justification)
+- [ ] All OWASP Web Top 10:2025 categories have reproducible manual evidence or justified Not Applicable scope
 - [ ] Every finding has a severity classification
 - [ ] Every Critical finding has remediation options

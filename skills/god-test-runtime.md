@@ -163,4 +163,4 @@ Headless launch only (`headless: true` enforced by bridge).
 - `lib/agent-browser-driver.js` - vercel-labs/agent-browser CLI wrapper
 - `lib/runtime-audit.js` - design verification on rendered DOM (backend-aware)
 - `lib/runtime-test.js` - PRD acceptance to user-flow assertions (backend-aware)
-- `agents/god-browser-tester.md` - lifecycle owner of runtime checks
+- `specialists/god-browser-tester.md` - lifecycle owner of runtime checks

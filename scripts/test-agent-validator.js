@@ -20,9 +20,9 @@ function mkAgent(content) {
 
 function mkAgentsDir(agents) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-agent-dir-'));
-  fs.mkdirSync(path.join(tmp, 'agents'), { recursive: true });
+  fs.mkdirSync(path.join(tmp, 'specialists'), { recursive: true });
   for (const [name, content] of Object.entries(agents)) {
-    fs.writeFileSync(path.join(tmp, 'agents', name + '.md'), content);
+    fs.writeFileSync(path.join(tmp, 'specialists', name + '.md'), content);
   }
   return tmp;
 }
@@ -364,7 +364,7 @@ description: r
   if (unresolved.length !== 0) throw new Error('false positive');
 });
 
-test('auditAll ignores Pillars files in agents directory', () => {
+test('auditAll ignores non-specialist files in specialists directory', () => {
   const tmp = mkAgentsDir({
     'context': '# Context\n\nProject context, not a specialist agent.\n',
     'repo': '# Repo\n\nRepository context, not a specialist agent.\n',
@@ -388,7 +388,7 @@ test('non-god-mode orchestrator entrypoints use display-safe handoffs', () => {
     ['skills/god-suite-init.md', 'COORDINATOR-HANDOFF.md'],
     ['skills/god-suite-release.md', 'COORDINATOR-HANDOFF.md'],
     ['skills/god-suite-patch.md', 'COORDINATOR-HANDOFF.md'],
-    ['agents/god-coordinator.md', 'COORDINATOR-ORCHESTRATOR-HANDOFF.md'],
+    ['specialists/god-coordinator.md', 'COORDINATOR-ORCHESTRATOR-HANDOFF.md'],
   ];
   for (const [relPath, marker] of checks) {
     const text = readProjectFile(relPath);
@@ -409,24 +409,24 @@ test('hygiene route does not spawn orchestrator directly', () => {
 });
 
 // ============================================================================
-// auditAll on real godpowers/agents
+// auditAll on real godpowers/specialists
 // ============================================================================
 
-test('auditAll on real godpowers/agents passes (no errors)', () => {
+test('auditAll on real godpowers/specialists passes (no errors)', () => {
   const result = validator.auditAll('.');
   if (result.summary.errors > 0) {
     throw new Error(`expected 0 errors, got ${result.summary.errors}`);
   }
 });
 
-test('auditAll on real godpowers/agents covers 30+ agents', () => {
+test('auditAll on real godpowers/specialists covers 30+ agents', () => {
   const result = validator.auditAll('.');
   if (result.summary.agentCount < 30) {
     throw new Error(`expected 30+ agents, got ${result.summary.agentCount}`);
   }
 });
 
-test('auditAll on real godpowers/agents has structured contracts for every shipped agent', () => {
+test('auditAll on real godpowers/specialists has structured contracts for every shipped agent', () => {
   const result = validator.auditAll('.');
   if (result.summary.agentCount !== 40) {
     throw new Error(`expected 40 agents, got ${result.summary.agentCount}`);

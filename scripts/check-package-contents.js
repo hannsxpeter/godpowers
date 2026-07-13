@@ -20,14 +20,19 @@ const REQUIRED_FILES = [
   'bin/install.js',
   'skills/god.md',
   'skills/god-mode.md',
-  'agents/god-orchestrator.md',
-  'agents/god-pm.md',
+  'specialists/god-orchestrator.md',
+  'specialists/god-pm.md',
   'templates/DOMAIN-GLOSSARY.mdx',
   'templates/PRD.mdx',
   'references/HAVE-NOTS.md',
   'references/planning/PRD-ANATOMY.md',
+  'references/building/PRODUCT-FORM-ROUTER.md',
+  'references/building/DOMAIN-COMPOSITION-REGISTRY.md',
+  'references/shipping/HARDEN-OWASP-2025-ROUTER.md',
   'lib/adoption-metrics.js',
   'lib/command-families.js',
+  'lib/product-routing.js',
+  'lib/prepublication-gate.js',
   'lib/frontmatter.js',
   'lib/workflow-runner.js',
   'lib/workflow-helper-groups.js',
@@ -113,9 +118,7 @@ function main() {
   if (pack.name !== 'godpowers') {
     throw new Error(`expected package name godpowers, got ${pack.name}`);
   }
-  const nonSpecialistAgents = [...files].filter(file =>
-    file.startsWith('agents/') && !/^agents\/god-.*\.md$/.test(file)
-  );
+  const packagedProjectPillars = [...files].filter(file => file.startsWith('agents/'));
   if (pack.entryCount < 400) {
     throw new Error(`expected at least 400 package entries, got ${pack.entryCount}`);
   }
@@ -125,8 +128,8 @@ function main() {
   if (forbidden.length > 0) {
     throw new Error(`package includes local-only files:\n  - ${forbidden.join('\n  - ')}`);
   }
-  if (nonSpecialistAgents.length > 0) {
-    throw new Error(`package includes non-specialist agent files:\n  - ${nonSpecialistAgents.join('\n  - ')}`);
+  if (packagedProjectPillars.length > 0) {
+    throw new Error(`package includes repository-local Pillars files:\n  - ${packagedProjectPillars.join('\n  - ')}`);
   }
 
   console.log(`  + package contents verified: ${pack.entryCount} files`);

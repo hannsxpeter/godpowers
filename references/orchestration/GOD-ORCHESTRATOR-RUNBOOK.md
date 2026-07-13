@@ -220,8 +220,9 @@ projectRoot)`. Missing prerequisites are authoritative even when the tier
 order suggests the command is structurally next. If `safe-sync-clear` fails,
 route to `/god-reconcile Release Truth And Safe Sync` before deploy, observe,
 harden, launch, broad migration, or resume work. If `no-critical-findings`
-fails, launch remains blocked until harden is fixed and re-verified or risk is
-explicitly accepted in writing.
+fails, public activation remains blocked until harden is fixed and re-verified
+or public activation is removed from scope. The pre-publication gate does not
+treat accepted Critical risk as a pass.
 
 Between every tier, run god-standards-check on the produced artifact (if
 the routing config has a `standards` section). Standards check uses fresh
@@ -300,6 +301,17 @@ changes artifacts, review items, blockers, or the next recommendation.
 
 ## Detection-Driven Tier 1 Routing
 
+Before UI detection or domain-specific planning, select product form through
+`lib/product-routing.selectProductForm`. Load
+`references/building/PRODUCT-FORM-ROUTER.md`, then compose product archetype,
+industry, and regulatory overlays through
+`references/building/DOMAIN-COMPOSITION-REGISTRY.md`. Preserve that four-axis
+order in PRD, Architecture, Stack, and Build handoffs. If the form is
+ambiguous, record an open question instead of inferring a web application.
+Build can close only with the selected form's completion evidence.
+
+After the product-form route is recorded, apply UI detection:
+
 After PRD and before ARCH, branch on UI or product-experience presence:
 
 1. Call `lib/design-detector.isUiProject(projectRoot)` to determine
@@ -361,6 +373,23 @@ Only Critical security findings always pause, including under --yolo.
 Everything else must first enter the autonomous repair loop below. A failed
 typecheck, lint, check, unit test, generated artifact lint, or have-nots pass is
 not a reason to declare the project run complete. It is work.
+
+## Hash-Bound Public Activation Gate
+
+Launch assets may be prepared without authorizing an external write. After all
+other release-readiness work and immediately before any public release action:
+
+1. Re-read `.godpowers/harden/FINDINGS.mdx` and authoritative hardening state.
+2. Run `node <runtimeRoot>/lib/prepublication-gate.js --record --project=.`.
+3. Run `node <runtimeRoot>/lib/prepublication-gate.js --check --project=.` in
+   the same release attempt.
+4. Continue only on `verdict: pass`.
+
+The record binds `.godpowers/launch/PREPUBLICATION.mdx` to the exact hardening
+findings hash, authoritative hardening timestamp, current Critical counts, and
+check time. Any later hardening revision or state update invalidates it. Never
+reuse a stale gate after a hardening rerun. CI publication workflows run the
+check again after the release gate and before publishing.
 
 ## Autonomous Repair Loop
 

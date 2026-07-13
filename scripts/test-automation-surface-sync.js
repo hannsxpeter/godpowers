@@ -42,11 +42,11 @@ function fixture() {
     "'lib/recipe-coverage-sync.js'",
     "'lib/release-surface-sync.js'"
   ].join('\n'));
-  writeRel(tmp, 'agents/god-planner.md', '---\nname: god-planner\n---\n');
-  writeRel(tmp, 'agents/god-executor.md', '---\nname: god-executor\n---\n');
-  writeRel(tmp, 'agents/god-spec-reviewer.md', '---\nname: god-spec-reviewer\n---\n');
-  writeRel(tmp, 'agents/god-quality-reviewer.md', '---\nname: god-quality-reviewer\n---\n');
-  writeRel(tmp, 'agents/god-writer.md', '---\nname: god-writer\n---\n');
+  writeRel(tmp, 'specialists/god-planner.md', '---\nname: god-planner\n---\n');
+  writeRel(tmp, 'specialists/god-executor.md', '---\nname: god-executor\n---\n');
+  writeRel(tmp, 'specialists/god-spec-reviewer.md', '---\nname: god-spec-reviewer\n---\n');
+  writeRel(tmp, 'specialists/god-quality-reviewer.md', '---\nname: god-quality-reviewer\n---\n');
+  writeRel(tmp, 'specialists/god-writer.md', '---\nname: god-writer\n---\n');
   writeRel(tmp, 'routing/god-story-build.yaml', [
     'apiVersion: godpowers/v1',
     'kind: CommandRouting',

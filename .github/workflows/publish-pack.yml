@@ -34,11 +34,21 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13'
+
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
+      - name: Install pinned official Agent Skills validator
+        run: python -m pip install -r requirements/skills-ref.txt
+
       - name: Verify pack publishability
         run: npm run release:check
+
+      - name: Verify fresh pre-publication gate
+        run: npm run release:prepublication:check
 
       - name: Publish pack
         working-directory: extensions/${{ inputs.pack }}

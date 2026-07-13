@@ -1,6 +1,6 @@
 ---
 pillar: arch
-status: active
+status: present
 always_load: false
 covers: [architecture, runtime model, state model, workflows, agents]
 triggers: [architecture, workflow, state, router, agent, runtime]
@@ -11,6 +11,10 @@ see_also: [quality, deploy]
 ## Scope
 
 - [DECISION] This pillar captures architectural context for Godpowers.
+
+## Context
+
+- [DECISION] Runtime architecture is implemented by source-controlled skills, routes, workflows, specialist contracts, schemas, and dependency-free Node.js helpers.
 
 ## Decisions
 
@@ -29,20 +33,36 @@ see_also: [quality, deploy]
 - [DECISION] Godplans 1.1 interoperability treats `.godplans/PLAN.mdx` plus the pinned executable `.godplans/validate-plan.sh` as one contract, mirrors structural validation without executing repository shell during import, blocks GP dispatch outside `approved` or `executing`, and requires the official validator to pass immediately before work.
 - [DECISION] The current executable audit status is fresh for repo surface, route quality, recipe coverage, and workflow planning.
 
+## Rules
+
+(none)
+
+## Workflows
+
+(none)
+
 ## Watchouts
 
 - [HYPOTHESIS] Runtime behavior depends on host AI tools exposing skill and agent capabilities consistently.
 - [HYPOTHESIS] Local helper work must stay visible in closeouts so automatic work does not become hidden orchestration.
 - [HYPOTHESIS] A future Godplans validator hash requires an explicit Godpowers compatibility update so new shell bytes cannot become trusted silently.
 
+## Touchpoints
+
+- [DECISION] Architecture decisions synchronize from `.godpowers/arch/ARCH.mdx` through the managed section below.
+
+## Gaps
+
+(none)
+
 <!-- godpowers:pillar-sync:begin -->
-## Godpowers artifact sources
+### Godpowers artifact sources
 
 - Sync mode: auto-applied by yolo.
 - Related artifact: `.godpowers/arch/ARCH.mdx`.
 - Rule: keep this pillar aligned when these artifacts change durable arch truth.
 
-## Extracted durable signals
+### Extracted durable signals
 
 From `.godpowers/arch/ARCH.mdx`:
 - [DECISION] A developer invokes Godpowers inside an AI coding host, which loads installed skills and specialist agents from the host-specific runtime directory.

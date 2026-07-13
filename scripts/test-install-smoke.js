@@ -48,7 +48,7 @@ const RUNTIME_SURFACES = {
 };
 
 function godAgentSourceFiles() {
-  return fs.readdirSync(path.join(ROOT, 'agents')).filter(f => /^god-.*\.md$/.test(f));
+  return fs.readdirSync(path.join(ROOT, 'specialists')).filter(f => /^god-.*\.md$/.test(f));
 }
 
 console.log('\n  Install + init smoke test\n');
@@ -217,6 +217,8 @@ test('installer wrote runtime bundle with lib next to workflow data', () => {
   assert(fs.existsSync(path.join(runtimeDir, 'lib', 'router.js')), 'runtime lib/router.js missing');
   assert(fs.existsSync(path.join(runtimeDir, 'routing', 'god-mode.yaml')), 'runtime routing missing');
   assert(fs.existsSync(path.join(runtimeDir, 'workflows', 'full-arc.yaml')), 'runtime workflow missing');
+  assert(fs.existsSync(path.join(runtimeDir, 'specialists', 'god-orchestrator.md')),
+    'runtime specialist source missing');
   assert(fs.existsSync(path.join(runtimeDir, 'package.json')), 'runtime package.json missing');
 });
 

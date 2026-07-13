@@ -18,7 +18,7 @@
 
 - [DECISION] Routing surface sync checks that every `skills/god-*.md` command has matching `routing/god-*.yaml` metadata.
 - [DECISION] Package and installer sync checks `package.json.files`, package content checks, package lock version, and required runtime helper files.
-- [DECISION] Agent contract sync checks that routed specialist spawns resolve to real `agents/god-*.md` files.
+- [DECISION] Agent contract sync checks that routed specialist spawns resolve to real `specialists/god-*.md` source files.
 - [DECISION] Workflow and recipe graph sync checks parseable workflow metadata and recipe command routes.
 - [DECISION] Extension pack sync checks manifest validation, package name and version agreement, peer dependency agreement, and provided file existence.
 - [DECISION] Route quality sync checks atomic spawn tokens, routed agent resolution, typed contextual exits, standards coverage, and agent trace event coverage.

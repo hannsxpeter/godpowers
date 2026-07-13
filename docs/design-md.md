@@ -206,7 +206,7 @@ Duplicates error.
 - `lib/design-spec.js` - parser + linter
 - `lib/awesome-design.js` - catalog
 - `lib/skillui-bridge.js` - SkillUI fallback
-- `agents/god-designer.md` - lifecycle owner
-- `agents/god-design-reviewer.md` - two-stage review gate
+- `specialists/god-designer.md` - lifecycle owner
+- `specialists/god-design-reviewer.md` - two-stage review gate
 - `references/design/DESIGN-ANATOMY.md` - what good DESIGN.md looks like
 - `references/design/DESIGN-ANTIPATTERNS.md` - what to avoid

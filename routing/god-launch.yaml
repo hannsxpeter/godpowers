@@ -23,6 +23,7 @@ execution:
   context: fresh
   writes:
     - .godpowers/state.json
+    - .godpowers/launch/PREPUBLICATION.mdx
     - landing copy
     - OG cards
     - launch runbook

@@ -29,7 +29,7 @@ function assertIncludes(rel, expected) {
 
 const counts = {
   skills: countFiles('skills', /^god.*\.md$/),
-  agents: countFiles('agents', /^god.*\.md$/),
+  agents: countFiles('specialists', /^god.*\.md$/),
   workflows: countFiles('workflows', /\.yaml$/),
   recipes: countFiles(path.join('routing', 'recipes'), /\.yaml$/),
   libModules: countFiles('lib', /\.js$/),

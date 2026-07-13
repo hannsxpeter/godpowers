@@ -2,7 +2,7 @@
 
 - [DECISION] Date: 2026-07-13.
 - [DECISION] Reviewer: autonomous product trust hardening run.
-- [DECISION] Scope: installer, host capability detection, Quick Proof, state reconciliation, release checks, package contents, and production dependencies.
+- [DECISION] Scope: CLI and SDK routing, installer and release workflows, hash-bound public activation, package contents, and production dependencies.
 
 ## Summary
 
@@ -15,20 +15,20 @@
 
 - [DECISION] Launch gate: PASSED.
 
-## OWASP Coverage
+## OWASP Web Top 10:2025 Coverage
 
-| Category | Status | Evidence |
-|---|---|---|
-| A01 Broken Access Control | Reviewed | [DECISION] No application authorization surface exists in the package runtime. |
-| A02 Cryptographic Failures | Reviewed | [DECISION] Event integrity uses SHA-256 and no product secrets are stored. |
-| A03 Injection | Reviewed | [DECISION] Shell-sensitive helpers prefer argument-array process execution. |
-| A04 Insecure Design | Reviewed | [DECISION] Level-4 release actions remain user-owned and guarded. |
-| A05 Security Misconfiguration | Reviewed | [DECISION] Host guarantees fail closed without active-session evidence. |
-| A06 Vulnerable Components | Reviewed | [DECISION] `npm audit --omit=dev` is a release check and the core has no production dependency. |
-| A07 Authentication Failures | Reviewed | [DECISION] Authentication is delegated to host and release providers, with no local credential store. |
-| A08 Data Integrity Failures | Reviewed | [DECISION] Checksummed state views, event hash chains, and self-truth checks protect release claims. |
-| A09 Logging Failures | Reviewed | [DECISION] Events, checkpoints, gate results, and sync logs remain inspectable on disk. |
-| A10 SSRF | Reviewed | [DECISION] Core runtime does not expose a server-side URL fetch endpoint. |
+| Category | Manual procedure | Result | Evidence or finding |
+|---|---|---|---|
+| A01:2025 Broken Access Control | Trace CLI project-root access and inspect the new routing and gate modules for user-controlled URL fetches or internal-resource access | Not Applicable, no network server or URL fetch boundary exists in the reviewed runtime | `scripts/test-product-routing.js`; `scripts/test-prepublication-gate.js`; source inspection of `lib/product-routing.js` and `lib/prepublication-gate.js` |
+| A02:2025 Security Misconfiguration | Exercise missing, invalid, pending, and stale hardening state through the public activation gate | pass, invalid or incomplete authority fails closed | `scripts/test-prepublication-gate.js` missing, invalid, incomplete, and stale-state cases |
+| A03:2025 Software Supply Chain Failures | Verify dependency audit, immutable workflow action identities, package allowlist contents, provenance workflow, and pre-publish gate ordering | pass | `npm audit --omit=dev`; `.github/workflows/publish.yml`; `.github/workflows/publish-pack.yml`; `scripts/check-package-contents.js` |
+| A04:2025 Cryptographic Failures | Mutate reviewed hardening bytes and verify SHA-256 revision mismatch blocks publication | pass | `lib/prepublication-gate.js`; `scripts/test-prepublication-gate.js` hash-mutation case |
+| A05:2025 Injection | Pass explicit and ambiguous product text plus project path arguments through parsing without shell interpolation | pass | `lib/product-routing.js`; `lib/prepublication-gate.js`; `scripts/test-product-routing.js`; `scripts/test-prepublication-gate.js` |
+| A06:2025 Insecure Design | Exercise ambiguous form selection, accepted Critical status, stale timestamp, and missing gate abuse cases | pass, ambiguity remains open and every unsafe activation case blocks | `scripts/test-product-routing.js`; `scripts/test-prepublication-gate.js` |
+| A07:2025 Authentication Failures | Inspect credential and session ownership across the local runtime and publication workflows | Not Applicable, authentication is delegated to the active AI host, GitHub, and npm with no local credential store | `.github/workflows/publish.yml`; `SECURITY.md`; source inspection |
+| A08:2025 Software or Data Integrity Failures | Record the exact hardening revision, then alter findings bytes and authoritative hardening state independently | pass, either change invalidates the gate | `scripts/test-prepublication-gate.js` revision and authoritative-update cases |
+| A09:2025 Security Logging and Alerting Failures | Trigger a blocked gate and verify a non-zero command result plus explicit blocking reasons for CI and operator action | pass | `lib/prepublication-gate.js`; `scripts/test-prepublication-gate.js`; publish workflow gate step |
+| A10:2025 Mishandling of Exceptional Conditions | Inject malformed JSON, missing files, incomplete state, invalid timestamps, stale updates, and changed Critical counts | pass, all cases fail closed without public activation | `scripts/test-prepublication-gate.js` exceptional-condition cases |
 
 ## Findings
 
@@ -38,5 +38,5 @@
 ## Have-Nots Checklist
 
 - [x] [DECISION] Manual code and contract review supplemented automated dependency checks.
-- [x] [DECISION] Every OWASP category has an explicit package-specific disposition.
+- [x] [DECISION] Every OWASP Web Top 10:2025 category has an explicit package-specific procedure, result, and evidence reference.
 - [x] [DECISION] Critical findings count is zero.

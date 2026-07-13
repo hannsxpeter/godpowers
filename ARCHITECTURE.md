@@ -1,6 +1,6 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v5.4.0 published release (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
+> Status: STABLE v5.5.0 (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
 > Authors: Godpowers Team
 > Last updated: 2026-07-13
 
@@ -79,6 +79,13 @@ Native Pillars context:
 | `agents/context.md` | **Identity**: domain language and product invariants | Pillars |
 | `agents/repo.md` | **Layout**: repository structure and naming | Pillars |
 | `agents/*.md` | **Routed context**: task-specific project truth | Pillars |
+| `agents/catalog.yaml` | **Absent inventory**: known concerns not yet authored | Pillars 1.1 |
+
+Pillars 1.1 routing uses path-derived identities, portable ASCII token
+matching, direct dependency depth, conditional soft references, scoped
+exclusions, and root-to-target nested scope precedence. Specialist source
+contracts are separate under `specialists/` and install into each host's
+`agents/` registry.
 
 Godpowers workflow state:
 
@@ -331,7 +338,7 @@ the AI coding tool.
 `skills/*.md` command files match 120 `routing/*.yaml` route files, including
 the `god` front door and every shipped `god-*` command.
 
-[DECISION] The runtime surface also includes 40 `agents/god-*.md` specialist
+[DECISION] The source surface also includes 40 `specialists/god-*.md` specialist
 agents, 13 workflow YAML files, and 44 intent recipes.
 
 [DECISION] The current route graph has 68 built-in or local-runtime command
@@ -500,7 +507,7 @@ helper, recipe, or command flow that cannot be parsed, planned, packed, or
 traced back to a slash-command surface.
 
 [DECISION] The architecture audit graph is:
-`skills/*.md` -> `routing/*.yaml` -> `agents/god-*.md` or built-in helper ->
+`skills/*.md` -> `routing/*.yaml` -> `specialists/god-*.md` or built-in helper ->
 `workflows/*.yaml` -> `routing/recipes/*.yaml` -> `docs/command-flows.md` ->
 `package.json` and `scripts/check-package-contents.js`.
 

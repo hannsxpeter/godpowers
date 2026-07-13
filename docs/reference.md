@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v5.4.0.
+Complete command, agent, and artifact reference for v5.5.0.
 
 ## Slash commands (122 total)
 
@@ -93,7 +93,7 @@ recommendation signals. Longer runs use `/god-metrics`, `/god-trace`, and
 - `/god-automation-status` - Show host automation provider support.
 - `/god-automation-setup` - Prepare opt-in automation setup.
 - `/god-surface` - Preview or apply a runtime command surface profile after install.
-- `/god-migrate` - Detect legacy planning, BMAD, Superpowers, godplans, and godaudits context, import seeds, and sync back progress.
+- `/god-migrate` - Detect legacy planning, BMAD, Superpowers, Arc-Ready, godplans, and godaudits context, import seeds, and sync back progress.
 
 ### Installer CLI helpers
 - `godpowers status --project .` - Render the shared dashboard from disk state.
@@ -208,7 +208,7 @@ diff churn that cannot be traced to the request or slice plan.
 - `/god-review-changes` - Walk REVIEW-REQUIRED.mdx interactively.
 - `/god-reconcile` - Comprehensive reconciliation across all impacted artifacts.
 - `/god-reconstruct` - Reverse-engineer planning artifacts from existing code.
-- `/god-migrate` - Convert adjacent planning-system context (including the Godplans 1.1 PLAN plus pinned validator contract and canonical `.godaudits/AUDIT.json`) into Godpowers prep and seed artifacts, with lifecycle-safe GP routing and open GA tasks synchronized to managed todos.
+- `/god-migrate` - Convert adjacent planning-system context (including Arc-Ready artifacts, the Godplans 1.1 PLAN plus pinned validator contract, and canonical `.godaudits/AUDIT.json`) into Godpowers prep and seed artifacts, with lifecycle-safe GP routing and open GA tasks synchronized to managed todos.
 
 ### Verification
 - `/god-lint` - Mechanical validation against have-nots catalog.
@@ -357,11 +357,14 @@ First-party packs on npm:
 ## Native Pillars context
 
 Every Godpowers project is also a Pillars project. Commands load
-`agents/context.md` and `agents/repo.md` first, then route task-specific
-pillar files by frontmatter triggers, `must_read_with`, and `see_also`.
+`agents/context.md` and `agents/repo.md` in every applicable scope, then route
+task-specific pillar files with the Pillars 1.1 portable matcher. Primaries add
+direct `must_read_with` dependencies at depth 1. `see_also` targets load only
+when their own identity, triggers, or covers match the task.
 
 ```
 AGENTS.md              Pillars loading protocol plus Godpowers managed fence
+agents/catalog.yaml    Optional local inventory of known absent concerns
 agents/context.md      Always-loaded project identity and invariants
 agents/repo.md         Always-loaded repository layout and naming
 agents/stack.md        Technology choices and version constraints
@@ -373,7 +376,12 @@ agents/auth.md         Identity, sessions, roles, and access control
 agents/quality.md      Testing, errors, style, and naming
 agents/deploy.md       Environments, promotion, rollback, and release process
 agents/observe.md      Logs, metrics, tracing, alerts, and runbooks
+agents/<area>/*.md     Path-qualified sub-pillars such as auth/registration
 ```
+
+Nested scopes contain both `AGENTS.md` and `agents/`. Godpowers loads outer
+scopes first, applies the nearest scope last, and respects local exclusions.
+The repository release gate executes the official Pillars routing fixtures.
 
 Existing `.godpowers` projects are Pillar-ized on resume and sync. Current
 Godpowers artifacts become managed source references in the relevant pillar

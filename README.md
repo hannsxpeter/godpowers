@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-5.4.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.5.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -96,6 +96,8 @@ It fuses several disciplines into one workflow:
 - **Native project context** - every Godpowers project is a Pillars project: a
   root `AGENTS.md` plus routed `agents/*.md` files hold durable project truth
   before any command touches code.
+- **Form-first execution** - one primary product form selects the vertical
+  slice before archetype, industry, or regulatory constraints are composed.
 - **Artifact discipline** - every sentence in every document is a labeled
   decision, hypothesis, or open question, with mechanically verified failure
   modes.
@@ -106,6 +108,8 @@ It fuses several disciplines into one workflow:
   anything is called complete.
 - **Accountability** - the current state is on disk, the next action is derived
   from it, and every change traces back to a request.
+- **Publication integrity** - public activation is bound to a fresh hardening
+  hash, timestamp, and Critical-finding policy.
 
 It is the builder in a three-part family: [godplans](https://github.com/hannsxpeter/godplans)
 plans everything up front (`.godplans/PLAN.mdx` plus its self-contained
@@ -115,6 +119,10 @@ scores what was built (canonical `.godaudits/AUDIT.json` plus a generated
 either one when it finds it, and ships. Its own artifacts live under
 `.godpowers/` as `.mdx`, human-readable and machine-parseable, with a legacy
 `.md` fallback for projects created before 4.0.
+
+Godpowers also imports Arc-Ready 1.1 tier artifacts as read-only migration
+evidence and writes progress back only through
+`.arc-ready/GODPOWERS-SYNC.md`.
 
 ### Two ways to drive
 

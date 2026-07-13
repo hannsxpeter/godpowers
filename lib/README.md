@@ -98,6 +98,8 @@ package-level integrations.
 | `extension-authoring.js` | Scaffold publishable extension packs with manifest, package, README, skill, agent, and workflow files. |
 | `package-legitimacy.js` | Assess third-party package metadata for existence, typo risk, recency, and repository signals. |
 | `pillars.js` | Manage the Pillars project-context layer (`AGENTS.md` plus routed `agents/*.md`). |
+| `product-routing.js` | Select product form before composing archetype, industry, and regulatory guidance. |
+| `prepublication-gate.js` | Bind public activation to a fresh hardening hash and Critical-finding check. |
 | `connectors.js` | Registry, detection, and write-scope policy for external connectors (GitHub, Linear, Slack, Sentry, Notion) that loops act through by delegating to host MCP servers. |
 
 ## Repository and graph helpers

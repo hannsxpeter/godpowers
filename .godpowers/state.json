@@ -102,9 +102,9 @@
       "roadmap": {
         "status": "done",
         "artifact": "roadmap/ROADMAP.mdx",
-        "artifact-hash": "sha256:521fa57871ab83fb22167056f63916bdbc13db0739d22f2a39be4e77f69c1a27",
-        "updated": "2026-07-13T08:08:49.000Z",
-        "notes": "Roadmap provenance is pinned to current source hashes and version 5.4.0."
+        "artifact-hash": "sha256:1d0287c2779f1f83d5596a971f2b643f12b91799e2e9a4dcfca1b5fa3413b0b4",
+        "updated": "2026-07-13T15:56:11.591Z",
+        "notes": "Roadmap provenance is pinned to current source hashes and version 5.5.0."
       },
       "stack": {
         "status": "done",
@@ -126,45 +126,43 @@
         "status": "done",
         "artifact": "build/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T07:59:42.000Z",
-        "notes": "All implementation and behavioral tests pass.",
+        "updated": "2026-07-13T15:59:58.000Z",
+        "notes": "All implementation, behavioral, standards, coverage, audit, and package checks pass for version 5.5.0.",
         "verification": {
           "commands": [
             {
               "command": "npm test",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T07:59:42.000Z",
-              "durationMs": 44100,
-              "diagnostics": "All test commands passed with 94.65% line, 79.28% branch, and 96.93% function coverage."
+              "ranAt": "2026-07-13T15:59:58.000Z",
+              "durationMs": 41300,
+              "diagnostics": "All test commands passed in 41.3 seconds."
             },
             {
               "command": "npm run pack:check",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T07:59:42.000Z",
-              "durationMs": 700,
-              "diagnostics": "Root npm package contents verified: 577 files."
+              "ranAt": "2026-07-13T15:59:58.000Z",
+              "diagnostics": "Root npm package contents verified: 582 files."
             },
             {
               "command": "npm run pack:mcp:check",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T07:59:42.000Z",
-              "durationMs": 400,
+              "ranAt": "2026-07-13T15:59:58.000Z",
               "diagnostics": "MCP package contents verified: 8 files."
             },
             {
               "command": "npm run release:check",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T07:59:42.000Z",
-              "durationMs": 45000,
-              "diagnostics": "Aggregate coverage, per-file coverage across 96 expected runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed."
+              "ranAt": "2026-07-13T15:59:58.000Z",
+              "durationMs": 46000,
+              "diagnostics": "Official skill validation, Pillars 1.1 conformance, 94.64 percent line coverage, 79.26 percent branch coverage, 96.77 percent function coverage, per-file coverage across 98 runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed."
             }
           ]
         },
-        "release-version": "5.4.0"
+        "release-version": "5.5.0"
       }
     },
     "tier-3": {
@@ -268,34 +266,33 @@
       "harden": {
         "status": "done",
         "artifact": "harden/FINDINGS.mdx",
-        "artifact-hash": "sha256:892ad01284310eb806f541385db875490459ed9d54a20bbe2d51ad31fd0e54e2",
-        "updated": "2026-07-13T07:59:42.000Z",
-        "notes": "All recorded trust findings are remediated and no unresolved Critical finding remains.",
+        "artifact-hash": "sha256:f7bcf07a292362d2f40dcf7f2a8f40c35facb70fd5621e2c569a20d2a2d1b337",
+        "updated": "2026-07-13T15:59:58.000Z",
+        "notes": "OWASP Web Top 10:2025 review is complete, the release gate is passed for version 5.5.0, and no unresolved Critical finding remains.",
         "verification": {
           "commands": [
             {
               "command": "npm test",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T07:59:42.000Z",
-              "durationMs": 44100,
-              "diagnostics": "All test commands passed with 94.65% line, 79.28% branch, and 96.93% function coverage."
+              "ranAt": "2026-07-13T15:59:58.000Z",
+              "durationMs": 41300,
+              "diagnostics": "All test commands passed in 41.3 seconds."
             },
             {
               "command": "npm audit --omit=dev",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T07:59:42.000Z",
-              "durationMs": 800,
+              "ranAt": "2026-07-13T15:59:58.000Z",
               "diagnostics": "Found 0 vulnerabilities."
             },
             {
               "command": "npm run release:check",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T07:59:42.000Z",
-              "durationMs": 45000,
-              "diagnostics": "Aggregate coverage, per-file coverage across 96 expected runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed."
+              "ranAt": "2026-07-13T15:59:58.000Z",
+              "durationMs": 46000,
+              "diagnostics": "Official standards, complete tests, aggregate and per-file coverage, dependency audit, 141 self-project truth checks, package verification, installer isolation, full-arc integration, and dogfood checks passed."
             }
           ]
         },

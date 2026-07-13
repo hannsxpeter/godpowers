@@ -468,7 +468,9 @@ No plan for D+1 to D+7 (responding to comments, gathering feedback,
 iterating). Fail.
 
 #### L-08 "We'll figure out marketing later"
-Launch tier marked done with no actual launch artifacts. Fail.
+Launch tier marked done with no actual launch artifacts. Public activation
+without a fresh hash-bound `.godpowers/launch/PREPUBLICATION.mdx` pass also
+fails.
 
 ### Harden Have-Nots
 
@@ -485,7 +487,9 @@ User input paths not systematically reviewed. Fail.
 Rate limiting claimed but not tested with actual abuse simulation. Fail.
 
 #### H-05 OWASP categories skipped
-A Top 10 category marked "N/A" without justification. Fail.
+An OWASP Web Top 10:2025 category lacks a reproducible manual procedure and
+result, or is marked Not Applicable without project-specific justification.
+Fail.
 
 #### H-06 Findings without severity
 Finding exists but has no Critical/High/Medium/Low classification. Fail.

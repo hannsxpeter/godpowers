@@ -15,6 +15,8 @@ projects from raw idea to hardened production.
 
 - `SKILL.md` is the main entry point, loaded by AI coding tools
 - `skills/` contains individual command skills (one per file)
+- `agents/` contains Pillars 1.1 project context only
+- `specialists/` contains source contracts installed into each supported host agent registry
 - `routing/` contains command routing metadata and intent recipes
 - `workflows/` contains executable workflow YAML
 - `references/` contains per-tier reference material (antipatterns, examples)
@@ -48,14 +50,16 @@ projects from raw idea to hardened production.
 This is a Godpowers project. Godpowers uses the Pillars standard as its native project context layer.
 Coding agents read project context from `./agents/*.md` before changing code, while `.godpowers/` remains the Godpowers workflow state and artifact layer.
 
+This project follows Pillars 1.1.0. Coding agents read project pillar files before acting.
+
 ## At the start of any task
 
-1. Load every pillar whose frontmatter has `always_load: true`.
-2. Scan remaining pillar frontmatter and select task-relevant primaries from `triggers` and `covers`.
-3. Add each primary pillar direct `must_read_with` dependencies, depth 1 only.
-4. Read every pillar body in the computed load set.
-5. Read `see_also` pillars only when the task explicitly touches that area.
-6. Follow Rules, apply Workflows, heed Watchouts, and ask before deciding open Gaps.
+1. Resolve scopes from repository root to the task target. A scope contains both `AGENTS.md` and `agents/`. Apply outer scopes first and let the nearest scope win conflicts.
+2. Inventory pillar frontmatter recursively, local exclusions, and optional `agents/catalog.yaml` absent concerns in each scope.
+3. Load every pillar whose frontmatter has `always_load: true`. Match remaining `triggers` with the Pillars portable ASCII token matcher to select primaries and absent concerns.
+4. Add each primary pillar direct `must_read_with` dependencies, depth 1 only. Path-qualified sub-pillars use identities such as `auth/agent-registration`.
+5. Add a selected pillar `see_also` target only when the task matches the target identity, triggers, or covers. Do not follow soft references recursively.
+6. Read every selected body. Follow Rules, apply Workflows, heed Watchouts, and ask before deciding open Gaps.
 
 ## Handling missing pillars
 
@@ -63,10 +67,11 @@ Coding agents read project context from `./agents/*.md` before changing code, wh
 |---|---|
 | `status: present` | Load and comply. |
 | `status: stub` | Treat the concern as acknowledged but undecided. Ask before making domain decisions. |
-| Name in `excluded:` | Treat as intentionally not applicable. |
-| Relevant but absent | Infer from code, state the assumption, and recommend authoring the pillar. |
+| Name in `excluded:` | Treat as intentionally not applicable in that scope. |
+| Trigger matches local `agents/catalog.yaml` entry | Infer from code, state the assumption, and recommend authoring the pillar. |
+| No local file, exclusion, or catalog entry | Make no Pillars-specific claim about that concern. |
 
-If `context.md` or `repo.md` is missing, pause and create stubs before continuing.
+If `context.md` or `repo.md` is missing and not explicitly excluded, pause and ask the human to create a stub or record an exclusion.
 
 ## Excluded pillars
 
@@ -106,7 +111,7 @@ There is exactly one orchestrator: `god-orchestrator`. It owns writes to
 
 ### Active artifacts
 
-- orchestration: `runs/20260713-product-trust-hardening/ORCHESTRATOR-HANDOFF.mdx`
+- orchestration: `runs/20260713-arc-pillars-1-1-hardening/ORCHESTRATOR-HANDOFF.mdx`
 - preflight: `preflight/PREFLIGHT.mdx`
 - archaeology: `archaeology/REPORT.mdx`
 - tech-debt: `tech-debt/ASSESSMENT.mdx`

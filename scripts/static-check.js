@@ -293,10 +293,10 @@ test('command skills treat PROGRESS views as generated or legacy fallback only',
   }
 });
 
-test('shipped skill and agent prose has no sycophancy filler (U-14 self-dogfood)', () => {
+test('shipped skill, specialist, and Pillars prose has no sycophancy filler (U-14 self-dogfood)', () => {
   const voiceLint = require('../lib/voice-lint');
   const offenders = [];
-  for (const dir of ['skills', 'agents']) {
+  for (const dir of ['skills', 'specialists', 'agents']) {
     const base = path.join(ROOT, dir);
     for (const file of fs.readdirSync(base).filter(name => name.endsWith('.md')).sort()) {
       for (const hit of voiceLint.scan(fs.readFileSync(path.join(base, file), 'utf8'))) {
@@ -410,7 +410,7 @@ test('prompts do not direct-edit generated STATE views', () => {
   const files = [
     path.join(ROOT, 'SKILL.md'),
     ...walkMatching(path.join(ROOT, 'skills'), file => file.endsWith('.md')),
-    ...walkMatching(path.join(ROOT, 'agents'), file => file.endsWith('.md'))
+    ...walkMatching(path.join(ROOT, 'specialists'), file => file.endsWith('.md'))
   ];
   const offenders = [];
   for (const file of files) {
@@ -456,7 +456,7 @@ test('god-mode delegates long-form runbook content', () => {
 
 test('agent prompts delegate oversized runbook content', () => {
   const maxBytes = 20000;
-  const agentsDir = path.join(ROOT, 'agents');
+  const agentsDir = path.join(ROOT, 'specialists');
   const agentFiles = fs.readdirSync(agentsDir)
     .filter(file => /^god-.*\.md$/.test(file))
     .map(file => path.join(agentsDir, file));
@@ -465,7 +465,7 @@ test('agent prompts delegate oversized runbook content', () => {
     throw new Error(`oversized agent prompts: ${oversized.map(file => path.relative(ROOT, file)).join(', ')}`);
   }
 
-  const orchestrator = fs.readFileSync(path.join(ROOT, 'agents', 'god-orchestrator.md'), 'utf8');
+  const orchestrator = fs.readFileSync(path.join(ROOT, 'specialists', 'god-orchestrator.md'), 'utf8');
   const runbook = path.join(ROOT, 'references', 'orchestration', 'GOD-ORCHESTRATOR-RUNBOOK.md');
   if (!fs.existsSync(runbook)) {
     throw new Error('God orchestrator runbook reference missing');
@@ -498,7 +498,7 @@ test('legacy roadmap reconciliation delegates to god-reconciler', () => {
     throw new Error('/god-roadmap-check must spawn god-reconciler');
   }
 
-  const adapter = fs.readFileSync(path.join(ROOT, 'agents', 'god-roadmap-reconciler.md'), 'utf8');
+  const adapter = fs.readFileSync(path.join(ROOT, 'specialists', 'god-roadmap-reconciler.md'), 'utf8');
   if (!adapter.includes('compatibility adapter') || !adapter.includes('god-reconciler')) {
     throw new Error('god-roadmap-reconciler must remain a compatibility adapter');
   }
@@ -536,13 +536,13 @@ test('dashboard contract stays shared between status and next', () => {
   }
 });
 
-test('skills and agents use shared locking pointer without inline sections', () => {
+test('skills, specialists, and Pillars use shared locking pointer without inline sections', () => {
   const locking = path.join(ROOT, 'references', 'shared', 'LOCKING.md');
   if (!fs.existsSync(locking)) {
     throw new Error('shared locking reference missing');
   }
 
-  const markdownFiles = ['skills', 'agents']
+  const markdownFiles = ['skills', 'specialists', 'agents']
     .flatMap(dir => walkMatching(path.join(ROOT, dir), file => file.endsWith('.md')));
   const sectionOffenders = markdownFiles.filter(file => /^#{2,}\s+Locking\b/m.test(fs.readFileSync(file, 'utf8')));
   if (sectionOffenders.length > 0) {

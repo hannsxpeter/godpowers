@@ -2,7 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-migrate
-  description: Detect and migrate legacy planning, BMAD, Superpowers, godplans, and godaudits planning context
+  description: Detect and migrate legacy planning, BMAD, Superpowers, Arc-Ready, godplans, and godaudits planning context
   tier: 0
   family: start
 
@@ -21,6 +21,17 @@ execution:
     - _bmad-output/**
     - .bmad/**
     - docs/superpowers/**
+    - .arc-ready/**
+    - .prd-ready/**
+    - .architecture-ready/**
+    - .roadmap-ready/**
+    - .stack-ready/**
+    - .repo-ready/**
+    - .production-ready/**
+    - .deploy-ready/**
+    - .observe-ready/**
+    - .launch-ready/**
+    - .harden-ready/**
     - .godplans/**
     - .godaudits/AUDIT.json
     - .godaudits/AUDIT.mdx
@@ -38,6 +49,7 @@ execution:
     - _bmad-output/GODPOWERS-SYNC.md
     - .bmad/GODPOWERS-SYNC.md
     - docs/superpowers/GODPOWERS-SYNC.md
+    - .arc-ready/GODPOWERS-SYNC.md
     - .godplans/GODPOWERS-SYNC.mdx
     - .godaudits/GODPOWERS-SYNC.mdx
   local-runtime:

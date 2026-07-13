@@ -1,0 +1,55 @@
+version: 1
+cases:
+  - name: hard dependency stays depth one
+    project: projects/routing
+    task: Change the database schema for workspace invitations
+    target: services/api/src/invitations.py
+    expected:
+      load: [root::auth, root::context, root::data, root::repo]
+      primaries: [root::data]
+      absent: []
+
+  - name: covers can activate see also
+    project: projects/routing
+    task: Update the request contract used by this database query
+    target: services/api/src/query.py
+    expected:
+      load: [root::api, root::auth, root::context, root::data, root::repo]
+      primaries: [root::data]
+      absent: []
+
+  - name: sub-pillar identity is path qualified
+    project: projects/routing
+    task: Add agent registration credential rotation
+    target: services/api/src/agents.py
+    expected:
+      load: [root::auth, root::auth/agent-registration, root::context, root::repo]
+      primaries: [root::auth/agent-registration]
+      absent: []
+
+  - name: nested scopes inherit and override
+    project: projects/routing
+    task: Fix the UI component spacing
+    target: packages/web/src/card.tsx
+    expected:
+      load: [root::context, root::repo, root::ui, packages/web::context, packages/web::repo, packages/web::ui]
+      primaries: [root::ui, packages/web::ui]
+      absent: []
+
+  - name: child exclusion suppresses inherited routed pillar
+    project: projects/routing
+    task: Add a monitoring alert for the web package
+    target: packages/web/src/card.tsx
+    expected:
+      load: [root::context, root::repo, packages/web::context, packages/web::repo]
+      primaries: [root::observe]
+      absent: []
+
+  - name: local catalog exposes absent concern
+    project: projects/routing
+    task: Prepare the release checklist
+    target: services/api/src/version.py
+    expected:
+      load: [root::context, root::repo]
+      primaries: []
+      absent: [root::release]

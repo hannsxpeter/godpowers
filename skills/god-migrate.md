@@ -1,13 +1,14 @@
 ---
 name: god-migrate
 description: |
-  Detect legacy planning, BMAD, Superpowers, godplans, and godaudits planning
+  Detect legacy planning, BMAD, Superpowers, Arc-Ready, godplans, and godaudits planning
   systems, migrate useful context into Godpowers prep and seed artifacts, and
   sync Godpowers progress back to the prior system through managed companion
   files.
 
   Triggers on: "god migrate", "/god-migrate", "migrate from legacy-planning",
   "migrate from bmad", "migrate from superpowers", "migrate from godplans",
+  "migrate from arc-ready", "sync back to arc-ready",
   "import the plan", "import the audit", "sync back to legacy-planning",
   "sync back to bmad", "sync back to superpowers", "sync back to godplans",
   "sync back to godaudits"
@@ -23,6 +24,8 @@ Detect and migrate adjacent planning systems into Godpowers.
 - A project already has BMAD `_bmad/`, `_bmad-output/`, `.bmad-core/`, or
   `.bmad/` context.
 - A project already has Superpowers specs, plans, or project-local skills.
+- A project already has Arc-Ready canonical artifacts such as
+  `.arc-ready/PROGRESS.md`, `.prd-ready/PRD.md`, or `.architecture-ready/ARCH.md`.
 - A project already has a Godplans master plan at `.godplans/PLAN.mdx`, with
   `.godplans/validate-plan.sh` for a complete Godplans 1.1 emission.
 - A project already has canonical godaudits state at `.godaudits/AUDIT.json`
@@ -34,7 +37,7 @@ Detect and migrate adjacent planning systems into Godpowers.
 ## Auto-Invoke Contract
 
 `/god-init` auto-invokes the import path when it detects legacy planning, BMAD,
-Superpowers, godplans, or godaudits context. It shows this concise note when
+Superpowers, Arc-Ready, godplans, or godaudits context. It shows this concise note when
 import writes happen:
 
 ```
@@ -73,7 +76,7 @@ lib/planning-systems.importPlanningContext(projectRoot, {
 ```
 
 This:
-- detects legacy planning, BMAD, Superpowers, godplans, and godaudits sources
+- detects legacy planning, BMAD, Superpowers, Arc-Ready, godplans, and godaudits sources
 - writes `.godpowers/prep/IMPORTED-CONTEXT.mdx`
 - writes missing Godpowers seed artifacts when enough source evidence exists
 - marks those seed artifacts as `imported` in `state.json`
@@ -120,12 +123,15 @@ This:
 | legacy planning variant | `.legacy-planning/` files | prep context and seeds when source files are readable | `.legacy-planning/GODPOWERS-SYNC.md` |
 | BMAD | `_bmad-output/planning-artifacts/PRD.md`, `architecture.md`, epics, stories, sprint status | prep context, PRD seed, arch seed, roadmap seed | `_bmad-output/GODPOWERS-SYNC.md` |
 | Superpowers | `docs/superpowers/specs/*.md`, `docs/superpowers/plans/*.md`, project-local skills | prep context, PRD seed, roadmap seed, build-state seed | `docs/superpowers/GODPOWERS-SYNC.md` |
+| Arc-Ready | `.arc-ready/PROGRESS.md` and canonical `.*-ready/*.md` tier artifacts | prep context plus matching PRD, architecture, roadmap, stack, build-state, and harden seeds | `.arc-ready/GODPOWERS-SYNC.md` |
 | godplans | `.godplans/PLAN.mdx` plus executable `.godplans/validate-plan.sh` for 1.1 | prep context, PRD seed, arch seed, roadmap seed, stack seed, `.godpowers/prep/IMPORTED-BUILD-STATE.mdx` (all applicable GP task ids, lifecycle fields, Verify commands, and R ids preserved) | `.godplans/GODPOWERS-SYNC.mdx` |
 | godaudits | `.godaudits/AUDIT.json` (legacy `.godaudits/AUDIT.mdx` fallback) | prep context, harden/FINDINGS seed, compiled coverage, open GA remediation tasks routed to todos/backlog with Verify commands preserved | `.godaudits/GODPOWERS-SYNC.mdx` |
 
 ## Guardrails
 
-- Do not delete, move, or rewrite legacy planning, BMAD, or Superpowers files.
+- Do not delete, move, or rewrite legacy planning, BMAD, Superpowers, or Arc-Ready files.
+- Arc-Ready canonical artifacts are read-only. Godpowers writes only
+  `.arc-ready/GODPOWERS-SYNC.md` for sync-back.
 - `.godplans/` and `.godaudits/` artifacts are read-only for Godpowers except
   when Godpowers executes plan or audit tasks. A godaudits 2.x completion
   updates reciprocal state in AUDIT.json, validates with `--write`, and

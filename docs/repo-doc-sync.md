@@ -27,7 +27,7 @@
 
 - [DECISION] Repo documentation sync is an arc closeout concern because public docs, release notes, contribution rules, and badges are part of shipping readiness.
 - [DECISION] A greenfield, brownfield, bluefield, or migration arc is not complete until `/god-sync` has checked repo documentation drift.
-- [DECISION] Imported legacy planning, BMAD, and Superpowers projects keep their source-system sync-back path, while repo documentation sync keeps the Godpowers-facing repository surface current.
+- [DECISION] Imported legacy planning, BMAD, Superpowers, and Arc-Ready projects keep their source-system sync-back path, while repo documentation sync keeps the Godpowers-facing repository surface current.
 - [DECISION] When repo docs change durable project truth, Pillars updates are planned through `lib/pillars.planArtifactSync`.
 - [DECISION] Under explicit yolo policy, the same changed docs may be applied through `lib/pillars.applyArtifactSync`.
 

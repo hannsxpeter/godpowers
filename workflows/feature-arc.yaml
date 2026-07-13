@@ -21,6 +21,7 @@ jobs:
     with:
       mode: feature-only
       template: PRD.md
+      routing-order: [product-form, product-archetype, industry, regulatory]
 
   feature-arch:
     tier: 1
@@ -34,6 +35,8 @@ jobs:
     tier: 2
     needs: feature-prd
     uses: god-planner@^1.0.0
+    with:
+      completion-gate: selected-product-form
     review:
       stages:
         - uses: god-spec-reviewer@^1.0.0

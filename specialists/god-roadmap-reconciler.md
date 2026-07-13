@@ -82,4 +82,4 @@ Reconciliation FAILS if:
 
 ## When to skip reconciliation
 
-Follow the skip policy in `agents/god-reconciler.md`.
+Follow the skip policy in `specialists/god-reconciler.md`.

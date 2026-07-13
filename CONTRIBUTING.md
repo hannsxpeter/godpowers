@@ -114,7 +114,7 @@ competitor. If the sentence still reads true, it decides nothing. Rewrite.
 
 ## Adding a New Specialist Agent
 
-1. Create `agents/god-<name>.md` with required sections
+1. Create `specialists/god-<name>.md` with required sections
 2. Add or update routing metadata if the agent is spawned by a command
 3. Add to `bin/install.js` if it needs special install handling (rare)
 4. Add CHANGELOG entry under [Unreleased]

@@ -12,3 +12,18 @@
 | Low | 0 |
 
 [DECISION] Launch gate: PASSED.
+
+## OWASP Web Top 10:2025 Coverage
+
+| Category | Manual procedure | Result | Evidence or finding |
+|---|---|---|---|
+| A01:2025 Broken Access Control | Probe authorization and internal-resource access in the fixture boundary | pass | fixture authorization probe |
+| A02:2025 Security Misconfiguration | Exercise production configuration defaults and error behavior | pass | fixture configuration probe |
+| A03:2025 Software Supply Chain Failures | Verify dependency and artifact identity | pass | npm audit fixture evidence |
+| A04:2025 Cryptographic Failures | Verify current hashing and transport policy | pass | fixture cryptography review |
+| A05:2025 Injection | Trace fixture input through interpreter boundaries | pass | fixture malformed-input probe |
+| A06:2025 Insecure Design | Exercise abuse cases and secure defaults | pass | fixture design probe |
+| A07:2025 Authentication Failures | Probe credential and session boundaries | Not Applicable, no authentication surface | fixture scope review |
+| A08:2025 Software or Data Integrity Failures | Tamper with fixture data and verify rejection | pass | fixture integrity probe |
+| A09:2025 Security Logging and Alerting Failures | Trigger and observe a controlled security event | pass | fixture alert exercise |
+| A10:2025 Mishandling of Exceptional Conditions | Inject malformed state and dependency failure | pass | fixture failure-path test |

@@ -7,7 +7,7 @@
  * The premise: the 1500+ tests we have today cover lib/ logic
  * (validators, linkage, drift) but never assert anything about actual
  * agent artifacts (PRD.md, ARCH.md, DESIGN.md, ROADMAP.md, STACK
- * DECISION.md). If a future change to agents/god-pm.md prompt produces
+ * DECISION.md). If a future change to specialists/god-pm.md prompt produces
  * lower-quality PRDs, no test catches it.
  *
  * This suite runs the same have-nots / artifact-linter / linkage

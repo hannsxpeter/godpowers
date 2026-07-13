@@ -1,6 +1,6 @@
 ---
 pillar: stack
-status: active
+status: present
 always_load: false
 covers: [runtime stack, package manager, dependencies, tooling]
 triggers: [stack, node, npm, package, dependency, runtime]
@@ -12,25 +12,47 @@ see_also: [quality, deploy]
 
 - [DECISION] This pillar captures technology choices for Godpowers.
 
-## Stack
+## Context
+
+### Stack
 
 - [DECISION] Godpowers uses Node.js with CommonJS runtime modules.
 - [DECISION] Godpowers uses npm as package manager and package distribution mechanism.
 - [DECISION] Runtime helpers intentionally avoid production dependencies.
 - [DECISION] GitHub Actions is the CI and publish automation surface.
 
+## Decisions
+
+(none)
+
+## Rules
+
+(none)
+
+## Workflows
+
+(none)
+
 ## Watchouts
 
 - [HYPOTHESIS] Adding a YAML dependency would simplify parsing but would increase package footprint and installation risk.
 
+## Touchpoints
+
+- [DECISION] Stack decisions synchronize from `.godpowers/stack/DECISION.mdx` through the managed section below.
+
+## Gaps
+
+(none)
+
 <!-- godpowers:pillar-sync:begin -->
-## Godpowers artifact sources
+### Godpowers artifact sources
 
 - Sync mode: auto-applied by yolo.
 - Related artifact: `.godpowers/stack/DECISION.mdx`.
 - Rule: keep this pillar aligned when these artifacts change durable stack truth.
 
-## Extracted durable signals
+### Extracted durable signals
 
 From `.godpowers/stack/DECISION.mdx`:
 - [DECISION] Candidates evaluated: Node.js CommonJS, Node.js ESM, and a compiled binary.

@@ -14,18 +14,28 @@ Spawn the **god-harden-auditor** agent in a fresh context via the host platform'
 ## Setup
 
 1. Verify build is complete through `.godpowers/state.json` `tier-2.build.status == done`.
-2. Spawn god-harden-auditor with full code access.
-3. The agent writes `.godpowers/harden/FINDINGS.mdx`.
+2. Read `references/shipping/HARDEN-OWASP-2025-ROUTER.md` and
+   `references/shipping/HARDEN-OWASP-WORKSHEETS.md`. Use the current 2025
+   category order, including supply-chain failures and mishandling of
+   exceptional conditions. SSRF is covered within A01:2025.
+3. Spawn god-harden-auditor with full code access and the selected product
+   form. Adapt manual boundaries for non-web forms without renaming the ten
+   current categories.
+4. The agent writes `.godpowers/harden/FINDINGS.mdx` with one reproducible
+   procedure, observed result, evidence or finding link, reviewer, and
+   timestamp for every category. Scanner output alone cannot close a row.
 
 ## Verification
 
 After god-harden-auditor returns:
 1. Verify FINDINGS.md exists on disk
-2. Record the executed security check as evidence so the gate has a passing
+2. Treat every existing `.godpowers/launch/PREPUBLICATION.mdx` as invalid
+   until the hash-bound gate is recorded again after this hardening update.
+3. Record the executed security check as evidence so the gate has a passing
    verification record, for example:
    `npx godpowers verify "npm audit --omit=dev" --substep tier-3.harden --claim "dependency audit clean" --project=.`
-3. Run `npx godpowers gate --tier=harden --project=.` and do not proceed on a non-zero exit
-4. Read findings classification:
+4. Run `npx godpowers gate --tier=harden --project=.` and do not proceed on a non-zero exit
+5. Read findings classification:
    - If any Critical: run `npx godpowers state advance --step=harden --status=failed --project=.` and keep launch BLOCKED
    - If only High/Medium/Low: run `npx godpowers state advance --step=harden --status=done --project=.`
 
@@ -33,6 +43,7 @@ After god-harden-auditor returns:
 
 Hardening FAILS if:
 - Only automated scanner output, no manual review
+- Any OWASP Web Top 10:2025 row lacks a reproducible manual procedure and result
 - Auth boundaries not tested (just code-read)
 - No input validation audit
 - Rate limiting not verified
@@ -46,7 +57,10 @@ If ANY finding is Critical:
 2. Present finding to user using pause format
 3. Launch remains BLOCKED until:
    - Critical finding is fixed and re-verified, OR
-   - User explicitly accepts the risk in writing
+   - Public activation is removed from scope
+
+The hash-bound pre-publication gate does not treat accepted risk as a passing
+Critical. Resolve and re-verify the finding before public activation.
 
 ## On Completion
 

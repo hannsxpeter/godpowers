@@ -1,6 +1,6 @@
 ---
 pillar: security
-status: active
+status: present
 always_load: false
 covers: [security review, dependency audit, command execution, release gates]
 triggers: [security, harden, audit, exec, shell, dependency, vulnerability]
@@ -12,6 +12,14 @@ see_also: [deploy]
 
 - [DECISION] This pillar captures security boundaries for Godpowers runtime and release work.
 
+## Context
+
+- [DECISION] Installer, bridge, shell-execution, dependency, and publication surfaces receive adversarial review before release.
+
+## Decisions
+
+(none)
+
 ## Rules
 
 - [DECISION] Treat shell execution helpers and install target paths as security-sensitive code.
@@ -20,25 +28,27 @@ see_also: [deploy]
 - [DECISION] Treat unresolved Critical harden findings as launch blockers.
 - [DECISION] `hooks/pre-tool-use.sh` blocks destructive state deletion, hard reset, force push, npm publish, and GitHub release creation until the user confirms the release gate context.
 
+## Workflows
+
+(none)
+
 ## Watchouts
 
 - [HYPOTHESIS] Installer and bridge code are the highest-risk surfaces because they write runtime files into multiple AI tool directories.
 - [HYPOTHESIS] Public publish actions are security-sensitive because a bad package or release note becomes externally visible immediately.
 
+## Touchpoints
+
+- [DECISION] Security context synchronizes from hardening evidence through the managed section below.
+
+## Gaps
+
+(none)
+
 <!-- godpowers:pillar-sync:begin -->
-## Godpowers artifact sources
+### Godpowers artifact sources
 
 - Sync mode: auto-applied by yolo.
-- Related artifact: `.godpowers/harden/FINDINGS.mdx`.
+- Related artifact: `SECURITY.md`.
 - Rule: keep this pillar aligned when these artifacts change durable security truth.
-
-## Extracted durable signals
-
-From `.godpowers/harden/FINDINGS.mdx`:
-- [DECISION] Date: 2026-07-13.
-- [DECISION] Reviewer: autonomous product trust hardening run.
-- [DECISION] Scope: installer, host capability detection, Quick Proof, state reconciliation, release checks, package contents, and production dependencies.
-- [DECISION] Launch gate: PASSED.
-- [DECISION] No unresolved security finding remains in the reviewed scope.
-- [HYPOTHESIS] External connector writes and publish credentials remain last-mile provider risks controlled by authenticated tooling and explicit user authority.
 <!-- godpowers:pillar-sync:end -->

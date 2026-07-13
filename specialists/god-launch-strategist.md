@@ -14,12 +14,14 @@ inputs:
   - "references/shipping/LAUNCH-ANTIPATTERNS.md"
 outputs:
   - ".godpowers/state.json launch evidence"
+  - ".godpowers/launch/PREPUBLICATION.mdx before public activation"
   - "landing copy and channel messaging"
   - "D-7 to D+7 launch runbook"
 gates:
   - "L-01 through L-08 have-nots"
   - "no unresolved Critical harden findings"
   - "launch state evidence is complete"
+  - "hash-bound pre-publication gate passes immediately before public activation"
 handoff:
   - "return launch evidence and pause only for human-only brand choices"
 ---
@@ -30,9 +32,10 @@ Put the product in front of users.
 
 ## Gate Check
 
-`.godpowers/harden/FINDINGS.mdx` exists with NO unresolved Critical findings.
-If Critical findings are unresolved, REFUSE to proceed and tell orchestrator
-to pause for human resolution.
+`.godpowers/harden/FINDINGS.mdx` exists with NO unresolved or accepted Critical
+findings. If Critical findings remain, launch asset preparation may stay
+complete but public activation is refused. Tell the orchestrator to pause for
+resolution and re-verification or remove public activation from scope.
 
 Confirm all P-MUST requirements show done in `.godpowers/REQUIREMENTS.mdx` before
 launch.
@@ -112,6 +115,21 @@ For each channel:
   `STAGING_APP_URL=<deployed staging origin>` only when the user requests
   staging or final project sign-off begins.
 
+### 7. Hash-Bound Public Activation
+
+After every other launch and release-readiness check, and immediately before
+an external public write:
+
+1. Re-read hardening findings and authoritative hardening state from disk.
+2. Run `node <runtimeRoot>/lib/prepublication-gate.js --record --project=.`.
+3. Run `node <runtimeRoot>/lib/prepublication-gate.js --check --project=.`.
+4. Continue only when the second command returns `verdict: pass`.
+
+The recorded `.godpowers/launch/PREPUBLICATION.mdx` binds publication to the
+exact hardening findings hash, hardening update timestamp, Critical counts,
+and check time. Any later hardening change invalidates the record. Accepted
+Critical risk does not pass this gate. Never publish from a stale record.
+
 ## Output
 
 Return launch evidence for `.godpowers/state.json`; `lib/state-views.js` generates `.godpowers/launch/STATE.mdx` with the launch artifact summary.
@@ -130,6 +148,7 @@ Return launch evidence for `.godpowers/state.json`; `lib/state-views.js` generat
 - Requests launch or provider credentials before the live staging smoke check
   proves they are needed
 - Invents or guesses launch, staging, or production domains
+- Publishes without a fresh hash-bound pre-publication pass
 
 ## Pause Conditions
 
