@@ -1,6 +1,6 @@
 {
   "name": "godpowers",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "AI-powered development system: 122 slash commands and 40 specialist agents that take a project from raw idea to hardened production, then run it as an autonomous loop. Runs inside Claude Code, Codex, Cursor, Windsurf, Gemini, and 10+ other AI coding tools.",
   "bin": {
     "godpowers": "./bin/install.js"
@@ -10,6 +10,7 @@
     "prepublishOnly": "npm run release:check",
     "validate-skills": "node scripts/validate-skills.js",
     "test:surface": "node scripts/test-doc-surface-counts.js",
+    "test:self-truth": "node scripts/check-self-project-truth.js",
     "test:quick-proof": "node scripts/test-quick-proof.js",
     "canary:adoption": "node scripts/run-adoption-canary.js",
     "verify:published-install": "node scripts/verify-published-install.js",
@@ -24,11 +25,11 @@
     "test:e2e": "node tests/integration/full-arc.test.js",
     "test:mcp": "npm --workspace @godpowers/mcp test",
     "coverage": "c8 --reporter=text --reporter=lcov node scripts/run-tests.js",
-    "coverage:lib": "c8 --include=lib/**/*.js --check-coverage --lines 90 --branches 75 --reporter=text --reporter=json-summary node scripts/run-tests.js",
+    "coverage:lib": "c8 --all --include=lib/**/*.js --exclude=lib/agent-browser-driver.js --exclude=lib/browser-bridge.js --exclude=!lib/runtime-test.js --check-coverage --lines 90 --branches 75 --reporter=text --reporter=json-summary node scripts/run-tests.js",
     "test:audit": "npm audit --omit=dev && git diff --check && npm run test:surface",
     "pack:check": "node scripts/check-package-contents.js",
     "pack:mcp:check": "npm --workspace @godpowers/mcp run pack:check",
-    "release:check": "npm run coverage:lib && node scripts/check-per-file-coverage.js && npm run test:audit && npm run pack:check && npm run pack:mcp:check",
+    "release:check": "npm run coverage:lib && node scripts/check-per-file-coverage.js && npm run test:audit && npm run test:self-truth && npm run pack:check && npm run pack:mcp:check",
     "lint": "node scripts/static-check.js"
   },
   "workspaces": [

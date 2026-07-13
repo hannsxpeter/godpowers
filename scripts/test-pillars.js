@@ -8,7 +8,7 @@ const path = require('path');
 const os = require('os');
 
 const pillars = require('../lib/pillars');
-const { test, report } = require('./test-harness');
+const { test, report, assert } = require('./test-harness');
 
 
 function mkTmp() {
@@ -222,6 +222,33 @@ test('extractDurableSignalsFromText sanitizes restricted characters', () => {
   if (!signals[0].body.includes('Replace old flow - keep audit trail.')) {
     throw new Error(`unexpected sanitized body: ${signals[0].body}`);
   }
+});
+
+test('extractDurableSignalsFromText ignores inline label examples', () => {
+  const signals = pillars.extractDurableSignalsFromText([
+    'Every sentence must be labeled `[DECISION]`, `[HYPOTHESIS]`, or `[OPEN QUESTION]`.',
+    '- [DECISION] Keep the real durable decision.',
+    'A sentence mentions [HYPOTHESIS] but is not a labeled artifact sentence.'
+  ].join('\n'));
+  assert(signals.length === 1, `unexpected signals: ${JSON.stringify(signals)}`);
+  assert(signals[0].body === 'Keep the real durable decision.', JSON.stringify(signals));
+});
+
+test('extractDurableSignalsFromText preserves plain continuation lines', () => {
+  const signals = pillars.extractDurableSignalsFromText([
+    '[DECISION] Keep the release state tied to the source package',
+    'and compare every generated view with current state before publication.',
+    '',
+    '- [HYPOTHESIS] Production evidence remains unavailable until',
+    'a published install and live user run exist.',
+    '',
+    '## Next section'
+  ].join('\n'));
+  assert(signals.length === 2, JSON.stringify(signals));
+  assert(signals[0].body === 'Keep the release state tied to the source package and compare every generated view with current state before publication.',
+    JSON.stringify(signals));
+  assert(signals[1].body === 'Production evidence remains unavailable until a published install and live user run exist.',
+    JSON.stringify(signals));
 });
 
 test('generated content has no em dashes, en dashes, or emojis', () => {

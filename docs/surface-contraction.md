@@ -9,7 +9,8 @@
 ## Repository Facts
 
 - [DECISION] `lib/install-profiles.js` is the current source for install profile membership.
-- [DECISION] The `core` profile currently selects 19 skills from the shipped `skills/` directory.
+- [DECISION] The `core` profile currently selects 15 skills from the shipped `skills/` directory.
+- [DECISION] Every core command stays at the high-level workflow boundary.
 - [DECISION] The `builder` profile currently selects 44 skills from the shipped `skills/` directory.
 - [DECISION] The `maintainer` profile currently selects 53 skills from the shipped `skills/` directory.
 - [DECISION] The `suite` profile currently selects 24 skills from the shipped `skills/` directory.
@@ -59,7 +60,8 @@
 ## Core Boundary For The Next Slice
 
 - [DECISION] The Phase 5 behavior slice preserves the `core` count near 15 while flipping the omitted installer profile away from `full`.
-- [DECISION] The current `core` profile keeps `god`, `god-first-run`, `god-demo`, `god-help`, `god-surface`, `god-version`, `god-status`, `god-init`, `god-plan`, `god-mode`, `god-build`, `god-fix`, `god-review`, `god-ship`, `god-audit`, `god-capture`, `god-sync`, `god-undo`, and `god-extend`.
+- [DECISION] The current `core` profile keeps `god`, `god-first-run`, `god-demo`, `god-help`, `god-surface`, `god-version`, `god-status`, `god-init`, `god-plan`, `god-mode`, `god-build`, `god-fix`, `god-ship`, `god-sync`, and `god-undo`.
+- [DECISION] Review, audit, capture, and extension leaves remain available through role profiles and the full 122-command compatibility profile.
 - [DECISION] The Phase 5 behavior slice does not remove proof-used leaves from `full`.
 - [DECISION] `god-locate`, `god-lifecycle`, and `god-roadmap-check` are deprecated compatibility aliases with `successor` frontmatter.
 - [DECISION] `quick-proof`, `status`, `next`, `gate`, and `dogfood` CLI helpers remain outside slash-command profile counts.

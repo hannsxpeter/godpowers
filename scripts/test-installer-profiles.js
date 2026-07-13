@@ -37,20 +37,16 @@ test('selectedSkillNames limits core surface', () => {
     'god-plan',
     'god-build',
     'god-fix',
-    'god-review',
     'god-ship',
-    'god-audit',
-    'god-capture',
     'god-sync',
     'god-undo',
-    'god-extend',
     'god-status',
     'god-surface',
     'god-mode'
   ]) {
     assert(selected.has(name), `core missing ${name}`);
   }
-  assert(selected.size >= 18 && selected.size <= 20, `core size should stay near 19, got ${selected.size}`);
+  assert(selected.size >= 12 && selected.size <= 15, `core size should stay near 14, got ${selected.size}`);
   assert(!selected.has('god-prd'), 'core should route planning through god-plan');
   assert(!selected.has('god-locate'), 'core should fold locate into god-status flags');
   assert(!selected.has('god-lifecycle'), 'core should fold lifecycle into god-status flags');

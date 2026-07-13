@@ -1,0 +1,27 @@
+# Godpowers Repository Audit
+
+## Structure
+
+- [DECISION] Runtime code lives in `lib/`, installation in `bin/`, executable checks in `scripts/`, and integration fixtures in `tests/` plus `fixtures/`.
+- [DECISION] Skills, agents, routing metadata, workflows, schemas, templates, and references are package runtime surfaces and remain covered by package allowlists.
+- [DECISION] CI, publish, security, contribution, changelog, release, user, and roadmap documents exist at stable paths.
+
+## Executable Gates
+
+| Gate | Command | Release role |
+|---|---|---|
+| Full suite | `npm test` | [DECISION] Blocks behavioral regressions across runtime surfaces. |
+| Self truth | `npm run test:self-truth` | [DECISION] Blocks source, state, Pillar, roadmap, and release contradictions. |
+| Audit | `npm run test:audit` | [DECISION] Blocks dependency, whitespace, and surface-count drift. |
+| Package | `npm run pack:check` | [DECISION] Blocks missing or leaked package files. |
+| Release | `npm run release:check` | [DECISION] Combines coverage, audit, self truth, and package gates. |
+
+## Findings
+
+- [DECISION] The repository has no production dependency and keeps its runtime portable.
+- [DECISION] The release gate now checks the repository's own workflow truth instead of validating code while ignoring stale lifecycle state.
+- [HYPOTHESIS] Public surface drift remains the most likely documentation regression because 122 skills feed multiple reference views.
+
+## Verdict
+
+- [DECISION] Repository structure is release-ready when the recorded commands pass on the 5.3.0 release candidate.

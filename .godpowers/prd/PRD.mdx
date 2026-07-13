@@ -1,6 +1,6 @@
 # Product Requirements Document
 
-> Reconstructed from the shipped Godpowers v2.1.1 codebase via `/god-reconstruct`.
+> Reconciled against the Godpowers 5.3.0 release candidate via `/god-mode`.
 > Every sentence is labeled `[DECISION]`, `[HYPOTHESIS]`, or `[OPEN QUESTION]`.
 > Functional requirements carry stable ids (P-MUST-NN / P-SHOULD-NN / P-COULD-NN)
 > that map to the code that implements them.
@@ -16,10 +16,6 @@ narrates progress it did not actually make, the agent re-asks questions it
 already answered, and the produced artifacts (PRD, architecture, code) drift out
 of sync with each other within days.
 
-[HYPOTHESIS] A disk-authoritative workflow that re-derives state from files on
-every turn, gates every artifact against named failure modes, and traces each
-requirement to the code that satisfies it will remove most of that drift.
-
 ## Target Users
 
 [DECISION] Primary: solo founders and small engineering teams (1 to 5 people)
@@ -30,19 +26,25 @@ product, not a prototype, without hiring a separate planning function.
 reconstruct planning artifacts, map technical debt, and onboard an AI agent onto
 existing code without rewriting it from scratch.
 
+## Solution Approach
+
+[HYPOTHESIS] A disk-authoritative workflow that re-derives state from files on
+every turn, gates every artifact against named failure modes, and traces each
+requirement to the code that satisfies it will remove most of that drift.
+
 ## Success Metrics
 
 [DECISION] Within 30 minutes of a fresh install, a first-time user can run one
 command (`/god-mode`) and reach a committed, test-green vertical slice, measured
 on the shipped dogfood fixtures.
 
-[DECISION] At least 95 percent of declared requirements trace to implementing
-code after a build, measured by the linkage coverage percentage that the
-Godpowers dashboard reports.
+[DECISION] Within 10 minutes after a build completes, at least 95 percent of
+declared requirements trace to implementing code, measured by the linkage
+coverage percentage that the Godpowers dashboard reports.
 
-[DECISION] Zero release-gate test failures across the 40-plus checks in the
-Godpowers release suite before any version is published, measured by
-`scripts/run-tests.js`.
+[DECISION] For every release candidate, all release-gate checks reach zero
+failures within the 60-minute verification window before publication, measured
+by `scripts/run-tests.js` and `npm run release:check`.
 
 ## Functional Requirements
 
@@ -82,10 +84,10 @@ Godpowers release suite before any version is published, measured by
 - P-SHOULD-07 [DECISION] Import context from GSD, BMAD, and Superpowers and sync progress back -- Acceptance: imported planning signals enter as hypotheses, not as truth. -- Validation: a sync-back writes Godpowers progress into the source system.
 
 ### COULD (post-V1)
-- P-COULD-01 [HYPOTHESIS] Coordinate a multi-repository suite with byte-identical file sync (Mode D).
-- P-COULD-02 [HYPOTHESIS] Configure host-native scheduled automation after explicit user consent.
-- P-COULD-03 [HYPOTHESIS] Export traces and metrics through an OpenTelemetry-compatible pipeline.
-- P-COULD-04 [HYPOTHESIS] Run time-boxed research spikes that build a minimal proof and then stop.
+- P-COULD-01 [HYPOTHESIS] Coordinate a multi-repository suite with byte-identical file sync (Mode D) -- Acceptance: a dry-run reports every affected repository and blocks divergent shared files. -- Validation: the Mode D fixture completes with byte-identical shared outputs.
+- P-COULD-02 [HYPOTHESIS] Configure host-native scheduled automation after explicit user consent -- Acceptance: setup remains a preview until the user approves the named provider action. -- Validation: automation tests reject an apply without explicit consent.
+- P-COULD-03 [HYPOTHESIS] Export traces and metrics through an OpenTelemetry-compatible pipeline -- Acceptance: the exporter preserves trace, span, tier, duration, pause, and error fields. -- Validation: the OTel fixture round-trips the event schema.
+- P-COULD-04 [HYPOTHESIS] Run time-boxed research spikes that build a minimal proof and then stop -- Acceptance: the spike records its budget, evidence, verdict, and stop condition. -- Validation: the spike runner refuses work after the recorded budget is exhausted.
 
 ## Non-Functional Requirements
 
@@ -112,7 +114,7 @@ Godpowers release suite before any version is published, measured by
 ## Appetite
 
 [DECISION] Time budget: Godpowers is a continuously released project; the current
-2.x line ships on a rolling cadence rather than a single fixed deadline.
+5.x line ships on a rolling cadence rather than a single fixed deadline.
 
 [DECISION] Technical constraints: the user-facing surface stays slash-command
 based across every supported host, and runtime logic stays in plain Node.js with

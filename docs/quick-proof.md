@@ -23,16 +23,19 @@ Run these from a project directory after installing Godpowers.
 
 ```bash
 npx godpowers quick-proof --project=. --brief
+npx godpowers quick-proof --project=. --inspect-project --brief
 npx godpowers status --project=. --brief
 npx godpowers next --project=. --brief
 npx godpowers mcp-info --project=.
 ```
 
-The first command reads a shipped fixture at `fixtures/quick-proof/project`, computes
-the next command from its `.godpowers/state.json`, and reports host guarantees
-from your current environment.
+The first command reads a shipped fixture at `fixtures/quick-proof/project`,
+computes the fixture's next command, and reports host guarantees from your
+current environment. Its result is fixture evidence only, not evidence about
+the current project. The second command performs explicit read-only inspection
+of the current project.
 
-The next two commands render live project status and the recommended next
+The following two commands render live project status and the recommended next
 action for the current directory. The MCP info command prints optional
 read-only companion setup without writing host configuration.
 
@@ -69,6 +72,8 @@ single next move.
 - [DECISION] Quick Proof reports commands to first signal, state source,
   tracked steps, missing planning artifacts, next command, host level, and host
   gap count.
+- [DECISION] Default Quick Proof metrics describe the shipped fixture, while
+  `--inspect-project` describes the named current project without writing it.
 - [DECISION] These metrics separate observable adoption evidence from broader
   claims about a full autonomous project run.
 - [DECISION] A useful first run should produce at least one next command, one

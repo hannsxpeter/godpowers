@@ -62,7 +62,7 @@ test('surface contraction evidence records the current profile boundary', () => 
 
 test('phase 5 verb dispatch skills exist', () => {
   const names = skillNames();
-  for (const name of ['god-plan', 'god-fix', 'god-ship', 'god-capture', 'god-extend']) {
+  for (const name of ['god-plan', 'god-build', 'god-fix', 'god-ship', 'god-sync']) {
     assert(names.includes(name), `${name} dispatch skill is missing`);
     assert(fs.existsSync(path.join(ROOT, 'routing', `${name}.yaml`)), `${name} routing is missing`);
   }

@@ -80,6 +80,7 @@ function showHelp() {
   log('  --peek               Show the report without advancing the report cursor');
   log('  --json               Emit JSON for status, next, proof, or automation commands');
   log('  --brief              Render compact output for status, next, or proof');
+  log('  --inspect-project    Read current-project proof state instead of the safe fixture');
   log('  --full               Render complete output for status, next, or demo');
   log('  --dry-run            Preview a surface profile change');
   log('  --apply              Apply a surface profile change');
@@ -128,6 +129,7 @@ function showHelp() {
   log('  npx godpowers import-ledger --from ../legacy/.mythify --project=.');
   log('  npx godpowers mcp-info --project=.');
   log('  npx godpowers quick-proof --project=.');
+  log('  npx godpowers quick-proof --project=. --inspect-project --brief');
   log('  npx godpowers automation-status --project=.');
   log('  npx godpowers automation-setup --project=.');
   log('  npx godpowers dogfood');

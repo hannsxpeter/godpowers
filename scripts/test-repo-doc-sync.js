@@ -79,6 +79,8 @@ test('run applies only safe mechanical updates and leaves narrative docs stale',
   assert(readRel(tmp, 'README.md').includes('version-9.8.7-blue'));
   assert(readRel(tmp, 'README.md').includes('all 4 skills + 2 agents'));
   assert(readRel(tmp, 'package.json').includes('4 slash commands and 2 specialist agents'));
+  assert(readRel(tmp, 'USERS.md').includes('current source version is v9.8.7'));
+  assert(readRel(tmp, 'docs/ROADMAP.md').includes('Current source: v9.8.7'));
   assert(readRel(tmp, 'RELEASE.md').includes('Godpowers 0.0.1'));
   assert(result.after.prose.some((check) => check.path === 'RELEASE.md'));
 });

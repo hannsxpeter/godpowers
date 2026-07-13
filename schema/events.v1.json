@@ -45,6 +45,9 @@
         "have-nots.check",
         "gate.fail",
         "gate.pass",
+        "change.proposed",
+        "change.accepted",
+        "change.rejected",
         "tier.skip",
         "state.repair",
         "state.rollback",
@@ -59,6 +62,10 @@
         "repo-surface-sync.detect",
         "extension.install",
         "extension.activate",
+        "cost.recorded",
+        "cache.hit",
+        "cache.miss",
+        "budget.exceeded",
         "error",
         "warn"
       ]

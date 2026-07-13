@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.0] - 2026-07-13
+
+Product trust hardening release. This release makes Godpowers' own repository
+obey the disk-authoritative lifecycle contract it applies to user projects.
+
+### Added
+
+- A release-blocking self-project truth gate covering source versions, public
+  surface counts, always-loaded Pillars, state, generated progress,
+  requirements, roadmap provenance, and lifecycle artifacts.
+- Event-derived user-outcome metrics for time to accepted change, recorded
+  cost, manual intervention, resume success, deployment completion, and
+  rollback proof, with explicit no-data output when evidence is absent.
+- Explicit read-only current-project inspection for Quick Proof through
+  `--inspect-project`.
+
+### Changed
+
+- Host guarantees now separate installed agent metadata from active-session
+  evidence, and an unidentified host cannot receive a full guarantee.
+- Fixture-backed Quick Proof output now states that fixture results are not
+  evidence about the current project.
+- The default core profile is reduced from 19 to 15 high-level commands while
+  all 122 commands remain available through role and full profiles.
+- PRD metrics, COULD acceptance criteria, roadmap provenance, lifecycle state,
+  generated views, checkpoint, and Pillars are reconciled for the release.
+
 ## [5.2.0] - 2026-07-04
 
 Voice gate release. Promotes the anti-sycophancy half of the 5.1 voice contract

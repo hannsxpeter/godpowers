@@ -45,6 +45,8 @@ package-level integrations.
 | `work-report.js` | Render the verification play-by-play from the evidence ledger. |
 | `adoption-metrics.js` | Derive adoption and outcome metrics from event streams. |
 | `change-metrics.js` | Derive the loop accepted-change rate (accepted vs rejected changes) from the event ledger. |
+| `outcome-metrics.js` | Derive time, cost, intervention, resume, deployment, and rollback outcomes from event evidence. |
+| `self-project-truth.js` | Block release when Godpowers source, state, Pillars, roadmap provenance, or lifecycle artifacts contradict. |
 
 ## Routing and execution
 

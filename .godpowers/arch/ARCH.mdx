@@ -1,0 +1,79 @@
+# Godpowers System Architecture
+
+## System Context
+
+- [DECISION] A developer invokes Godpowers inside an AI coding host, which loads installed skills and specialist agents from the host-specific runtime directory.
+- [DECISION] Godpowers reads and writes project-local Pillars, `.godpowers` state, planning artifacts, source files, and verification evidence.
+- [DECISION] GitHub Actions and npm are external release services reached only after explicit user authority and identity-bound release gates.
+
+## Containers
+
+| Container | Single responsibility | Technology |
+|---|---|---|
+| Installer CLI | Install profiles and run narrow read-only helpers | Node.js CommonJS |
+| Skill runtime | Define user commands and orchestration contracts | Markdown skills |
+| Decision runtime | Route intent, plan workflows, gate tiers, and manage state | Node.js CommonJS |
+| Artifact layer | Preserve labeled product, architecture, delivery, and evidence truth | MDX and JSON |
+| Host bridge | Detect active-session capabilities and installed surfaces | Host environment plus Node.js |
+
+## Architecture Decision Records
+
+### ADR-001: Keep workflow state on disk
+
+- [DECISION] Context: AI coding sessions end, compact, and move between hosts.
+- [DECISION] Decision: `.godpowers/state.json` is authoritative and generated views derive from it.
+- [DECISION] Rationale: A new session can verify state without trusting conversation memory.
+- [DECISION] Flip point: Replace JSON state only if a portable store offers atomic local reads, offline operation, and deterministic export with lower complexity.
+- [DECISION] Consequence: State writers must refresh generated views and checkpoints.
+
+### ADR-002: Keep runtime helpers dependency-light
+
+- [DECISION] Context: The installer targets 15 AI coding runtimes and must work in unfamiliar repositories.
+- [DECISION] Decision: Runtime helpers use Node.js built-ins and CommonJS, with no production dependency required by the core package.
+- [DECISION] Rationale: The package avoids install-time dependency conflicts inside user projects.
+- [DECISION] Flip point: Add a dependency only when a measured compatibility or correctness benefit exceeds package and supply-chain cost.
+- [DECISION] Consequence: Parsers and filesystem helpers need focused local tests.
+
+### ADR-003: Separate installed capability from active-session evidence
+
+- [DECISION] Context: An agent file on disk proves installation but not that the current host session can spawn a fresh agent.
+- [DECISION] Decision: Full host guarantees require an identified host plus explicit active-session spawn evidence.
+- [DECISION] Rationale: The dashboard must never report `full on unknown`.
+- [DECISION] Flip point: A host-native capability handshake may replace explicit evidence when it is stable and testable.
+- [DECISION] Consequence: Some capable hosts report degraded until the active session confirms spawning.
+
+## NFR-to-Architecture Map
+
+| PRD NFR | Architectural choice | ADR |
+|---|---|---|
+| Portability across 10-plus hosts | Host-specific installer layouts with one CommonJS source | ADR-002 |
+| Disk integrity on every turn | Canonical JSON state plus generated checksummed views | ADR-001 |
+| Release quality | Executable tier gates and self-project truth check | ADR-001 |
+| Level-4 safety | User-owned publish actions and guarded tool hooks | ADR-001 |
+| Requirement traceability | Bidirectional linkage JSON and reverse sync | ADR-001 |
+
+## Trust Boundaries
+
+- [DECISION] Host boundary: Environment variables and installed files are untrusted capability hints until active-session evidence confirms behavior.
+- [DECISION] Shell boundary: Installer and validation commands use argument-array process execution and scoped project roots.
+- [DECISION] Release boundary: Git tags, GitHub releases, npm publication, and credentials require explicit user-owned action.
+- [DECISION] Connector boundary: External writes remain delegated to host connectors with explicit scope.
+
+## Data Ownership
+
+| Entity | Owner |
+|---|---|
+| Workflow state | `lib/state.js` |
+| Generated state views | `lib/state-views.js` |
+| Tier gate evidence | `lib/gate.js` and `.godpowers/state.json` |
+| Project context | `AGENTS.md` and `agents/*.md` Pillars |
+| Event history | `lib/events.js` hash-chained JSONL |
+| Release truth | `lib/self-project-truth.js` across canonical surfaces |
+
+## Have-Nots Checklist
+
+- [x] [DECISION] Every container has one responsibility.
+- [x] [DECISION] Every PRD NFR maps to an architectural choice.
+- [x] [DECISION] Every ADR has a measurable flip point.
+- [x] [DECISION] Every external boundary names its evidence and failure posture.
+- [x] [DECISION] Every state entity has one owner.

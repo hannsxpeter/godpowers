@@ -44,9 +44,9 @@ function fixture() {
   writeRel(tmp, 'docs/recipes.md', '# Recipes\n\n## demo\n');
   writeRel(tmp, 'docs/command-flows.md', '/god-docs\n/god-sync\n');
   writeRel(tmp, 'README.md', '[![Version](https://img.shields.io/badge/version-7.0.0-blue)](CHANGELOG.md)\nall 2 skills + 1 agents\n');
-  writeRel(tmp, 'USERS.md', 'Godpowers is at v7.0.0. Stable release.\n');
+  writeRel(tmp, 'USERS.md', 'The current source version is v7.0.0.\n');
   writeRel(tmp, 'ARCHITECTURE.md', 'STABLE v7.0.0\nCore: 2 skills, 1 agents, 1 workflows\n');
-  writeRel(tmp, 'docs/ROADMAP.md', 'Current shipped: v7.0.0\n**2 slash commands**\n**1 specialist agents**\n');
+  writeRel(tmp, 'docs/ROADMAP.md', 'Current source: v7.0.0\n**2 slash commands**\n**1 specialist agents**\n');
   writeRel(tmp, 'docs/reference.md', 'reference for v7.0.0\nSlash commands (2 total)\nSpecialist agents (1 total)\n');
   writeRel(tmp, 'skills/god-version.md', 'Surface: 2 skills, 1 agents, 1 workflows, 1 recipes\n');
   writeRel(tmp, 'skills/god-doctor.md', '[OK] 2 skills installed\n[OK] 1 agents installed\n');

@@ -18,7 +18,8 @@ see_also: [security, deploy]
 - [DECISION] `npm run test:quick-proof` checks README, Quick Proof, release verification, runtime expectations, and adoption canary alignment.
 - [DECISION] `npm run test:audit` runs dependency audit, `git diff --check`, and documentation surface count tests.
 - [DECISION] `npm run pack:check` verifies the npm package contains required runtime files and excludes local-only files.
-- [DECISION] `npm run release:check` combines the full test suite, audit checks, and package contents checks.
+- [DECISION] `npm run release:check` combines per-file library coverage, the full test suite, audit checks, self-project truth checks, and package contents checks.
+- [DECISION] `npm run test:self-truth` blocks stale version, public surface, lifecycle, artifact, requirement, generated progress, and roadmap provenance claims.
 - [DECISION] The full test suite includes quick proof docs, repo-doc sync, repo-surface sync, automation surface sync, host capabilities, extension authoring, dogfood, Mode D, installer smoke, workflow runner, OTel, and extension publish-readiness checks.
 - [DECISION] Build and review agents enforce request-trace discipline: assumptions, public behavior, expected files, and verification command must be explicit before implementation.
 - [DECISION] Reviewers block speculative flexibility, unrelated cleanup, and diff churn that cannot be traced to the user request, slice plan, failing test, or implementation-caused cleanup.
@@ -36,7 +37,19 @@ see_also: [security, deploy]
 <!-- godpowers:pillar-sync:begin -->
 ## Godpowers artifact sources
 
-- Sync mode: proposed for review.
-- Related artifact: `docs/ROADMAP.md`.
+- Sync mode: auto-applied by yolo.
+- Related artifact: `.godpowers/roadmap/ROADMAP.mdx`.
 - Rule: keep this pillar aligned when these artifacts change durable quality truth.
+
+## Extracted durable signals
+
+From `.godpowers/roadmap/ROADMAP.mdx`:
+- [DECISION] Evidence generated at: `2026-07-13T05:45:00.000Z`.
+- [DECISION] Source version: `5.3.0`.
+- [DECISION] Source hash `package.json`: `sha256:d9184b8af2fba78e000dbf5c9e8b1c23147a6408d11d32e93848340171f73843`.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:905ae94af0a13df0738181d810c76bb1a88f5d2302a7baf7e7a5ac4d6f005dac`.
+- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:ec90f0ec06d07fbc67c3b5ac22f3ae882a10d714ef230316f75823709e44642b`.
+- [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:cc9e9227262d9d472fa7806fbafc9a83b8e621728c3652fae1a423a867989ce3`.
+- [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
+- [DECISION] Build, shipping, steady-state, and advanced completion remain backed by the 33 linked requirements and the final release gate recorded in state.
 <!-- godpowers:pillar-sync:end -->

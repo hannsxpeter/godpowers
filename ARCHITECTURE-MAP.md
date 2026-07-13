@@ -640,7 +640,7 @@ godpowers/
 ├── README.md, CHANGELOG.md, LICENSE, CONTRIBUTING.md, SECURITY.md, USERS.md
 ├── ARCHITECTURE.md                <- Design doc
 ├── ARCHITECTURE-MAP.md            <- This file
-├── package.json (v5.2.0)
+├── package.json (v5.3.0)
 ├── .github/workflows/              <- CI + npm publish workflows
 │
 ├── bin/install.js                 <- CLI installer (15 runtimes)
@@ -673,7 +673,7 @@ godpowers/
 │   ├── events.v1.json
 │   └── workflow.v1.json
 │
-├── lib/                           <- Real JS runtime (96 modules)
+├── lib/                           <- Real JS runtime (98 modules)
 │   ├── state.js                   <- state model + drift detection
 │   ├── events.js                  <- OTel-shape event log + hash chain
 │   ├── router.js                  <- command routing
@@ -736,7 +736,7 @@ godpowers/
 
 ---
 
-## Numbers (as of v5.2.0)
+## Numbers (as of v5.3.0)
 
 | Component | Count |
 |-----------|-------|
@@ -751,7 +751,7 @@ godpowers/
 | Templates | 14 |
 | Reference documents | 39 |
 | JSON Schemas | 7 |
-| **JS runtime modules** | **96** |
+| **JS runtime modules** | **98** |
 | **External integrations** | **5** (all detect-and-delegate; none vendored): Google Labs design.md, Impeccable, awesome-design-md, SkillUI, vercel-labs/agent-browser + Playwright |
 | Hooks | 2 |
 | Dogfood scenarios | 5 |

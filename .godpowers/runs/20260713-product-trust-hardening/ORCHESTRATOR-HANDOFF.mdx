@@ -1,0 +1,52 @@
+---
+run_id: 20260713-product-trust-hardening
+invocation: /god-mode --brownfield --yolo --with-hygiene
+project_root: /Users/hprincivil/Projects/godpowers
+release_target: 5.3.0
+---
+
+# Product Trust Hardening Handoff
+
+## Objective
+
+- [DECISION] Remediate every actionable gap in `.godpowers/AUDIT-REPORT.mdx` and raise Godpowers as close as practical to a 10 out of 10 product without weakening existing contracts.
+- [DECISION] Complete implementation, regression tests, artifact reconciliation, documentation, release metadata preparation, hardening, and final sync.
+- [DECISION] The root agent will perform git commit, push, pull request merge, GitHub release creation, tag publication, and npm verification after independent review.
+- [DECISION] Do not commit, push, tag, merge, or publish from this orchestrator run.
+
+## Resume Context
+
+- [DECISION] This is an existing brownfield Godpowers project and must resume from `.godpowers/state.json` rather than ask for project intent.
+- [DECISION] Disk state currently reports an unfinished historical arc even though version 5.2.0 is published.
+- [DECISION] `.godpowers/AUDIT-REPORT.mdx` is the primary remediation input.
+- [DECISION] `package.json`, `README.md`, `RELEASE.md`, `CHANGELOG.md`, `USERS.md`, `agents/*.md`, `.godpowers/*`, `lib/*`, `scripts/*`, and package workflows are in scope when a finding requires them.
+- [DECISION] Canonical artifacts use `.mdx`, with legacy `.md` only as a read fallback.
+
+## Required Outcomes
+
+- [DECISION] Add a release-blocking self-project truth gate that detects version, public surface, Pillars, state, progress, requirements, roadmap, and required artifact contradictions.
+- [DECISION] Reconcile Godpowers' own lifecycle artifacts so published release truth, `.godpowers/state.json`, generated views, checkpoint, final sync, and roadmap agree.
+- [DECISION] Fix host capability reporting so an unidentified active host cannot receive a `full` guarantee based only on installed metadata.
+- [DECISION] Separate active-session host evidence from installed capability evidence and add regression coverage for the distinction.
+- [DECISION] Fix Quick Proof behavior and public copy so fixture evidence is never described as evidence about the current project.
+- [DECISION] Preserve a safe no-write proof path and make current-project inspection explicit.
+- [DECISION] Repair PRD metric timelines, COULD acceptance criteria, and problem-versus-solution separation.
+- [DECISION] Regenerate or repair roadmap completion from current artifact and executable evidence, with a freshness timestamp and hashes or equivalent provenance.
+- [DECISION] Make the design gate return a valid not-required result when state records the design tier as not-required.
+- [DECISION] Reduce default onboarding complexity where evidence supports it, while keeping all 122 commands available through profiles and progressive disclosure.
+- [DECISION] Add user-outcome metrics for time to accepted change, cost, manual intervention, resume success, deployment completion, and rollback proof where the current event model permits honest derivation.
+- [DECISION] Keep the zero-production-user fact explicit and do not manufacture adoption evidence.
+- [DECISION] Update release metadata for version 5.3.0 only after implementation and checks support the release claim.
+- [DECISION] Run artifact, code, security, documentation, package, dogfood, and release checks until green.
+
+## Operating Contracts
+
+- [DECISION] Read `references/orchestration/GOD-MODE-RUNBOOK.md` and follow its user-visible, gate, final-sync, and completion contracts.
+- [DECISION] Compute the Pillars load set before every major command.
+- [DECISION] Run routing prerequisites through `lib/router.js` before direct command dispatch.
+- [DECISION] Use test-first changes and fresh-context specialist review where the workflow requires them.
+- [DECISION] Enter the autonomous repair loop for every red test, lint, gate, package, or release check.
+- [DECISION] Run executable tier gates before downstream transitions.
+- [DECISION] Run the mandatory final sync and refresh `.godpowers/SYNC-LOG.mdx`, `.godpowers/CHECKPOINT.mdx`, `.godpowers/PROGRESS.mdx`, `.godpowers/REQUIREMENTS.mdx`, and Pillars.
+- [DECISION] Preserve no em dash, no en dash, no emoji, three-label, substitution, and MDX-safety rules.
+- [DECISION] Return only a concise user-facing summary with changed paths, validation, remaining external-only gaps, and a release readiness verdict.
