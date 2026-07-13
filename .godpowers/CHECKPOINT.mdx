@@ -1,5 +1,5 @@
 ---
-id: CHECKPOINT-2026-07-13T05-57-56-723Z
+id: CHECKPOINT-2026-07-13T07-20-13-995Z
 project: godpowers
 mode: B
 mode-d-suite: false
@@ -10,10 +10,10 @@ progress-pct: 100
 progress-complete: 19
 progress-total: 19
 current-step: 19
-last-action: tier-1.prd done
+last-action: tier-0.sync done
 last-actor: unknown
-last-update: 2026-07-13T05:57:56.723Z
-facts-hash: sha256:0cb4299904d0774aaf76fbb3ce7e3ad9d465b4a07d4811e5920114c58ce2603f
+last-update: 2026-07-13T07:20:13.995Z
+facts-hash: sha256:402acb4bc73f9fae0f5d7005cac3995c45093d43a2549313531840f8e71c51b2
 ---
 # Checkpoint
 
@@ -28,7 +28,7 @@ facts-hash: sha256:0cb4299904d0774aaf76fbb3ce7e3ad9d465b4a07d4811e5920114c58ce26
 - Lifecycle phase: **steady-state-active**
 - Progress: **100%** (19 of 19 steps complete; current step 19 of 19)
 - Current tier: **tier-3** / **launch**
-- Last action: `tier-1.prd done` by unknown at 2026-07-13T05:57:56.723Z
+- Last action: `tier-0.sync done` by unknown at 2026-07-13T07:20:13.995Z
 
 ## What happened recently
 
@@ -36,12 +36,11 @@ _(no recent actions recorded yet)_
 
 ## What happens next
 
-- node scripts/run-adoption-canary.js <git-url>
-- Collect the first unaffiliated production-user outcome without weakening the no-data policy.
+- Run `/god-next` to compute the next command from disk state.
 
 ## Next suggested command
 
-`node scripts/run-adoption-canary.js <git-url>` - Collect the first unaffiliated production-user outcome without weakening the no-data policy.
+Run `/god-next` to see the next command based on disk state.
 
 ## Last actions (most recent first, max 20)
 
@@ -49,6 +48,7 @@ _(no actions recorded yet)_
 
 ## Held facts (top 10 critical decisions)
 
+- Godpowers 5.3.1 is published on GitHub and npm from merged main commit 40b442aedf35b39fc6c3ea1b37c4f063578dd194.
 - Godpowers 5.3.0 is published on GitHub and npm from merged main commit 9c6efed128b22df6458273c9428d0ceb0a0b0312.
 - Registry integrity matches both GitHub Release tarballs and published root plus MCP executable verification passes.
 - The product score remains 97 out of 100 because production-user and incident rollback evidence is unavailable.
@@ -70,7 +70,7 @@ _(no actions recorded yet)_
 
 ## Provenance
 
-- Generated: 2026-07-13T05:57:56.723Z
+- Generated: 2026-07-13T07:20:13.995Z
 - Schema version: 1.0
 - Authoritative state: `.godpowers/state.json`
 - Authoritative history: `.godpowers/runs/<id>/events.jsonl` + `.godpowers/log`

@@ -1,6 +1,6 @@
 # Godpowers 5.3.1 Release
 
-> Status: Approved for publication
+> Status: Published
 > Date: 2026-07-13
 
 - [DECISION] Godpowers 5.3.1 is the Godaudits 2.0 interoperability patch release.
@@ -29,13 +29,14 @@
 
 ## Upgrade
 
-- [DECISION] After publication, install with `npm install -g godpowers@5.3.1` or `npx godpowers@5.3.1`.
+- [DECISION] Install with `npm install -g godpowers@5.3.1` or `npx godpowers@5.3.1`.
 - [DECISION] Existing 5.x projects need no Godpowers artifact migration.
 - [DECISION] Projects with Godaudits 2.0 should keep `.godaudits/AUDIT.json` canonical and regenerate `.godaudits/AUDIT.mdx` after remediation.
 - [DECISION] Re-run the installer for each host runtime so the updated skills and runtime helpers replace installed copies.
 
-## Publication Boundary
+## Publication Evidence
 
-- [DECISION] Publication is authorized for npm `godpowers@5.3.1`, npm `@godpowers/mcp@5.3.1`, GitHub tag `v5.3.1`, and a GitHub Release containing both package tarballs.
-- [DECISION] The tag-triggered workflow must verify that the tag matches both package versions and belongs to merged main before it runs `npm run release:check` and npm publication with provenance.
-- [DECISION] Published-install verification is required before the release is recorded as complete.
+- [DECISION] GitHub tag `v5.3.1` and the GitHub Release point to merged main commit `40b442aedf35b39fc6c3ea1b37c4f063578dd194`.
+- [DECISION] GitHub Actions run `29231358334` verified release identity, passed the complete release gate, and published npm `godpowers@5.3.1` plus npm `@godpowers/mcp@5.3.1` with provenance.
+- [DECISION] The 577-file root tarball and 8-file MCP tarball attached to the GitHub Release exactly match the npm registry integrity values.
+- [DECISION] npm latest resolves both packages to 5.3.1, and published verification passes for Quick Proof, read-only project inspection, dashboard, next route, Claude, Codex, and the MCP executable.

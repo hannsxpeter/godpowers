@@ -1,6 +1,6 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v5.3.1 release candidate (Godaudits 2.0 canonical JSON integration, typed remediation synchronization, fail-closed import safety, and the existing production runtime surface)
+> Status: STABLE v5.3.1 published release (Godaudits 2.0 canonical JSON integration, typed remediation synchronization, fail-closed import safety, and the existing production runtime surface)
 > Authors: Godpowers Team
 > Last updated: 2026-07-13
 
