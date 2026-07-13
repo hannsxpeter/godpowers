@@ -1097,28 +1097,40 @@ Godpowers consumes the artifacts of its two sibling superskills without owning
 them.
 
 [DECISION] The consumed contract is `.godplans/PLAN.mdx` (godplans master
-plan) and `.godaudits/AUDIT.mdx` (godaudits report). `lib/sibling-artifacts.js`
-is the read-only parser: it detects the files, parses `GP-nnn` plan tasks and
-`GA-nnn` remediation tasks (checkbox, wave, Files/Depends on/Acceptance/Verify
-fields), and recomputes every count from the checkbox body because frontmatter
-counters are cached digests. Plan requirements use `R-<DOM>-n` ids and audit
-checks mirror them one to one as `A-<DOM>-n` across the 18 shared domain
-codes; Godpowers preserves those ids verbatim on import so traceability
-survives the handoff.
+plan) and `.godaudits/AUDIT.json` (godaudits 2.x canonical machine state),
+with `.godaudits/AUDIT.mdx` supported as a generated report and 1.x fallback.
+`lib/sibling-artifacts.js` is the read-only parser: it detects the canonical
+source, parses `GP-nnn` plan tasks and typed `GA-nnn` remediation tasks, imports
+the explicit check-outcome ledger, secret-safe evidence metadata, compliance
+result, accepted risks, open questions, compiled score caps, and coverage, and
+recomputes counts only for legacy MDX.
+Plan requirements use `R-<DOM>-n` ids and audit checks mirror them one to one
+as `A-<DOM>-n` across the 18 shared domain codes; Godpowers preserves those ids
+verbatim on import so traceability survives the handoff.
+
+[DECISION] Open GA tasks are synchronized into a replaceable managed section
+of `.godpowers/todos/TODOS.mdx`; user-authored todo content outside the section
+is preserved. Finding severity maps Critical/High/Medium/Low to P0/P1/P2/P3.
+Imported JSON strings are MDX-escaped, malformed managed boundaries fail
+without writing, and canonical audit reads use a 5 MiB limit so the complete
+414-check state is available to migration.
 
 [DECISION] Sibling files are read-only for Godpowers with one carve-out: when
-Godpowers executes a GP or GA task, the executing agent follows the executor
-rules embedded in PLAN.mdx/AUDIT.mdx themselves (flip the checkbox and update
-frontmatter counters in the same edit, append a session-log line, never
-renumber or reword completed work). Every other flow writes back only through
-the managed companion files `.godplans/GODPOWERS-SYNC.mdx` and
+Godpowers executes a GP or GA task, the executing agent follows the owning
+product's executor rules. A GP task updates PLAN.mdx. A godaudits 2.x task
+updates reciprocal task, finding, check, evidence, and audit metadata in
+AUDIT.json, then runs
+`godaudits validate .godaudits/AUDIT.json --write` and regenerates AUDIT.mdx and
+SARIF when present. The generated report is never hand-edited. Every other
+flow writes back only through `.godplans/GODPOWERS-SYNC.mdx` and
 `.godaudits/GODPOWERS-SYNC.mdx` (lib/source-sync.js); fences are never written
-into PLAN.mdx or AUDIT.mdx.
+into PLAN.mdx, AUDIT.json, or AUDIT.mdx.
 
 [DECISION] Imports record a content hash; `sibling-artifacts.staleness`
-compares it against the current file so drift between an imported digest and
-the live sibling artifact surfaces as an explicit staleness signal instead of
-silently stale context.
+compares it against the current canonical source so drift between an imported
+digest and live sibling state surfaces explicitly. For godaudits 2.x, only
+AUDIT.json controls staleness, so regenerating AUDIT.mdx cannot create a false
+drift warning.
 
 [DECISION] Artifact extension policy: the canonical extension for
 `.godpowers/` artifacts is `.mdx`. Reads are mdx-first with a legacy `.md`

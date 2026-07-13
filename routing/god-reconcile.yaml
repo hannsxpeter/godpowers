@@ -27,6 +27,10 @@ execution:
     - .godpowers/seeds/
     - .godpowers/todos/TODOS.mdx
     - .godpowers/threads/
+    - .godplans/PLAN.mdx
+    - .godaudits/AUDIT.json
+    - .godaudits/AUDIT.mdx
+    - .godaudits/AUDIT.md
 
 success-path:
   next-recommended: varies-by-verdict

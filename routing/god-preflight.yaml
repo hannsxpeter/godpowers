@@ -14,6 +14,11 @@ prerequisites:
 execution:
   spawns: [god-auditor]
   context: fresh
+  reads:
+    - .godplans/PLAN.mdx
+    - .godaudits/AUDIT.json
+    - .godaudits/AUDIT.mdx
+    - .godaudits/AUDIT.md
   writes:
     - .godpowers/preflight/PREFLIGHT.mdx
 

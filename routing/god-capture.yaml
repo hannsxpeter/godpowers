@@ -17,6 +17,8 @@ execution:
     - routing/god-add-todo.yaml
     - routing/god-add-backlog.yaml
     - routing/god-plant-seed.yaml
+    - .godaudits/AUDIT.json
+    - .godpowers/todos/TODOS.mdx
   writes: []
 
 dispatch:

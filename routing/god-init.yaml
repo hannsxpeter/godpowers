@@ -15,7 +15,12 @@ prerequisites:
 execution:
   spawns: [god-orchestrator]
   context: fresh
-  reads: [user-intent]
+  reads:
+    - user-intent
+    - .godplans/PLAN.mdx
+    - .godaudits/AUDIT.json
+    - .godaudits/AUDIT.mdx
+    - .godaudits/AUDIT.md
   writes:
     - .godpowers/PROGRESS.mdx
     - .godpowers/state.json

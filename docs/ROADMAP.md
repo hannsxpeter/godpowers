@@ -45,6 +45,10 @@ quarterback, work report, reflections, memory, lessons, outcome loops, MCP read
 tools, and ledger importer) shipped across 3.1.0-3.11.0.
 
 What works today:
+- **Godaudits 2.x interoperability**: canonical `.godaudits/AUDIT.json`
+  detection and import, generated and legacy MDX fallback, compiled score and
+  coverage signals, typed GA remediation dispatch, managed todo synchronization,
+  and JSON-based staleness.
 - **122 slash commands** as thin orchestrators (front door, first-run, demo, surface control, lifecycle, planning,
   building, shipping, design, runtime, linkage, story-file, suite, recovery,
   observability, capture, knowledge, process, configuration, utility,
