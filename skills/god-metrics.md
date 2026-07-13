@@ -2,7 +2,7 @@
 name: god-metrics
 description: |
   Aggregate per-tier statistics across runs (agent count, duration,
-  pauses, errors) plus the loop accepted-change rate. Useful for
+  pauses, errors), the loop accepted-change rate, and user-outcome metrics. Useful for
   spotting slow tiers, frequent pause points, error-prone steps, or a
   loop that is thrashing instead of shipping.
 
@@ -52,12 +52,19 @@ instead of being rejected or rolled back. Above target (default 50%) means the
 loop's first attempts hold up; below target means it is thrashing. It respects
 the same `--since=<duration>` window as the per-tier stats.
 
+## User-outcome metrics
+
+The output also derives time to accepted change, recorded cost, manual
+intervention, resume success, deployment completion, and rollback proof from
+the event ledger. A metric reports `no event evidence` when the current event
+history cannot prove it.
+
 ## Implementation
 
 Built-in. Calls `lib/event-reader.js metrics(...)` for the per-tier stats and
 `lib/change-metrics.js compute(...)` / `render(...)` for the accepted-change rate
 (derived from the `change.*`, `gate.pass`/`gate.fail`, and `state.rollback`
-events in the ledger).
+events in the ledger), plus `lib/outcome-metrics.js` for user outcomes.
 
 ## Related
 

@@ -1,6 +1,6 @@
 # Deep Workflow Integrations
 
-> How 13 executable workflows, 44 intent recipes, and 120 slash commands
+> How 13 executable workflows, 44 intent recipes, and 122 slash commands
 > compose, hand off, and trigger each other across a project's full lifecycle.
 
 The workflows are not isolated. They form a connected graph that follows real
@@ -712,5 +712,5 @@ Every workflow follows the same shape:
    - User intent (if disambiguation needed)
 ```
 
-This is the universal pattern. 13 executable workflows, 44 recipes, 120 slash
+This is the universal pattern. 13 executable workflows, 44 recipes, 122 slash
 commands, and 40 agents. One coherent system.

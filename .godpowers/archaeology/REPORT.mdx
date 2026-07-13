@@ -1,0 +1,26 @@
+# Godpowers Archaeology Report
+
+## Repository Shape
+
+- [DECISION] Godpowers is a CommonJS Node.js package whose installed slash-command skills drive work inside AI coding hosts.
+- [DECISION] `bin/install.js` and `lib/installer-*` own distribution, while `skills/`, `agents/`, `routing/`, and `workflows/` own the in-host runtime surface.
+- [DECISION] `.godpowers/state.json` owns resumable workflow truth, and generated `.godpowers/*/STATE.mdx` files are human-readable views.
+
+## Behavioral Seams
+
+- [DECISION] `lib/router.js` owns prerequisite and next-command decisions.
+- [DECISION] `lib/gate.js` owns executable tier transitions.
+- [DECISION] `lib/pillars.js` owns native project context routing and artifact-to-context synchronization.
+- [DECISION] `scripts/run-tests.js` and `npm run release:check` own local release confidence.
+
+## Historical Drift Found
+
+- [DECISION] The 5.2.0 source tree was release-green while its own Godpowers lifecycle still recorded an unfinished historical run.
+- [DECISION] Always-loaded context still named version 3.14.0 and an obsolete 120-command surface.
+- [DECISION] Quick Proof ran safely against a fixture, but public output did not state strongly enough that fixture results were not current-project evidence.
+- [DECISION] Installed agent metadata could elevate an unidentified host to a full guarantee without active-session proof.
+
+## Preservation Boundaries
+
+- [DECISION] The public slash-command model, zero production dependency posture, full 122-command compatibility surface, and MDX-first artifact contract remain unchanged.
+- [DECISION] External publish, tag, merge, and npm verification actions were initially outside the intake scope and were later explicitly authorized by the user.

@@ -218,6 +218,6 @@ survives focused repair attempts or the blocker is genuinely human-only.
 ## Where to next
 
 - [Concepts](concepts.md) - the vocabulary and mental model
-- [Reference](reference.md) - all 120 slash commands and CLI helpers
+- [Reference](reference.md) - all 122 slash commands and CLI helpers
 - [Tutorial: First Project](tutorials/first-project.md) - end-to-end walkthrough
 - [Composing with other tools](../references/shared/ORCHESTRATORS.md) - coexistence with other AI workflow systems

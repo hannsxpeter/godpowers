@@ -1,0 +1,52 @@
+# Godpowers Stack Decision
+
+## Summary
+
+| Category | Choice | Score | Lock-in | Flip point |
+|---|---|---:|---|---|
+| Runtime | Node.js 18-plus CommonJS | 9.2/10 | Low | Supported hosts converge on another portable runtime with lower install failure rates. |
+| Package manager | npm workspaces | 9.0/10 | Medium | Distribution moves away from npm or workspace release coupling becomes a measured blocker. |
+| Persistence | Project-local JSON, JSONL, MDX, and YAML | 9.1/10 | Low | A portable store proves stronger atomicity without a service dependency. |
+| CI and release | GitHub Actions with npm provenance | 8.8/10 | Medium | Repository hosting or registry provenance requirements change. |
+| Tests | Node scripts plus `c8` | 8.7/10 | Low | Suite scale requires a runner with materially better isolation and equal portability. |
+| Observability | Hash-chained local events plus optional OTel export | 8.9/10 | Low | Hosts provide a standard durable trace API across all supported runtimes. |
+
+## Detailed Decisions
+
+### Runtime
+
+- [DECISION] Candidates evaluated: Node.js CommonJS, Node.js ESM, and a compiled binary.
+- [DECISION] Scores: CommonJS 9.2, ESM 7.8, compiled binary 6.2.
+- [DECISION] CommonJS wins because the installer executes directly on Node 18-plus across 15 host layouts without a build step.
+- [DECISION] Lock-in cost is low because modules use built-in APIs and can migrate file by file.
+
+### Persistence
+
+- [DECISION] Candidates evaluated: local files, SQLite, and a hosted service.
+- [DECISION] Scores: local files 9.1, SQLite 7.4, hosted service 4.9.
+- [DECISION] Local files win because disk state remains inspectable, offline, versionable, and portable between AI coding tools.
+- [DECISION] Lock-in cost is low because every canonical format has a documented schema or deterministic parser.
+
+### CI And Release
+
+- [DECISION] Candidates evaluated: GitHub Actions, a registry-only script, and a hosted release service.
+- [DECISION] Scores: GitHub Actions 8.8, registry-only 5.6, hosted service 5.0.
+- [DECISION] GitHub Actions wins because tags can gate both packages with tests and npm provenance.
+- [DECISION] Lock-in cost is medium because workflow YAML and repository permissions must move together.
+
+## Pairing Compatibility
+
+- [DECISION] Node.js CommonJS works with npm workspaces because both packages share one lockfile and Node 18-plus runtime.
+- [DECISION] Local JSON state works with MDX views because `lib/state-views.js` derives checksummed views after writes.
+- [DECISION] GitHub Actions works with npm provenance because the publish workflow uses trusted tag-triggered identity.
+
+## High Lock-In Watch List
+
+- [DECISION] No selected choice has high lock-in.
+
+## Have-Nots Checklist
+
+- [x] [DECISION] Every selected category has a rationale tied to Godpowers constraints.
+- [x] [DECISION] Every choice has a flip point and lock-in classification.
+- [x] [DECISION] Pairing compatibility is explicit.
+- [x] [DECISION] No rationale relies on generic best-practice language.

@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v5.2.0.
+Complete command, agent, and artifact reference for v5.3.0.
 
 ## Slash commands (122 total)
 
@@ -41,8 +41,7 @@ For common ambiguous intents, Godpowers chooses the smallest fitting command:
 The default `core` install starts with first-run guidance, the front door,
 surface control, and verb dispatchers: `/god-first-run`, `/god-demo`, `/god`,
 `/god-surface`, `/god-init`, `/god-plan`, `/god-build`, `/god-fix`,
-`/god-review`, `/god-ship`, `/god-audit`, `/god-capture`, `/god-sync`,
-`/god-undo`, and `/god-extend`. These commands route to existing leaf commands
+`/god-build`, `/god-fix`, `/god-ship`, `/god-sync`, and `/god-undo`. These commands route to existing leaf commands
 through routing metadata and do not remove direct shortcuts from the `full`
 profile.
 
@@ -99,7 +98,8 @@ recommendation signals. Longer runs use `/god-metrics`, `/god-trace`, and
 ### Installer CLI helpers
 - `godpowers status --project .` - Render the shared dashboard from disk state.
 - `godpowers next --project .` - Render the dashboard and show the recommended next command.
-- `godpowers quick-proof --project .` - Render the shipped proof fixture with host guarantees.
+- `godpowers quick-proof --project .` - Render the shipped proof fixture with host guarantees; the project path scopes host detection, not fixture evidence.
+- `godpowers quick-proof --project . --inspect-project` - Inspect current-project state explicitly through a read-only proof view.
 - `godpowers state advance --step=prd --status=done --project .` - Update one tracked state step and regenerate managed state views.
 - `godpowers gate --tier=prd --project .` - Check a tier artifact gate and exit non-zero when blocking evidence is missing.
 - `godpowers verify "<cmd>" --substep tier-2.build --claim "<claim>" --project .` - Run a command as executed verification: append an exit-code-backed record to `.godpowers/ledger/verifications.jsonl`, roll the latest verdict into `state.json` `verification.commands[]`, emit `gate.pass`/`gate.fail`, and exit non-zero when the command fails. Use `--attest --claim "<claim>" --evidence "<text>"` to record a self-reported attestation instead.

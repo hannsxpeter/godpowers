@@ -74,3 +74,55 @@ If `context.md` or `repo.md` is missing, pause and create stubs before continuin
 excluded: []
 ```
 <!-- pillars:end -->
+
+<!-- godpowers:begin -->
+## Godpowers project
+
+This project uses Godpowers. The on-disk state is the source of truth;
+conversation memory is not.
+
+- Project: godpowers
+- Mode: B    Scale: large
+- State: `.godpowers/state.json` is authority; `.godpowers/PROGRESS.mdx` is generated for humans
+
+### Quarterback rule
+
+There is exactly one orchestrator: `god-orchestrator`. It owns writes to
+`state.json`, `intent.yaml`, and `events.jsonl`; `PROGRESS.mdx` is regenerated from state. Skills like
+`/god`, `/god-next`, `/god-status` read state without writing.
+
+### Useful commands
+
+- `/god-status` - re-derive state from disk
+- `/god-next` - what to run next, with reason
+- `/god-mode` - run the full autonomous project run
+- `/god-sync` - refresh artifacts, context, and source-system sync-back
+- `/god-migrate` - import or sync legacy planning, BMAD, or Superpowers context
+- `/god-context refresh` - refresh AI-tool awareness for this project
+
+### Linkage status
+
+- Coverage: 100%
+
+### Active artifacts
+
+- orchestration: `runs/20260713-product-trust-hardening/ORCHESTRATOR-HANDOFF.mdx`
+- preflight: `preflight/PREFLIGHT.mdx`
+- archaeology: `archaeology/REPORT.mdx`
+- tech-debt: `tech-debt/ASSESSMENT.mdx`
+- greenfield-simulation: `audit/GREENFIELD-SIMULATION.mdx`
+- greenfieldify: `audit/GREENFIELDIFY-PLAN.mdx`
+- sync: `SYNC-LOG.mdx`
+- prd: `prd/PRD.mdx`
+- arch: `arch/ARCH.mdx`
+- roadmap: `roadmap/ROADMAP.mdx`
+- stack: `stack/DECISION.mdx`
+- repo: `repo/AUDIT.mdx`
+- build: `build/STATE.mdx`
+- deploy: `deploy/STATE.mdx`
+- observe: `observe/STATE.mdx`
+- harden: `harden/FINDINGS.mdx`
+- launch: `launch/STATE.mdx`
+
+See `.godpowers/state.json` for authority and `.godpowers/PROGRESS.mdx` for the generated tier table.
+<!-- godpowers:end -->

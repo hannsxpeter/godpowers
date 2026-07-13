@@ -22,3 +22,23 @@ see_also: [quality, deploy]
 ## Watchouts
 
 - [HYPOTHESIS] Adding a YAML dependency would simplify parsing but would increase package footprint and installation risk.
+
+<!-- godpowers:pillar-sync:begin -->
+## Godpowers artifact sources
+
+- Sync mode: auto-applied by yolo.
+- Related artifact: `.godpowers/stack/DECISION.mdx`.
+- Rule: keep this pillar aligned when these artifacts change durable stack truth.
+
+## Extracted durable signals
+
+From `.godpowers/stack/DECISION.mdx`:
+- [DECISION] Candidates evaluated: Node.js CommonJS, Node.js ESM, and a compiled binary.
+- [DECISION] Scores: CommonJS 9.2, ESM 7.8, compiled binary 6.2.
+- [DECISION] CommonJS wins because the installer executes directly on Node 18-plus across 15 host layouts without a build step.
+- [DECISION] Lock-in cost is low because modules use built-in APIs and can migrate file by file.
+- [DECISION] Candidates evaluated: local files, SQLite, and a hosted service.
+- [DECISION] Scores: local files 9.1, SQLite 7.4, hosted service 4.9.
+- [DECISION] Local files win because disk state remains inspectable, offline, versionable, and portable between AI coding tools.
+- [DECISION] Lock-in cost is low because every canonical format has a documented schema or deterministic parser.
+<!-- godpowers:pillar-sync:end -->

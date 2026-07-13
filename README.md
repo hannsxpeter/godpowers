@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-5.2.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.3.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 **Ship fast. Ship right. Ship everything. Ship accountably.**
@@ -13,6 +13,9 @@ specialist agents to do it, checks their output against real gates, and leaves a
 trail on disk so you can see exactly what happened. In 5.0 it can also run as an
 autonomous **loop**: it finds the next piece of work, does it, verifies it, and
 decides what to do next, on its own.
+
+The current source surface contains 122 slash commands, 40 specialist agents,
+13 workflows, and 44 recipes. The default core profile exposes 15 commands.
 
 If you have never used it before, this page is written for you. Start at
 [New here?](#new-here-start-in-two-minutes) and follow it top to bottom.
@@ -28,9 +31,13 @@ project folder:
 npx godpowers quick-proof --project=. --brief
 ```
 
-That prints real evidence about your project: what state is on disk, what is
-missing, one recommended next command, and whether your machine can run the full
-toolchain. Nothing is written; it is safe to run anywhere.
+That prints a safe proof from a shipped fixture plus host capability evidence.
+It does not inspect your current project and writes nothing. To inspect the
+current project explicitly through the same read-only view, run:
+
+```bash
+npx godpowers quick-proof --project=. --inspect-project --brief
+```
 
 When you are ready to use it for real, install it for your AI coding tool (Claude
 Code shown; other tools are under [Install](#install)):

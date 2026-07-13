@@ -24,9 +24,9 @@
 
 - [DECISION] `lib/host-capabilities.js` detects host identity from environment
   signals.
-- [DECISION] It detects Codex agent metadata at
+- [DECISION] It records installed Codex agent metadata at
   `~/.codex/agents/god-orchestrator.toml`.
-- [DECISION] It detects Claude agent metadata at
+- [DECISION] It records installed Claude agent metadata at
   `~/.claude/agents/god-orchestrator.md`.
 - [DECISION] It checks local availability of `git`, `npm`, and `gh` without
   requiring network access.
@@ -40,6 +40,11 @@
   `[mcp_servers.godpowers]` registration.
 - [DECISION] It reports extension authoring and suite release dry-run support
   from shipped runtime files.
+- [DECISION] Installed agent metadata proves availability on disk, not that the
+  active host session can spawn a fresh agent.
+- [DECISION] A full guarantee requires an identified active host plus explicit
+  active-session spawn evidence.
+- [DECISION] An unidentified active host cannot receive a full guarantee.
 
 ## Dashboard Behavior
 
@@ -48,8 +53,8 @@ Action brief:
   Next: /god-prd
   Why: PRD is the next planning gate.
   Readiness: needs attention
-  Attention: Host: degraded on codex, fresh-context agent spawn not detected
-  Host guarantees: degraded on codex, fresh-context agent spawn not detected; MCP not configured
+  Attention: Host: degraded on codex, fresh-context agent spawn not confirmed for active session
+  Host guarantees: degraded on codex, fresh-context agent spawn not confirmed for active session; MCP not configured
   Code intelligence: ast-grep via ast-grep
 ```
 

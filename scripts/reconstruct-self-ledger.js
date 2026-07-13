@@ -123,7 +123,7 @@ if (s) {
     'artifact-hash': state.hashFile(path.join(ROOT, '.godpowers/roadmap/ROADMAP.mdx'))
   }, now);
   s.deliverables = requirements.summarizeForState(derived, s.deliverables);
-  const coveragePct = Math.round(linkage.coverage(ROOT, declared) * 100);
+  const coveragePct = linkage.coverage(ROOT, declared);
   s.linkage = {
     ...(s.linkage || {}),
     'coverage-pct': coveragePct,

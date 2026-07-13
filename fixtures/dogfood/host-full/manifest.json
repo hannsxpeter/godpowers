@@ -1,5 +1,7 @@
 {
   "name": "Host guarantee full mode",
   "kind": "host-capabilities",
+  "activeAgentSpawn": true,
+  "agentSpawnEvidence": "dogfood host harness",
   "expectedLevel": "full"
 }

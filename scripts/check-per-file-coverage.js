@@ -18,6 +18,7 @@ const path = require('path');
 const FLOOR = 70;
 const EXCLUDE = new Set(['agent-browser-driver.js', 'browser-bridge.js']);
 const summaryPath = path.resolve(__dirname, '..', 'coverage', 'coverage-summary.json');
+const libDir = path.resolve(__dirname, '..', 'lib');
 
 let summary;
 try {
@@ -28,6 +29,17 @@ try {
 }
 
 const offenders = [];
+const coveredByBase = new Map(
+  Object.entries(summary)
+    .filter(([file]) => file !== 'total')
+    .map(([file, data]) => [path.basename(file), data])
+);
+const expected = fs.readdirSync(libDir)
+  .filter((file) => file.endsWith('.js') && !EXCLUDE.has(file))
+  .sort();
+for (const file of expected) {
+  if (!coveredByBase.has(file)) offenders.push(`${file}: missing from coverage summary`);
+}
 for (const [file, data] of Object.entries(summary)) {
   if (file === 'total') continue;
   const base = path.basename(file);
@@ -42,5 +54,4 @@ if (offenders.length > 0) {
   process.exit(1);
 }
 
-const checked = Object.keys(summary).filter((k) => k !== 'total').length - EXCLUDE.size;
-console.log(`  + per-file line coverage >= ${FLOOR}% across ${checked} lib modules (excluded: ${[...EXCLUDE].join(', ')})`);
+console.log(`  + per-file line coverage >= ${FLOOR}% across ${expected.length} lib modules (excluded: ${[...EXCLUDE].join(', ')})`);

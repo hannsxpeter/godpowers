@@ -126,6 +126,7 @@ npm view godpowers@latest version
 npx godpowers@latest --claude --global
 npx godpowers@latest --codex --global
 npx godpowers@latest quick-proof --project=. --brief
+npx godpowers@latest quick-proof --project=. --inspect-project --brief
 npx godpowers@latest status --project=. --brief
 npx godpowers@latest next --project=. --brief
 ```
@@ -140,6 +141,8 @@ Confirm:
 - Codex install writes skill directories plus `agents/*.toml` metadata.
 - `quick-proof --project=. --brief` reads the shipped quick-proof fixture and
   recommends `/god-prd`.
+- `quick-proof --project=. --inspect-project --brief` labels current-project
+  inspection explicitly and performs no writes.
 - `status --project=. --brief` returns a dashboard-shaped report instead of a
   module resolution error.
 - `next --project=. --brief` reports missing state honestly when no

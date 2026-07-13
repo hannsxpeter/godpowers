@@ -1,0 +1,33 @@
+<!-- godpowers:state-view:begin -->
+<!-- godpowers:checksum sha256:5cb77fcbc320e777d57e163109363fa6889b5652d3d60b411529be727de05f92 -->
+# Godpowers Launch State
+
+- [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.launch`.
+- [DECISION] The managed section may be replaced by Godpowers whenever project state changes.
+- [DECISION] Edit project state through Godpowers commands or owning command wrappers rather than editing this managed section.
+- [DECISION] Project: godpowers.
+- [DECISION] Step: Shipping: Launch.
+- [DECISION] Status: `done`.
+- [DECISION] Artifact: `.godpowers/launch/STATE.mdx`.
+- [DECISION] Updated: 2026-07-13T05:16:48.669Z.
+- [DECISION] Notes: The 5.3.0 launch-readiness scope is complete and publication is authorized through the verified tag workflow..
+
+## Verification Commands
+
+| Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
+|---|---|---|---|---|---|
+| npm test | pass | 0 | 2026-07-13T05:43:11.000Z | 39800 | All test commands passed with 94.69% line, 79.48% branch, and 96.85% function coverage. |
+| npm run pack:check | pass | 0 | 2026-07-13T05:12:51.236Z | 700 | Root npm package contents verified: 577 files. |
+| npm run pack:mcp:check | pass | 0 | 2026-07-13T05:12:51.236Z | 400 | MCP package contents verified: 8 files. |
+| npm run release:check | pass | 0 | 2026-07-13T05:43:11.000Z | 41830 | Aggregate coverage, per-file coverage across 96 expected runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed. |
+
+## Evidence Fields
+
+| Field | Value |
+|---|---|
+| launch-scope | release-publication-approved |
+| production-user-evidence | unavailable; repository records zero production users |
+| publication-verification | required after the tag workflow completes |
+| release-candidate-version | 5.3.0 |
+
+<!-- godpowers:state-view:end -->

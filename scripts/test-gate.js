@@ -87,6 +87,23 @@ test('design gate passes when optional PRODUCT artifact is absent', () => {
     'design state status check should pass');
 });
 
+test('design gate returns a valid not-required result from state', () => {
+  const project = mkProject('godpowers-gate-design-not-required-');
+  initState(project, (current) => {
+    current.tiers['tier-1'].design = {
+      status: 'not-required',
+      updated: '2026-07-13T12:00:00.000Z'
+    };
+  });
+  const result = gateResult('design', project);
+  assert(result.verdict === 'pass', `design not-required should pass: ${errorSummary(result)}`);
+  assert(result.summary.designRequired === false, JSON.stringify(result.summary));
+  assert(result.checks.some((check) => check.id === 'design-requirement' && check.status === 'pass'),
+    'design requirement check should record not-required');
+  assert(result.artifacts.some((artifact) => artifact.path === 'DESIGN.md' && artifact.required === false),
+    'DESIGN.md should be non-required for this result');
+});
+
 test('repo build and harden gates pass against fixture projects', () => {
   for (const tier of ['repo', 'build', 'harden']) {
     const project = path.join(ROOT, 'fixtures', 'gate', `${tier}-pass`);

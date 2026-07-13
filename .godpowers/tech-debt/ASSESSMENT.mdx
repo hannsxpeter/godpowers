@@ -1,0 +1,22 @@
+# Godpowers Technical Debt Assessment
+
+## Prioritized Debt
+
+| Priority | Debt | Evidence | Resolution |
+|---|---|---|---|
+| High | Self-project release truth could drift | `.godpowers/AUDIT-REPORT.mdx` | [DECISION] Add `lib/self-project-truth.js` to `npm run release:check`. |
+| High | Host guarantee mixed installed and active evidence | `lib/host-capabilities.js` | [DECISION] Separate installed capability metadata from active-session proof. |
+| High | Quick Proof fixture scope was ambiguous | `lib/quick-proof.js` | [DECISION] Label fixture-only evidence and require `--inspect-project` for current-project inspection. |
+| Medium | Planning artifacts were stale | `.godpowers/prd/PRD.mdx` and `.godpowers/roadmap/ROADMAP.mdx` | [DECISION] Repair metrics, acceptance criteria, provenance, and source hashes. |
+| Medium | Default command surface remained broad | `lib/install-profiles.js` | [DECISION] Keep full compatibility while narrowing the core profile. |
+
+## Risk Boundaries
+
+- [DECISION] Installer and shell execution changes remain high risk and require install smoke plus package checks.
+- [DECISION] Routing changes remain high risk and require router, recipe, and workflow tests.
+- [HYPOTHESIS] Cross-host active-session evidence will remain partially host-dependent until every supported tool exposes a reliable session capability API.
+
+## Exit Criteria
+
+- [DECISION] Debt in scope is closed when the self-truth gate, tier gates, full tests, dependency audit, dogfood, and package checks pass together.
+- [DECISION] Zero recorded production users remains an explicit product evidence gap rather than a code defect.

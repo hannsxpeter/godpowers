@@ -206,8 +206,53 @@ test('quick proof fixture computes /god-prd as next command', () => {
   assert(rendered.includes('MCP not configured'), rendered);
   assert(rendered.includes('Outcome metrics:'), rendered);
   assert(rendered.includes('Commands to first signal: 1'), rendered);
+  assert(rendered.includes('Fixture evidence only:'), rendered);
+  assert(rendered.includes('does not inspect the current project'), rendered);
   assert(proof.metrics.nextCommand === '/god-prd', JSON.stringify(proof.metrics));
   assert(proof.metrics.missingPlanningArtifacts === 2, JSON.stringify(proof.metrics));
+});
+
+test('quick proof current-project inspection is explicit and read-only', () => {
+  const project = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-quick-proof-project-'));
+  fs.mkdirSync(path.join(project, '.godpowers'), { recursive: true });
+  fs.writeFileSync(path.join(project, '.godpowers', 'state.json'), JSON.stringify({
+    project: { name: 'current-proof' },
+    tiers: { 'tier-1': { prd: { status: 'pending' }, roadmap: { status: 'pending' } } },
+    'lifecycle-phase': 'in-arc'
+  }, null, 2));
+  const before = fs.readFileSync(path.join(project, '.godpowers', 'state.json'), 'utf8');
+  const proof = quickProof.compute(project, {
+    inspectProject: true,
+    hostReport: {
+      host: 'test',
+      level: 'degraded',
+      guarantees: { shell: true, git: 'test', npm: 'test', agentSpawn: false, mcp: { available: false, source: 'test' } },
+      installedAgents: { codex: false, claude: false },
+      gaps: ['fresh-context agent spawn not confirmed for active session']
+    }
+  });
+  const rendered = quickProof.render(proof, { brief: true });
+  assert(proof.source === 'current project inspection', proof.source);
+  assert(proof.inspectProject === true, JSON.stringify(proof));
+  assert(rendered.includes('Source: current project inspection (read-only)'), rendered);
+  assert(!rendered.includes('Fixture evidence only:'), rendered);
+  assert(!rendered.includes('  Fixture:'), rendered);
+  assert(!proof.evidence.some((item) => item.label === 'Fixture'), JSON.stringify(proof.evidence));
+  assert(!proof.commands.some((command) => command.includes(`--project=${quickProof.FIXTURE_ROOT}`)), JSON.stringify(proof.commands));
+  assert(fs.readFileSync(path.join(project, '.godpowers', 'state.json'), 'utf8') === before,
+    'current-project inspection changed state');
+});
+
+test('CLI requires --inspect-project to describe current-project proof', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-quick-proof-current-cli-'));
+  const defaultOut = cp.execFileSync(process.execPath,
+    [path.join(ROOT, 'bin', 'install.js'), 'quick-proof', '--project', tmp, '--brief'],
+    { encoding: 'utf8' });
+  const currentOut = cp.execFileSync(process.execPath,
+    [path.join(ROOT, 'bin', 'install.js'), 'quick-proof', '--project', tmp, '--brief', '--inspect-project'],
+    { encoding: 'utf8' });
+  assert(defaultOut.includes('Fixture evidence only:'), defaultOut);
+  assert(currentOut.includes('Source: current project inspection (read-only)'), currentOut);
 });
 
 test('quick proof renders dot for the user project when fixture root was passed', () => {

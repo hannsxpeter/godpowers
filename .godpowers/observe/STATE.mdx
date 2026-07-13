@@ -1,0 +1,30 @@
+<!-- godpowers:state-view:begin -->
+<!-- godpowers:checksum sha256:1b40e6e9c3275a7e30de847436613f2bedad858fc5f79c415f39826c119cd685 -->
+# Godpowers Observe State
+
+- [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.observe`.
+- [DECISION] The managed section may be replaced by Godpowers whenever project state changes.
+- [DECISION] Edit project state through Godpowers commands or owning command wrappers rather than editing this managed section.
+- [DECISION] Project: godpowers.
+- [DECISION] Step: Shipping: Observe.
+- [DECISION] Status: `done`.
+- [DECISION] Artifact: `.godpowers/observe/STATE.mdx`.
+- [DECISION] Updated: 2026-07-13T05:12:51.236Z.
+- [DECISION] Notes: Provider-neutral event vocabulary and evidence-derived outcome metrics are locally verified..
+
+## Verification Commands
+
+| Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
+|---|---|---|---|---|---|
+| node scripts/test-outcome-metrics.js | pass | 0 | 2026-07-13T05:12:51.236Z | 100 | Outcome metric evidence and no-data behavior tests passed. |
+| npm test | pass | 0 | 2026-07-13T05:43:11.000Z | 39800 | Event, metrics, cost, reporting, and observability behavior passed in the full suite. |
+
+## Evidence Fields
+
+| Field | Value |
+|---|---|
+| metrics-evidence | lib/outcome-metrics.js derives time, cost, intervention, resume, deployment, and rollback metrics only from recorded events. |
+| no-data-policy | Unavailable production outcomes remain explicitly unavailable. |
+| provider-access | not-required for local release readiness |
+
+<!-- godpowers:state-view:end -->

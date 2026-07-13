@@ -96,6 +96,15 @@ test('context-writer fence includes linkage status when populated', () => {
   if (!content.includes('Coverage: 85%')) throw new Error('coverage missing');
 });
 
+test('context-writer tolerates legacy whole-number linkage coverage', () => {
+  const content = contextWriter.buildCanonicalContent({
+    project: { name: 'legacy-coverage' },
+    linkage: { 'coverage-pct': 100, 'orphan-count': 0, 'drift-count': 0 }
+  });
+  if (!content.includes('Coverage: 100%')) throw new Error('legacy coverage missing');
+  if (content.includes('Coverage: 10000%')) throw new Error('legacy coverage multiplied twice');
+});
+
 test('context-writer fence omits linkage section when zeros', () => {
   const tmp = mkProject();
   const stateData = {

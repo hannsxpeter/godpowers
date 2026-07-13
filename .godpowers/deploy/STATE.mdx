@@ -1,0 +1,32 @@
+<!-- godpowers:state-view:begin -->
+<!-- godpowers:checksum sha256:c27ba42dcb7febe3ac5593f6314606ec7dfc15fdffc48cf6fad9fae5b5c7e65c -->
+# Godpowers Deploy State
+
+- [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.deploy`.
+- [DECISION] The managed section may be replaced by Godpowers whenever project state changes.
+- [DECISION] Edit project state through Godpowers commands or owning command wrappers rather than editing this managed section.
+- [DECISION] Project: godpowers.
+- [DECISION] Step: Shipping: Deploy.
+- [DECISION] Status: `done`.
+- [DECISION] Artifact: `.godpowers/deploy/STATE.mdx`.
+- [DECISION] Updated: 2026-07-13T05:12:51.236Z.
+- [DECISION] Notes: Local and CI-verifiable npm deployment readiness is complete and the 5.3.0 publication path is authorized..
+
+## Verification Commands
+
+| Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
+|---|---|---|---|---|---|
+| npm run pack:check | pass | 0 | 2026-07-13T05:12:51.236Z | 700 | Root npm package contents verified: 577 files. |
+| npm run pack:mcp:check | pass | 0 | 2026-07-13T05:12:51.236Z | 400 | MCP package contents verified: 8 files. |
+| git cat-file -e 'v5.2.0^{commit}' | pass | 0 | 2026-07-13T05:12:51.236Z | 20 | The prior published release tag resolves as the tested rollback reference. |
+
+## Evidence Fields
+
+| Field | Value |
+|---|---|
+| publication-targets | npm root package, npm MCP package, GitHub tag, and GitHub Release assets |
+| rollback-evidence | The v5.2.0 tag resolves locally as the prior release rollback reference. |
+| target-evidence | Root and MCP package allowlists passed against npm pack output. |
+| verified-target-type | authorized-release-candidate |
+
+<!-- godpowers:state-view:end -->

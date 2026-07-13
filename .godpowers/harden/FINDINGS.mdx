@@ -1,0 +1,42 @@
+# Godpowers Security Findings
+
+- [DECISION] Date: 2026-07-13.
+- [DECISION] Reviewer: autonomous product trust hardening run.
+- [DECISION] Scope: installer, host capability detection, Quick Proof, state reconciliation, release checks, package contents, and production dependencies.
+
+## Summary
+
+| Severity | Count |
+|---|---:|
+| Critical | 0 |
+| High | 0 |
+| Medium | 0 |
+| Low | 0 |
+
+- [DECISION] Launch gate: PASSED.
+
+## OWASP Coverage
+
+| Category | Status | Evidence |
+|---|---|---|
+| A01 Broken Access Control | Reviewed | [DECISION] No application authorization surface exists in the package runtime. |
+| A02 Cryptographic Failures | Reviewed | [DECISION] Event integrity uses SHA-256 and no product secrets are stored. |
+| A03 Injection | Reviewed | [DECISION] Shell-sensitive helpers prefer argument-array process execution. |
+| A04 Insecure Design | Reviewed | [DECISION] Level-4 release actions remain user-owned and guarded. |
+| A05 Security Misconfiguration | Reviewed | [DECISION] Host guarantees fail closed without active-session evidence. |
+| A06 Vulnerable Components | Reviewed | [DECISION] `npm audit --omit=dev` is a release check and the core has no production dependency. |
+| A07 Authentication Failures | Reviewed | [DECISION] Authentication is delegated to host and release providers, with no local credential store. |
+| A08 Data Integrity Failures | Reviewed | [DECISION] Checksummed state views, event hash chains, and self-truth checks protect release claims. |
+| A09 Logging Failures | Reviewed | [DECISION] Events, checkpoints, gate results, and sync logs remain inspectable on disk. |
+| A10 SSRF | Reviewed | [DECISION] Core runtime does not expose a server-side URL fetch endpoint. |
+
+## Findings
+
+- [DECISION] No unresolved security finding remains in the reviewed scope.
+- [HYPOTHESIS] External connector writes and publish credentials remain last-mile provider risks controlled by authenticated tooling and explicit user authority.
+
+## Have-Nots Checklist
+
+- [x] [DECISION] Manual code and contract review supplemented automated dependency checks.
+- [x] [DECISION] Every OWASP category has an explicit package-specific disposition.
+- [x] [DECISION] Critical findings count is zero.

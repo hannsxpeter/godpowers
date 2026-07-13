@@ -39,3 +39,21 @@ see_also: []
 ## Gaps
 
 - This pillar is a stub. Ask before making durable auth decisions.
+
+<!-- godpowers:pillar-sync:begin -->
+## Godpowers artifact sources
+
+- Sync mode: auto-applied by yolo.
+- Related artifact: `.godpowers/harden/FINDINGS.mdx`.
+- Rule: keep this pillar aligned when these artifacts change durable auth truth.
+
+## Extracted durable signals
+
+From `.godpowers/harden/FINDINGS.mdx`:
+- [DECISION] Date: 2026-07-13.
+- [DECISION] Reviewer: autonomous product trust hardening run.
+- [DECISION] Scope: installer, host capability detection, Quick Proof, state reconciliation, release checks, package contents, and production dependencies.
+- [DECISION] Launch gate: PASSED.
+- [DECISION] No unresolved security finding remains in the reviewed scope.
+- [HYPOTHESIS] External connector writes and publish credentials remain last-mile provider risks controlled by authenticated tooling and explicit user authority.
+<!-- godpowers:pillar-sync:end -->

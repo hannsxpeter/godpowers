@@ -18,7 +18,7 @@ function mkProject() {
 
 console.log('\n  Host capabilities behavioral tests\n');
 
-test('detect reports full when agent metadata is present', () => {
+test('installed agent metadata does not prove active-session spawning', () => {
   const tmp = mkProject();
   fs.mkdirSync(path.join(tmp, 'home', '.codex', 'agents'), { recursive: true });
   fs.writeFileSync(path.join(tmp, 'home', '.codex', 'agents', 'god-orchestrator.toml'), 'name = "god-orchestrator"\n');
@@ -38,12 +38,45 @@ test('detect reports full when agent metadata is present', () => {
       gaps: ['LSP tools not detected']
     }
   });
-  assert.equal(report.level, 'full');
-  assert.equal(report.guarantees.agentSpawn, true);
+  assert.equal(report.level, 'degraded');
+  assert.equal(report.guarantees.agentSpawn, false);
+  assert.equal(report.installedCapabilities.agentSpawn, true);
+  assert.equal(report.activeSession.hostIdentified, true);
+  assert.equal(report.activeSession.agentSpawnConfirmed, false);
   assert.equal(report.guarantees.mcp.available, false);
   assert.equal(report.guarantees.codeIntelligence.astGrep.command, 'ast-grep');
-  assert(hostCapabilities.summary(report).startsWith('full on codex'));
+  assert(hostCapabilities.summary(report).startsWith('degraded on codex'));
   assert(hostCapabilities.summary(report).includes('MCP not configured'));
+});
+
+test('detect reports full only with identified host and active-session spawn evidence', () => {
+  const tmp = mkProject();
+  const report = hostCapabilities.detect(tmp, {
+    homeDir: path.join(tmp, 'home'),
+    env: { SHELL: '/bin/zsh', CODEX_HOME: path.join(tmp, 'home', '.codex') },
+    agentSpawn: true,
+    agentSpawnEvidence: 'host tool invocation',
+    mcpAvailable: false
+  });
+  assert.equal(report.level, 'full');
+  assert.equal(report.guarantees.agentSpawn, true);
+  assert.equal(report.activeSession.agentSpawnConfirmed, true);
+  assert.equal(report.activeSession.agentSpawnEvidence, 'host tool invocation');
+});
+
+test('unknown active host cannot receive a full guarantee from installed metadata', () => {
+  const tmp = mkProject();
+  const report = hostCapabilities.detect(tmp, {
+    homeDir: path.join(tmp, 'home'),
+    env: { SHELL: '/bin/zsh' },
+    installedAgents: { codex: true, claude: true },
+    mcpAvailable: false
+  });
+  assert.notEqual(report.level, 'full');
+  assert.equal(report.host, 'unknown');
+  assert.equal(report.installedCapabilities.agentSpawn, true);
+  assert(report.gaps.includes('active host not identified'));
+  assert(!hostCapabilities.summary(report).startsWith('full on unknown'));
 });
 
 test('detect reports degraded when shell tools exist but agent spawn is absent', () => {
@@ -54,7 +87,7 @@ test('detect reports degraded when shell tools exist but agent spawn is absent',
     mcpAvailable: false
   });
   assert.equal(report.level, 'degraded');
-  assert(report.gaps.includes('fresh-context agent spawn not detected'));
+  assert(report.gaps.includes('fresh-context agent spawn not confirmed for active session'));
   assert(hostCapabilities.summary(report).includes('MCP not configured'));
 });
 
