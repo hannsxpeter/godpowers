@@ -1,5 +1,5 @@
 ---
-id: CHECKPOINT-2026-07-13T05-45-38-829Z
+id: CHECKPOINT-2026-07-13T05-57-56-723Z
 project: godpowers
 mode: B
 mode-d-suite: false
@@ -10,10 +10,10 @@ progress-pct: 100
 progress-complete: 19
 progress-total: 19
 current-step: 19
-last-action: tier-0.sync done
+last-action: tier-1.prd done
 last-actor: unknown
-last-update: 2026-07-13T05:45:38.829Z
-facts-hash: sha256:d54efdc1fa9376d59da4012f53a4ce0a9ca9befefec370f33814b32cbe8be18a
+last-update: 2026-07-13T05:57:56.723Z
+facts-hash: sha256:0cb4299904d0774aaf76fbb3ce7e3ad9d465b4a07d4811e5920114c58ce2603f
 ---
 # Checkpoint
 
@@ -28,7 +28,7 @@ facts-hash: sha256:d54efdc1fa9376d59da4012f53a4ce0a9ca9befefec370f33814b32cbe8be
 - Lifecycle phase: **steady-state-active**
 - Progress: **100%** (19 of 19 steps complete; current step 19 of 19)
 - Current tier: **tier-3** / **launch**
-- Last action: `tier-0.sync done` by unknown at 2026-07-13T05:45:38.829Z
+- Last action: `tier-1.prd done` by unknown at 2026-07-13T05:57:56.723Z
 
 ## What happened recently
 
@@ -36,12 +36,12 @@ _(no recent actions recorded yet)_
 
 ## What happens next
 
-- gh pr create
-- Open the authorized 5.3.0 release pull request after final diff review.
+- node scripts/run-adoption-canary.js <git-url>
+- Collect the first unaffiliated production-user outcome without weakening the no-data policy.
 
 ## Next suggested command
 
-`gh pr create` - Open the authorized 5.3.0 release pull request after final diff review.
+`node scripts/run-adoption-canary.js <git-url>` - Collect the first unaffiliated production-user outcome without weakening the no-data policy.
 
 ## Last actions (most recent first, max 20)
 
@@ -49,10 +49,10 @@ _(no actions recorded yet)_
 
 ## Held facts (top 10 critical decisions)
 
-- Godpowers 5.3.0 is approved for publication through the identity-bound tag workflow.
-- The final release gate passes with 141 self-project truth checks and 96 expected runtime modules covered.
+- Godpowers 5.3.0 is published on GitHub and npm from merged main commit 9c6efed128b22df6458273c9428d0ceb0a0b0312.
+- Registry integrity matches both GitHub Release tarballs and published root plus MCP executable verification passes.
+- The product score remains 97 out of 100 because production-user and incident rollback evidence is unavailable.
 - All 19 tracked lifecycle steps are complete or not required.
-- Production-user evidence remains unavailable and must not be inferred from local proof.
 
 ## If you are a new session
 
@@ -70,7 +70,7 @@ _(no actions recorded yet)_
 
 ## Provenance
 
-- Generated: 2026-07-13T05:45:38.829Z
+- Generated: 2026-07-13T05:57:56.723Z
 - Schema version: 1.0
 - Authoritative state: `.godpowers/state.json`
 - Authoritative history: `.godpowers/runs/<id>/events.jsonl` + `.godpowers/log`

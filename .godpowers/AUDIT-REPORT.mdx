@@ -17,9 +17,9 @@ Date: 2026-07-13
 | Product integrity and lifecycle truth | 20% | 100 | 20.0 | [DECISION] All 19 required lifecycle steps, 33 requirements, canonical artifacts, hashes, and generated views agree. |
 | Engineering quality | 20% | 97 | 19.4 | [DECISION] The full suite passes with 94.69% line coverage and a 70% per-file floor across all 96 non-browser runtime modules. |
 | Security and supply chain | 15% | 98 | 14.7 | [DECISION] Publication identity is bound to package versions and merged main, external Actions are immutable, npm provenance is required, and the dependency audit is clean. |
-| Release and package readiness | 10% | 98 | 9.8 | [DECISION] Root and MCP package allowlists pass, versions agree at 5.3.0, and the tag workflow fails closed before credentials reach publication. |
+| Release and package readiness | 10% | 98 | 9.8 | [DECISION] Root and MCP packages are published at 5.3.0 with matching registry and GitHub asset integrity, and the tag workflow fails closed before credentials reach publication. |
 | Outcome evidence and adoption | 5% | 86 | 4.3 | [DECISION] Metrics are derived from trace-bound events and unavailable outcomes remain explicit, but production-user evidence does not yet exist. |
-| Overall | 100% | 97 | 97.0 | [DECISION] The source is ready for an authorized 5.3.0 publication. |
+| Overall | 100% | 97 | 97.0 | [DECISION] Version 5.3.0 is published and independently verified. |
 
 ## Verified Evidence
 
@@ -31,6 +31,8 @@ Date: 2026-07-13
 - [DECISION] `npm audit --omit=dev` reports zero vulnerabilities.
 - [DECISION] Root package validation covers 577 files and MCP package validation covers 8 files.
 - [DECISION] Quick Proof, outcome metrics, host capability detection, Pillars synchronization, package identity, and release workflow behavior have dedicated regression tests.
+- [DECISION] GitHub Release `v5.3.0`, npm `godpowers@5.3.0`, and npm `@godpowers/mcp@5.3.0` are published from merged main commit `9c6efed128b22df6458273c9428d0ceb0a0b0312`.
+- [DECISION] Registry integrity values match both GitHub Release tarballs, and published root plus MCP executable verification passes.
 
 ## Closed Gaps
 
@@ -52,4 +54,4 @@ Date: 2026-07-13
 
 ## Recommendation
 
-- [DECISION] Publish 5.3.0 through the protected tag workflow, verify the installed npm artifacts, and preserve the current 97/100 score until real production evidence exists.
+- [DECISION] Preserve the published 5.3.0 controls and the current 97/100 score until real production evidence exists.

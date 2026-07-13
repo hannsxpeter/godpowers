@@ -69,17 +69,17 @@
       "sync": {
         "status": "done",
         "artifact": "SYNC-LOG.mdx",
-        "artifact-hash": "sha256:d52ba6474886d6e937ec4be4aa15558f4e23df40722339aca985c72f996ae57f",
-        "updated": "2026-07-13T05:45:30.000Z",
-        "notes": "Version, surface, state, and release-candidate documentation were synchronized."
+        "artifact-hash": "sha256:c8c11458826463e04d569455dfac45f43ab27b827dee4366caa13de1dc5941fd",
+        "updated": "2026-07-13T05:56:21.000Z",
+        "notes": "Version, surface, state, GitHub Release, npm publication, integrity, and published-install evidence are synchronized."
       }
     },
     "tier-1": {
       "prd": {
         "status": "done",
         "artifact": "prd/PRD.mdx",
-        "artifact-hash": "sha256:905ae94af0a13df0738181d810c76bb1a88f5d2302a7baf7e7a5ac4d6f005dac",
-        "updated": "2026-07-13T05:12:51.236Z",
+        "artifact-hash": "sha256:239990ed2eb267c26d3de744bf318d6260bfd67463fec8e7ccccbc348fc1712c",
+        "updated": "2026-07-13T05:57:20.000Z",
         "notes": "Product trust outcomes and time-bounded acceptance criteria are current."
       },
       "design": {
@@ -102,8 +102,8 @@
       "roadmap": {
         "status": "done",
         "artifact": "roadmap/ROADMAP.mdx",
-        "artifact-hash": "sha256:8faed11109adcb4003efa7234b665e2fadcd268d08597424a5cdc2c6c86b23cd",
-        "updated": "2026-07-13T05:45:00.000Z",
+        "artifact-hash": "sha256:907cfcfb5548bca771053b0d5508cfc268d71ae36ca5b08168fca30eb39d3a0a",
+        "updated": "2026-07-13T05:57:20.000Z",
         "notes": "Roadmap provenance is pinned to current source hashes and version 5.3.0."
       },
       "stack": {
@@ -118,8 +118,8 @@
       "repo": {
         "status": "done",
         "artifact": "repo/AUDIT.mdx",
-        "artifact-hash": "sha256:569d1c8f987114e0871c3bffb055d03a024dba475405473ae2759def026837c7",
-        "updated": "2026-07-13T05:12:51.236Z",
+        "artifact-hash": "sha256:484830ed7f7d838dd5719f684e216127e78f4e519e4b125afb966afa3274d35e",
+        "updated": "2026-07-13T05:57:20.000Z",
         "notes": "Repository structure and public surface claims are synchronized."
       },
       "build": {
@@ -164,7 +164,7 @@
             }
           ]
         },
-        "release-candidate-version": "5.3.0"
+        "release-version": "5.3.0"
       }
     },
     "tier-3": {
@@ -172,8 +172,8 @@
         "status": "done",
         "artifact": "deploy/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T05:12:51.236Z",
-        "notes": "Local and CI-verifiable npm deployment readiness is complete and the 5.3.0 publication path is authorized.",
+        "updated": "2026-07-13T05:55:15.000Z",
+        "notes": "Godpowers 5.3.0 and the MCP companion are published with provenance from merged main and their registry integrity matches the GitHub Release assets.",
         "verification": {
           "commands": [
             {
@@ -199,13 +199,41 @@
               "ranAt": "2026-07-13T05:12:51.236Z",
               "durationMs": 20,
               "diagnostics": "The prior published release tag resolves as the tested rollback reference."
+            },
+            {
+              "command": "gh run view 29227361192",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-07-13T05:54:16.000Z",
+              "diagnostics": "The identity-bound provenance workflow completed successfully for merged main commit 9c6efed128b22df6458273c9428d0ceb0a0b0312."
+            },
+            {
+              "command": "npm view godpowers@5.3.0 version && npm view @godpowers/mcp@5.3.0 version",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-07-13T05:55:15.000Z",
+              "diagnostics": "Both npm packages resolve to 5.3.0 under the latest tag and match the locally packed integrity values."
+            },
+            {
+              "command": "node scripts/verify-published-install.js godpowers@5.3.0",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-07-13T05:55:15.000Z",
+              "diagnostics": "Published Quick Proof, dashboard, next action, Claude install, and Codex install surfaces passed."
+            },
+            {
+              "command": "npx -y -p @godpowers/mcp@5.3.0 godpowers-mcp --help",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-07-13T05:55:15.000Z",
+              "diagnostics": "The published MCP executable resolved and rendered its command surface."
             }
           ]
         },
-        "verified-target-type": "authorized-release-candidate",
-        "target-evidence": "Root and MCP package allowlists passed against npm pack output.",
+        "verified-target-type": "published-npm-release",
+        "target-evidence": "GitHub Release assets and npm registry packages share exact integrity values; published CLI and MCP executable verification passed.",
         "rollback-evidence": "The v5.2.0 tag resolves locally as the prior release rollback reference.",
-        "publication-targets": "npm root package, npm MCP package, GitHub tag, and GitHub Release assets"
+        "publication-targets": "https://github.com/hannsxpeter/godpowers/releases/tag/v5.3.0, npm godpowers@5.3.0, and npm @godpowers/mcp@5.3.0"
       },
       "observe": {
         "status": "done",
@@ -277,8 +305,8 @@
         "status": "done",
         "artifact": "launch/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T05:16:48.669Z",
-        "notes": "The 5.3.0 launch-readiness scope is complete and publication is authorized through the verified tag workflow.",
+        "updated": "2026-07-13T05:55:15.000Z",
+        "notes": "Version 5.3.0 is published on GitHub and npm, registry integrity matches the release assets, and published-install verification passes.",
         "verification": {
           "commands": [
             {
@@ -312,12 +340,26 @@
               "ranAt": "2026-07-13T05:43:11.000Z",
               "durationMs": 41830,
               "diagnostics": "Aggregate coverage, per-file coverage across 96 expected runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed."
+            },
+            {
+              "command": "node scripts/verify-published-install.js godpowers@5.3.0",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-07-13T05:55:15.000Z",
+              "diagnostics": "Published root CLI, Quick Proof, dashboard, next action, Claude install, and Codex install verification passed."
+            },
+            {
+              "command": "npx -y -p @godpowers/mcp@5.3.0 godpowers-mcp --help",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-07-13T05:55:15.000Z",
+              "diagnostics": "The published MCP executable resolved from npm and rendered its help surface."
             }
           ]
         },
-        "launch-scope": "release-publication-approved",
-        "release-candidate-version": "5.3.0",
-        "publication-verification": "required after the tag workflow completes",
+        "launch-scope": "published-release",
+        "release-version": "5.3.0",
+        "publication-verification": "passed for GitHub Release, npm root, npm MCP, published root install, Claude, Codex, and MCP executable",
         "production-user-evidence": "unavailable; repository records zero production users"
       }
     }
