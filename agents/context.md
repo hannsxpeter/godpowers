@@ -15,7 +15,7 @@ see_also: [arch, quality, deploy]
 ## Context
 
 - [DECISION] Godpowers is an AI-powered development system delivered as slash commands and specialist agents inside AI coding tools.
-- [DECISION] The package name is `godpowers`, and the current repository version is `5.3.1`.
+- [DECISION] The package name is `godpowers`, and the current repository version is `5.4.0`.
 - [DECISION] The primary audience is solo founders and small engineering teams using AI coding tools who need accountable production workflow discipline without enterprise process.
 - [DECISION] The product promise is one slash-command arc from idea to hardened, observable, launch-ready software with traceable artifacts on disk.
 - [DECISION] Godpowers uses a pure-skill model where `npx godpowers` installs runtime files and in-tool slash commands perform work.
@@ -36,7 +36,7 @@ see_also: [arch, quality, deploy]
 
 ## Gaps
 
-- [OPEN QUESTION] Which external messy repository should become the first full host-run adoption case study after `5.3.1`? Owner: maintainer. Due: before the next broad product proof claim.
+- [OPEN QUESTION] Which external messy repository should become the first full host-run adoption case study after `5.4.0`? Owner: maintainer. Due: before the next broad product proof claim.
 
 <!-- godpowers:pillar-sync:begin -->
 ## Godpowers artifact sources
@@ -60,9 +60,9 @@ From `.godpowers/prd/PRD.mdx`:
 - [DECISION] For every release candidate, all release-gate checks reach zero failures within the 60-minute verification window before publication, measured by `scripts/run-tests.js` and `npm run release:check`.
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-07-13T07:06:46.000Z`.
-- [DECISION] Source version: `5.3.1`.
-- [DECISION] Source hash `package.json`: `sha256:0333d2042a73c58b586ba1e68b6f046e74372905fa37bada26dbe0a5d9880ed2`.
+- [DECISION] Evidence generated at: `2026-07-13T07:56:59.000Z`.
+- [DECISION] Source version: `5.4.0`.
+- [DECISION] Source hash `package.json`: `sha256:b4408eb0bd0365433a55d2a29b23d45a52874117f7228caa7bbf487123dfa1f5`.
 - [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:239990ed2eb267c26d3de744bf318d6260bfd67463fec8e7ccccbc348fc1712c`.
 - [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:ec90f0ec06d07fbc67c3b5ac22f3ae882a10d714ef230316f75823709e44642b`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:cc9e9227262d9d472fa7806fbafc9a83b8e621728c3652fae1a423a867989ce3`.

@@ -1,6 +1,6 @@
 {
   "name": "@godpowers/mcp",
-  "version": "5.3.1",
+  "version": "5.4.0",
   "description": "Read-only MCP server for Godpowers runtime status, routing, gates, artifact linting, and requirement tracing.",
   "bin": {
     "godpowers-mcp": "./bin/godpowers-mcp.js"

@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.4.0] - 2026-07-13
+
+Godplans 1.1 interoperability release. This release recognizes the complete
+PLAN plus validator contract, enforces its lifecycle before GP execution, and
+preserves the full task and requirement ledger during Godpowers migration.
+
+### Added
+
+- A static, non-executing mirror of the Godplans 1.1 structural validator,
+  with an exact hash pin for the official 1.1.0 validator companion.
+- Lifecycle-aware GP dispatch that blocks planning, closed, invalid,
+  incomplete, unknown-validator, non-executable, and symlinked contracts.
+- Regression coverage for validator identity, companion safety, structural
+  parity, approval states, closed plans, inconsistent lifecycles, executable
+  mode drift, large plans, and eligible task selection.
+
+### Changed
+
+- Godplans migration now treats `.godplans/PLAN.mdx` and
+  `.godplans/validate-plan.sh` as one versioned contract and hashes both files
+  plus validator executable mode for staleness.
+- Complete contracts retain every GP task, `Reuses`, `Verify`, story
+  requirement, domain requirement, phase, status, and wave instead of sampling
+  the first few headings.
+- Legacy or incomplete plans remain readable migration context but stay
+  hypothesis-grade and cannot dispatch GP work.
+- The imported build ledger now uses
+  `.godpowers/prep/IMPORTED-BUILD-STATE.mdx`, leaving the generated build state
+  view under its runtime owner.
+- Planning, migration, preflight, doctor, context, reconciliation,
+  reconstruction, orchestration, route, workflow, template, architecture, and
+  reference documentation now describe the Godplans 1.1 contract.
+
 ## [5.3.1] - 2026-07-13
 
 Godaudits 2.0 interoperability patch. This release makes the canonical JSON
