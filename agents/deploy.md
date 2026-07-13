@@ -22,8 +22,8 @@ see_also: [security, observe]
 - [DECISION] `.github/workflows/publish-pack.yml` runs `npm run release:check` before publishing first-party extension packs.
 - [DECISION] `package.json` exposes `bin.godpowers` at `./bin/install.js`.
 - [DECISION] Manual tarball publish is a fallback only when the tag-triggered workflow cannot run, and provenance is unavailable for that publish.
-- [HYPOTHESIS] Source version `5.5.0` will publish through the identity-bound tag workflow after the release candidate merges to `main`.
-- [HYPOTHESIS] npm `godpowers@5.5.0` and `@godpowers/mcp@5.5.0` will become `latest` only after registry and asset integrity verification passes.
+- [DECISION] Source version `5.5.0` published through identity-bound provenance workflow 29264981272 from merged `main` commit `84fbd00066d2bd833929d6d0b6b769de45275313`.
+- [DECISION] npm `godpowers@5.5.0` and `@godpowers/mcp@5.5.0` are the `latest` versions and their registry integrity values match the locally packed release tarballs.
 - [DECISION] Isolated published-install verification passes for Quick Proof, read-only project inspection, dashboard, next route, Claude, Codex, and the MCP executable.
 - [DECISION] The prior `v5.4.0` tag remains the tested rollback reference.
 

@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:46f79f481daeab0bf68d326b69970e1467271868eb51d3a7570184620548f769 -->
+<!-- godpowers:checksum sha256:ab465c8f5fbbd3b6169205eabc8abfefccdbc09e1c886505f54ef22b436bbf6d -->
 # Godpowers Launch State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.launch`.
@@ -9,19 +9,20 @@
 - [DECISION] Step: Shipping: Launch.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/launch/STATE.mdx`.
-- [DECISION] Updated: 2026-07-13T08:08:49.000Z.
-- [DECISION] Notes: Version 5.4.0 is published on GitHub and npm, registry integrity matches the release assets, and isolated published-install verification passes..
+- [DECISION] Updated: 2026-07-13T16:09:44.000Z.
+- [DECISION] Notes: Version 5.5.0 is published on GitHub and npm, registry integrity matches the release assets, and isolated published-install verification passes..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| npm test | pass | 0 | 2026-07-13T07:59:42.000Z | 44100 | All test commands passed with 94.65% line, 79.28% branch, and 96.93% function coverage. |
-| npm run pack:check | pass | 0 | 2026-07-13T07:59:42.000Z | 700 | Root npm package contents verified: 577 files. |
-| npm run pack:mcp:check | pass | 0 | 2026-07-13T07:59:42.000Z | 400 | MCP package contents verified: 8 files. |
-| npm run release:check | pass | 0 | 2026-07-13T07:59:42.000Z | 45000 | Aggregate coverage, per-file coverage across 96 expected runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed. |
-| node scripts/verify-published-install.js godpowers@5.4.0 | pass | 0 | 2026-07-13T08:08:49.000Z | - | Published root CLI, Quick Proof, read-only project inspection, dashboard, next route, Claude install, and Codex install verification passed from an isolated exact-spec installation. |
-| npx -y -p @godpowers/mcp@5.4.0 godpowers-mcp --help | pass | 0 | 2026-07-13T08:08:49.000Z | - | The published MCP executable resolved from npm and rendered its help surface. |
+| npm test | pass | 0 | 2026-07-13T15:59:58.000Z | 41300 | All test commands passed in 41.3 seconds. |
+| npm run release:check | pass | 0 | 2026-07-13T15:59:58.000Z | 46000 | Official standards, complete tests, 94.64 percent line coverage, 79.26 percent branch coverage, dependency audit, self-project truth, and both package checks passed. |
+| gh run view 29264762305 && gh run view 29264958862 | pass | 0 | 2026-07-13T16:09:44.000Z | - | Pull-request CI and merged-main CI both passed for the 5.5.0 release tree. |
+| gh run view 29264981272 | pass | 0 | 2026-07-13T16:09:44.000Z | - | The provenance publication workflow passed the release and prepublication gates and published both npm packages. |
+| npm view godpowers@5.5.0 version && npm view @godpowers/mcp@5.5.0 version | pass | 0 | 2026-07-13T16:09:44.000Z | - | Both packages are published as 5.5.0 under the latest tag with matching integrity. |
+| node scripts/verify-published-install.js godpowers@5.5.0 | pass | 0 | 2026-07-13T16:09:44.000Z | - | Published root CLI, Quick Proof, read-only project inspection, dashboard, next route, Claude install, and Codex install verification passed from an isolated exact-spec installation. |
+| npx -y -p @godpowers/mcp@5.5.0 godpowers-mcp --help | pass | 0 | 2026-07-13T16:09:44.000Z | - | The published MCP executable resolved from npm and rendered its help surface. |
 
 ## Evidence Fields
 
@@ -29,7 +30,7 @@
 |---|---|
 | launch-scope | published-release |
 | production-user-evidence | unavailable; repository records zero production users |
-| publication-verification | passed for GitHub Release, npm root, npm MCP, isolated published root install, Claude, Codex, and MCP executable |
-| release-version | 5.4.0 |
+| publication-verification | passed for pull-request CI, merged-main CI, GitHub Release, npm root, npm MCP, isolated published root install, Claude, Codex, and MCP executable |
+| release-version | 5.5.0 |
 
 <!-- godpowers:state-view:end -->

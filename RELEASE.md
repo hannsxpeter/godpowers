@@ -1,6 +1,6 @@
 # Godpowers 5.5.0 Release
 
-> Status: Release candidate
+> Status: Published
 > Date: 2026-07-13
 
 - [DECISION] Godpowers 5.5.0 is the Arc-Ready and Pillars conformance release.
@@ -28,15 +28,23 @@
 - [DECISION] The complete release gate passes with 94.64 percent line coverage, 79.26 percent branch coverage, 96.77 percent function coverage, and at least 70 percent line coverage across 98 included runtime modules.
 - [DECISION] The dependency audit reports 0 vulnerabilities and self-project truth passes 141 checks.
 - [DECISION] Package verification records 582 files in `godpowers` and 8 files in `@godpowers/mcp`.
-- [HYPOTHESIS] Pull-request CI and publication evidence will be recorded after the release candidate is merged and published.
+- [DECISION] Pull request 70 passed Node 18, 20, and 22 plus the package release gate before merge commit `84fbd00066d2bd833929d6d0b6b769de45275313` reached `main`.
+- [DECISION] Main CI run 29264958862 passed against the merged release commit.
 
 ## Upgrade
 
-- [DECISION] After publication, install with `npm install -g godpowers@5.5.0` or `npx godpowers@5.5.0`.
+- [DECISION] Install with `npm install -g godpowers@5.5.0` or `npx godpowers@5.5.0`.
 - [DECISION] Existing 5.x projects need no `.godpowers` artifact migration.
 - [DECISION] Re-run the installer for each host runtime so updated skills, specialists, routes, references, and runtime helpers replace installed copies.
 - [DECISION] Repository contributors should treat `agents/` as Pillars context and `specialists/` as portable specialist source contracts.
 
 ## Publication Evidence
 
-- [HYPOTHESIS] Git tag, GitHub Release, asset checksums, npm provenance, and isolated published-install verification are pending the merged release commit.
+- [DECISION] Tag `v5.5.0` resolves to merged `main` commit `84fbd00066d2bd833929d6d0b6b769de45275313`.
+- [DECISION] GitHub Release `v5.5.0` publishes `godpowers-5.5.0.tgz`, `godpowers-mcp-5.5.0.tgz`, and `SHA256SUMS`.
+- [DECISION] The root release asset SHA-256 digest is `d8452cb7e8d862da6609faf1858e50e8e1d4a31147eeb811d53abf61e69a3c2f`.
+- [DECISION] The MCP release asset SHA-256 digest is `afccadc9727398aa666bd5e155af477a258f0aa06428a7aaf53bf5389c4b028e`.
+- [DECISION] Provenance workflow 29264981272 published `godpowers@5.5.0` and `@godpowers/mcp@5.5.0` under the `latest` tag.
+- [DECISION] The root registry integrity is `sha512-matKwEhx+nxl+luBjAnGSPzdef1I19hpxfXmaxGAgRCu54qcGPLZbuMPLhH8/PHYI6FGODUMoeNmG1i2vSvGAA==` and matches the local release tarball.
+- [DECISION] The MCP registry integrity is `sha512-VJbTGQXf8Xlyfm1TXK5fisr7qgZFBFkvliQnZEhhMaTwMhYIazmF8r1330AJYhQ/hOMDff725VWpZGDLdy0Fzg==` and matches the local release tarball.
+- [DECISION] Isolated exact-version verification passes for Quick Proof, read-only project inspection, dashboard, next route, Claude install, Codex install, and the MCP executable.

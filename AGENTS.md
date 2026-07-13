@@ -111,7 +111,7 @@ There is exactly one orchestrator: `god-orchestrator`. It owns writes to
 
 ### Active artifacts
 
-- orchestration: `runs/20260713-arc-pillars-1-1-hardening/ORCHESTRATOR-HANDOFF.mdx`
+- orchestration: `runs/20260713-product-trust-hardening/ORCHESTRATOR-HANDOFF.mdx`
 - preflight: `preflight/PREFLIGHT.mdx`
 - archaeology: `archaeology/REPORT.mdx`
 - tech-debt: `tech-debt/ASSESSMENT.mdx`
