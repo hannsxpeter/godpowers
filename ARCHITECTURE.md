@@ -1,8 +1,8 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v5.3.0 release candidate (self-project truth, active-session host evidence, explicit Quick Proof scope, lifecycle reconciliation, outcome metrics, mdx-first artifacts, and the existing production runtime surface)
+> Status: STABLE v5.3.0 published release (self-project truth, active-session host evidence, explicit Quick Proof scope, lifecycle reconciliation, outcome metrics, mdx-first artifacts, and the existing production runtime surface)
 > Authors: Godpowers Team
-> Last updated: 2026-07-03
+> Last updated: 2026-07-13
 
 This document is the canonical design for Godpowers as a coherent product.
 v4.0.0 preserves the v3.0.0 surface contraction: the omitted installer profile
