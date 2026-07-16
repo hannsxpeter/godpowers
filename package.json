@@ -1,12 +1,15 @@
 {
   "name": "godpowers",
-  "version": "5.7.0",
+  "version": "5.8.0",
   "description": "AI-powered development system: 122 slash commands and 40 specialist agents that take a project from raw idea to hardened production, then run it as an autonomous loop. Runs inside Claude Code, Codex, Cursor, Windsurf, Gemini, and 10+ other AI coding tools.",
   "bin": {
     "godpowers": "./bin/install.js"
   },
   "scripts": {
     "test": "node scripts/run-tests.js",
+    "version:sync": "node scripts/version-sync.js",
+    "version:check": "node scripts/version-sync.js --check",
+    "release:prepare": "node scripts/release-prepare.js",
     "prepublishOnly": "npm run release:check && npm run release:prepublication:check",
     "validate-skills": "node scripts/validate-skills.js",
     "test:surface": "node scripts/test-doc-surface-counts.js",
