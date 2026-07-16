@@ -73,7 +73,8 @@ When using Godpowers in a sensitive context:
 
 | Version | Supported |
 |---------|-----------|
-| 5.8.x   | Yes |
+| 5.9.x   | Yes |
+| 5.8.x   | Security fixes only |
 | 5.7.x   | Security fixes only |
 | 5.6.x   | Security fixes only |
 | 5.5.x   | Security fixes only |

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.9.0] - 2026-07-16
+
+### Added
+
+- A `starter` install profile: the eight-command 80% path for a first project
+  (front door, first-run, help, status, and init to plan to build to ship),
+  below `core`, to lower the onboarding surface. `npx godpowers --claude
+  --profile=starter`.
+
 ## [5.8.0] - 2026-07-16
 
 ### Added
