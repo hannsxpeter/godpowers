@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.6.0] - 2026-07-16
+
+### Added
+
+- HARDEN antipattern "The Compliance Certification Claim": separates the
+  usage-policy gate (is this product allowed) from framework conformance (does
+  the code evidence a regulation's controls), requires compliance to be reported
+  as technical-readiness not certification, and chooses applicable frameworks by
+  where users live and what data is handled (GDPR/CCPA/PIPEDA, WCAG 2.2 AA/AODA/
+  Section 508, SOC 2/ISO 27001, PCI DSS/HIPAA), mirroring godaudits' standards.
+- god-browser-tester opt-in dynamic verification handoff: confirms or refutes
+  godaudits behavioral findings (races and TOCTOU, dead controls, early or
+  out-of-order resource release, non-primary caller-path authorization, runtime
+  consent or accessibility) against the runtime URL, never in production and
+  never without explicit authorization.
+
 ## [5.5.1] - 2026-07-16
 
 ### Changed

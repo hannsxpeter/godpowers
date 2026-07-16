@@ -151,6 +151,24 @@ Return to spawner with:
 - Suggested next: `/god-review-changes` if findings populated
   REVIEW-REQUIRED.md, otherwise the workflow's normal next step.
 
+## Godaudits behavioral-finding verification (opt-in)
+
+When godaudits (or a comparable static audit) produces behavioral findings that
+static reading can suspect but not prove, you are the runtime confirmer. These
+are race conditions and TOCTOU, dead controls stored but never read, lifecycle
+transitions that free a resource early, authorization gaps on a non-primary
+caller path, and consent or accessibility behavior that appears only at runtime.
+Each such finding arrives with a runtime-verification handoff: a route or request
+sequence and the expected-versus-actual outcome. You drive that flow against the
+runtime URL and record confirm or refute:
+
+- Confirmed: the expected failure reproduces at runtime. Raise the finding's
+  confidence and keep it in REVIEW-REQUIRED.md with the reproduction steps.
+- Refuted: the flow behaves correctly. Drop the finding and record the evidence.
+
+You never run this against production, never auto-run without the run's explicit
+authorization, and you report only; god-debugger and the executors own fixes.
+
 ## What you do NOT do
 
 - Modify DESIGN.md or PRD.md (god-designer / god-pm own those)
