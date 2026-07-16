@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.10.0] - 2026-07-16
+
+### Added
+
+- `references/building/API-DESIGN.md`, contract-first API design guidance for
+  systems that expose an API or service surface: one declared API style (REST,
+  GraphQL, or RPC), a consumer-safe versioning strategy, a checked-in
+  machine-readable contract (OpenAPI document or GraphQL schema) kept in sync
+  with the routes, one consistent error envelope (RFC 7807 Problem Details or a
+  documented equivalent), stable pagination, idempotency keys on retryable unsafe
+  operations, and real-time (WebSocket or SSE) connection authentication with
+  per-connection resource bounds. Mirrors godaudits A-ARCH-23 / A-SEC-33 and the
+  godplans R-ARCH-20 plan requirement.
+- `references/building/FIELD-DELIVERY.md`, a forward-deployed engineering
+  mapping: it maps the FDE field skills (requirements gathering, technical
+  scoping, business acumen, product feedback, proving it will not break in
+  production) to the agents and artifacts that already own them, and names the
+  one genuinely distinct mode, customer-site delivery, so a field engagement runs
+  through the ordinary tiers with the customer environment wired in as a
+  constraint rather than a parallel workflow.
+
+### Changed
+
+- `references/building/README.md` indexes the two new references.
+- Public surface counts are unchanged (122 commands, 40 agents, 13 workflows,
+  44 recipes, 100 runtime library modules); this release adds reference content
+  only.
+
 ## [5.9.0] - 2026-07-16
 
 ### Added

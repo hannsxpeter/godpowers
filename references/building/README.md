@@ -10,6 +10,8 @@ Per-tier reference content for Tier 2 (Building: Repo, Build).
 - `PRODUCT-FORM-ROUTER.md`: form-first vertical slices and completion evidence.
 - `DOMAIN-COMPOSITION-REGISTRY.md`: ordered archetype, industry, regulatory, and stack-profile composition.
 - `DOCUMENTATION-PROFILE.md`: derive the required documentation set from product form, scale, risk profile, and regulatory overlays; gate which document drafters run.
+- `API-DESIGN.md`: API style, versioning, machine-readable contract, error envelope, and interaction safety (idempotency, real-time) for API and service surfaces.
+- `FIELD-DELIVERY.md`: forward-deployed engineering, how field skills map to existing tiers and the distinct customer-site delivery mode.
 
 ## Use
 
