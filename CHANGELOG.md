@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.8.0] - 2026-07-16
+
+### Added
+
+- `npm run version:sync` writes the single source of version truth (package.json)
+  into every version surface, the docs, the MCP package and lockfile, the SECURITY
+  supported series, the RELEASE header, and the two self-referential hashes (the
+  roadmap package.json hash and the state roadmap artifact hash). `version:check`
+  verifies without writing and prints the fix command.
+- `npm run release:prepare -- <patch|minor|major|X.Y.Z>` bumps the version, runs
+  version:sync (including the SECURITY roll and both hashes), and stubs a CHANGELOG
+  entry, one command instead of hand-editing ~15 places in lockstep. This release
+  was cut with release:prepare.
+
+### Changed
+
+- Release maintenance is now derive-not-duplicate: the version lives only in
+  package.json and every other surface is generated from it, removing the
+  brittleness of the manual version-and-hash bump.
+
 ## [5.7.0] - 2026-07-16
 
 ### Added
