@@ -1,6 +1,6 @@
 # Users and Community
 
-The current source version is v5.5.1, and the latest published release is v5.5.1.
+The current source version is v5.6.0, and the latest published release is v5.6.0.
 
 ## Track record
 

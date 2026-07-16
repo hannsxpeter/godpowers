@@ -128,3 +128,30 @@ transitions and reject any that release a resource before the entity's
 end or that run out of order, applying the same guard (end time, grace
 period) on manual and automatic paths. Test a flag set on that changes
 behavior and an early-release or illegal transition that is rejected.
+
+## 9. The Compliance Certification Claim
+
+**Sample**: A green code audit or a connected compliance tool is
+presented as SOC 2, ISO 27001, GDPR, or PCI "compliance", or the
+usage-policy gate (is this product allowed) is conflated with framework
+conformance (does the code evidence a regulation's controls).
+
+**Why it fails**: A code audit can evidence technical controls
+(encryption, access control, consent code, DSAR paths, audit logging,
+accessible markup) but not the organizational and process controls
+(policies, training, vendor management, incident response, physical
+security) that certification requires. Claiming certification from code
+evidence is false assurance; conflating the gate with conformance hides
+real gaps.
+
+**Fix**: Map each applicable framework to the code-evidenced controls
+and report it as technical-readiness, never certification. Choose
+applicable frameworks by where users live and what data is handled, not
+only where the business sits: privacy and sovereignty (GDPR, CCPA/CPRA,
+PIPEDA), accessibility (WCAG 2.2 AA, AODA, ADA/Section 508), security
+frameworks (SOC 2, ISO/IEC 27001), and industry standards (PCI DSS,
+HIPAA). Keep the usage-policy gate (is this allowed) separate from
+framework conformance (does the code evidence the controls). Frameworks
+whose regulated surface is absent are marked not-applicable with a
+reason. This mirrors godaudits, which models these frameworks as
+standards mapped to its checks, not as a separate score.
