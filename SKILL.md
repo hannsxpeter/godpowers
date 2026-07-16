@@ -14,7 +14,7 @@ description: |
 license: MIT
 compatibility: "Works with Agent Skills compatible file-system agents. Supported hosts include Claude Code, Codex, Cursor, Windsurf, Gemini, OpenCode, Copilot, Augment, Trae, Cline, Kilo, Antigravity, Qwen, CodeBuddy, and Pi."
 metadata:
-  version: "5.9.0"
+  version: "5.10.0"
   updated: "2026-07-13"
   changelog: "CHANGELOG.md"
   tier: "full-arc"
