@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.5.1] - 2026-07-16
+
+### Changed
+
+- HARDEN antipatterns strengthened with behavioral, correctly-wired-control
+  guidance that a control-presence audit misses:
+  - "Auth Boundary Confusion" now requires authorization parity across every
+    caller path to a privileged operation (session, API key or token, publicly
+    exported function, action-in-query context, agent or tool call), with
+    suspension and step-up enforced at the data or function tier.
+  - "Trusted Input" now requires caller-supplied selectors (id, email, slug,
+    hostname, model output) to be ownership-bound to the authenticated
+    principal before use.
+
+### Added
+
+- HARDEN antipattern "The Unreconciled Money Flow": money flows must reconcile
+  end to end (charge, invoice, settlement, refund, payout or transfer), with
+  provider status confirmed before a record is final and transfers reversed on
+  refund.
+- HARDEN antipattern "The Dead Control or Unlawful Transition": gating flags
+  must be read on the enforcement path and lifecycle transitions must not
+  release a still-committed resource early or out of order.
+
 ## [5.5.0] - 2026-07-13
 
 Arc-Ready and Pillars conformance release. This release makes product shape,
