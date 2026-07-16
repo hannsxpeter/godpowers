@@ -107,6 +107,15 @@ Date: [ISO 8601]
 - Deployment: verified against actual pipeline
 - Troubleshooting: derived from real incidents
 
+### Requirements traceability matrix (documentation-profile gated)
+When `references/building/DOCUMENTATION-PROFILE.md` marks the traceability matrix
+required (funded-product and enterprise scale), write a matrix that links each
+requirement to its design component, its build task or slice, and its verifying
+test, reusing the plan-aware R-id-to-check-to-task tracing. It proves nothing was
+planned but not built, or built but not verified. Every row cites a real file or
+task id, verified against the codebase; a requirement with no build or test row is
+a finding, not a blank cell.
+
 ## Have-Nots
 
 Docs FAIL if:

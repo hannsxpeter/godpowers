@@ -51,6 +51,18 @@ required sections:
 7. **Appetite** (time/resource/technical constraints)
 8. **Open Questions** (with owner and due date)
 
+### Initiation brief (documentation-profile gated)
+
+When `references/building/DOCUMENTATION-PROFILE.md` marks the initiation brief
+required for this form and scale (funded-product with regulated data, or
+enterprise), write `.godpowers/prd/INITIATION-BRIEF.mdx` before the PRD: a project
+charter (problem, objectives, sponsor, high-level scope, timeline, approval), a
+business case (benefits, costs, alternatives considered, justification to start),
+and a stakeholder register with a RACI for major activities. Smaller projects fold
+these into the product brief rather than a separate file; a prototype omits it with
+a recorded reason. Do not draft it because a template exists; draft it because the
+profile requires it.
+
 ## Stable requirement ids
 
 Give every functional requirement a stable id, numbered sequentially within its
