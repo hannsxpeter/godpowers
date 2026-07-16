@@ -9,6 +9,7 @@
 ## Repository Facts
 
 - [DECISION] `lib/install-profiles.js` is the current source for install profile membership.
+- [DECISION] The `starter` profile currently selects 8 skills from the shipped `skills/` directory.
 - [DECISION] The `core` profile currently selects 15 skills from the shipped `skills/` directory.
 - [DECISION] Every core command stays at the high-level workflow boundary.
 - [DECISION] The `builder` profile currently selects 44 skills from the shipped `skills/` directory.
