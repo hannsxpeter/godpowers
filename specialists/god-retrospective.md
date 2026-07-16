@@ -109,6 +109,16 @@ Sprint window: [start] to [end]
 | [Specific change] | [name] | [date] | [observable] |
 ```
 
+## Closeout report (documentation-profile gated)
+
+At milestone or project close, when `references/building/DOCUMENTATION-PROFILE.md`
+marks the closeout required (funded-product with regulated data, or enterprise),
+also write `.godpowers/release/CLOSEOUT.mdx`: delivered-versus-committed scope,
+final unresolved items with owners, handover status, outcomes against the success
+metrics, approvals, and the lessons learned (what worked, what failed, root
+causes, and actions for next time) carried from this retrospective. Smaller
+projects keep the closeout inside the retrospective rather than a separate file.
+
 ## Have-Nots
 
 Retrospective FAILS if:

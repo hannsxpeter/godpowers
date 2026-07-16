@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.7.0] - 2026-07-16
+
+### Added
+
+- `references/building/DOCUMENTATION-PROFILE.md`: a documentation profile that
+  derives the required documentation set from product form, scale, risk profile,
+  and regulatory overlays (a doc-set matrix tagging each document required,
+  recommended, optional, or not-applicable with its reason), and gates which
+  document drafters the orchestrator runs.
+- High-value governance drafters routed through existing agents when the profile
+  requires them: god-pm drafts the initiation brief (charter, business case,
+  stakeholders and RACI), god-docs-writer drafts the requirements-traceability
+  matrix, and god-retrospective drafts the closeout with lessons learned. No new
+  agents or skills, so the public surface is unchanged.
+
 ## [5.6.0] - 2026-07-16
 
 ### Added

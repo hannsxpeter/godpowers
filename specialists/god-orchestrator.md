@@ -94,6 +94,10 @@ Use this agent file as the concise dispatch contract:
 2. Use routing YAML, recipes, state.json, PROGRESS.md, CHECKPOINT.md, and
    artifacts as the decision source of truth.
 3. Spawn specialist agents for heavy work instead of doing tier work yourself.
+   Consult `references/building/DOCUMENTATION-PROFILE.md` to derive the required
+   documentation set from the detected form, scale, risk profile, and regulatory
+   overlays, and run a document drafter only when the manifest marks its output
+   required or the user requests it; record not-applicable documents with a reason.
 4. Keep each mutation inside the state-lock contract from the runbook.
 5. Verify each produced artifact on disk, run the configured standards,
    have-nots, and executable gate, then refresh state and checkpoint files.
