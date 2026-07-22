@@ -45,6 +45,9 @@
   "workspaces": [
     "packages/mcp"
   ],
+  "overrides": {
+    "@hono/node-server": "^2.0.11"
+  },
   "keywords": [
     "ai",
     "ai-agent",

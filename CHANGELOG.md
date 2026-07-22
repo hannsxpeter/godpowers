@@ -50,6 +50,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `skills/god-party.md` states the boundary against divergence: party personas
   evaluate an existing candidate, divergence branches generate candidates.
 
+### Security
+
+- Dependency tree goes from 6 advisories (2 high, 3 moderate, 1 low) to 0.
+  `npm audit --omit=dev` gates `test:audit` and therefore `release:check`, and
+  it was failing. Godpowers itself declares no runtime dependencies; every
+  advisory arrived transitively through `@godpowers/mcp` and
+  `@modelcontextprotocol/sdk`. A plain `npm audit fix` cleared fast-uri (high,
+  host confusion, via ajv), brace-expansion (high, ReDoS, via c8), body-parser
+  (via express), and hono, which moved to 4.12.31.
+- `@hono/node-server` path traversal in `serve-static` on Windows
+  (GHSA-frvp-7c67-39w9, patched in 2.0.5) was left unresolved because
+  `@modelcontextprotocol/sdk@1.29.0` pins `^1.19.9`, and npm's suggested fix was
+  a semver-major downgrade of the SDK to 1.24.3. Resolved instead with an
+  `overrides` entry pinning `@hono/node-server` to `^2.0.11`, which keeps the
+  SDK current. The override is safe here for two independent reasons: 2.0.11
+  satisfies the SDK's only peer requirement (`hono ^4`, resolved at 4.12.31) and
+  its Node floor of 20, and `packages/mcp/lib/server.js` uses
+  `StdioServerTransport` exclusively, so no HTTP adapter or static-file
+  middleware is ever loaded. `npm run test:mcp` passes against the overridden
+  tree. Remove the override once the SDK raises its own pin.
+
 ## [5.10.0] - 2026-07-16
 
 ### Added
