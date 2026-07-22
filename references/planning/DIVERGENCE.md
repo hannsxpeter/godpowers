@@ -196,6 +196,35 @@ This pass has gone wrong if:
 - The pass fired on a cheap-to-reverse decision, or under `--yolo`.
 - The novelty of a candidate was used as a reason to prefer it.
 
+### Anchoring tells in a single-context table
+
+When the fan-out is skipped or degrades to one context (see Host gate), the
+convergence step is anchored on the answer it already chose. That anchoring
+leaves a signature. Re-read your own `## Options Considered` table and treat any
+of these as a sign the table was written to justify a decision already made,
+not to test it:
+
+- **The baseline is scored high with an empty trap column and a wide moat.** A
+  selected row at 9 with the next shape at 5 or 6 and no hidden cost named is
+  rarely the world; it is usually the author flattering the choice. A real
+  winner still has a trap flag naming what it gives up.
+- **Two rows are one shape wearing two hats.** "Selected" and "status quo
+  baseline" that differ only by a trivial detail, or two candidates whose
+  labels are surface synonyms, are padding. Merge them and the pool is smaller
+  than it looked.
+- **The errors all flatter the chosen row.** Rejection reasons that overstate a
+  rival's cost, or claims that a rival feature is absent when a grep would find
+  it, point one direction. Isolated generation tends to err against the options
+  it rejected; anchored generation errs in favor of the one it kept. Check the
+  reasons against the tree with Grep before trusting them.
+- **The selected row carries no self-criticism.** The strongest tables put a
+  real, verified defect on their own winning row. A winner with nothing said
+  against it was not stress-tested.
+
+These are the same tells whether a human, a single-context run, or a degraded
+host produced the table. They are cheap to check and worth checking on every
+hard-to-reverse decision.
+
 ## Provenance
 
 Godpowers-authored. The framing of isolated generation before the critic runs
