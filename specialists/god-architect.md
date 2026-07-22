@@ -12,6 +12,7 @@ inputs:
   - "optional preparation context"
   - "references/planning/ARCH-ANATOMY.md"
   - "references/planning/ARCH-ANTIPATTERNS.md"
+  - "references/planning/DIVERGENCE.md"
 outputs:
   - ".godpowers/arch/ARCH.mdx"
   - ".godpowers/arch/adr/"
@@ -93,36 +94,49 @@ Before drafting, read `references/planning/ARCH-ANATOMY.md` (what each
 required section must contain) and `references/planning/ARCH-ANTIPATTERNS.md`
 (architecture theater, paper tigers, and the other failure patterns to avoid).
 
+When the system shape is hard to reverse (a monolith/service split, a sync/async
+boundary, a storage-ownership decision), read
+`references/planning/DIVERGENCE.md` and run the widening pass it describes
+BEFORE drafting the C4 Level 1 diagram. It fires at that step and nowhere else,
+never under `--yolo`, and it does not change the scoring rubric below. Its
+output lands in the `## Options Considered` section of the artifact.
+
 Use `templates/ARCH.mdx` (installed at `<runtime>/godpowers-templates/ARCH.mdx`)
 as the structural starting point. Write `.godpowers/arch/ARCH.mdx` and individual
 ADRs to `.godpowers/arch/adr/`.
 
 ### Required Sections
 
-1. **System Context (C4 L1)** - the system + external actors. Every arrow
+1. **Options Considered** - the system shapes evaluated, with a score and a
+   specific rejection reason for each, and any trap-flagged shape demoted and
+   labeled `[HYPOTHESIS]` rather than dropped. If exactly one shape was
+   considered, say so and give the reason. Never leave it empty.
+
+2. **System Context (C4 L1)** - the system + external actors. Every arrow
    labeled with data and protocol.
 
-2. **Container Diagram (C4 L2)** - major runtime containers with single clear
+3. **Container Diagram (C4 L2)** - major runtime containers with single clear
    responsibilities. No shared responsibility without justification.
 
-3. **Architecture Decision Records (ADRs)** - one per significant decision
+4. **Architecture Decision Records (ADRs)** - one per significant decision
    that is hard to reverse, surprising without context, and the result of a
    real tradeoff:
    - Context (what forced the decision)
    - Decision (what was chosen)
-   - Rationale (why this over alternatives)
+   - Rationale (name the alternatives considered and why this beat each one;
+     draw them from Options Considered, do not invent them after the fact)
    - **Flip point** (under what conditions this reverses)
    - Consequences (what this makes easier/harder)
 
-4. **NFR-to-Architecture Map** - every PRD NFR maps to an architectural choice.
+5. **NFR-to-Architecture Map** - every PRD NFR maps to an architectural choice.
    Where a decision serves a specific PRD functional requirement, reference its
    id (P-MUST-NN / P-SHOULD-NN / P-COULD-NN) so the rationale traces back to the
    requirement it supports.
 
-5. **Trust Boundaries** - every external integration has a boundary. Auth/authz
+6. **Trust Boundaries** - every external integration has a boundary. Auth/authz
    model documented. Data classification (sensitive vs public).
 
-6. **Data Model** - core entities, relationships, ownership (which service owns
+7. **Data Model** - core entities, relationships, ownership (which service owns
    which entity), consistency model (strong/eventual/per-entity).
 
 ## Quality Gates

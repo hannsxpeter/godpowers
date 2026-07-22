@@ -11,6 +11,7 @@ inputs:
   - "bug report"
   - "failing command evidence"
   - "codebase and recent commits"
+  - "references/planning/DIVERGENCE.md"
 outputs:
   - "regression test"
   - "minimal fix"
@@ -75,7 +76,21 @@ proves that more observation is needed.
 
 ## Phase 4: Hypothesize
 
-Based on observations, list 2-3 most likely root causes:
+Based on observations, list 2-3 most likely root causes.
+
+On the FIRST pass through this phase, generate them directly. Do not widen: the
+instrumentation from Phase 3 is usually decisive, and widening early costs time
+for nothing.
+
+Widen the hypothesis set using `references/planning/DIVERGENCE.md` only when one
+of these is true:
+- You arrived here from Phase 5 with all hypotheses refuted (the restart path).
+- Phase 3 instrumentation did not narrow the failure boundary.
+
+Both mean the same thing: the hypotheses came from the same context that chose
+the instrumentation, and that context is anchored. Record the discarded
+candidates with the one-line reason each was discarded; do not silently drop
+them.
 
 For each hypothesis:
 - What would cause this exact symptom?

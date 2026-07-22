@@ -10,6 +10,16 @@
 - [DECISION] The movement engine container normalizes subscription deltas into new, expansion, contraction, and churn buckets.
 - [DECISION] The dashboard container renders bucket totals and account drill-down tables.
 
+## Options Considered
+
+| Shape | Score | Why rejected | Trap flag |
+|-------|-------|--------------|-----------|
+| Local web app over an exported JSON file (baseline) | 8.8 | [DECISION] Chosen, because the gate fixture must stay deterministic and run without network credentials. | |
+| Live Stripe OAuth with a hosted sync worker | 5.1 | [DECISION] Rejected, because it makes every example run depend on a third-party credential and a network round trip. | |
+| Stripe webhook receiver with a persistent event store | 4.6 | [DECISION] Rejected, because the founder review flow reads a weekly snapshot, so streaming ingestion buys nothing the batch import does not already provide. | [HYPOTHESIS] Hidden cost: a webhook receiver must be publicly reachable and replay-safe, which is more operational surface than a weekly review workflow justifies. |
+
+[DECISION] Options are scored against the NFR map below, and novelty is not a scoring axis.
+
 ## NFR-to-Architecture Map
 
 | NFR | Architectural choice |

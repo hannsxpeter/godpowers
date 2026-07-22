@@ -22,6 +22,16 @@ Single-binary CLI. No external services. Reads stdin or file; writes formatted r
 | `parser` | Detect CI format, locate FAILED step | Go (regex + state machine) |
 | `formatter` | Render focused report with context | Go (no external lib) |
 
+## Options Considered
+
+| Shape | Score | Why rejected | Trap flag |
+|-------|-------|--------------|-----------|
+| Single static binary (baseline) | 9.1 | Chosen. Meets the zero-runtime-dependency requirement with one cross-compile command. | |
+| Shell script wrapping grep and awk | 6.4 | Rejected. PRD requires identical behavior on macOS and Linux, and BSD awk diverges from GNU awk on the parsing this needs. | |
+| Language-server-style daemon with a thin client | 4.2 | Rejected. A daemon adds lifecycle, port, and stale-state failure modes to a tool that runs once per CI job and exits. | [HYPOTHESIS] Hidden cost: the daemon looks faster on repeat runs, but CI containers start cold every time, so the cache never warms. |
+
+Scored against the NFR map below. Novelty is not a scoring axis.
+
 ## Architecture Decision Records
 
 ### ADR-001: Go for the implementation

@@ -26,7 +26,9 @@ Pre-init Socratic ideation. Use this when you're not sure what to build yet.
    - Ask Socratic questions (not "tell me more"; specific probes)
    - Surface hidden assumptions
    - Identify the core problem (vs the proposed solution)
-   - List 2-3 alternative framings
+   - Widen the framing pool per `references/planning/DIVERGENCE.md`, keeping the
+     user's own framing as a labeled baseline, then label the clusters. The
+     framings are the cluster labels, not three slots filled by rule.
    - Suggest which framing is strongest with rationale
 3. Output: a clarified problem statement ready for /god-init -> /god-prd
 

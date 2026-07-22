@@ -19,7 +19,10 @@ Spawn the **god-architect** agent in a fresh context via the host platform's nat
    include it as input. Design is optional, but when present it informs UI
    containers, routes, flows, and tradeoffs.
 4. Spawn god-architect with the PRD path and full context window
-5. The agent writes `.godpowers/arch/ARCH.mdx` and ADRs to `.godpowers/arch/adr/`
+5. When the system shape is hard to reverse and `--yolo` is not set, the agent
+   runs the gated widening pass in `references/planning/DIVERGENCE.md` before
+   drafting C4 Level 1, and records the result in `## Options Considered`
+6. The agent writes `.godpowers/arch/ARCH.mdx` and ADRs to `.godpowers/arch/adr/`
 
 ## Verification
 

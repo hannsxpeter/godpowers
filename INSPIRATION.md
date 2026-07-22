@@ -41,6 +41,14 @@ Beyond what was inherited, godpowers added:
   authoring, host capability, and Mode D suite release dry-run behavior
 - **Autonomous repo documentation and surface sync** for badges, route
   metadata, recipes, package payloads, release gates, and extension packs
+- **Divergence before convergence** (`references/planning/DIVERGENCE.md`), a
+  godpowers-authored widening pass that produces the alternatives the Tier 1
+  antipattern catalogs already assume were considered. The framing of isolated
+  candidate generation ahead of the critic was influenced by the ADHD skill by
+  Udit Akhouri ([github.com/uditakhourii/adhd](https://github.com/uditakhourii/adhd),
+  MIT). No code, prose, or lens text is vendored, there is no runtime
+  dependency, and godpowers asserts nothing about its internals or published
+  results. The lenses are inverted from godpowers' own antipattern catalogs.
 
 ## Why this is the only mention
 

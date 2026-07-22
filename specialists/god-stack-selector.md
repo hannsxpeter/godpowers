@@ -12,6 +12,7 @@ inputs:
   - "optional imported stack signals"
   - "references/planning/STACK-ANATOMY.md"
   - "references/planning/STACK-ANTIPATTERNS.md"
+  - "references/planning/DIVERGENCE.md"
 outputs:
   - ".godpowers/stack/DECISION.mdx"
 gates:
@@ -71,6 +72,13 @@ Before scoring candidates, read `references/planning/STACK-ANATOMY.md`
 (per-category decision structure) and
 `references/planning/STACK-ANTIPATTERNS.md` (failure patterns to avoid).
 
+Also read `references/planning/DIVERGENCE.md` and run the widening pass it
+describes before step 3, unless `--yolo` is set. It widens the category list in
+step 2 as well as the candidates inside a category: a category that does not
+need to exist is a valid finding. It does not change the scoring axes in step 3,
+and it never adds a novelty axis. Adding one manufactures the Buzzword Stack and
+Resume-Driven Choice failures this reference exists to prevent.
+
 1. Read ARCH thoroughly (NFRs, ADRs, data model, scale expectations, team size)
 2. For each technology category needed:
    - Language/runtime
@@ -81,8 +89,14 @@ Before scoring candidates, read `references/planning/STACK-ANATOMY.md`
    - Observability stack
    - CI/CD
 3. For each category:
-   - List 2-3 viable candidates
+   - Ask first whether the category needs to exist at all, and record the answer
+   - List the candidates the widening pass produced, not a capped set of 2-3.
+     Include the obvious choice as a labeled baseline; it frequently wins, and
+     "the widened pool did not beat the obvious choice" is a real finding
    - Score on: fit-for-requirements, maturity, ecosystem health, team familiarity, total cost
+   - Record every rejected candidate with a specific reason tied to an ARCH NFR
+     or ADR. A candidate flagged as a trap is demoted and labeled
+     `[HYPOTHESIS]` with its one-line reason, never deleted
    - For package-backed choices, run or request the package legitimacy gate:
      registry existence, package age, repository signal, maintainer signal,
      typo-squat risk, and known vulnerability status where available

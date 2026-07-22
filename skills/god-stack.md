@@ -23,7 +23,10 @@ Spawn the **god-stack-selector** agent in a fresh context via the host platform'
 4. Verify current regulatory obligations and provider capabilities before
    making a freshness-sensitive commitment.
 5. Spawn god-stack-selector with the ARCH path and ordered product route.
-6. The agent writes `.godpowers/stack/DECISION.mdx`.
+6. Unless `--yolo` is set, the agent runs the gated widening pass in
+   `references/planning/DIVERGENCE.md` before scoring, which widens the category
+   list as well as the candidates inside each category.
+7. The agent writes `.godpowers/stack/DECISION.mdx`.
 
 ## Verification
 

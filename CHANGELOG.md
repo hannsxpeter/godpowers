@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `references/planning/DIVERGENCE.md`, a gated widening pass that produces the
+  alternatives the Tier 1 antipattern catalogs already assume were considered.
+  Every antipattern file in `references/planning/` detects a bad choice after it
+  is on disk; nothing produced the rejected alternative. The pass fires only on
+  hard-to-reverse Tier 1 decisions, never under `--yolo`, never on closed
+  phrasing, and never on cheap-to-reverse work. It spawns 4 isolated branches in
+  one wave, each receiving the problem statement, one lens, and one named
+  artifact excerpt (never the session context), with `Read, Grep, Glob` and a
+  generator-only posture. The 8 lenses are inverted from godpowers' own
+  antipattern catalogs. Three rules are load-bearing: the obvious answer is
+  seeded as a labeled baseline and can win, the calling specialist's scoring
+  rubric is never modified and never gains a novelty axis, and trap-flagged
+  candidates are demoted with a reason and labeled `[HYPOTHESIS]` rather than
+  deleted. When `lib/host-capabilities` reports that fresh-context agent spawn
+  is unavailable, the pass degrades to one labeled single-context run and
+  records an `[OPEN QUESTION]` in the artifact rather than simulating isolation.
+
+### Changed
+
+- `templates/ARCH.mdx` gains a required `## Options Considered` table (shape,
+  score, rejection reason, trap flag) so the widened pool has a landing site in
+  the artifact. `specialists/god-architect.md` promotes it to required section 1
+  and now requires ADR Rationale to name the alternatives it beat rather than
+  gesture at them.
+- `templates/STACK-DECISION.mdx` adds a per-category "Does this category need to
+  exist?" line and a "Rejected, with reason" line, and removes the implied cap
+  of three candidates. `specialists/god-stack-selector.md` step 3 no longer caps
+  the pool at 2-3 and now widens the category list itself.
+- `specialists/god-explorer.md` Phase 3 produces cluster-labeled framings from a
+  widened pool instead of three slots filled by rule, keeps the user's own
+  framing as an explicitly labeled baseline, and moves pro/con evaluation into
+  Phase 4 where the critic belongs.
+- `specialists/god-debugger.md` Phase 4 widens the hypothesis set only on the
+  restart path or when instrumentation failed to narrow the failure boundary,
+  and records discarded candidates with a reason.
+- `skills/god-debug.md` corrected from "4-phase" to "6-phase"; the specialist
+  has run Observe, Minimize, Instrument, Hypothesize, Test, Conclude for
+  several releases.
+- `skills/god-party.md` states the boundary against divergence: party personas
+  evaluate an existing candidate, divergence branches generate candidates.
+
 ## [5.10.0] - 2026-07-16
 
 ### Added

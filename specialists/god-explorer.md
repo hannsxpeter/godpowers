@@ -11,6 +11,7 @@ inputs:
   - "free-form user intent"
   - "optional existing artifacts"
   - "optional domain glossary"
+  - "references/planning/DIVERGENCE.md"
 outputs:
   - ".godpowers/explore/<slug>.mdx"
   - ".godpowers/discussions/<topic>.mdx"
@@ -78,25 +79,42 @@ Challenge domain language:
   `.godpowers/domain/GLOSSARY.mdx` as they are resolved.
 
 ### Phase 3: Reframe
-Present 2-3 alternative framings of the same problem:
+
+Read `references/planning/DIVERGENCE.md` and run the widening pass it describes,
+then label the clusters it produces. The framings are the cluster labels. Do not
+fill three slots by rule and do not attach pro/con here; evaluating while
+generating is how the pool collapses to one idea with variations.
+
+Two rules:
+- The user's own framing is preserved as an explicitly labeled baseline. It is
+  excluded from generation and included in evaluation. It often wins, and
+  saying so is a real finding.
+- Name each framing by its underlying angle, not by surface keywords. "This is
+  a workflow problem, not a tools problem" is an angle. "The web-app option" is
+  a keyword.
 
 ```
-Framing A: [The user's original framing]
-- Pro: [Why this might be right]
-- Con: [What's risky about it]
+Baseline: [The user's original framing, restated in one line]
 
-Framing B: [A different lens, e.g., "this is actually a workflow problem,
-not a tools problem"]
-- Pro: ...
-- Con: ...
+Framing A: [Cluster label, i.e. the angle these candidates share]
+- [Candidate]
+- [Candidate]
 
-Framing C: [A narrower scope, e.g., "what if you only solve this for X first?"]
-- Pro: ...
-- Con: ...
+Framing B: [Cluster label]
+- [Candidate]
+- [Candidate]
+
+Framing C: [Cluster label]
+- [Candidate]
 ```
+
+Aim for 3 to 5 clusters. If a fourth lens would produce candidates sharing an
+assumption with the ones you have, stop; the space is mapped.
 
 ### Phase 4: Recommend
-Based on the conversation:
+Evaluate the framings from Phase 3 here, where the critic belongs. For each
+framing including the baseline, give the strongest reason for it and the
+load-bearing risk against it. Then:
 - Which framing has the strongest signal?
 - What's the single most important question to answer next?
 - What can be deferred until V2?
@@ -133,7 +151,8 @@ Date: [timestamp]
 - [OPEN QUESTION] [Ambiguity]. Owner: [name]. Due: [date].
 
 ## Alternative framings considered
-[Framings A, B, C with pros/cons]
+[Baseline plus the cluster-labeled framings from Phase 3, each with the
+strongest reason for it and the load-bearing risk against it]
 
 ## Recommended framing
 [The strongest one, with rationale]

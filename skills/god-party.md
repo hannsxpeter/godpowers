@@ -19,6 +19,12 @@ Get multiple specialist perspectives on a single question.
 - Trade-off analysis (security vs UX, performance vs cost)
 - Stakeholder simulation before a real meeting
 
+Not the same as widening a candidate pool. `/god-party` evaluates a candidate
+that already exists, from several specialist angles. To generate the candidates
+in the first place, the Tier 1 specialists use
+`references/planning/DIVERGENCE.md`. Party personas are critics by contract;
+divergence branches are generators by contract.
+
 ## Process
 
 1. Ask the user for the topic/question
