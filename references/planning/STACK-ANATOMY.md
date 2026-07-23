@@ -7,8 +7,12 @@ For each technology category:
 ```
 ### [Category]: [Chosen Technology]
 
-**Candidates**: A, B, C
+**Does this category need to exist?**: Yes, because [ARCH NFR or ADR], or no;
+folded into [other category] at [specific cost].
+**Candidates**: Baseline A, B, C, [every candidate actually considered]
 **Scores**: A 9.2 / B 7.8 / C 6.5
+**Rejected, with reason**: B: [specific ARCH NFR or ADR mismatch]. C:
+[HYPOTHESIS] Trap: [hidden cost; demoted, not deleted].
 **Why this one**: [specific to ARCH NFRs]
 **Flip point**: [condition under which we reverse]
 **Lock-in cost**: Low / Medium / High
@@ -19,8 +23,14 @@ For each technology category:
 
 ### Language: TypeScript
 
-**Candidates**: TypeScript, Python, Go
+**Does this category need to exist?**: Yes, because the application and build
+artifacts require an executable runtime.
+**Candidates**: Baseline TypeScript, Python, Go
 **Scores**: TS 9.2 / Python 7.8 / Go 7.1
+
+**Rejected, with reason**: Python duplicates the React type model across the API
+boundary. Go gives up the team's TypeScript familiarity without an ARCH latency
+requirement that needs it.
 
 **Why TypeScript**:
 - Frontend is React (TS already in stack)

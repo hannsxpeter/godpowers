@@ -1,5 +1,16 @@
 # System Architecture
 
+## Options Considered
+
+| Shape | Score | Why rejected | Trap flag |
+|-------|-------|--------------|-----------|
+| Single static binary (baseline) | 8.4 | Chosen. Meets the zero-runtime-dependency and portability NFRs with one cross-compile command. | [HYPOTHESIS] Hidden cost: each release must build and verify separate macOS and Linux artifacts for amd64 and arm64. |
+| Shell script wrapping grep and awk | 7.2 | Rejected. The portability NFR requires identical behavior on macOS and Linux, and BSD awk diverges from GNU awk on the parsing this needs. | |
+| Language-server-style daemon with a thin client | 4.9 | Rejected. The zero-runtime-dependency NFR and V1 CLI scope do not permit a resident service with lifecycle, port, and stale-state failure modes. | [HYPOTHESIS] Hidden cost: the daemon looks faster on repeat runs, but CI containers start cold every time, so the cache never warms. |
+
+Scores include trap demotion and use the NFR map below. Novelty is not a
+scoring axis.
+
 ## System Context (C4 Level 1)
 
 ```
@@ -22,36 +33,26 @@ Single-binary CLI. No external services. Reads stdin or file; writes formatted r
 | `parser` | Detect CI format, locate FAILED step | Go (regex + state machine) |
 | `formatter` | Render focused report with context | Go (no external lib) |
 
-## Options Considered
-
-| Shape | Score | Why rejected | Trap flag |
-|-------|-------|--------------|-----------|
-| Single static binary (baseline) | 9.1 | Chosen. Meets the zero-runtime-dependency requirement with one cross-compile command. | |
-| Shell script wrapping grep and awk | 6.4 | Rejected. PRD requires identical behavior on macOS and Linux, and BSD awk diverges from GNU awk on the parsing this needs. | |
-| Language-server-style daemon with a thin client | 4.2 | Rejected. A daemon adds lifecycle, port, and stale-state failure modes to a tool that runs once per CI job and exits. | [HYPOTHESIS] Hidden cost: the daemon looks faster on repeat runs, but CI containers start cold every time, so the cache never warms. |
-
-Scored against the NFR map below. Novelty is not a scoring axis.
-
 ## Architecture Decision Records
 
 ### ADR-001: Go for the implementation
 - **Context**: PRD requires static binary, zero runtime deps, multi-platform.
 - **Decision**: Go 1.23 with cross-compilation.
-- **Rationale**: Single command produces static binaries for macOS/Linux/amd64/arm64. Standard library covers regex and CLI parsing.
+- **Rationale**: A Go static binary beats the shell-script shape because it behaves identically on BSD and GNU userlands, and it beats the daemon shape because it needs no resident process. The standard library covers regex and CLI parsing.
 - **Flip point**: If we need WebAssembly distribution or per-platform performance optimization, reconsider Rust.
 - **Consequences**: Smaller binaries than Rust+tokio; mature CI tooling; standard library covers needs.
 
 ### ADR-002: Auto-detection over explicit format flags
 - **Context**: Three CI log formats (GitHub Actions, Jenkins, Drone) have distinct markers.
 - **Decision**: Sniff the first 100 lines for format markers; fall back to "unknown" with generic FAIL pattern matching.
-- **Rationale**: Engineers do not want to specify `--format=jenkins`; tools that "just work" win.
+- **Rationale**: Auto-detection beats mandatory `--format` flags because the acceptance flow requires direct file and stdin use without format setup. An explicit override remains the flip point if detection accuracy falls.
 - **Flip point**: When sniffing accuracy drops below 90%, expose a `--format` override.
 - **Consequences**: Slightly more startup cost; better UX.
 
 ### ADR-003: Streaming parser, not full file load
 - **Context**: PRD NFR requires processing 10MB logs in 500ms.
 - **Decision**: Line-by-line scanning with bounded ring buffer for context lines.
-- **Rationale**: 10MB loaded into memory is fine but streaming generalizes to larger inputs.
+- **Rationale**: Streaming beats full-file loading because it keeps memory bounded while meeting the 10MB latency NFR. Full-file loading is simpler but gives up that bound without improving the required output.
 - **Flip point**: Never; streaming is strictly superior here.
 - **Consequences**: Memory footprint independent of input size.
 

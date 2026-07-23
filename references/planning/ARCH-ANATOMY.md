@@ -3,7 +3,16 @@
 > What a strong architecture document looks like. Every decision has a
 > flip point. Every NFR maps to a choice.
 
-## 1. System Context (C4 Level 1)
+## 1. Options Considered
+
+Record the system shapes evaluated before choosing the context and containers.
+Seed the obvious shape as a labeled baseline and allow it to win. Give every
+rejected shape a specific reason tied to a PRD NFR or ADR. Keep trap-flagged
+shapes in the table as `[HYPOTHESIS]`, with their scores demoted for the hidden
+cost. Name a real tradeoff on the selected shape so the table does not flatter
+its own choice. Novelty is not a scoring axis.
+
+## 2. System Context (C4 Level 1)
 
 A diagram showing the system + external actors and systems.
 
@@ -16,7 +25,7 @@ A diagram showing the system + external actors and systems.
 [MRR Tracker] --HTTPS--> [Stripe API]
 ```
 
-## 2. Container Diagram (C4 Level 2)
+## 3. Container Diagram (C4 Level 2)
 
 Major runtime containers with single responsibilities.
 
@@ -41,7 +50,7 @@ Major runtime containers with single responsibilities.
 | Worker | Async Stripe sync, daily digests |
 | Stripe Sync Job | Pull Stripe events, compute MRR breakdown |
 
-## 3. Architecture Decision Records (ADRs)
+## 4. Architecture Decision Records (ADRs)
 
 For each load-bearing decision:
 
@@ -81,7 +90,7 @@ metrics with arbitrary schemas), revisit.
 - Easier: migrations, complex aggregations, integrity
 - Harder: schema-less data (we'd have to use JSONB columns)
 
-## 4. NFR-to-Architecture Map
+## 5. NFR-to-Architecture Map
 
 Every NFR from the PRD MUST appear here.
 
@@ -95,7 +104,7 @@ Every NFR from the PRD MUST appear here.
 
 If an NFR has no row here: that's a have-not failure (A-03).
 
-## 5. Trust Boundaries
+## 6. Trust Boundaries
 
 ```
 [User Browser] (untrusted)
@@ -114,7 +123,7 @@ For each boundary:
 - Data classification: what flows across (sensitive vs public)
 - Failure mode: what happens if the boundary is breached
 
-## 6. Data Model
+## 7. Data Model
 
 ```
 User (1) -- (N) StripeAccount
@@ -128,7 +137,7 @@ MRRSnapshot {date, mrr, new_mrr, expansion_mrr, churn_mrr, contraction_mrr}
 | StripeAccount | API Server | Strong |
 | MRRSnapshot | Worker writes, API reads | Eventually consistent (sync lag <1h) |
 
-## 7. Required Format
+## 8. Required Format
 
 Every claim must be labeled. Examples:
 

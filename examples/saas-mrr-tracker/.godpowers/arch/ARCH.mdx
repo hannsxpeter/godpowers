@@ -1,5 +1,16 @@
 # MRR Tracker Architecture
 
+## Options Considered
+
+| Shape | Score | Why rejected | Trap flag |
+|-------|-------|--------------|-----------|
+| Local web app over an exported JSON file (baseline) | 8.3 | [DECISION] Chosen, because local import satisfies the Privacy NFR and the weekly review scope without network credentials. | [HYPOTHESIS] Hidden cost: account changes after export stay invisible until the next local import. |
+| Live Stripe OAuth with a hosted sync worker | 6.9 | [DECISION] Rejected, because a hosted worker would move customer account names outside the local workspace, contrary to the Privacy NFR. | |
+| Stripe webhook receiver with a persistent event store | 5.8 | [DECISION] Rejected, because P-SHOULD-01 asks for a weekly summary, so streaming ingestion adds public ingress and replay handling without improving that weekly flow. | [HYPOTHESIS] Hidden cost: a webhook receiver must be publicly reachable and replay-safe, which is more operational surface than a weekly review workflow justifies. |
+
+[DECISION] Scores include trap demotion and use the NFR map below; novelty is
+not a scoring axis.
+
 ## System Context
 
 [DECISION] MRR Tracker runs as a single local web app that imports Stripe subscription events, computes weekly movement buckets, and renders a founder review dashboard.
@@ -10,16 +21,6 @@
 - [DECISION] The movement engine container normalizes subscription deltas into new, expansion, contraction, and churn buckets.
 - [DECISION] The dashboard container renders bucket totals and account drill-down tables.
 
-## Options Considered
-
-| Shape | Score | Why rejected | Trap flag |
-|-------|-------|--------------|-----------|
-| Local web app over an exported JSON file (baseline) | 8.8 | [DECISION] Chosen, because the gate fixture must stay deterministic and run without network credentials. | |
-| Live Stripe OAuth with a hosted sync worker | 5.1 | [DECISION] Rejected, because it makes every example run depend on a third-party credential and a network round trip. | |
-| Stripe webhook receiver with a persistent event store | 4.6 | [DECISION] Rejected, because the founder review flow reads a weekly snapshot, so streaming ingestion buys nothing the batch import does not already provide. | [HYPOTHESIS] Hidden cost: a webhook receiver must be publicly reachable and replay-safe, which is more operational surface than a weekly review workflow justifies. |
-
-[DECISION] Options are scored against the NFR map below, and novelty is not a scoring axis.
-
 ## NFR-to-Architecture Map
 
 | NFR | Architectural choice |
@@ -29,8 +30,8 @@
 
 ## Tradeoffs
 
-[DECISION] The example uses local JSON import instead of live Stripe OAuth because the gate fixture must stay deterministic and dependency-free.
+[DECISION] The example uses local JSON import instead of live Stripe OAuth because the Privacy NFR keeps account names local, and instead of webhooks because the weekly review flow does not need streaming ingestion.
 
 ## ADR-001 Local Stripe Export
 
-[DECISION] ADR-001 chooses local Stripe JSON export for the example so gate tests can verify artifact quality without network credentials.
+[DECISION] ADR-001 chooses local Stripe JSON export because it beats hosted OAuth on the Privacy NFR and beats webhook ingestion on the weekly review scope; the tradeoff is snapshot staleness between imports.

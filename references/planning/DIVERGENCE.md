@@ -88,9 +88,10 @@ work at 3-4 per wave for coordination reasons; the same cap applies here.
 
 1. The problem statement, restated in one paragraph.
 2. One lens from the table below.
-3. One named artifact excerpt, and only one: the PRD problem statement and NFR
+3. One named source excerpt, and only one: the PRD problem statement and NFR
    block for architecture work, the relevant ADR context for stack work, the
-   observation document for debugging.
+   user's original intent excerpt for exploration work, or the observation
+   document for debugging.
 
 **Each branch receives none of the following:** the session transcript, the
 other branches' output, the caller's working notes, the artifact draft in
@@ -152,11 +153,12 @@ which are the failures this repo exists to prevent. Divergence widens the pool.
 It does not touch the rubric.
 
 **3. Traps demote, they never delete.** A candidate that looks attractive but
-carries a hidden cost is recorded with the one-line reason it is a trap, ranked
-below the survivors, and rendered as `[HYPOTHESIS]`. It is not removed. The
-reason a candidate is a trap is itself a model judgment and is sometimes wrong;
-deleting on that judgment silently discards the possibly-correct answer and
-leaves no evidence that it happened.
+carries a hidden cost is recorded with the one-line reason it is a trap, scored
+with that penalty before ranking, and rendered as `[HYPOTHESIS]`. It is not
+removed. The reason a candidate is a trap is itself a model judgment and is
+sometimes wrong; deleting on that judgment silently discards the
+possibly-correct answer and leaves no evidence that it happened. A trap-flagged
+candidate can still win if it remains strongest after the penalty.
 
 **4. Stop when the shapes repeat.** If a fifth lens would produce candidates
 that share an underlying assumption with the four already returned, the space

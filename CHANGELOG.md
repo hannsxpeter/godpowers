@@ -15,8 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   is on disk; nothing produced the rejected alternative. The pass fires only on
   hard-to-reverse Tier 1 decisions, never under `--yolo`, never on closed
   phrasing, and never on cheap-to-reverse work. It spawns 4 isolated branches in
-  one wave, each receiving the problem statement, one lens, and one named
-  artifact excerpt (never the session context), with `Read, Grep, Glob` and a
+  one wave, each receiving the problem statement, one lens, and one named source
+  excerpt (never the session context), with `Read, Grep, Glob` and a
   generator-only posture. The 8 lenses are inverted from godpowers' own
   antipattern catalogs. Three rules are load-bearing: the obvious answer is
   seeded as a labeled baseline and can win, the calling specialist's scoring

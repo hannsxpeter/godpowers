@@ -123,8 +123,13 @@ point. Write `.godpowers/stack/DECISION.mdx`:
 ## Detailed Decisions
 
 ### Language: TypeScript
-- **Candidates evaluated**: TypeScript, Python, Go
+- **Does this category need to exist?**: Yes, because the application needs an
+  executable runtime.
+- **Candidates evaluated**: Baseline TypeScript, Python, Go
 - **Scores**: TS 9.2 / Python 7.8 / Go 7.1
+- **Rejected, with reason**: Python duplicates the frontend type model across
+  the API boundary. Go gives up team familiarity without an ARCH latency NFR
+  that needs it.
 - **Why this one**: [specific rationale tied to ARCH choices]
 - **Flip point**: [specific condition]
 - **Lock-in cost**: Low/Medium/High - [what switching requires]

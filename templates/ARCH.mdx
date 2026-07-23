@@ -3,6 +3,21 @@
 > Every decision below has a flip point. Every claim is substitution-tested.
 > Every NFR from PRD has a corresponding architectural choice.
 
+## Options Considered
+
+The system shapes evaluated before the system context and containers below were
+chosen. If exactly one shape was considered, say so here and give the reason;
+do not leave the section empty.
+
+| Shape | Score | Why rejected | Trap flag |
+|-------|-------|--------------|-----------|
+| [Baseline: the obvious shape] | [N.N/10] | [Chosen, or the specific reason it lost] | [HYPOTHESIS] tradeoff: [one line naming what it gives up] |
+| [Alternative shape] | [N.N/10] | [Specific reason, tied to a PRD NFR or ADR] | |
+| [Alternative shape] | [N.N/10] | [Specific reason] | [HYPOTHESIS] hidden cost: [one line] |
+
+Score against the NFR map and flip points below, including any trap demotion.
+Novelty is not a scoring axis.
+
 ## System Context (C4 Level 1)
 
 ```
@@ -32,20 +47,6 @@
 |-----------|----------------------|------------|
 | [Name] | [One sentence. Single thing it owns.] | [Language/framework] |
 
-## Options Considered
-
-The system shapes evaluated before the containers above were chosen. If exactly
-one shape was considered, say so here and give the reason; do not leave the
-section empty.
-
-| Shape | Score | Why rejected | Trap flag |
-|-------|-------|--------------|-----------|
-| [Baseline: the obvious shape] | [N.N/10] | [Chosen, or the specific reason it lost] | |
-| [Alternative shape] | [N.N/10] | [Specific reason, tied to a PRD NFR or ADR] | |
-| [Alternative shape] | [N.N/10] | [Specific reason] | [HYPOTHESIS] hidden cost: [one line] |
-
-Score against the NFR map and flip points below. Novelty is not a scoring axis.
-
 ## Architecture Decision Records
 
 Only create an ADR when all three are true: the decision is hard to reverse,
@@ -54,7 +55,7 @@ surprising without context, and the result of a real tradeoff.
 ### ADR-001: [Decision Title]
 - **Context**: [What forced this decision]
 - **Decision**: [What was chosen]
-- **Rationale**: [Why this over alternatives]
+- **Rationale**: [Name each alternative considered and why this beat it]
 - **Flip point**: [Conditions under which this decision reverses]
 - **Consequences**: [What this makes easier; what it makes harder]
 
