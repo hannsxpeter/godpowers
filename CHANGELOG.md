@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.11.0] - 2026-07-23
+
 ### Added
 
 - `references/planning/DIVERGENCE.md`, a gated widening pass that produces the
@@ -25,6 +27,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   deleted. When `lib/host-capabilities` reports that fresh-context agent spawn
   is unavailable, the pass degrades to one labeled single-context run and
   records an `[OPEN QUESTION]` in the artifact rather than simulating isolation.
+- `references/planning/DIVERGENCE.md` also carries an "anchoring tells"
+  self-check: four checkable signatures of a table written to justify a decision
+  already made (a baseline scored high with an empty trap column and a wide moat,
+  two rows that are one shape wearing two hats, rejection reasons whose errors
+  all flatter the chosen row, and a selected row with no self-criticism). These
+  matter most on hosts where the fan-out degrades to a single context.
 
 ### Changed
 
@@ -49,6 +57,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   several releases.
 - `skills/god-party.md` states the boundary against divergence: party personas
   evaluate an existing candidate, divergence branches generate candidates.
+- `references/planning/ARCH-ANATOMY.md` and `references/planning/STACK-ANATOMY.md`
+  carry the new contract so the anatomy references, the templates, and the
+  specialists agree: Options Considered is architecture section 1, and stack
+  anatomy names the category-existence and rejection fields. The two example
+  fixtures (`examples/cli-tool`, `examples/saas-mrr-tracker`) model the good
+  pattern rather than the anti-pattern, with de-anchored scores, a self-critical
+  trap flag on the winning row, and ADR rationales that name the alternatives
+  they beat, tied to real PRD requirements.
 
 ### Security
 
