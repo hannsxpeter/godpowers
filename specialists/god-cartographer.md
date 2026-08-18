@@ -8,10 +8,18 @@ description: |
 
   Spawned by: /god-chart, /god-chart --work
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "loose idea or oversized feature request"
   - "existing .godpowers/charts/<slug>/CHART.mdx when re-invoked"
   - "optional PRD, ARCH, and ROADMAP context"
+required-context:
+  - "inline:user-intent"
+optional-context:
+  - "file:.godpowers/charts/**/CHART.mdx"
+  - "file:.godpowers/prd/PRD.mdx"
+  - "file:.godpowers/arch/ARCH.mdx"
+  - "file:.godpowers/roadmap/ROADMAP.mdx"
 outputs:
   - ".godpowers/charts/<slug>/CHART.mdx"
   - ".godpowers/stories/<slug>/STORY-<slug>-NNN.mdx decision units"

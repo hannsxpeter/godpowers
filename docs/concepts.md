@@ -106,6 +106,15 @@ from twenty messages ago get fuzzy, contradicted, or silently dropped. Giving
 each specialist a clean window containing only what its job requires means the
 quality of its work does not depend on how long you have been chatting.
 
+The context is also explicit and bounded. Each specialist declares required
+files, optional files, inline task inputs, and a maximum token estimate. Missing
+required context blocks the spawn; optional context is dropped predictably when
+the budget is full. The resulting loadout record stores identifiers and counts,
+not source contents.
+
+For the related verification, program-design, handoff, maintainability, and
+evolution contracts, see [Harness Quality](harness-quality.md).
+
 ---
 
 ## Checks that cannot be talked out of
@@ -284,6 +293,7 @@ First-party examples:
 - `@godpowers/security-pack` - SOC 2, HIPAA, PCI
 - `@godpowers/launch-pack` - Show HN, Product Hunt, Indie Hackers, open source
 - `@godpowers/data-pack` - ETL, machine learning features, dashboards
+- `@godpowers/provenance-pack` - authorized AI provenance inspection and cleaning
 
 To build your own:
 

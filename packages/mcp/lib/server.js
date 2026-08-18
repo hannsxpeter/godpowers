@@ -1,5 +1,5 @@
-const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
-const { StdioServerTransport } = require('@modelcontextprotocol/sdk/server/stdio.js');
+const { McpServer } = require('@modelcontextprotocol/server');
+const { serveStdio: serveStdioTransport } = require('@modelcontextprotocol/server/stdio');
 
 const pkg = require('../package.json');
 const tools = require('./tools');
@@ -14,10 +14,7 @@ function createServer(opts = {}) {
 }
 
 async function serveStdio(opts = {}) {
-  const server = createServer(opts);
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  return server;
+  return serveStdioTransport(() => createServer(opts));
 }
 
 module.exports = {

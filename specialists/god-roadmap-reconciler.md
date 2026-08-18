@@ -8,11 +8,18 @@ description: |
 
   Spawned by: legacy /god-roadmap-check installs only
 tools: Read, Bash, Grep, Glob, Task
+max-tokens: 80000
 inputs:
   - ".godpowers/roadmap/ROADMAP.mdx"
   - ".godpowers/state.json"
   - "user feature intent"
   - "optional PRD evidence"
+required-context:
+  - "file:.godpowers/roadmap/ROADMAP.mdx"
+  - "file:.godpowers/state.json"
+  - "inline:user-feature-intent"
+optional-context:
+  - "file:.godpowers/prd/PRD.mdx"
 outputs:
   - "roadmap reconciliation verdict from god-reconciler"
 gates:

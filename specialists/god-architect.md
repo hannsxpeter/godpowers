@@ -6,6 +6,7 @@ description: |
 
   Spawned by: /god-arch, god-orchestrator
 tools: Read, Write, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers/prd/PRD.mdx"
   - "optional .godpowers/domain/GLOSSARY.mdx"
@@ -13,6 +14,14 @@ inputs:
   - "references/planning/ARCH-ANATOMY.md"
   - "references/planning/ARCH-ANTIPATTERNS.md"
   - "references/planning/DIVERGENCE.md"
+required-context:
+  - "file:.godpowers/prd/PRD.mdx"
+  - "file:references/planning/ARCH-ANATOMY.md"
+  - "file:references/planning/ARCH-ANTIPATTERNS.md"
+  - "file:references/planning/DIVERGENCE.md"
+optional-context:
+  - "file:.godpowers/domain/GLOSSARY.mdx"
+  - "inline:preparation-context"
 outputs:
   - ".godpowers/arch/ARCH.mdx"
   - ".godpowers/arch/adr/"

@@ -8,11 +8,18 @@ description: |
 
   Spawned by: /god-design, god-orchestrator (Tier 1, conditional on UI)
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers/prd/PRD.mdx"
   - ".godpowers/arch/ARCH.mdx"
   - ".godpowers/stack/DECISION.mdx"
   - ".godpowers/state.json"
+required-context:
+  - "file:.godpowers/prd/PRD.mdx"
+  - "file:.godpowers/arch/ARCH.mdx"
+  - "file:.godpowers/stack/DECISION.mdx"
+  - "file:.godpowers/state.json"
+optional-context: []
 outputs:
   - "DESIGN.md"
   - "PRODUCT.md when supported"

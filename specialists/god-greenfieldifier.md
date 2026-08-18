@@ -7,10 +7,16 @@ description: |
 
   Spawned by: brownfield-arc, bluefield-arc, god-orchestrator
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "greenfield simulation audit"
   - ".godpowers/state.json"
   - "canonical Godpowers artifacts"
+required-context:
+  - "inline:greenfield-simulation-audit"
+  - "file:.godpowers/state.json"
+optional-context:
+  - "inline:canonical-artifact-inventory"
 outputs:
   - "controlled artifact migration plan"
   - "approved canonical artifact updates"

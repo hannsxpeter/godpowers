@@ -7,10 +7,16 @@ description: |
 
   Spawned by: skill orchestration after any artifact-producing agent
 tools: Read, Grep, Glob
+max-tokens: 80000
 inputs:
   - "just-produced artifact"
   - "applicable have-nots list"
   - "routing gate configuration"
+required-context:
+  - "inline:artifact"
+  - "inline:have-nots"
+  - "inline:gate-configuration"
+optional-context: []
 outputs:
   - "PASS, FAIL, or PARTIAL verdict"
   - "standards findings"

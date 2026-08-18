@@ -62,7 +62,17 @@ function requireRuntime(moduleName, opts = {}) {
 }
 
 function resolveProject(projectRoot) {
-  return path.resolve(projectRoot || process.cwd());
+  const requested = path.resolve(projectRoot || process.cwd());
+  let resolved;
+  try {
+    resolved = fs.realpathSync.native(requested);
+  } catch (error) {
+    throw new Error(`project root does not exist: ${requested}`);
+  }
+  if (!fs.statSync(resolved).isDirectory()) {
+    throw new Error(`project root must be a directory: ${requested}`);
+  }
+  return resolved;
 }
 
 function resolveProjectFile(projectRoot, filePath) {
@@ -75,7 +85,27 @@ function resolveProjectFile(projectRoot, filePath) {
   if (relative.startsWith('..') || path.isAbsolute(relative)) {
     throw new Error('artifact path must stay inside the project root');
   }
-  return abs;
+
+  let current = root;
+  for (const segment of relative.split(path.sep).filter(Boolean)) {
+    current = path.join(current, segment);
+    let entry;
+    try {
+      entry = fs.lstatSync(current);
+    } catch (error) {
+      throw new Error(`artifact path does not exist: ${filePath}`);
+    }
+    if (entry.isSymbolicLink()) {
+      throw new Error('artifact path must not contain symbolic links');
+    }
+  }
+
+  const pinned = fs.realpathSync.native(abs);
+  const pinnedRelative = path.relative(root, pinned);
+  if (pinnedRelative.startsWith('..') || path.isAbsolute(pinnedRelative)) {
+    throw new Error('artifact path must stay inside the project root');
+  }
+  return pinned;
 }
 
 module.exports = {

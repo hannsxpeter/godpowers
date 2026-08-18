@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v5.17.1.
+Complete command, agent, and artifact reference for v6.0.0.
 
 **This page is a dictionary, not a tutorial.** It lists everything, which makes
 it useful for looking things up and a poor place to start. If you are new, read
@@ -9,6 +9,12 @@ what you want in plain English.
 
 Nobody uses all of this. Most people use six or seven commands and let
 `/god-next` suggest the rest when they become relevant.
+
+Maintainers can use `npm test -- --agent-output` for compact first-failure
+verification and `node lib/evolution-benchmark.js --scenario
+fixtures/evolution/maintainability-sequence --evidence-dir <directory>` for the
+bundled six-checkpoint changeability baseline. See
+[Harness Quality](harness-quality.md) for the complete contracts.
 
 ## Slash commands (124 total)
 
@@ -315,6 +321,7 @@ First-party packs on npm:
 - `@godpowers/security-pack` - SOC 2, HIPAA, PCI auditors
 - `@godpowers/launch-pack` - Show HN, Product Hunt, Indie Hackers, OSS strategists
 - `@godpowers/data-pack` - ETL, ML feature, dashboard specialists
+- `@godpowers/provenance-pack` - authorized AI provenance inspection and cleaning
 
 ## Specialist agents (41 total)
 
@@ -520,6 +527,7 @@ JSON Schema files at `schema/`:
 
 - [Getting Started](getting-started.md)
 - [Concepts](concepts.md)
+- [Harness Quality](harness-quality.md)
 - [Change Propagation](change-propagation.md)
 - [Linkage](linkage.md)
 - [Validation](validation.md)

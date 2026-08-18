@@ -64,7 +64,7 @@ see_also: [security, observe]
 From `RELEASE.md`:
 - [DECISION] Godpowers 5.5.0 is the Arc-Ready and Pillars conformance release.
 - [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
-- [DECISION] The core package contains 108 runtime library modules and keeps zero production dependencies.
+- [DECISION] The core package contains 112 runtime library modules and keeps zero production dependencies.
 - [DECISION] The `@godpowers/mcp` companion remains read-only and shares version 5.5.0.
 - [DECISION] Product routing selects one of six forms before applying product archetype, industry, or regulatory overlays.
 - [DECISION] Each product form carries a distinct vertical slice and completion-evidence contract, so web assumptions do not leak into API, CLI, mobile, data, or infrastructure work.

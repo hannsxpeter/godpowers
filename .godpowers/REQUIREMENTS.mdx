@@ -5,22 +5,22 @@
 > `/god-progress`, `/god-status`, or `/god-sync`. Do not hand-edit statuses;
 > they are recomputed from disk.
 
-Updated: 2026-05-30T22:07:46.390Z
+Updated: 2026-08-18T03:04:41.200Z
 Source: PRD + ROADMAP + linkage forward map + build state
-Progress: [####################] 33/33 done (100%) | 0 in progress | 0 not started
+Progress: [####################] 41/41 done (100%) | 0 in progress | 0 not started
 
 ## By priority
 
 | Priority | Done | In progress | Not started | Total |
 |----------|------|-------------|-------------|-------|
-| MUST | 22 | 0 | 0 | 22 |
-| SHOULD | 7 | 0 | 0 | 7 |
+| MUST | 29 | 0 | 0 | 29 |
+| SHOULD | 8 | 0 | 0 | 8 |
 | COULD | 4 | 0 | 0 | 4 |
 
-## Done (33)
+## Done (41)
 
-- [x] **P-MUST-01** Run a full idea-to-production project autonomously through tiered specialist agents _(increment: M-orchestration)_ - agents/god-orchestrator.md
-- [x] **P-MUST-02** Hold project state on disk and re-derive it every turn, never from agent memory _(increment: M-orchestration)_ - lib/state.js
+- [x] **P-MUST-01** Run a full idea-to-production project autonomously through tiered specialist agents _(increment: M-orchestration)_ - agents/god-orchestrator.md, docs/change-propagation.md, docs/linkage.md, lib/code-scanner.js, +9 more
+- [x] **P-MUST-02** Hold project state on disk and re-derive it every turn, never from agent memory _(increment: M-orchestration)_ - lib/state.js, scripts/test-linkage.js, specialists/god-executor.md
 - [x] **P-MUST-03** Detect project mode (greenfield, brownfield, audit, suite) and scale automatically _(increment: M-orchestration)_ - lib/multi-repo-detector.js
 - [x] **P-MUST-04** Author a Product Requirements Document that passes substitution and three-label tests _(increment: M-planning)_ - agents/god-pm.md
 - [x] **P-MUST-05** Design system architecture with C4 structure and Architecture Decision Records _(increment: M-planning)_ - agents/god-architect.md
@@ -41,6 +41,13 @@ Progress: [####################] 33/33 done (100%) | 0 in progress | 0 not start
 - [x] **P-MUST-20** Pause and resume work across sessions without losing context _(increment: M-orchestration)_ - lib/checkpoint.js
 - [x] **P-MUST-21** Install across Claude Code, Codex, Cursor, Windsurf, Gemini, and other agent tools _(increment: M-multi-tool)_ - bin/install.js, lib/installer-core.js
 - [x] **P-MUST-22** Run an adversarial security review against the OWASP Top 10 before launch _(increment: M-hardening)_ - agents/god-harden-auditor.md
+- [x] **P-MUST-23** Inspect and clean AI provenance signals only from content the user owns or is authorized to process _(increment: M-authorized-ai-provenance-cleaning)_ - extensions/provenance-pack/agents/god-ai-provenance-cleaner.md, extensions/provenance-pack/references/provenance-client.js, extensions/provenance-pack/skills/god-remove-ai-marks.md, scripts/test-provenance-pack.js
+- [x] **P-MUST-24** Provide opt-in agent-oriented verification that keeps complete test evidence while presenting compact success and focused first-failure output _(increment: M-harness-quality-hardening)_ - scripts/run-tests.js, scripts/test-test-runner.js
+- [x] **P-MUST-25** Enforce explicit bounded context contracts before every workflow specialist spawn _(increment: M-harness-quality-hardening)_ - lib/context-budget.js, lib/events.js
+- [x] **P-MUST-26** Require approved program design before medium or large implementation while permitting a small-change skip with a recorded rationale _(increment: M-harness-quality-hardening)_ - lib/gate.js, lib/program-design.js
+- [x] **P-MUST-27** Derive a compact structured slice handoff from authoritative disk evidence on completion, pause, or ownership change _(increment: M-harness-quality-hardening)_ - lib/slice-handoff.js
+- [x] **P-MUST-28** Capture deterministic before-and-after maintainability evidence with signed deltas and sample counts for independent quality review _(increment: M-harness-quality-hardening)_ - lib/maintainability-trajectory.js, lib/style-stats.js
+- [x] **P-MUST-29** Run a deterministic six-checkpoint evolution benchmark that reveals requirements one at a time and measures continued correctness and changeability _(increment: M-harness-quality-hardening)_ - lib/evolution-benchmark.js
 - [x] **P-SHOULD-01** Set up a deploy pipeline that promotes the same artifact with tested rollback _(increment: M-shipping)_ - agents/god-deploy-engineer.md
 - [x] **P-SHOULD-02** Wire observability with SLOs tied to product success metrics _(increment: M-shipping)_ - agents/god-observability-engineer.md
 - [x] **P-SHOULD-03** Produce launch readiness: landing copy, Open Graph cards, and a launch runbook _(increment: M-shipping)_ - agents/god-launch-strategist.md
@@ -48,10 +55,11 @@ Progress: [####################] 33/33 done (100%) | 0 in progress | 0 not start
 - [x] **P-SHOULD-05** Detect host capability and report full, degraded, or unknown runtime guarantees _(increment: M-steady-state)_ - lib/host-capabilities.js
 - [x] **P-SHOULD-06** Verify a running app against acceptance criteria with a headless browser _(increment: M-steady-state)_ - lib/runtime-test.js
 - [x] **P-SHOULD-07** Import context from GSD, BMAD, and Superpowers and sync progress back _(increment: M-steady-state)_ - lib/source-sync.js
-- [x] **P-COULD-01** Coordinate a multi-repository suite with byte-identical file sync (Mode D). _(increment: M-advanced)_ - agents/god-coordinator.md
-- [x] **P-COULD-02** Configure host-native scheduled automation after explicit user consent. _(increment: M-advanced)_ - agents/god-automation-engineer.md
-- [x] **P-COULD-03** Export traces and metrics through an OpenTelemetry-compatible pipeline. _(increment: M-advanced)_ - lib/otel-exporter.js
-- [x] **P-COULD-04** Run time-boxed research spikes that build a minimal proof and then stop. _(increment: M-advanced)_ - agents/god-spike-runner.md
+- [x] **P-SHOULD-08** Preserve upstream provenance-cleaning compatibility without coupling the core runtime to the external service _(increment: M-authorized-ai-provenance-cleaning)_ - .github/workflows/publish-pack.yml, extensions/provenance-pack/agents/god-ai-provenance-cleaner.md, extensions/provenance-pack/references/provenance-client.js, extensions/provenance-pack/skills/god-remove-ai-marks.md, +1 more
+- [x] **P-COULD-01** Coordinate a multi-repository suite with byte-identical file sync (Mode D) _(increment: M-advanced)_ - agents/god-coordinator.md
+- [x] **P-COULD-02** Configure host-native scheduled automation after explicit user consent _(increment: M-advanced)_ - agents/god-automation-engineer.md
+- [x] **P-COULD-03** Export traces and metrics through an OpenTelemetry-compatible pipeline _(increment: M-advanced)_ - lib/otel-exporter.js
+- [x] **P-COULD-04** Run time-boxed research spikes that build a minimal proof and then stop _(increment: M-advanced)_ - agents/god-spike-runner.md
 
 ## In progress (0)
 
@@ -75,4 +83,6 @@ Progress: [####################] 33/33 done (100%) | 0 in progress | 0 not start
 - [x] **M-shipping**: Shipping pipeline _[next]_ - done - 3/3 requirements done
 - [x] **M-steady-state**: Steady-state operations _[next]_ - done - 4/4 requirements done
 - [x] **M-advanced**: Advanced capabilities _[next]_ - done - 4/4 requirements done
+- [x] **M-authorized-ai-provenance-cleaning**: Authorized AI provenance cleaning _[next]_ - done - 2/2 requirements done
+- [x] **M-harness-quality-hardening**: Harness quality hardening _[next]_ - done - 6/6 requirements done
 - [ ] **M-deeper-traceability-and-ecosystem**: Deeper traceability and ecosystem _[later]_ - pending - 0/0 requirements done

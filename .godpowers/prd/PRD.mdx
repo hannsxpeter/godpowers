@@ -73,6 +73,13 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - P-MUST-20 [DECISION] Pause and resume work across sessions without losing context -- Acceptance: a checkpoint restores the current tier, step, and held decisions on a new session.
 - P-MUST-21 [DECISION] Install across Claude Code, Codex, Cursor, Windsurf, Gemini, and other agent tools -- Acceptance: one installer writes the correct skill and agent layout per host.
 - P-MUST-22 [DECISION] Run an adversarial security review against the OWASP Top 10 before launch -- Acceptance: a Critical finding blocks launch until fixed.
+- P-MUST-23 [DECISION] Inspect and clean AI provenance signals only from content the user owns or is authorized to process -- Acceptance: the optional `/god-remove-ai-marks` extension validates the service contract, inspects before cleaning, requires destination-specific consent before a non-loopback upload, preserves the source by default, refuses disclosure-evasion intent, and reports residual risk without claiming human authorship.
+- P-MUST-24 [DECISION] Provide opt-in agent-oriented verification that keeps complete test evidence while presenting compact success and focused first-failure output -- Acceptance: passing output stays within 25 lines and 32 KiB, failing output stays within 200 lines and 64 KiB, and both name the complete retained-log path and preserve the child exit status.
+- P-MUST-25 [DECISION] Enforce explicit bounded context contracts before every workflow specialist spawn -- Acceptance: required and optional sources plus a positive token cap validate mechanically, missing or oversized required context blocks, optional context drops deterministically, and content-free loadout evidence preserves complete counts.
+- P-MUST-26 [DECISION] Require approved program design before medium or large implementation while permitting a small-change skip with a recorded rationale -- Acceptance: the Build gate validates scale, code shape, contracts, flow, reuse, non-goals, verification, and affirmative human or YOLO approval before closeout.
+- P-MUST-27 [DECISION] Derive a compact structured slice handoff from authoritative disk evidence on completion, pause, or ownership change -- Acceptance: the handoff remains at or below 8 KiB, protects requirements, blockers, failed verification, and next action, and never overrides conflicting current state.
+- P-MUST-28 [DECISION] Capture deterministic before-and-after maintainability evidence with signed deltas and sample counts for independent quality review -- Acceptance: source size, function lengths, comment density, markers, duplication, dependency edges, and cyclic components are reported through one exclusion policy and remain report-only for three release candidates.
+- P-MUST-29 [DECISION] Run a deterministic six-checkpoint evolution benchmark that reveals requirements one at a time and measures continued correctness and changeability -- Acceptance: every checkpoint records behavior, attempts, rework, changed lines, acceptance, handoff completeness, and maintainability deltas without network access, model credentials, or future-checkpoint visibility.
 
 ### SHOULD (V1 if time permits)
 - P-SHOULD-01 [DECISION] Set up a deploy pipeline that promotes the same artifact with tested rollback -- Acceptance: staging and production deploy the identical build. -- Validation: a rollback drill restores the prior version.
@@ -82,6 +89,7 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - P-SHOULD-05 [DECISION] Detect host capability and report full, degraded, or unknown runtime guarantees -- Acceptance: the dashboard states the host guarantee on every closeout. -- Validation: a degraded host downgrades the guarantee line.
 - P-SHOULD-06 [DECISION] Verify a running app against acceptance criteria with a headless browser -- Acceptance: runtime verification checks the rendered app, not just a TCP port. -- Validation: a broken page produces a runtime finding.
 - P-SHOULD-07 [DECISION] Import context from GSD, BMAD, and Superpowers and sync progress back -- Acceptance: imported planning signals enter as hypotheses, not as truth. -- Validation: a sync-back writes Godpowers progress into the source system.
+- P-SHOULD-08 [DECISION] Preserve upstream provenance-cleaning compatibility without coupling the core runtime to the external service -- Acceptance: `@godpowers/provenance-pack` packages its manifest, skill, specialist, dependency-free client, responsible-use guidance, and local license while root installation remains inactive and dependency-neutral. -- Validation: targeted client, pack, publication, and repository-surface tests pass without starting or publishing the upstream service.
 
 ### COULD (post-V1)
 - P-COULD-01 [HYPOTHESIS] Coordinate a multi-repository suite with byte-identical file sync (Mode D) -- Acceptance: a dry-run reports every affected repository and blocks divergent shared files. -- Validation: the Mode D fixture completes with byte-identical shared outputs.
@@ -97,7 +105,12 @@ by `scripts/run-tests.js` and `npm run release:check`.
 | Integrity | Disk state is the single source of truth on every turn | [DECISION] |
 | Quality | Release suite of 40-plus checks passes before publish | [DECISION] |
 | Safety | Level-4 actions (deploy, money, broad deps) never auto-run | [DECISION] |
+| Privacy | External file uploads require a visible destination-specific grant, with loopback processing as the default | [DECISION] |
+| File integrity | Provenance cleaning preserves source bytes by default and publishes validated output through guarded atomic replacement | [DECISION] |
 | Traceability | At least 95 percent requirement-to-code coverage after build | [HYPOTHESIS] |
+| Context economy | Agent-oriented passing output remains within 25 lines and 32 KiB, while context evidence stores identifiers and counts instead of source contents | [DECISION] |
+| Changeability evidence | Structured handoffs stay within 8 KiB and maintainability snapshots plus six-checkpoint benchmark summaries remain deterministic for identical inputs | [DECISION] |
+| Harness isolation | Compact verification, context planning, handoff generation, maintainability scanning, and the evolution benchmark run locally without network or model credentials | [DECISION] |
 
 ## Scope and No-Gos
 
@@ -110,6 +123,7 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - [DECISION] Godpowers does not host or run the user's production infrastructure; it sets up pipelines but does not operate servers.
 - [DECISION] Godpowers does not replace the underlying agent runtime; it orchestrates Claude Code and compatible tools rather than reimplementing them.
 - [DECISION] Godpowers does not auto-execute irreversible Level-4 actions (deploying to production, moving money, broad dependency upgrades) without explicit user approval.
+- [DECISION] Godpowers does not help misrepresent authorship, bypass a required AI-content disclosure, or claim that provenance cleaning proves a file was human-authored.
 
 ## Appetite
 
@@ -140,3 +154,66 @@ Before declaring done, verify:
 - [x] Every requirement has acceptance criteria
 - [x] No-gos section is non-empty
 - [x] Every open question has owner AND due date
+
+## PRD Changelog
+
+- [DECISION] 2026-08-17: Added P-MUST-24 through P-MUST-29 because compact verification, explicit specialist context, conditional program design, structured handoffs, maintainability trajectories, and sequential evolution evidence now form one verified harness-quality increment.
+- [DECISION] 2026-08-17: Added P-MUST-23 and P-SHOULD-08 because the completed first-party provenance extension introduced an authorized external file-processing path, guarded output publication, and a separately operated upstream compatibility boundary.
+
+<!-- godpowers:linkage:begin -->
+## Implementation Linkage
+
+> Auto-generated by /god-sync. Do not edit; edit your code annotations and re-sync.
+
+### P-MUST requirements
+
+- **P-MUST-01** -> `agents/god-orchestrator.md`, `docs/change-propagation.md`, `docs/linkage.md`, `lib/code-scanner.js`, `references/building/BUILD-ANTIPATTERNS.md`, `references/planning/WAYFINDING.md`, `scripts/test-integration.js`, `scripts/test-linkage.js`, `scripts/test-reverse-sync.js`, `skills/god-link.md`, `specialists/god-executor.md`, `specialists/god-pm.md`, `templates/PRD.mdx`
+- **P-MUST-02** -> `lib/state.js`, `scripts/test-linkage.js`, `specialists/god-executor.md`
+- **P-MUST-03** -> `lib/multi-repo-detector.js`
+- **P-MUST-04** -> `agents/god-pm.md`
+- **P-MUST-05** -> `agents/god-architect.md`
+- **P-MUST-06** -> `agents/god-roadmapper.md`
+- **P-MUST-07** -> `agents/god-stack-selector.md`
+- **P-MUST-08** -> `agents/god-repo-scaffolder.md`
+- **P-MUST-09** -> `agents/god-executor.md`, `agents/god-planner.md`
+- **P-MUST-10** -> `agents/god-quality-reviewer.md`, `agents/god-spec-reviewer.md`
+- **P-MUST-11** -> `lib/have-nots-validator.js`
+- **P-MUST-12** -> `lib/artifact-linter.js`
+- **P-MUST-13** -> `lib/linkage.js`
+- **P-MUST-14** -> `lib/code-scanner.js`, `lib/reverse-sync.js`
+- **P-MUST-15** -> `lib/drift-detector.js`
+- **P-MUST-16** -> `lib/dashboard.js`
+- **P-MUST-17** -> `lib/recipes.js`
+- **P-MUST-18** -> `lib/router.js`
+- **P-MUST-19** -> `lib/requirements.js`, `skills/god-progress.md`
+- **P-MUST-20** -> `lib/checkpoint.js`
+- **P-MUST-21** -> `bin/install.js`, `lib/installer-core.js`
+- **P-MUST-22** -> `agents/god-harden-auditor.md`
+- **P-MUST-23** -> `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`, `extensions/provenance-pack/skills/god-remove-ai-marks.md`, `scripts/test-provenance-pack.js`
+- **P-MUST-24** -> `scripts/run-tests.js`, `scripts/test-test-runner.js`
+- **P-MUST-25** -> `lib/context-budget.js`, `lib/events.js`
+- **P-MUST-26** -> `lib/gate.js`, `lib/program-design.js`
+- **P-MUST-27** -> `lib/slice-handoff.js`
+- **P-MUST-28** -> `lib/maintainability-trajectory.js`, `lib/style-stats.js`
+- **P-MUST-29** -> `lib/evolution-benchmark.js`
+- **P-MUST-99** -> `scripts/test-linkage.js`
+
+### P-SHOULD requirements
+
+- **P-SHOULD-01** -> `agents/god-deploy-engineer.md`
+- **P-SHOULD-02** -> `agents/god-observability-engineer.md`
+- **P-SHOULD-03** -> `agents/god-launch-strategist.md`
+- **P-SHOULD-04** -> `agents/god-updater.md`
+- **P-SHOULD-05** -> `lib/host-capabilities.js`
+- **P-SHOULD-06** -> `lib/runtime-test.js`
+- **P-SHOULD-07** -> `lib/source-sync.js`
+- **P-SHOULD-08** -> `.github/workflows/publish-pack.yml`, `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`, `extensions/provenance-pack/skills/god-remove-ai-marks.md`, `scripts/test-provenance-pack.js`
+
+### P-COULD requirements
+
+- **P-COULD-01** -> `agents/god-coordinator.md`
+- **P-COULD-02** -> `agents/god-automation-engineer.md`
+- **P-COULD-03** -> `lib/otel-exporter.js`
+- **P-COULD-04** -> `agents/god-spike-runner.md`
+
+<!-- godpowers:linkage:end -->

@@ -7,11 +7,18 @@ description: |
 
   Spawned by: /god-debug, when build encounters failures
 tools: Read, Edit, Bash, Grep, Glob, WebSearch
+max-tokens: 80000
 inputs:
   - "bug report"
   - "failing command evidence"
   - "codebase and recent commits"
   - "references/planning/DIVERGENCE.md"
+required-context:
+  - "inline:bug-report"
+  - "inline:failing-command-evidence"
+  - "file:references/planning/DIVERGENCE.md"
+optional-context:
+  - "inline:recent-commit-evidence"
 outputs:
   - "regression test"
   - "minimal fix"

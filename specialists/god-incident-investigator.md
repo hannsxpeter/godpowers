@@ -8,11 +8,18 @@ description: |
 
   Spawned by: /god-postmortem
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "logs and events"
   - "git history"
   - "hotfix commit"
   - "optional handoff"
+required-context:
+  - "inline:incident-evidence"
+  - "inline:git-history"
+  - "inline:hotfix-commit"
+optional-context:
+  - "inline:handoff"
 outputs:
   - ".godpowers/postmortems/<id>/POSTMORTEM.mdx"
   - "runbook update recommendations"

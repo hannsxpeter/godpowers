@@ -48,7 +48,14 @@ async function withErrors(fn) {
 }
 
 function projectRootFor(input, opts) {
-  return runtime.resolveProject(input.project || opts.projectRoot || process.cwd());
+  const configuredRoot = runtime.resolveProject(opts.projectRoot || process.cwd());
+  if (input.project) {
+    const requestedRoot = runtime.resolveProject(input.project);
+    if (requestedRoot !== configuredRoot) {
+      throw new Error('tool project must match the configured project root');
+    }
+  }
+  return configuredRoot;
 }
 
 function statusTool(input = {}, opts = {}) {
@@ -156,7 +163,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers status',
     description: 'Read Godpowers dashboard state from disk.',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       brief: z.boolean().optional().describe('Include compact rendered dashboard text.'),
       git: z.boolean().optional().describe('Set false to skip git status checks.')
     },
@@ -171,7 +178,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers next',
     description: 'Read the recommended next Godpowers command from disk state.',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       git: z.boolean().optional().describe('Set false to skip git status checks.')
     },
     annotations: {
@@ -185,7 +192,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers gate check',
     description: 'Run a read-only executable tier gate check.',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       tier: z.enum(['prd', 'design', 'arch', 'roadmap', 'stack', 'repo', 'build', 'harden'])
         .describe('Gate tier to check.')
     },
@@ -200,7 +207,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers artifact lint',
     description: 'Lint one artifact path inside the project root.',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       path: z.string().describe('Artifact path relative to the project root.')
     },
     annotations: {
@@ -214,7 +221,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers requirement trace',
     description: 'Trace one PRD requirement id to linkage and roadmap evidence.',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       id: z.string().describe('Requirement id such as P-MUST-01.')
     },
     annotations: {
@@ -228,7 +235,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers work report',
     description: 'Read the verification play-by-play from the evidence ledger (does not advance the report cursor).',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       since: z.enum(['last', 'all']).optional().describe('Window: new records since last report, or all. Defaults to all.')
     },
     annotations: {
@@ -242,7 +249,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers accepted-change rate',
     description: 'Read the loop accepted-change rate (accepted vs rejected changes) derived from the event ledger.',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       since: z.string().optional().describe("Window such as '7d', '30d', an ISO date, or 'all'. Defaults to all.")
     },
     annotations: {
@@ -256,7 +263,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers route',
     description: 'Classify a prompt into an entry play via the quarterback (read-only; never mutates state).',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       prompt: z.string().optional().describe('Free-text intent to classify.')
     },
     annotations: {
@@ -270,7 +277,7 @@ function registerTools(server, opts = {}) {
     title: 'Godpowers verification history',
     description: 'Read evidence ledger records, optionally filtered to one substep and limited to the most recent N.',
     inputSchema: {
-      project: z.string().optional().describe('Project root. Defaults to the server project.'),
+      project: z.string().optional().describe('Project root. When provided, it must match the configured server project.'),
       substep: z.string().optional().describe('Substep id such as tier-2.build.'),
       recent: z.number().optional().describe('Limit to the most recent N records.')
     },

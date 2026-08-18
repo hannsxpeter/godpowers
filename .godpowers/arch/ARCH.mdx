@@ -15,6 +15,17 @@
 | Decision runtime | Route intent, plan workflows, gate tiers, and manage state | Node.js CommonJS |
 | Artifact layer | Preserve labeled product, architecture, delivery, and evidence truth | MDX and JSON |
 | Host bridge | Detect active-session capabilities and installed surfaces | Host environment plus Node.js |
+| C-provenance-skill | [DECISION] Parse authorized provenance-cleaning intent and hand execution to the extension specialist. | [DECISION] Markdown skill in `@godpowers/provenance-pack`. |
+| C-provenance-specialist | [DECISION] Enforce authorization and intent gates, invoke the bundled client, and report sanitized findings plus residual risk. | [DECISION] Markdown specialist in `@godpowers/provenance-pack`. |
+| C-provenance-client | [DECISION] Enforce network, response, input, and output invariants without adding a root production dependency. | [DECISION] Node.js CommonJS with built-in modules. |
+| C-watermarks-remover-service | [DECISION] Inspect and clean bytes through the user-operated `/health`, `/capabilities`, `/openapi.json`, `/inspect`, and `/clean` contract. | [DECISION] External `watermarks-remover` v0.5-compatible HTTP service. |
+| C-user-filesystem | [DECISION] Own source files, exclusive temporary files, recoverable backups, and final cleaned outputs under the active host authority. | [DECISION] Local filesystem. |
+| C-verification-runner | [DECISION] Execute ordered checks, retain complete child output, and render bounded agent-oriented summaries. | [DECISION] Dependency-free Node.js CommonJS. |
+| C-context-loadout | [DECISION] Validate specialist context contracts and derive deterministic pre-spawn loadouts without retaining source contents in events. | [DECISION] Dependency-free Node.js CommonJS plus specialist frontmatter. |
+| C-program-design | [DECISION] Validate change size, program shape, and affirmative approval before Build can close. | [DECISION] Dependency-free Node.js CommonJS plus MDX plan evidence. |
+| C-slice-handoff | [DECISION] Project authoritative plan, state, event, linkage, and verification facts into one bounded resume record. | [DECISION] Dependency-free Node.js CommonJS and JSON. |
+| C-maintainability-trajectory | [DECISION] Capture stable code-shape snapshots and signed deltas without executing repository imports. | [DECISION] Dependency-free Node.js CommonJS. |
+| C-evolution-benchmark | [DECISION] Reveal six ordered requirements to a temporary repository and retain deterministic correctness and changeability evidence. | [DECISION] Dependency-free Node.js CommonJS plus packaged fixtures. |
 
 ## Architecture Decision Records
 
@@ -42,6 +53,91 @@
 - [DECISION] Flip point: A host-native capability handshake may replace explicit evidence when it is stable and testable.
 - [DECISION] Consequence: Some capable hosts report degraded until the active session confirms spawning.
 
+### ADR-004: Keep authorized provenance cleaning in a lazy extension
+
+- [DECISION] Context: provenance cleaning is optional, relies on a separately operated service, and does not belong in every Godpowers project run.
+- [DECISION] Decision: ship `@godpowers/provenance-pack` with `/god-remove-ai-marks` and `god-ai-provenance-cleaner` instead of adding a core command.
+- [DECISION] Rationale: the extension preserves the frozen core command surface, avoids root production dependencies, and activates only after explicit installation.
+- [DECISION] Flip point: move the command into core only if provenance inspection becomes a required gate for most Godpowers workflows and can run without a second runtime or a silent external data path.
+- [DECISION] Consequence: users install the pack and operate the upstream service separately.
+
+### ADR-005: Reuse the upstream HTTP contract through a deterministic client
+
+- [DECISION] Context: the selected upstream project owns the provenance-cleaning algorithms but its service responses, network destinations, and filesystem effects cross trust boundaries.
+- [DECISION] Decision: ship a dependency-free Node.js client that validates service compatibility, pins approved addresses, rejects redirects, bounds and sanitizes responses, validates output bytes, and publishes through guarded atomic replacement.
+- [DECISION] Rationale: deterministic enforcement closes network, response, and filesystem gaps that a prose-only agent contract cannot close while leaving cleaning algorithms upstream.
+- [DECISION] Flip point: replace the bundled client only when the upstream publishes a dependency-equivalent signed client with the same network, response, and file-safety guarantees.
+- [DECISION] Consequence: service outages disable the extension but do not affect the Godpowers core runtime.
+
+### ADR-006: Require visible consent for remote content transfer
+
+- [DECISION] Context: authorized source files can still contain personal, confidential, or proprietary data.
+- [DECISION] Decision: loopback HTTP is the default; a non-loopback destination requires HTTPS and a grant matching its exact normalized origin, with a separate exact-origin grant for private network addresses.
+- [DECISION] Rationale: the user sees and controls each external file transfer while remote retention remains disclosed as unknown unless policy evidence is available.
+- [DECISION] Flip point: replace per-invocation consent only when a shared integrations contract provides durable destination grants with revocation and retention metadata.
+- [DECISION] Consequence: remote service use has a deliberate confirmation step before source bytes enter a request payload.
+
+### ADR-007: Gate bounded context and program shape before execution
+
+- [DECISION] Context: prompt prose alone cannot prove that a specialist received the required project facts or that a larger implementation has an approved code shape.
+- [DECISION] Decision: specialist context declarations validate to pinned bytes, and medium or large program-design approval comes from a hash-chained `user.resolve` event bound to the exact plan path and digest before spawn or Build closeout.
+- [DECISION] Rationale: missing inputs, oversized required context, project-external plans, and unapproved code shape fail before implementation evidence can be accepted.
+- [DECISION] Flip point: relax a validation rule only after measured false-block evidence identifies a narrower deterministic replacement.
+- [DECISION] Consequence: every workflow specialist has a bounded contract, while larger changes carry explicit design and approval evidence.
+
+### ADR-008: Keep handoffs and maintainability measures as derived projections
+
+- [DECISION] Context: compact resume records and code-shape measures help later decisions but can drift if they become a competing workflow authority or an uncalibrated score gate.
+- [DECISION] Decision: derive handoffs from current authoritative evidence, resolve conflicts in favor of state, and keep individual maintainability measures report-only for three release candidates.
+- [DECISION] Rationale: projections can be regenerated without losing truth, and reviewers retain responsibility for interpreting whether a delta is material.
+- [DECISION] Flip point: advisory maintainability thresholds may be considered after three release-candidate datasets, but state authority remains fixed by ADR-001.
+- [DECISION] Consequence: slice transitions remain resumable and measurable without promoting one metric or summary to source-of-truth status.
+
+## Critical Flows
+
+### Authorized provenance inspection and cleaning
+
+1. [DECISION] C-provenance-skill establishes authorization and delegates the selected path and mode to C-provenance-specialist without changing the source.
+2. [DECISION] C-provenance-specialist invokes C-provenance-client, which validates the service origin, destination grants, resolved address set, service version, OpenAPI shape, and requested capabilities before reading source bytes into a request payload.
+3. [DECISION] C-provenance-client pins the input, parent, and destination identities, then asks C-watermarks-remover-service to inspect before it requests cleaning.
+4. [DECISION] C-provenance-client bounds and sanitizes the service response, validates canonical base64 plus the output format, and publishes to C-user-filesystem through guarded atomic replacement.
+5. [DECISION] C-provenance-specialist reports deterministic removals, optional best-effort work, and unresolved risks separately without echoing service-controlled strings as instructions.
+
+### Harness-quality build flow
+
+1. [DECISION] C-context-loadout validates the chosen specialist's required files, optional files, inline task inputs, token cap, path identity, and pinned bytes before orchestration spawns it.
+2. [DECISION] C-program-design validates scale and either a small-change skip rationale or complete code-shape evidence plus hash-bound approval before Build can close.
+3. [DECISION] C-verification-runner executes checks in order, stops at the first failure in agent mode, and references complete retained evidence from a bounded summary.
+4. [DECISION] C-maintainability-trajectory compares the pre-edit and post-verification snapshots, and the independent quality reviewer interprets every material deterioration.
+5. [DECISION] C-slice-handoff writes a bounded projection for resume, with current state winning every conflict.
+6. [DECISION] C-evolution-benchmark repeats behavior and maintainability evidence across six isolated checkpoint reveals and retains JSON plus Markdown summaries after temporary cleanup.
+
+## Capacity Envelope
+
+| Input | Supported envelope | Source |
+|---|---|---|
+| File count | [DECISION] One file per command invocation, with sequential directory inspection only. | [DECISION] `extensions/provenance-pack/references/provenance-client.js` and feature PRD P-MUST-23. |
+| Input bytes | [DECISION] At most 64 MiB before base64 and JSON expansion. | [DECISION] Bundled client `MAX_INPUT_BYTES`. |
+| Service response | [DECISION] Bounded HTTP bodies, report depth, report nodes, array length, string length, and decoded output relative to the input limit. | [DECISION] `scripts/test-provenance-client.js` response and report limit cases. |
+| Concurrency | [HYPOTHESIS] Single-invocation processing remains sufficient until measured adoption justifies bounded parallel inspection. | [DECISION] Feature architecture delta and current client execution model. |
+| Verification commands | [DECISION] At least 250 ordered child commands, with one complete private log per compact invocation. | [DECISION] P-MUST-24 focused runner fixtures. |
+| Context contracts | [DECISION] At least 60 specialists, 150 workflow references, and 500 context paths, with each source capped at 4 MiB, project enumeration capped at 5,000 entries and depth 48, and event evidence capped at 12 KiB. | [DECISION] P-MUST-25 loadout and hostile-payload fixtures. |
+| Slice handoff | [DECISION] One canonical JSON record at or below 8 KiB, with mandatory recovery fields protected from trimming. | [DECISION] P-MUST-27 serialization fixtures. |
+| Evolution checkpoints | [DECISION] Exactly six sequential checkpoints with no parallel project mutation or future-checkpoint reads. | [DECISION] P-MUST-29 packaged scenario and isolation fixtures. |
+| Evolution input and output | [DECISION] Manifests and checkpoints are each capped at 16 KiB, scalar fields at 4 KiB, baselines at 64 MiB, 5,000 entries, and depth 48, machine evidence at 256 KiB, and human summaries at 128 KiB. | [DECISION] P-MUST-29 adversarial boundary fixtures. |
+
+## Failure and Degradation
+
+| Dependency or step | Timeout and retry stance | User-visible degraded state |
+|---|---|---|
+| Service health and contract | [DECISION] Use a 5 second connection deadline and 30 second total deadline, reject redirects, and retry no request; the health and contract reads are idempotent by canonical service origin plus requested version. | [DECISION] Report the service as unreachable or incompatible and write no output. |
+| Inspect or clean request | [DECISION] Use one 60 second absolute operation deadline and never retry; inspection is read-only, but cleaning is not assumed idempotent without a service-issued operation key. | [DECISION] Preserve source and destination files and report that completion is unknown. |
+| Optional pixel backend | [DECISION] Start only after explicit approval and a matching capability response, with no automatic fallback. | [DECISION] Name the unavailable or timed-out capability without claiming pixel removal. |
+| Response validation | [DECISION] Reject malformed, oversized, unsupported, kind-mismatched, or noncanonical data without retry. | [DECISION] Keep all final paths unchanged and return a fixed response-contract failure. |
+| Guarded publication | [DECISION] Reject parent or destination identity changes and attempt one local restoration when replacement publication fails. | [DECISION] Preserve the competing file, restore the prior destination when possible, and report any retained recovery path. |
+| Context or plan validation | [DECISION] Complete each local validation within a 30 second harness deadline, reject missing, escaped, contradictory, oversized, or negatively approved evidence, and never retry; the read-only validation is idempotent by input-byte digest. | [DECISION] Return bounded findings and leave authoritative state unchanged. |
+| Trajectory or benchmark input | [DECISION] Complete each fixture checkpoint within a 30 second behavior deadline, reject incompatible snapshots, malformed manifests, future-checkpoint access, or incomplete evidence, and never retry a mutation; snapshot reads are idempotent by repository-byte digest. | [DECISION] Stop at the first invalid checkpoint, retain partial evidence, and remove the temporary repository. |
+
 ## NFR-to-Architecture Map
 
 | PRD NFR | Architectural choice | ADR |
@@ -51,13 +147,26 @@
 | Release quality | Executable tier gates and self-project truth check | ADR-001 |
 | Level-4 safety | User-owned publish actions and guarded tool hooks | ADR-001 |
 | Requirement traceability | Bidirectional linkage JSON and reverse sync | ADR-001 |
+| Authorized provenance cleaning | Lazy extension activation with a separately operated service | ADR-004 |
+| Provenance client integrity | Bounded deterministic network, response, and filesystem enforcement | ADR-005 |
+| Remote file privacy | Destination-specific consent with loopback as the default | ADR-006 |
+| File integrity | Source preservation plus pinned, no-clobber, guarded atomic output publication | ADR-005 |
+| Context economy | Bounded pre-spawn loadouts and compact retained-log projections | ADR-007 |
+| Deterministic resume | State-authoritative structured handoffs capped at 8 KiB | ADR-008 |
+| Changeability evidence | Report-only maintainability deltas plus isolated sequential benchmark checkpoints | ADR-008 |
+| Harness isolation | Dependency-free local helpers, inert source parsing, and an offline temporary-repository benchmark | ADR-007 and ADR-008 |
 
 ## Trust Boundaries
 
 - [DECISION] Host boundary: Environment variables and installed files are untrusted capability hints until active-session evidence confirms behavior.
 - [DECISION] Shell boundary: Installer and validation commands use argument-array process execution and scoped project roots.
-- [DECISION] Release boundary: Git tags, GitHub releases, npm publication, and credentials require explicit user-owned action.
+- [DECISION] Release boundary: Git tags, GitHub releases, npm publication, and credentials require explicit user-owned action; multi-package release versions stage and verify as a pair before `latest` promotion.
 - [DECISION] Connector boundary: External writes remain delegated to host connectors with explicit scope.
+- [DECISION] Provenance service boundary: redirects, embedded credentials, mixed-trust DNS sets, unsupported service contracts, malformed responses, and unavailable requested capabilities fail closed before output publication.
+- [DECISION] Provenance credential boundary: `WATERMARKS_SERVICE_API_KEY` remains environment-only input and never enters request JSON, command arguments, Godpowers state, or generated reports.
+- [DECISION] Provenance filesystem boundary: the bundled client pins input, parent, and destination identities, rejects unsafe links and concurrent changes, and retains a named recovery path when guarded restoration cannot complete.
+- [DECISION] Harness path boundary: context files reject symlinks and retain pinned bytes, program-design approval binds to an exact path and digest, and handoff plus benchmark paths resolve within their declared roots before reads or writes.
+- [DECISION] Harness content boundary: repository source and imports are inert measurement input, loadout events omit contents, and compact logs never add environment dumps or credentials.
 
 ## Data Ownership
 
@@ -69,6 +178,16 @@
 | Project context | `AGENTS.md` and `agents/*.md` Pillars |
 | Event history | `lib/events.js` hash-chained JSONL |
 | Release truth | `lib/self-project-truth.js` across canonical surfaces |
+| Provenance extension contract | `extensions/provenance-pack/skills/god-remove-ai-marks.md` and `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md` |
+| Provenance client invariants | `extensions/provenance-pack/references/provenance-client.js` |
+| Provenance source, backup, and output files | The active user under `C-user-filesystem` |
+| Provenance inspection and cleaning algorithms | The user-selected `C-watermarks-remover-service` deployment |
+| Complete verification bytes and bounded presentation | `scripts/run-tests.js` under C-verification-runner |
+| Specialist context declarations and loadout verdict | Specialist frontmatter plus `lib/context-budget.js` under C-context-loadout |
+| Program-design validation | `lib/program-design.js`, with Build closure owned by `lib/gate.js` |
+| Slice handoff projection | `lib/slice-handoff.js`, with workflow authority retained by `.godpowers/state.json` |
+| Maintainability snapshots and deltas | `lib/maintainability-trajectory.js` plus the independent quality reviewer |
+| Evolution checkpoint evidence | `lib/evolution-benchmark.js` and `fixtures/evolution/maintainability-sequence/` |
 
 ## Have-Nots Checklist
 
@@ -77,3 +196,33 @@
 - [x] [DECISION] Every ADR has a measurable flip point.
 - [x] [DECISION] Every external boundary names its evidence and failure posture.
 - [x] [DECISION] Every state entity has one owner.
+
+## Architecture Changelog
+
+- [DECISION] 2026-08-17: Added ADR-007, ADR-008, and six harness-quality containers because verified pre-spawn context, program design, compact verification, handoffs, trajectory measures, and evolution evidence now participate in the Build and release paths.
+- [DECISION] 2026-08-17: Added ADR-004 through ADR-006 and the five provenance containers because the completed extension introduced a lazy package boundary, a deterministic upstream client, a visible external transfer gate, and guarded local publication.
+
+<!-- godpowers:linkage:begin -->
+## Implementation Linkage
+
+> Auto-generated by /god-sync. Do not edit.
+
+### Containers
+
+- **C-auth-service** (Source: `docs`)
+- **C-extension-authoring** (Source: `lib`)
+- **C-installer-core** (Source: `lib`)
+- **C-provenance-client** (Source: `extensions/provenance-pack/references`)
+- **C-provenance-skill** (Source: `extensions/provenance-pack/skills`)
+- **C-provenance-specialist** (Source: `extensions/provenance-pack/agents`)
+
+### ADRs
+
+- **ADR-001** Pattern: `references/planning/ARCH-ANATOMY.md`, `templates/ARCH.mdx`
+- **ADR-002** Pattern: `references/planning/ARCH-ANATOMY.md`, `scripts/static-check.js`, `templates/ARCH.mdx`
+- **ADR-004** Pattern: `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/skills/god-remove-ai-marks.md`
+- **ADR-005** Pattern: `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`
+- **ADR-006** Pattern: `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`
+- **ADR-007** Pattern: `docs/linkage.md`, `lib/code-scanner.js`, `scripts/test-linkage.js`
+
+<!-- godpowers:linkage:end -->

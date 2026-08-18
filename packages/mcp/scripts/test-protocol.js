@@ -5,9 +5,12 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const { Client } = require('@modelcontextprotocol/sdk/client/index.js');
-const { StdioClientTransport } = require('@modelcontextprotocol/sdk/client/stdio.js');
+const { Client: LegacyClient } = require('@modelcontextprotocol/sdk/client/index.js');
+const { StdioClientTransport: LegacyStdioClientTransport } = require('@modelcontextprotocol/sdk/client/stdio.js');
+const { Client: ModernClient } = require('@modelcontextprotocol/client');
+const { StdioClientTransport: ModernStdioClientTransport } = require('@modelcontextprotocol/client/stdio');
 const setup = require('../lib/setup');
+const tools = require('../lib/tools');
 const mcpPackage = require('../package.json');
 
 const ROOT = path.resolve(__dirname, '..', '..', '..');
@@ -54,11 +57,48 @@ function assertRequireRuntimeGuard() {
     'requireRuntime should load a valid runtime module');
 }
 
-async function main() {
-  assertSetupPath();
-  assertRequireRuntimeGuard();
+function assertLintBoundaries() {
+  const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-mcp-boundary-'));
+  const project = path.join(sandbox, 'project');
+  const outside = path.join(sandbox, 'outside');
+  fs.mkdirSync(project, { recursive: true });
+  fs.mkdirSync(outside, { recursive: true });
+  fs.writeFileSync(path.join(project, 'inside.md'), '# Inside\n', 'utf8');
+  fs.writeFileSync(path.join(outside, 'outside.md'), '# Outside\n', 'utf8');
 
-  const transport = new StdioClientTransport({
+  try {
+    assert.throws(
+      () => tools.lintTool(
+        { project: outside, path: 'outside.md' },
+        { projectRoot: project, runtimeRoot: ROOT }
+      ),
+      /configured project root/,
+      'lint_artifact must not let tool input replace the configured project root'
+    );
+
+    const linkedOutside = path.join(project, 'linked-outside');
+    fs.symlinkSync(outside, linkedOutside, process.platform === 'win32' ? 'junction' : 'dir');
+    assert.throws(
+      () => tools.lintTool(
+        { path: 'linked-outside/outside.md' },
+        { projectRoot: project, runtimeRoot: ROOT }
+      ),
+      /symbolic links|inside the project root/,
+      'lint_artifact must reject a symlink that escapes the configured project root'
+    );
+
+    const inside = tools.lintTool(
+      { project, path: 'inside.md' },
+      { projectRoot: project, runtimeRoot: ROOT }
+    );
+    assert(inside.artifact === 'inside.md', 'lint_artifact should accept the configured project root');
+  } finally {
+    fs.rmSync(sandbox, { recursive: true, force: true });
+  }
+}
+
+function createTransport(Transport) {
+  return new Transport({
     command: process.execPath,
     args: [
       SERVER,
@@ -71,7 +111,43 @@ async function main() {
     cwd: ROOT,
     stderr: 'pipe'
   });
-  const client = new Client({
+}
+
+function expectedToolNames() {
+  return [
+    'change_metrics',
+    'gate_check',
+    'lint_artifact',
+    'next',
+    'route',
+    'status',
+    'trace_requirement',
+    'verification_history',
+    'work_report'
+  ];
+}
+
+async function assertModernProtocol() {
+  const transport = createTransport(ModernStdioClientTransport);
+  const client = new ModernClient({
+    name: 'godpowers-mcp-modern-protocol-test',
+    version: '1.0.0'
+  }, {
+    versionNegotiation: { mode: { pin: '2026-07-28' } }
+  });
+
+  try {
+    await client.connect(transport);
+    const listed = await client.listTools();
+    assert.deepEqual(listed.tools.map((tool) => tool.name).sort(), expectedToolNames());
+  } finally {
+    await client.close();
+  }
+}
+
+async function assertLegacyProtocol() {
+  const transport = createTransport(LegacyStdioClientTransport);
+  const client = new LegacyClient({
     name: 'godpowers-mcp-protocol-test',
     version: '1.0.0'
   }, {
@@ -84,17 +160,7 @@ async function main() {
 
     const listed = await client.listTools();
     const names = listed.tools.map((tool) => tool.name).sort();
-    assert.deepEqual(names, [
-      'change_metrics',
-      'gate_check',
-      'lint_artifact',
-      'next',
-      'route',
-      'status',
-      'trace_requirement',
-      'verification_history',
-      'work_report'
-    ]);
+    assert.deepEqual(names, expectedToolNames());
     for (const tool of listed.tools) {
       assert(tool.annotations && tool.annotations.readOnlyHint === true, `${tool.name} missing readOnlyHint`);
       assert(tool.annotations.destructiveHint === false, `${tool.name} should not be destructive`);
@@ -163,8 +229,16 @@ async function main() {
   } finally {
     await client.close();
   }
+}
 
-  console.log('  + @godpowers/mcp protocol and setup tests passed');
+async function main() {
+  assertSetupPath();
+  assertRequireRuntimeGuard();
+  assertLintBoundaries();
+  await assertModernProtocol();
+  await assertLegacyProtocol();
+
+  console.log('  + @godpowers/mcp modern, legacy, and setup tests passed');
 }
 
 main().catch((error) => {

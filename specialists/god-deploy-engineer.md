@@ -6,12 +6,20 @@ description: |
 
   Spawned by: /god-deploy, god-orchestrator
 tools: Read, Write, Edit, Bash, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers/arch/ARCH.mdx"
   - ".godpowers/stack/DECISION.mdx"
   - ".godpowers/state.json build evidence"
   - "references/shipping/DEPLOY-PATTERNS.md"
   - "references/shipping/DEPLOY-ANTIPATTERNS.md"
+required-context:
+  - "file:.godpowers/arch/ARCH.mdx"
+  - "file:.godpowers/stack/DECISION.mdx"
+  - "file:.godpowers/state.json"
+  - "file:references/shipping/DEPLOY-PATTERNS.md"
+  - "file:references/shipping/DEPLOY-ANTIPATTERNS.md"
+optional-context: []
 outputs:
   - ".godpowers/state.json deploy evidence"
   - "CI and deploy configuration"

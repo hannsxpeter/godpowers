@@ -59,12 +59,64 @@ jobs:
       - name: Verify fresh pre-publication gate
         run: npm run release:prepublication:check
 
-      - name: Publish godpowers with provenance
-        run: npm publish --provenance --access public
+      - name: Publish godpowers to a recoverable staging tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          staging_tag="release-${version//./-}"
+          set +e
+          lookup="$(npm view "godpowers@$version" version 2>&1)"
+          lookup_status=$?
+          set -e
+          if [[ $lookup_status -eq 0 ]]; then
+            echo "godpowers@$version already exists; preserving it for an idempotent recovery run."
+          elif grep -q 'E404' <<<"$lookup"; then
+            npm publish --provenance --access public --tag "$staging_tag"
+          else
+            echo "$lookup"
+            echo "Registry state is uncertain; refusing to publish."
+            exit 1
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish @godpowers/mcp with provenance
-        run: npm publish --workspace @godpowers/mcp --provenance --access public
+      - name: Publish @godpowers/mcp to the same staging tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./packages/mcp/package.json').version")"
+          staging_tag="release-${version//./-}"
+          set +e
+          lookup="$(npm view "@godpowers/mcp@$version" version 2>&1)"
+          lookup_status=$?
+          set -e
+          if [[ $lookup_status -eq 0 ]]; then
+            echo "@godpowers/mcp@$version already exists; preserving it for an idempotent recovery run."
+          elif grep -q 'E404' <<<"$lookup"; then
+            npm publish --workspace @godpowers/mcp --provenance --access public --tag "$staging_tag"
+          else
+            echo "$lookup"
+            echo "Registry state is uncertain; refusing to publish."
+            exit 1
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify the exact package pair before promotion
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          [[ "$(npm view "godpowers@$version" version)" == "$version" ]]
+          [[ "$(npm view "@godpowers/mcp@$version" version)" == "$version" ]]
+
+      - name: Promote the verified pair to latest
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          npm dist-tag add "@godpowers/mcp@$version" latest
+          npm dist-tag add "godpowers@$version" latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -21,6 +21,8 @@ see_also: [security]
 ## Decisions
 
 - [DECISION] Backward-compatible routing, validation, and workflow capability additions use a minor release.
+- [DECISION] Raising a published workspace package's minimum Node.js version or adopting an incompatible protocol major uses a major release for both version-locked packages.
+- [DECISION] The release containing `@modelcontextprotocol/server` v2 and the `@godpowers/mcp` Node 20-plus engine is the Godpowers 6.0.0 major line.
 - [DECISION] A release is complete only after GitHub, npm, package integrity, and isolated installed behavior agree.
 
 ## Rules

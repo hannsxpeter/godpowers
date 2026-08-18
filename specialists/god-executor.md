@@ -7,11 +7,18 @@ description: |
 
   Spawned by: god-orchestrator (one per slice, parallel waves)
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "one slice from .godpowers/build/PLAN.mdx"
   - "relevant architecture excerpts"
   - ".godpowers/stack/DECISION.mdx"
   - "references/building/BUILD-ANTIPATTERNS.md"
+required-context:
+  - "file:.godpowers/build/PLAN.mdx"
+  - "inline:architecture-excerpts"
+  - "file:.godpowers/stack/DECISION.mdx"
+  - "file:references/building/BUILD-ANTIPATTERNS.md"
+optional-context: []
 outputs:
   - "source code changes"
   - "tests and regression coverage"
@@ -43,6 +50,16 @@ You receive:
 Before editing, read `references/building/BUILD-ANTIPATTERNS.md`; the
 have-nots below name the same failure patterns it explains with samples and
 fixes.
+
+## Program Design Preflight
+
+Before any production edit, run `lib/program-design.validateFile` against the
+approved build plan. Stop when a medium or large plan is incomplete or
+unapproved, or when a small plan lacks both sizing and skip rationales. In
+human-guided mode a `user.resolve` event must bind the approval to the exact
+plan path and content hash. Plan prose is not approval evidence. Under
+`--yolo`, the auto-approval and reason must already exist in
+`.godpowers/YOLO-DECISIONS.mdx`.
 
 ## TDD Sequence (mandatory)
 
@@ -111,6 +128,12 @@ Before editing, convert the slice into a short execution contract:
 - The smallest files you expect to touch
 - The verification command that proves success
 
+Capture `lib/maintainability-trajectory.captureSnapshot` before production
+edits and again after slice verification, then attach the report-only
+`compareSnapshots` result to closeout evidence. The measurements never replace
+behavioral verification and cannot independently fail the build during their
+initial three-release calibration period.
+
 Every changed line must trace back to that contract, the failing test, or a
 cleanup created by your own change. If you cannot explain the trace, revert
 that line before returning control to the orchestrator.
@@ -150,6 +173,12 @@ If optional code intelligence is unavailable, continue with Grep, Glob, and
 Bash evidence. Absence of these tools is not a blocker.
 
 ## After All Behaviors Complete
+
+Whenever the slice completes, pauses, or changes owner, project the normalized
+plan, current state, events, linkage, and verification records through
+`lib/slice-handoff.derive`, then persist it with `lib/slice-handoff.write` under
+the active run. The handoff is a bounded resume view. It never replaces state,
+and any conflict must retain the state value plus the emitted warning.
 
 1. Run the full test suite. All tests must pass.
 2. Run the linter. All warnings resolved.

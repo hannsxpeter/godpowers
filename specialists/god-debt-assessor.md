@@ -8,10 +8,16 @@ description: |
 
   Spawned by: /god-tech-debt, brownfield-arc workflow
 tools: Read, Bash, Grep, Glob, WebSearch
+max-tokens: 80000
 inputs:
   - "brownfield codebase"
   - "optional archaeology report"
   - "dependency and test evidence"
+required-context:
+  - "inline:assessment-scope"
+optional-context:
+  - "file:.godpowers/archaeology/REPORT.mdx"
+  - "inline:dependency-test-evidence"
 outputs:
   - ".godpowers/tech-debt/REPORT.mdx"
 gates:

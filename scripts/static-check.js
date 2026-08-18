@@ -83,6 +83,51 @@ test('package test script delegates to scripts/run-tests.js', () => {
   }
 });
 
+test('P-MUST-25: every workflow specialist resolves to a valid context contract', () => {
+  const contextBudget = require('../lib/context-budget');
+  const specialistDir = path.join(ROOT, 'specialists');
+  const workflowDir = path.join(ROOT, 'workflows');
+  const failures = [];
+  const specialistFiles = fs.readdirSync(specialistDir)
+    .filter(name => name.endsWith('.md'))
+    .sort();
+  for (const specialistName of specialistFiles) {
+    const validation = contextBudget.validateAgentContract(path.join(specialistDir, specialistName));
+    if (!validation.valid) {
+      failures.push(`${specialistName}: ${validation.errors.join(', ')}`);
+    }
+  }
+  const workflowFiles = fs.readdirSync(workflowDir)
+    .filter(name => name.endsWith('.yaml'))
+    .sort();
+  const references = [];
+  for (const workflowName of workflowFiles) {
+    const text = fs.readFileSync(path.join(workflowDir, workflowName), 'utf8');
+    const pattern = /^\s*(?:-\s*)?uses:\s*([^\s#]+)/gm;
+    let match;
+    while ((match = pattern.exec(text)) !== null) {
+      references.push({ workflowName, ref: match[1], agent: match[1].split('@')[0] });
+    }
+  }
+  for (const reference of references) {
+    const file = path.join(specialistDir, `${reference.agent}.md`);
+    if (!fs.existsSync(file)) {
+      failures.push(`${reference.workflowName}: ${reference.ref} has no specialist contract`);
+      continue;
+    }
+    const validation = contextBudget.validateAgentContract(file);
+    if (!validation.valid) {
+      failures.push(`${reference.workflowName}: ${reference.agent}: ${validation.errors.join(', ')}`);
+    } else if (validation.contract.name !== reference.agent) {
+      failures.push(
+        `${reference.workflowName}: ${reference.agent} resolves to contract ${validation.contract.name}`
+      );
+    }
+  }
+  if (references.length === 0) failures.push('workflow YAML contains no uses references');
+  if (failures.length > 0) throw new Error(failures.join('; '));
+});
+
 // Every scripts/test-*.js on disk must run in the full suite. A hand-curated
 // allowlist here once guarded only 9 of ~90 suites, so the most load-bearing
 // suites (install smoke, dogfood, doc surface counts) could have been dropped
@@ -690,8 +735,18 @@ test('MCP companion stays outside main package dependencies', () => {
   if (mcpPkg.name !== '@godpowers/mcp') {
     throw new Error(`unexpected MCP package name: ${mcpPkg.name}`);
   }
-  if (!mcpPkg.dependencies || !mcpPkg.dependencies['@modelcontextprotocol/sdk']) {
-    throw new Error('@godpowers/mcp must own the MCP SDK dependency');
+  if (!mcpPkg.dependencies || !mcpPkg.dependencies['@modelcontextprotocol/server']) {
+    throw new Error('@godpowers/mcp must own the MCP v2 server dependency');
+  }
+  if (mcpPkg.dependencies['@modelcontextprotocol/sdk']) {
+    throw new Error('@godpowers/mcp must not ship the legacy MCP SDK as a production dependency');
+  }
+  if (!mcpPkg.devDependencies || !mcpPkg.devDependencies['@modelcontextprotocol/client']
+    || !mcpPkg.devDependencies['@modelcontextprotocol/sdk']) {
+    throw new Error('@godpowers/mcp protocol tests must cover modern and legacy clients');
+  }
+  if (!mcpPkg.engines || mcpPkg.engines.node !== '>=20.0.0') {
+    throw new Error('@godpowers/mcp v2 server must declare Node.js >=20.0.0');
   }
 });
 
@@ -740,6 +795,17 @@ test('publish workflow includes MCP companion package', () => {
   if (Array.isArray(pkg.workspaces) && pkg.workspaces.includes('packages/mcp')) {
     if (!workflow.includes('npm publish --workspace @godpowers/mcp --provenance --access public')) {
       throw new Error('publish.yml must publish @godpowers/mcp when the workspace exists');
+    }
+    for (const required of [
+      'staging_tag="release-${version//./-}"',
+      'Verify the exact package pair before promotion',
+      'npm dist-tag add "@godpowers/mcp@$version" latest',
+      'npm dist-tag add "godpowers@$version" latest',
+      'Registry state is uncertain; refusing to publish.'
+    ]) {
+      if (!workflow.includes(required)) {
+        throw new Error(`publish.yml is missing recoverable pair publication contract: ${required}`);
+      }
     }
   }
 });

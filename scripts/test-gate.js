@@ -6,6 +6,8 @@ const { spawnSync } = require('child_process');
 
 const gate = require('../lib/gate');
 const artifactMap = require('../lib/artifact-map');
+const events = require('../lib/events');
+const programDesign = require('../lib/program-design');
 const state = require('../lib/state');
 const { test, asyncTest, assert, mkProject, writeRel, report } = require('./test-harness');
 
@@ -110,6 +112,157 @@ test('repo build and harden gates pass against fixture projects', () => {
     const result = gateResult(tier, project);
     assert(result.verdict === 'pass', `${tier} failed: ${errorSummary(result)}`);
   }
+});
+
+function programDesignPlan(scale = 'large', approval = 'user-authorized') {
+  return [
+    '---',
+    `scale: ${scale}`,
+    `program_design_approval: ${approval}`,
+    '---',
+    '# Build Plan',
+    '## Scale And Approval',
+    `- [DECISION] Scale: ${scale}, because multiple modules change.`,
+    '- [DECISION] Approval: the user approved the design.',
+    '## Program Design',
+    '### File Tree Delta',
+    '- [DECISION] Add one runtime and one test file.',
+    '### Module Boundaries',
+    '- [DECISION] The runtime owns validation only.',
+    '### Public Contracts',
+    '- [DECISION] Export one validator.',
+    '### Call And Data Flow',
+    '- [DECISION] The gate calls the validator before closeout.',
+    '### Reused Patterns',
+    '- [DECISION] Reuse frontmatter parsing.',
+    '### Non-Goals',
+    '- [DECISION] No new dependencies.',
+    '### Verification Points',
+    '- [DECISION] Run the focused test.'
+  ].join('\n');
+}
+
+function initBuildGateProject(name, planText) {
+  const project = mkProject(name);
+  initState(project, (current) => {
+    current.tiers['tier-2'].build = {
+      status: 'done',
+      updated: '2026-06-10T18:06:00.000Z',
+      scale: 'large',
+      planArtifact: 'build/PLAN.mdx',
+      verification: {
+        commands: [{ command: 'npm test', status: 'pass', exitCode: 0 }]
+      }
+    };
+  });
+  if (planText !== null) {
+    const rel = '.godpowers/build/PLAN.mdx';
+    writeRel(project, rel, planText);
+    if (/program_design_approval:\s*(?:approved|user-authorized|human-approved)/i.test(planText)) {
+      const run = events.startRun(project, { purpose: 'program-design-gate-test' });
+      run.emit({
+        span_id: run.rootSpanId,
+        name: 'user.resolve',
+        attrs: {
+          subject: 'program-design',
+          decision: 'approved',
+          artifact: rel,
+          artifactHash: programDesign.planHash(planText),
+          reviewer: 'user'
+        }
+      });
+    }
+  }
+  writeRel(project, '.godpowers/ledger/verifications.jsonl', JSON.stringify({
+    kind: 'executed',
+    command: 'npm test',
+    exit_code: 0,
+    verified: true,
+    timestamp: '2026-06-10T18:07:00.000Z',
+    substep: 'tier-2.build'
+  }) + '\n');
+  return project;
+}
+
+test('P-MUST-26: build gate blocks missing program design closeout evidence', () => {
+  const project = initBuildGateProject('godpowers-gate-program-missing-', null);
+  const result = gateResult('build', project);
+  assert(result.verdict === 'fail', 'missing referenced plan should fail');
+  assert(result.findings.some((finding) => finding.id === 'build-program-design:missing-plan'),
+    JSON.stringify(result.findings));
+});
+
+test('build gate rejects a plan symlink that resolves outside the project', () => {
+  const project = initBuildGateProject('godpowers-gate-program-symlink-', null);
+  const outside = mkProject('godpowers-gate-program-outside-');
+  const outsidePlan = path.join(outside, 'PLAN.mdx');
+  fs.writeFileSync(outsidePlan, programDesignPlan());
+  const buildDir = path.join(project, '.godpowers', 'build');
+  fs.mkdirSync(buildDir, { recursive: true });
+  fs.symlinkSync(outsidePlan, path.join(buildDir, 'PLAN.mdx'));
+  const result = gateResult('build', project);
+  assert(result.verdict === 'fail', 'outside plan symlink should fail');
+  assert(result.findings.some((finding) => finding.id === 'build-program-design:missing-plan'),
+    JSON.stringify(result.findings));
+});
+
+test('build gate blocks incomplete or unapproved larger program designs', () => {
+  const incompleteProject = initBuildGateProject(
+    'godpowers-gate-program-incomplete-',
+    programDesignPlan().replace(/### Module Boundaries[\s\S]*?(?=### Public Contracts)/, '')
+  );
+  const incomplete = gateResult('build', incompleteProject);
+  assert(incomplete.verdict === 'fail', 'incomplete design should fail');
+  assert(incomplete.findings.some((finding) => finding.id === 'build-program-design:module-boundaries'),
+    JSON.stringify(incomplete.findings));
+
+  const unapprovedProject = initBuildGateProject(
+    'godpowers-gate-program-unapproved-',
+    programDesignPlan('large', 'pending').replace('the user approved the design', 'approval is pending')
+  );
+  const unapproved = gateResult('build', unapprovedProject);
+  assert(unapproved.verdict === 'fail', 'unapproved design should fail');
+  assert(unapproved.findings.some((finding) => finding.id === 'build-program-design:approval'),
+    JSON.stringify(unapproved.findings));
+});
+
+test('build gate accepts approved larger program design closeout evidence', () => {
+  const project = initBuildGateProject('godpowers-gate-program-pass-', programDesignPlan());
+  const result = gateResult('build', project);
+  assert(result.verdict === 'pass', errorSummary(result));
+  assert(result.checks.some((check) => check.id === 'build-program-design' && check.status === 'pass'),
+    JSON.stringify(result.checks));
+});
+
+test('build gate rejects state and plan scale mismatch', () => {
+  const project = initBuildGateProject('godpowers-gate-program-scale-', [
+    '---',
+    'scale: small',
+    '---',
+    '# Small Build Plan',
+    '## Scale And Approval',
+    '- [DECISION] Scale: small.',
+    '- [DECISION] Sizing rationale: one small file.',
+    '- [DECISION] Program design skip rationale: no boundary changes.'
+  ].join('\n'));
+  const result = gateResult('build', project);
+  assert(result.verdict === 'fail', 'state large and plan small must fail');
+  assert(result.findings.some((finding) => finding.id === 'build-program-design:scale-mismatch'),
+    JSON.stringify(result.findings));
+});
+
+test('build gate in YOLO mode requires prior ledger approval with rationale', () => {
+  const project = initBuildGateProject('godpowers-gate-program-yolo-', programDesignPlan('large', 'yolo'));
+  let result = gate.check({ tier: 'build', projectRoot: project, today: '2026-06-10', yolo: true });
+  assert(result.verdict === 'fail', 'YOLO design without decision ledger should fail');
+  writeRel(project, '.godpowers/YOLO-DECISIONS.mdx', [
+    '# YOLO Decisions Log',
+    '## Tier 2 / Program Design',
+    '- Auto-picked: approve the complete program design before execution',
+    '- Reason: all required sections and verification points are present.'
+  ].join('\n'));
+  result = gate.check({ tier: 'build', projectRoot: project, today: '2026-06-10', yolo: true });
+  assert(result.verdict === 'pass', errorSummary(result));
 });
 
 test('missing required artifact fails the gate', () => {

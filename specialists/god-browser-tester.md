@@ -10,11 +10,17 @@ description: |
   Spawned by: /god-test-runtime, /god-build (optional after wave),
   /god-launch (mandatory gate), /god-harden (a11y check)
 tools: Read, Write, Bash, Grep
+max-tokens: 80000
 inputs:
   - "runtime URL"
   - "DESIGN.md"
   - ".godpowers/prd/PRD.mdx"
   - "project root"
+required-context:
+  - "inline:runtime-url"
+  - "file:DESIGN.md"
+  - "file:.godpowers/prd/PRD.mdx"
+optional-context: []
 outputs:
   - ".godpowers/runtime/<run-id>/audit-report.json"
   - ".godpowers/runtime/<run-id>/test-report.json"

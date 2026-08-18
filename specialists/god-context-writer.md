@@ -9,10 +9,17 @@ description: |
   Spawned by: /god-init (automatic quiet setup after consent), /god-context,
   /god-sync (refresh).
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers/state.json"
   - "detected AI tool configuration"
   - "DESIGN.md and PRODUCT.md presence"
+required-context:
+  - "file:.godpowers/state.json"
+optional-context:
+  - "inline:ai-tool-configuration"
+  - "file:DESIGN.md"
+  - "file:PRODUCT.md"
 outputs:
   - "AGENTS.md godpowers fence"
   - "tool-specific pointer files"

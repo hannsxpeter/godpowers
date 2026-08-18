@@ -7,10 +7,16 @@ description: |
 
   Spawned by: god-orchestrator (after god-spec-reviewer passes)
 tools: Read, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "executor code diff"
   - "repository quality conventions"
   - "verification evidence"
+required-context:
+  - "inline:code-diff"
+  - "inline:verification-evidence"
+optional-context:
+  - "inline:quality-conventions"
 outputs:
   - "stage 2 PASS or FAIL verdict"
   - "quality findings"
@@ -58,6 +64,10 @@ Your job: would you ship this code in production?
 - No copy-paste duplication that should be abstracted
 - No premature abstraction either
 - Comments explain WHY, not WHAT (the code shows what)
+- Inspect the before-and-after maintainability trajectory when one is supplied.
+  Discuss material deterioration in the verdict, including its sample counts,
+  but keep these metrics report-only during the initial three-release
+  calibration period. No metric value can independently fail the review.
 
 ### 6. Simplicity and Surgicality
 - The solution is the minimum code that satisfies the verified behavior

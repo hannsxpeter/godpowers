@@ -7,6 +7,7 @@ description: |
 
   Spawned by: /god-prd, god-orchestrator
 tools: Read, Write, Bash, Grep
+max-tokens: 80000
 inputs:
   - "user intent"
   - ".godpowers/intent.yaml"
@@ -14,6 +15,14 @@ inputs:
   - "templates/PRD.mdx"
   - "references/planning/PRD-ANATOMY.md"
   - "references/planning/PRD-ANTIPATTERNS.md"
+required-context:
+  - "inline:user-intent"
+  - "file:.godpowers/intent.yaml"
+  - "file:templates/PRD.mdx"
+  - "file:references/planning/PRD-ANATOMY.md"
+  - "file:references/planning/PRD-ANTIPATTERNS.md"
+optional-context:
+  - "inline:preparation-context"
 outputs:
   - ".godpowers/prd/PRD.mdx"
   - ".godpowers/prd/PRD.meta.json"

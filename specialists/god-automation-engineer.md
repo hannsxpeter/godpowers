@@ -7,10 +7,16 @@ description: |
 
   Spawned by: /god-automation-setup
 tools: Read, Write, Edit, Bash, Glob
+max-tokens: 80000
 inputs:
   - "approved automation setup plan"
   - "host provider choice"
   - ".godpowers/state.json"
+required-context:
+  - "inline:automation-setup-plan"
+  - "inline:host-provider-choice"
+  - "file:.godpowers/state.json"
+optional-context: []
 outputs:
   - ".godpowers/automations.json"
   - "host-native automation configuration"

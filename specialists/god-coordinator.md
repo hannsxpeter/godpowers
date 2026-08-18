@@ -10,10 +10,16 @@ description: |
   Spawned by: /god-suite-init, /god-suite-status, /god-suite-sync,
   /god-suite-release, /god-suite-patch
 tools: Read, Write, Edit, Bash, Grep, Glob, Task
+max-tokens: 80000
 inputs:
   - "suite manifest"
   - "per-repo state files"
   - "suite operation request"
+required-context:
+  - "inline:suite-manifest"
+  - "inline:suite-operation-request"
+optional-context:
+  - "inline:repository-states"
 outputs:
   - "suite coordination state"
   - "per-repo orchestrator handoff files"

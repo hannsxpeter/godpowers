@@ -40,3 +40,42 @@
 - [x] [DECISION] Manual code and contract review supplemented automated dependency checks.
 - [x] [DECISION] Every OWASP Web Top 10:2025 category has an explicit package-specific procedure, result, and evidence reference.
 - [x] [DECISION] Critical findings count is zero.
+
+## Feature Review: Authorized AI Provenance Cleaning
+
+- [DECISION] Date: 2026-08-17.
+- [DECISION] Scope: `extensions/provenance-pack`, its deterministic client, its package and publication contract, and its focused verification scripts.
+- [DECISION] Reviewer: scoped `god-harden-auditor` review after the service-boundary and guarded-publication remediations.
+
+| Severity | Count |
+|---|---:|
+| Critical | 0 |
+| High | 0 |
+| Medium | 0 |
+| Low | 0 |
+
+- [DECISION] Scoped hardening gate: PASSED.
+- [DECISION] Network evidence: mixed loopback and public DNS sets are rejected, approved addresses remain pinned, and redirects fail closed.
+- [DECISION] Filesystem evidence: parent swaps and concurrent destination changes fail closed, guarded replacement restores the prior destination when possible, and any failed restoration reports the exact retained recovery path.
+- [DECISION] Verification evidence: the provenance client passed 20 tests, the provenance pack passed 14 tests, extension publication passed 65 tests, repository surface passed 4 tests, and 3 guarded-recovery fault injections passed.
+- [DECISION] Result: no unresolved or accepted security finding remains in the Authorized AI Provenance Cleaning feature scope.
+
+## Release Review: Harness Quality And MCP v2
+
+- [DECISION] Date: 2026-08-17.
+- [DECISION] Scope: P-MUST-24 through P-MUST-29, `@godpowers/mcp` v2 compatibility, the authorized provenance extension boundary, and root plus extension publication workflows.
+- [DECISION] Reviewer: independent `god-harden-auditor` after adversarial findings were repaired and re-verified.
+
+| Severity | Found | Resolved | Unresolved |
+|---|---:|---:|---:|
+| Critical | 2 | 2 | 0 |
+| High | 3 | 3 | 0 |
+| Medium | 4 | 4 | 0 |
+| Low | 0 | 0 | 0 |
+
+- [DECISION] Critical filesystem evidence: MCP tools stay on the configured project root and reject linked artifact paths; evolution baselines reject version-control metadata and use isolated Git configuration with empty hook and template directories.
+- [DECISION] High authority evidence: human program-design approval requires an exact plan path and SHA-256-bound `user.resolve` event, specialist context returns identity-pinned bytes after rejecting symlinks, and provenance grants match the exact normalized remote or internal origin.
+- [DECISION] Medium defense evidence: generic context events normalize and cap loadouts, repository and scenario walks enforce resource limits, root plus MCP publication verifies a recoverable staged pair before promotion, and pack publication binds the selected package to a merged version tag.
+- [DECISION] Focused verification evidence: MCP modern and legacy protocol checks pass; program-design plus Build gate suites pass 38 checks; context loadout passes 63 checks; evolution passes 18 checks; style plus maintainability scans pass 22 checks; provenance client and pack suites pass 20 and 14 checks.
+- [DECISION] Dependency evidence: the reviewed production dependency audit reports zero vulnerabilities.
+- [DECISION] Release hardening gate: PASSED with zero unresolved Critical, High, Medium, or Low findings and no remaining security launch blocker.

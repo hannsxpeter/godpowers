@@ -7,10 +7,15 @@ description: |
 
   Spawned by: /god-docs
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "codebase"
   - "existing documentation"
   - "changed behavior evidence"
+required-context:
+  - "inline:changed-behavior-evidence"
+optional-context:
+  - "inline:documentation-inventory"
 outputs:
   - "updated docs"
   - ".godpowers/docs/UPDATE-LOG.mdx"

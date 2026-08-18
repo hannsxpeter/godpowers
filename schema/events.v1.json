@@ -66,6 +66,7 @@
         "cache.hit",
         "cache.miss",
         "budget.exceeded",
+        "context.loadout",
         "lesson.recorded",
         "lesson.recalled",
         "proposal.proposed",

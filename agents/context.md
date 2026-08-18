@@ -15,7 +15,7 @@ see_also: [arch, quality, deploy]
 ## Context
 
 - [DECISION] Godpowers is an AI-powered development system delivered as slash commands and specialist agents inside AI coding tools.
-- [DECISION] The package name is `godpowers`, and the current repository version is `5.17.1`.
+- [DECISION] The package name is `godpowers`, and the current repository version is `6.0.0`.
 - [DECISION] The primary audience is solo founders and small engineering teams using AI coding tools who need accountable production workflow discipline without enterprise process.
 - [DECISION] The product promise is one slash-command arc from idea to hardened, observable, launch-ready software with traceable artifacts on disk.
 - [DECISION] Godpowers uses a pure-skill model where `npx godpowers` installs runtime files and in-tool slash commands perform work.
@@ -63,7 +63,7 @@ see_also: [arch, quality, deploy]
 From `RELEASE.md`:
 - [DECISION] Godpowers 5.5.0 is the Arc-Ready and Pillars conformance release.
 - [DECISION] The public surface contains 123 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
-- [DECISION] The core package contains 108 runtime library modules and keeps zero production dependencies.
+- [DECISION] The core package contains 112 runtime library modules and keeps zero production dependencies.
 - [DECISION] The `@godpowers/mcp` companion remains read-only and shares version 5.5.0.
 - [DECISION] Product routing selects one of six forms before applying product archetype, industry, or regulatory overlays.
 - [DECISION] Each product form carries a distinct vertical slice and completion-evidence contract, so web assumptions do not leak into API, CLI, mobile, data, or infrastructure work.

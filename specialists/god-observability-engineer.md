@@ -7,12 +7,20 @@ description: |
 
   Spawned by: /god-observe, god-orchestrator
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers/prd/PRD.mdx success metrics"
   - ".godpowers/arch/ARCH.mdx"
   - ".godpowers/state.json deploy evidence"
   - "references/shipping/OBSERVE-SLO-EXAMPLES.md"
   - "references/shipping/OBSERVE-ANTIPATTERNS.md"
+required-context:
+  - "file:.godpowers/prd/PRD.mdx"
+  - "file:.godpowers/arch/ARCH.mdx"
+  - "file:.godpowers/state.json"
+  - "file:references/shipping/OBSERVE-SLO-EXAMPLES.md"
+  - "file:references/shipping/OBSERVE-ANTIPATTERNS.md"
+optional-context: []
 outputs:
   - ".godpowers/state.json observability evidence"
   - "alert and dashboard configs"

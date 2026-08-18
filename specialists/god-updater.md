@@ -10,10 +10,16 @@ description: |
 
   Spawned by: /god-sync, end of feature-addition recipe execution
 tools: Read, Write, Edit, Bash, Grep, Glob, Task
+max-tokens: 80000
 inputs:
   - "reconciliation verdict"
   - "changed files"
   - "trigger type and recent commits"
+required-context:
+  - "inline:reconciliation-verdict"
+  - "inline:changed-files"
+  - "inline:trigger-context"
+optional-context: []
 outputs:
   - "updated affected artifacts"
   - ".godpowers/SYNC-LOG.mdx"

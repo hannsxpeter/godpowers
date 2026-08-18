@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-5.17.1-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-6.0.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 ### Your AI writes code fast. Godpowers makes it accountable.
@@ -219,6 +219,15 @@ change never grades it. The reviewer is spawned separately, with no memory of
 writing the thing it is reviewing, so it cannot rubber-stamp its own work.
 Building, checking against the spec, and checking code quality are three
 independent jobs done by three independent workers.
+
+### The harness protects the agent's attention
+
+Agent-oriented test output stays compact while complete logs remain available;
+specialists receive explicit bounded context; medium and large changes require
+an approved program design; completed slices leave structured handoffs; and
+maintainability is compared before and after each change. A bundled six-step
+evolution benchmark checks that the same codebase remains correct as new
+requirements arrive. See [Harness Quality](docs/harness-quality.md).
 
 ---
 
@@ -508,6 +517,7 @@ runs dependency-free static checks.
 
 - [Getting Started](https://github.com/hannsxpeter/godpowers/blob/main/docs/getting-started.md)
 - [Concepts](https://github.com/hannsxpeter/godpowers/blob/main/docs/concepts.md)
+- [Harness Quality](https://github.com/hannsxpeter/godpowers/blob/main/docs/harness-quality.md)
 - [Loop engineering](https://github.com/hannsxpeter/godpowers/blob/main/docs/loop-engineering.md)
 - [Quick Proof](https://github.com/hannsxpeter/godpowers/blob/main/docs/quick-proof.md)
 - [First 10 Minute Proof Case Study](https://github.com/hannsxpeter/godpowers/blob/main/docs/case-studies/first-10-minute-proof.md)

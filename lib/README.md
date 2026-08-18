@@ -78,7 +78,11 @@ package-level integrations.
 | `artifact-linter.js` | Check artifacts for required labels, evidence, and domain precision. |
 | `artifact-diff.js` | Compare artifact changes for review and release workflows. |
 | `cadence-guard.js` | Slow-artifact re-bless guard: classify a stale roadmap hash as a managed version stamp or content drift, so mechanical loops escalate drift for review instead of re-stamping it. |
-| `gate.js` | Run executable artifact gates for Phase 1 tier completion checks, including the claimed-vs-executed-backed attestation pairing against the evidence ledger. |
+| `gate.js` | Run executable artifact gates for Phase 1 tier completion checks, including claimed-vs-executed attestation pairing and conditional program-design validation for Build. |
+| `program-design.js` | Validate small-change skip rationales and approved medium or large program-design records before Build closes. |
+| `slice-handoff.js` | Project authoritative plan, state, event, linkage, and verification evidence into a bounded resume record. |
+| `maintainability-trajectory.js` | Capture deterministic report-only source, function, duplication, dependency, and cycle deltas around a slice. |
+| `evolution-benchmark.js` | Run the offline six-checkpoint changeability fixture and retain deterministic machine and human evidence. |
 | `findings-verdict.js` | Shared verdict authority for harden FINDINGS.mdx: one parser, two named policies (launch honors human-accepted risk, publication never does); no auditor-authored summary line satisfies a gate. |
 | `have-nots-validator.js` | Check artifacts against known failure modes. |
 | `voice-lint.js` | Detect sycophancy and gratitude-loop filler (have-not U-14); backs the artifact linter and the shipped-prose self-dogfood. |
@@ -91,7 +95,7 @@ package-level integrations.
 | Module | Purpose |
 |--------|---------|
 | `context-writer.js` | Produce tool-specific context files. |
-| `context-budget.js` | Keep generated context within budget. |
+| `context-budget.js` | Validate explicit specialist context contracts, plan bounded loadouts, and project content-free evidence. |
 | `planning-systems.js` | Detect and import legacy planning, BMAD, Superpowers, godplans, and godaudits context, including complete GP/R seed traceability and MDX-safe GA todo synchronization. |
 | `sibling-artifacts.js` | Read-only consumer for the Godplans 1.1 PLAN plus pinned validator contract and canonical `.godaudits/AUDIT.json`, with lifecycle-safe GP routing, legacy context fallback, check and evidence ledgers, compliance, accepted risks, score and coverage digests, typed GA dispatch, and import staleness. |
 | `source-sync.js` | Write managed Godpowers progress back to source-system companion files. |

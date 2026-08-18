@@ -7,11 +7,18 @@ description: |
 
   Spawned by: god-orchestrator (after god-executor completes a slice)
 tools: Read, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "slice plan"
   - "PRD acceptance criteria"
   - "executor code diff"
   - "request-trace evidence"
+required-context:
+  - "inline:slice-plan"
+  - "inline:prd-acceptance-criteria"
+  - "inline:code-diff"
+  - "inline:request-trace-evidence"
+optional-context: []
 outputs:
   - "stage 1 PASS or FAIL verdict"
   - "spec compliance findings"
@@ -34,6 +41,8 @@ implementer. You read the plan, you read the code, you decide if they match.
 - Relevant PRD acceptance criteria
 - The list of files the executor changed
 - The test results
+- The structured handoff derived from plan, state, events, linkage, and
+  verification evidence
 
 ## Review Questions
 
@@ -42,6 +51,10 @@ Answer each with EVIDENCE from the code:
 1. **Does the code implement what the plan said?**
    - For each item in the plan: where is it in the code?
    - Anything missing?
+   - For medium and large work, is hash-bound program design approval recorded in a `user.resolve` event and are
+     all required code-shape sections complete?
+   - For small work, are both sizing and program design skip rationales
+     recorded?
 
 2. **Are all acceptance criteria from the PRD met?**
    - For each acceptance criterion: which test verifies it?
@@ -84,6 +97,13 @@ Answer each with EVIDENCE from the code:
      impacted references, structural matches, or diagnostics for the touched
      language when relevant.
    - If unavailable or irrelevant, do not fail the slice for absence alone.
+
+9. **Does the structured handoff preserve authoritative closeout evidence?**
+   - Confirm it contains every mandatory field and remains at or below 8 KiB.
+   - Confirm current state wins conflicts and failed verification, blockers,
+     requirement ids, and next action survive trimming.
+   - Confirm every available disk evidence reference is retained and no prior
+     conversation is required to identify the next action.
 
 ## Output
 

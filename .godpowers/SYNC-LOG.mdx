@@ -12,3 +12,30 @@
 - [DECISION] Isolated root installation, Quick Proof, read-only project inspection, dashboard, next route, Claude install, Codex install, and the MCP executable pass post-publication verification.
 - [DECISION] The prior `v5.4.0` tag resolves as the rollback reference.
 - [DECISION] Production-user evidence remains unavailable and is not implied by release verification.
+
+## 2026-08-17: Authorized AI Provenance Cleaning
+
+- [DECISION] Added feature artifacts under `.godpowers/features/ai-provenance-cleaning/` and reconciled P-MUST-23, P-SHOULD-08, ADR-004 through ADR-006, five provenance containers, and M-authorized-ai-provenance-cleaning into the canonical PRD, architecture, roadmap, and hardening records.
+- [DECISION] Reverse sync scanned 827 files, recorded 104 links with 77 additions and no removals, refreshed four linkage footers, and reported zero drift findings or review items.
+- [DECISION] The feature-scoped verification passed 20 provenance-client tests, 14 provenance-pack tests, 65 extension-publication tests, 4 repository-surface tests, two JavaScript syntax checks, `git diff --check`, Stage 1 specification review, Stage 2 quality review, and scoped hardening with zero findings.
+- [DECISION] The repository-wide test run passed 496 skill checks and then stopped at the pre-existing MCP dependency-boundary failure caused by unrelated dirty `package-lock.json` and `packages/mcp/` changes, which this feature did not modify.
+- [DECISION] Source-system sync and requirements or state writes were disabled, and `.godpowers/state.json`, `.godpowers/intent.yaml`, `.godpowers/events.jsonl`, and `.godpowers/PROGRESS.mdx` remained unchanged.
+- [OPEN QUESTION] A shared integrations pillar should define reusable remote-content consent and retention guidance before a second external file-processing extension ships. Owner: maintainer. Due: before that second extension ships.
+
+- 2026-08-18T02:56:52.787Z roadmap hash re-blessed deliberately via version-sync --bless-roadmap: Reviewed Increment 14 harness-quality requirements, completion gate, dependencies, and source provenance for the 6.0.0 release
+
+- 2026-08-18T03:12:04.300Z roadmap hash re-blessed deliberately via version-sync --bless-roadmap: Reviewed reverse-synced P-MUST-24 through P-MUST-29 linkage footer and final 6.0.0 artifact source hashes
+
+- 2026-08-18T03:36:08.992Z roadmap hash re-blessed deliberately via version-sync --bless-roadmap: Reviewed final security-hardening architecture changes, exact-origin consent, authority binding, bounded traversal, and recoverable publication for 6.0.0
+
+## 2026-08-17: Harness Quality And MCP v2 Release Candidate
+
+- [DECISION] Added P-MUST-24 through P-MUST-29, ADR-007 and ADR-008, M-harness-quality-hardening, six focused runtime contracts, the six-checkpoint evolution fixture, and public harness-quality guidance.
+- [DECISION] Research from HumanLayer's official site and repositories informed compact verification, explicit context, design-before-execution, durable handoffs, changeability measures, and sequential evolution testing; Godpowers reimplemented these ideas without vendoring HumanLayer code or adding a dependency.
+- [DECISION] Independent specification and quality reviews pass for every harness slice, and independent release hardening resolved 2 Critical, 3 High, and 4 Medium findings with zero unresolved findings or security launch blockers.
+- [DECISION] The root and MCP package versions are aligned at 6.0.0, the root keeps Node.js 18 compatibility and zero production dependencies, and MCP v2 requires Node.js 20 or newer.
+- [DECISION] Root plus MCP publication now uses a recoverable staging tag and exact-pair verification before `latest` promotion; first-party pack publication requires a matching merged version tag.
+- [DECISION] The final local 6.0.0 release gate passes 114 test commands and 3,114 checks, 94.64 percent line coverage, 79.8 percent branch coverage, the 70 percent per-file floor across 110 included runtime modules, zero dependency vulnerabilities, 140 self-project truth checks, 645 root package files, and 8 MCP package files.
+- [DECISION] The vendored evidence producer is synchronized to Mythify 5.6.0 commit `62eeb7a046f4c56abe67d7e46310f53a47e80eaa`; executed verification records now carry unique identities, the record-shape drift gate passes, and Godpowers-specific atomic, state, and event adaptations remain intact.
+- [DECISION] The pre-publication gate passes against hardening revision `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268` with zero unresolved or accepted Critical findings.
+- [HYPOTHESIS] Pull-request CI, merge identity, tag workflow, npm integrity, GitHub Release assets, and isolated exact-version installation remain pending until external release steps execute.

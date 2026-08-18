@@ -8,6 +8,7 @@ description: |
 
   Spawned by: /god-build, god-orchestrator (before god-executor waves)
 tools: Read, Write, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers/roadmap/ROADMAP.mdx"
   - ".godpowers/arch/ARCH.mdx"
@@ -15,6 +16,14 @@ inputs:
   - ".godpowers/learnings/**/LEARNINGS.mdx"
   - "references/building/BUILD-VERTICAL-SLICES.md"
   - "references/building/BUILD-WAVES.md"
+required-context:
+  - "file:.godpowers/roadmap/ROADMAP.mdx"
+  - "file:.godpowers/arch/ARCH.mdx"
+  - "file:.godpowers/stack/DECISION.mdx"
+  - "file:references/building/BUILD-VERTICAL-SLICES.md"
+  - "file:references/building/BUILD-WAVES.md"
+optional-context:
+  - "file:.godpowers/learnings/**/LEARNINGS.mdx"
 outputs:
   - ".godpowers/build/PLAN.mdx"
 gates:
@@ -83,6 +92,24 @@ makes a slice vertical, with examples) and `references/building/BUILD-WAVES.md`
    - Slices with shared state must be sequential
 8. Group into **waves**: each wave is a set of slices that can run in parallel
 
+## Program Design Contract
+
+Before returning the plan, record `scale` as `small`, `medium`, or `large` in
+frontmatter and in the Scale And Approval section.
+
+- A small plan records both a sizing rationale and a program design skip
+  rationale.
+- A medium or large plan records File Tree Delta, Module Boundaries, Public
+  Contracts, Call And Data Flow, Reused Patterns, Non-Goals, and Verification
+  Points.
+- Human-guided work records a hash-bound `user.resolve` event with the
+  project-relative plan path, plan SHA-256 hash, approving reviewer, and exact
+  `program-design` subject. Plan text cannot approve itself. Under `--yolo`,
+  append the auto-approval and its reason to `.godpowers/YOLO-DECISIONS.mdx`
+  before execution.
+- Run `lib/program-design.validateFile` over `.godpowers/build/PLAN.mdx` and
+  return a blocking finding until its verdict is `pass`.
+
 ## Output
 
 Write `.godpowers/build/PLAN.mdx`:
@@ -126,3 +153,5 @@ Write `.godpowers/build/PLAN.mdx`:
 - Every slice has verification criteria
 - Dependencies are explicit
 - Waves are correctly grouped (no parallel slices share state)
+- Scale and conditional program design evidence pass
+  `lib/program-design.validateFile`

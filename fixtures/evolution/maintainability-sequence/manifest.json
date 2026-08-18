@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "maintainability-sequence",
+  "checkpointIds": [
+    "01-defaults",
+    "02-overrides",
+    "03-validation",
+    "04-subscriptions",
+    "05-snapshots",
+    "06-audit"
+  ]
+}

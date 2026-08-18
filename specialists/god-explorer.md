@@ -7,11 +7,18 @@ description: |
 
   Spawned by: /god-explore
 tools: Read, Write, Bash, WebSearch
+max-tokens: 80000
 inputs:
   - "free-form user intent"
   - "optional existing artifacts"
   - "optional domain glossary"
   - "references/planning/DIVERGENCE.md"
+required-context:
+  - "inline:user-intent"
+  - "file:references/planning/DIVERGENCE.md"
+optional-context:
+  - "file:.godpowers/**/*.mdx"
+  - "file:.godpowers/domain/GLOSSARY.mdx"
 outputs:
   - ".godpowers/explore/<slug>.mdx"
   - ".godpowers/discussions/<topic>.mdx"

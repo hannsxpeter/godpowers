@@ -7,10 +7,16 @@ description: |
 
   Spawned by: /god-org-context, bluefield-arc workflow
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "organization standards input"
   - "auto-detected org files"
   - "bluefield workflow request"
+required-context:
+  - "inline:bluefield-workflow-request"
+optional-context:
+  - "inline:organization-standards"
+  - "inline:auto-detected-org-files"
 outputs:
   - ".godpowers/org-context.yaml"
 gates:

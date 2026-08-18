@@ -49,6 +49,7 @@ test('verify records an executed pass: ledger + rollup + gate.pass event', () =>
   });
 
   assert(result.verified === true, 'true should verify');
+  assert(/^v-[0-9]{17}-[0-9a-f]{12}$/.test(result.record.id), `verification id: ${result.record.id}`);
   assert(result.record.kind === 'executed', `kind: ${result.record.kind}`);
   assert(result.record.exit_code === 0, `exit_code: ${result.record.exit_code}`);
   assert(result.record.claim === 'smoke', `claim: ${result.record.claim}`);
@@ -57,6 +58,7 @@ test('verify records an executed pass: ledger + rollup + gate.pass event', () =>
 
   const records = ledgerRecords(project);
   assert(records.length === 1, `ledger records: ${records.length}`);
+  assert(records[0].id === result.record.id, 'ledger verification id mismatch');
   assert(records[0].command === 'true', 'ledger command mismatch');
   assert(typeof records[0].stdout_tail === 'string', 'stdout_tail missing');
 
@@ -391,7 +393,7 @@ test('verify still records when the state lock is held by another holder', () =>
 
 test('provenance is recorded and points at the upstream engine', () => {
   const prov = evidence.provenance();
-  assert(prov && prov.version === '5.1.0', `version: ${prov && prov.version}`);
+  assert(prov && prov.version === '5.6.0', `version: ${prov && prov.version}`);
   assert(prov.commit && prov.commit.length >= 7, 'commit missing');
   assert(Array.isArray(prov.adaptations) && prov.adaptations.length > 0, 'adaptations missing');
   assert(prov.upstreamRecordShape && Array.isArray(prov.upstreamRecordShape.executed), 'recorded shape missing');
@@ -421,6 +423,7 @@ const UPSTREAM_FIXTURE = [
   '}',
   'function run() {',
   '  const record = {',
+  '    id: verificationId,',
   '    kind: "executed",',
   '    claim: claim,',
   '    command,',
@@ -451,7 +454,7 @@ const UPSTREAM_FIXTURE = [
 test('extractRecordShape reads executed and attested record keys', () => {
   const shape = sync.extractRecordShape(UPSTREAM_FIXTURE);
   assert(JSON.stringify(shape.executed) === JSON.stringify([
-    'kind', 'claim', 'command', 'exit_code', 'duration_seconds',
+    'id', 'kind', 'claim', 'command', 'exit_code', 'duration_seconds',
     'stdout_tail', 'stderr_tail', 'verified', 'timestamp', 'provenance',
     'plan', 'step_id', 'step_title', 'step_status'
   ]), `executed shape: ${JSON.stringify(shape.executed)}`);

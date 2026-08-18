@@ -8,10 +8,17 @@ description: |
 
   Spawned by: /god-mode
 tools: Read, Write, Edit, Bash, Grep, Glob, Task
+max-tokens: 80000
 inputs:
   - "user intent or private handoff"
   - ".godpowers/state.json"
   - "routing and workflow definitions"
+required-context:
+  - "inline:user-intent-or-handoff"
+optional-context:
+  - "file:.godpowers/state.json"
+  - "file:routing/*.yaml"
+  - "file:workflows/*.yaml"
 outputs:
   - ".godpowers/state.json mutations"
   - ".godpowers/PROGRESS.mdx generated view refresh"

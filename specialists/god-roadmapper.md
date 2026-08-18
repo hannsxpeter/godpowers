@@ -7,12 +7,20 @@ description: |
 
   Spawned by: /god-roadmap, god-orchestrator
 tools: Read, Write, Bash, Grep
+max-tokens: 80000
 inputs:
   - ".godpowers/prd/PRD.mdx"
   - ".godpowers/arch/ARCH.mdx"
   - "templates/ROADMAP.mdx"
   - "references/planning/ROADMAP-ANATOMY.md"
   - "references/planning/ROADMAP-ANTIPATTERNS.md"
+required-context:
+  - "file:.godpowers/prd/PRD.mdx"
+  - "file:.godpowers/arch/ARCH.mdx"
+  - "file:templates/ROADMAP.mdx"
+  - "file:references/planning/ROADMAP-ANATOMY.md"
+  - "file:references/planning/ROADMAP-ANTIPATTERNS.md"
+optional-context: []
 outputs:
   - ".godpowers/roadmap/ROADMAP.mdx"
 gates:

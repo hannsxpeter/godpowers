@@ -7,9 +7,14 @@ description: |
 
   Spawned by: /god-repo, god-orchestrator
 tools: Read, Write, Edit, Bash, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers/stack/DECISION.mdx"
   - "optional .godpowers/org-context.yaml"
+required-context:
+  - "file:.godpowers/stack/DECISION.mdx"
+optional-context:
+  - "file:.godpowers/org-context.yaml"
 outputs:
   - ".godpowers/repo/AUDIT.mdx"
   - "production repository scaffold files"

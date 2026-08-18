@@ -69,18 +69,18 @@
       "sync": {
         "status": "done",
         "artifact": "SYNC-LOG.mdx",
-        "artifact-hash": "sha256:902a53b52d61f578a8ccc14342931c3a193a8e7afa7af6f4b24d405151eb0e1e",
-        "updated": "2026-07-13T16:09:44.000Z",
-        "notes": "Version 5.5.0, surface, authoritative state, GitHub Release assets, npm provenance, registry integrity, and isolated published-install evidence are synchronized."
+        "artifact-hash": "sha256:b99a7ef51ac797266aadab753c6b6202f15de6188da80bf8e78e4e97a2e758aa",
+        "updated": "2026-08-18T03:46:39.146Z",
+        "notes": "Version 6.0.0 source, requirements, architecture, roadmap, documentation, release surfaces, Mythify 5.6.0 evidence provenance, final hardening, local release verification, and pre-publication evidence are synchronized; external publication evidence remains pending."
       }
     },
     "tier-1": {
       "prd": {
         "status": "done",
         "artifact": "prd/PRD.mdx",
-        "artifact-hash": "sha256:239990ed2eb267c26d3de744bf318d6260bfd67463fec8e7ccccbc348fc1712c",
-        "updated": "2026-07-13T05:57:20.000Z",
-        "notes": "Product trust outcomes and time-bounded acceptance criteria are current."
+        "artifact-hash": "sha256:d70edef001750a67bab54c8ab5da3ccc15807c4db5cc81b5caceff8c259dc455",
+        "updated": "2026-08-18T03:37:48.425Z",
+        "notes": "P-MUST-24 through P-MUST-29 and the authorized provenance extension remain current for the 6.0.0 release."
       },
       "design": {
         "status": "not-required",
@@ -95,23 +95,23 @@
       "arch": {
         "status": "done",
         "artifact": "arch/ARCH.mdx",
-        "artifact-hash": "sha256:ec90f0ec06d07fbc67c3b5ac22f3ae882a10d714ef230316f75823709e44642b",
-        "updated": "2026-07-13T05:45:00.000Z",
-        "notes": "Architecture decisions cover host trust, proof scope, metrics, and self-project truth enforcement."
+        "artifact-hash": "sha256:10ca122919058cf829dbd16649679adbb9d5d3b785ae1759e1028cf538ba5509",
+        "updated": "2026-08-18T03:37:48.425Z",
+        "notes": "ADR-007 and ADR-008 cover pinned context, hash-bound design approval, state-authoritative handoffs, bounded measurements, benchmark isolation, and recoverable publication."
       },
       "roadmap": {
         "status": "done",
         "artifact": "roadmap/ROADMAP.mdx",
-        "artifact-hash": "sha256:135946b623f4665186f6bd87647a4a649055341d830b65477b0813cbf78f33a5",
-        "updated": "2026-07-13T16:09:44.000Z",
-        "notes": "Roadmap provenance is pinned to current source hashes and the published version 5.5.0 release."
+        "artifact-hash": "sha256:738f36a99c6b31c9ef7707b68e8b16c8157358d28ac28022bc8e0692c7ffb0e6",
+        "updated": "2026-08-18T03:37:48.425Z",
+        "notes": "M-harness-quality-hardening is complete and source provenance is pinned to the final 6.0.0 planning artifacts."
       },
       "stack": {
         "status": "done",
         "artifact": "stack/DECISION.mdx",
-        "artifact-hash": "sha256:cc9e9227262d9d472fa7806fbafc9a83b8e621728c3652fae1a423a867989ce3",
-        "updated": "2026-07-13T05:12:51.236Z",
-        "notes": "The existing dependency-light Node.js stack remains appropriate for the trust hardening work."
+        "artifact-hash": "sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d",
+        "updated": "2026-08-18T03:37:48.425Z",
+        "notes": "The dependency-free root remains on Node.js 18 or newer; the MCP v2 companion requires Node.js 20 or newer."
       }
     },
     "tier-2": {
@@ -126,43 +126,49 @@
         "status": "done",
         "artifact": "build/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T15:59:58.000Z",
-        "notes": "All implementation, behavioral, standards, coverage, audit, and package checks pass for version 5.5.0.",
+        "updated": "2026-08-18T03:46:06.501Z",
+        "notes": "All harness slices and the 6.0.0 release candidate pass focused behavior, independent specification, independent quality, security hardening, complete release, coverage, audit, drift, self-truth, and package-surface verification.",
         "verification": {
           "commands": [
             {
-              "command": "npm test",
+              "command": "npm run lint",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "durationMs": 41300,
-              "diagnostics": "All test commands passed in 41.3 seconds."
+              "ranAt": "2026-08-18T03:46:06.501Z",
+              "diagnostics": "34 static checks passed."
             },
             {
-              "command": "npm run pack:check",
+              "command": "npm test -- --agent-output",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "diagnostics": "Root npm package contents verified: 582 files."
+              "ranAt": "2026-08-18T03:46:06.501Z",
+              "durationMs": 79900,
+              "diagnostics": "114 test commands passed with 3,114 checks in the final release candidate."
             },
             {
-              "command": "npm run pack:mcp:check",
+              "command": "npm run coverage:lib",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "diagnostics": "MCP package contents verified: 8 files."
+              "ranAt": "2026-08-18T03:46:06.501Z",
+              "diagnostics": "94.64 percent line and 79.8 percent branch coverage passed, with at least 70 percent line coverage across 110 included runtime modules."
+            },
+            {
+              "command": "npm audit --omit=dev",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-18T03:46:06.501Z",
+              "diagnostics": "Registry audit reported zero vulnerabilities across the production dependency set."
             },
             {
               "command": "npm run release:check",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "durationMs": 46000,
-              "diagnostics": "Official skill validation, Pillars 1.1 conformance, 94.64 percent line coverage, 79.26 percent branch coverage, 96.77 percent function coverage, per-file coverage across 98 runtime modules, dependency audit, 141 self-project truth checks, public surface, root package, and MCP package checks passed."
+              "ranAt": "2026-08-18T03:46:06.501Z",
+              "diagnostics": "Version, standards, tests, coverage, live advisories, self-truth, Mythify 5.6.0 drift, 645-file root package, and 8-file MCP package gates passed."
             }
           ]
         },
-        "release-version": "5.5.0"
+        "release-version": "6.0.0"
       }
     },
     "tier-3": {
@@ -270,33 +276,38 @@
       "harden": {
         "status": "done",
         "artifact": "harden/FINDINGS.mdx",
-        "artifact-hash": "sha256:f7bcf07a292362d2f40dcf7f2a8f40c35facb70fd5621e2c569a20d2a2d1b337",
-        "updated": "2026-07-13T15:59:58.000Z",
-        "notes": "OWASP Web Top 10:2025 review is complete, the release gate is passed for version 5.5.0, and no unresolved Critical finding remains.",
+        "artifact-hash": "sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268",
+        "updated": "2026-08-18T03:37:48.425Z",
+        "notes": "Independent hardening resolved 2 Critical, 3 High, and 4 Medium findings; no unresolved security finding or launch blocker remains for 6.0.0.",
         "verification": {
           "commands": [
             {
-              "command": "npm test",
+              "command": "node packages/mcp/scripts/test-protocol.js",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "durationMs": 41300,
-              "diagnostics": "All test commands passed in 41.3 seconds."
+              "ranAt": "2026-08-18T03:37:48.425Z",
+              "diagnostics": "Modern, legacy, configured-root, and non-symlink artifact checks passed."
             },
             {
-              "command": "npm audit --omit=dev",
+              "command": "node scripts/test-evolution-benchmark.js",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "diagnostics": "Found 0 vulnerabilities."
+              "ranAt": "2026-08-18T03:37:48.425Z",
+              "diagnostics": "18 isolated benchmark security and behavior checks passed."
             },
             {
-              "command": "npm run release:check",
+              "command": "node scripts/test-cost-saver.js",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "durationMs": 46000,
-              "diagnostics": "Official standards, complete tests, aggregate and per-file coverage, dependency audit, 141 self-project truth checks, package verification, installer isolation, full-arc integration, and dogfood checks passed."
+              "ranAt": "2026-08-18T03:37:48.425Z",
+              "diagnostics": "63 context, event, cost, and cache checks passed."
+            },
+            {
+              "command": "node scripts/test-provenance-client.js",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-18T03:37:48.425Z",
+              "diagnostics": "20 exact-origin, network, response, and filesystem checks passed."
             }
           ]
         },
@@ -411,11 +422,11 @@
   ],
   "lock": null,
   "deliverables": {
-    "updated": "2026-05-30T22:07:46.390Z",
+    "updated": "2026-08-18T03:04:41.200Z",
     "source": "PRD + ROADMAP + linkage + build state",
     "requirements": {
-      "total": 33,
-      "done": 33,
+      "total": 41,
+      "done": 41,
       "in-progress": 0,
       "untouched": 0,
       "percent": 100
@@ -516,6 +527,22 @@
         "status": "done",
         "done": 4,
         "total": 4
+      },
+      {
+        "id": "M-authorized-ai-provenance-cleaning",
+        "name": "Authorized AI provenance cleaning",
+        "horizon": "next",
+        "status": "done",
+        "done": 2,
+        "total": 2
+      },
+      {
+        "id": "M-harness-quality-hardening",
+        "name": "Harness quality hardening",
+        "horizon": "next",
+        "status": "done",
+        "done": 6,
+        "total": 6
       },
       {
         "id": "M-deeper-traceability-and-ecosystem",

@@ -11,10 +11,17 @@ description: |
 
   Spawned by: /god-reconcile, recipe execution (feature-addition category)
 tools: Read, Bash, Grep, Glob, Task
+max-tokens: 80000
 inputs:
   - "all core Godpowers artifacts"
   - "repository docs and surface"
   - "feature awareness and host capability evidence"
+required-context:
+  - "inline:reconciliation-scope"
+optional-context:
+  - "file:.godpowers/**/*.mdx"
+  - "inline:repository-surface-evidence"
+  - "inline:feature-host-evidence"
 outputs:
   - "multi-dimensional reconciliation verdict"
   - "optional .godpowers/reconciliation/ report"

@@ -7,10 +7,16 @@ description: |
 
   Spawned by: /god-reconstruct, brownfield-arc workflow
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "brownfield codebase"
   - "optional archaeology report"
   - "existing docs and tests"
+required-context:
+  - "inline:reconstruction-scope"
+optional-context:
+  - "file:.godpowers/archaeology/REPORT.mdx"
+  - "inline:documentation-test-evidence"
 outputs:
   - ".godpowers/prd/PRD.mdx"
   - ".godpowers/arch/ARCH.mdx"

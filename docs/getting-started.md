@@ -199,6 +199,19 @@ Godpowers records the diagnostics, fixes the problem, runs verification again,
 and carries on. It only asks for help when the same failure survives repeated
 repair attempts, or when the blocker genuinely requires a person.
 
+### Compact verification for agent sessions
+
+If you are maintaining Godpowers itself, use the agent-oriented test view to
+keep the terminal summary small while retaining complete evidence:
+
+```bash
+npm test -- --agent-output
+```
+
+The full harness contract, including specialist context, program design,
+handoffs, maintainability deltas, and the evolution benchmark, is documented in
+[Harness Quality](harness-quality.md).
+
 ---
 
 ## Optional extras
@@ -234,6 +247,8 @@ Skill packs add specialists for particular domains:
   source launch strategists
 - `@godpowers/data-pack` - ETL, machine learning feature, and dashboard
   specialists
+- `@godpowers/provenance-pack` - authorized AI provenance inspection and
+  cleaning through a user-operated service
 
 Install one with `/god-extension-add @godpowers/security-pack`. To build your
 own, start from the scaffold:
@@ -276,6 +291,7 @@ agent. There is nothing T3-specific to install: the existing `--codex`,
 ## Where to next
 
 - [Concepts](concepts.md) - the vocabulary and the mental model behind it
+- [Harness Quality](harness-quality.md) - how context, verification, plans, handoffs, and changeability evidence are bounded
 - [Reference](reference.md) - all 124 slash commands and CLI helpers
 - [Tutorial: First Project](tutorials/first-project.md) - a full end-to-end walkthrough
 - [Composing with other tools](../references/shared/ORCHESTRATORS.md) - living alongside other AI workflow systems
