@@ -69,9 +69,9 @@
       "sync": {
         "status": "done",
         "artifact": "SYNC-LOG.mdx",
-        "artifact-hash": "sha256:b99a7ef51ac797266aadab753c6b6202f15de6188da80bf8e78e4e97a2e758aa",
-        "updated": "2026-08-18T03:46:39.146Z",
-        "notes": "Version 6.0.0 source, requirements, architecture, roadmap, documentation, release surfaces, Mythify 5.6.0 evidence provenance, final hardening, local release verification, and pre-publication evidence are synchronized; external publication evidence remains pending."
+        "artifact-hash": "sha256:c570ca8e8301fb96eafa74e9d807e01526a4039ae777de848cc6f78b58de578b",
+        "updated": "2026-08-18T04:04:11.227Z",
+        "notes": "Version 6.0.0 source, release evidence, npm integrity, GitHub identity, publication recovery, Pillars context, and authoritative deploy, observe, and launch state are synchronized."
       }
     },
     "tier-1": {
@@ -143,7 +143,7 @@
               "exitCode": 0,
               "ranAt": "2026-08-18T03:46:06.501Z",
               "durationMs": 79900,
-              "diagnostics": "114 test commands passed with 3,114 checks in the final release candidate."
+              "diagnostics": "114 test commands passed with 3,113 checks in the final release candidate."
             },
             {
               "command": "npm run coverage:lib",
@@ -176,102 +176,122 @@
         "status": "done",
         "artifact": "deploy/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T16:09:44.000Z",
-        "notes": "Godpowers 5.5.0 and the MCP companion are published with provenance from merged main, and registry integrity matches the locally packed GitHub Release assets.",
+        "updated": "2026-08-18T04:04:11.227Z",
+        "notes": "Godpowers 6.0.0 and the MCP companion are published with npm provenance from merged main; both latest tags, registry integrity records, GitHub Release notes, and isolated consumer checks are verified.",
         "verification": {
           "commands": [
             {
-              "command": "npm run pack:check",
+              "command": "gh pr view 91 && gh run view 32096760451",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "Root npm package contents verified: 582 files."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Pull request 91 passed Node.js 18, 20, and 22 plus the package gate before merging."
             },
             {
-              "command": "npm run pack:mcp:check",
+              "command": "gh run view 32097014555",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "MCP package contents verified: 8 files."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Merged-main CI passed the full matrix and package gate for commit 9eb6a5cbdff3399e6d65a5cc660bf135814de7b7."
             },
             {
-              "command": "git cat-file -e v5.4.0^{commit}",
+              "command": "gh run view 32097275283",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "The prior v5.4.0 release tag resolves as the rollback reference."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "The provenance workflow passed release identity, release, and pre-publication gates and published both immutable 6.0.0 artifacts under release-6-0-0; an immediate registry propagation read stopped automated promotion."
             },
             {
-              "command": "gh run view 29264981272",
+              "command": "npm view godpowers@6.0.0 version dist.integrity && npm view @godpowers/mcp@6.0.0 version dist.integrity",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "The identity-bound provenance workflow completed successfully for merged main commit 84fbd00066d2bd833929d6d0b6b769de45275313."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Both exact versions resolve with the registry integrity values recorded in RELEASE.md."
             },
             {
-              "command": "gh release view v5.5.0",
+              "command": "npm view godpowers dist-tags.latest && npm view @godpowers/mcp dist-tags.latest",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "The GitHub Release contains root and MCP tarballs plus SHA256SUMS with matching SHA-256 asset digests."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Recovery promoted MCP first and root second without republishing; both latest tags resolve to 6.0.0."
             },
             {
-              "command": "npm view godpowers@5.5.0 version && npm view @godpowers/mcp@5.5.0 version",
+              "command": "gh release view v6.0.0",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "Both npm packages resolve to 5.5.0 under the latest tag and match the locally packed integrity values."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "GitHub Release v6.0.0 is public as the notes and immutable tag record."
             },
             {
-              "command": "node scripts/verify-published-install.js godpowers@5.5.0",
+              "command": "node scripts/verify-published-install.js godpowers@6.0.0",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "An isolated exact-spec install passed Quick Proof, read-only project inspection, dashboard, next route, Claude install, and Codex install verification."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "An isolated exact-version install passed Quick Proof, read-only inspection, dashboard, next route, Claude install, and Codex install checks."
             },
             {
-              "command": "npx -y -p @godpowers/mcp@5.5.0 godpowers-mcp --help",
+              "command": "npx -y -p @godpowers/mcp@6.0.0 godpowers-mcp --help",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "The published MCP executable resolved and rendered its command surface."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "The published MCP executable resolves and renders its command surface on Node.js 20 or newer."
             }
           ]
         },
         "verified-target-type": "published-npm-release",
-        "target-evidence": "GitHub Release assets and npm registry packages share exact integrity values; isolated published CLI and MCP executable verification passed.",
-        "rollback-evidence": "The v5.4.0 tag resolves locally as the prior release rollback reference.",
-        "publication-targets": "https://github.com/hannsxpeter/godpowers/releases/tag/v5.5.0, npm godpowers@5.5.0, and npm @godpowers/mcp@5.5.0"
+        "target-evidence": "npm exact versions and latest tags agree at 6.0.0; registry integrity values are pinned in RELEASE.md; isolated root and MCP consumer checks pass.",
+        "rollback-evidence": "The v5.17.1 tag resolves as the prior release rollback reference.",
+        "publication-targets": "https://github.com/hannsxpeter/godpowers/releases/tag/v6.0.0, npm godpowers@6.0.0, and npm @godpowers/mcp@6.0.0"
       },
       "observe": {
         "status": "done",
         "artifact": "observe/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T07:59:42.000Z",
-        "notes": "Provider-neutral event vocabulary and evidence-derived outcome metrics are locally verified.",
+        "updated": "2026-08-18T04:04:11.227Z",
+        "notes": "Provider-neutral event vocabulary, bounded context-loadout evidence, maintainability trajectories, evolution evidence, and evidence-derived outcome metrics are locally verified for 6.0.0.",
         "verification": {
           "commands": [
+            {
+              "command": "npm test -- --agent-output",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "114 test commands and 3,113 checks passed with bounded console output and complete retained child bytes.",
+              "durationMs": 79900
+            },
+            {
+              "command": "node scripts/test-cost-saver.js",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "63 context, event, cost, and cache checks passed."
+            },
+            {
+              "command": "node scripts/test-maintainability-trajectory.js",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "13 deterministic snapshot, delta, validation, and resource-bound checks passed."
+            },
+            {
+              "command": "node scripts/test-evolution-benchmark.js",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "18 sequential benchmark, isolation, interruption, evidence, and resource-bound checks passed."
+            },
             {
               "command": "node scripts/test-outcome-metrics.js",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T05:12:51.236Z",
-              "durationMs": 100,
-              "diagnostics": "Outcome metric evidence and no-data behavior tests passed."
-            },
-            {
-              "command": "npm test",
-              "status": "pass",
-              "exitCode": 0,
-              "ranAt": "2026-07-13T07:59:42.000Z",
-              "durationMs": 44100,
-              "diagnostics": "Event, metrics, cost, reporting, and observability behavior passed in the full suite."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Outcome metrics preserve evidence-only claims and explicit no-data behavior."
             }
           ]
         },
-        "metrics-evidence": "lib/outcome-metrics.js derives time, cost, intervention, resume, deployment, and rollback metrics only from recorded events.",
+        "metrics-evidence": "lib/outcome-metrics.js derives outcome metrics from events; lib/maintainability-trajectory.js and lib/evolution-benchmark.js record separate changeability evidence without claiming causation.",
         "no-data-policy": "Unavailable production outcomes remain explicitly unavailable.",
-        "provider-access": "not-required for local release readiness"
+        "provider-access": "not-required for local and npm release verification"
       },
       "harden": {
         "status": "done",
@@ -317,66 +337,71 @@
         "status": "done",
         "artifact": "launch/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-07-13T16:09:44.000Z",
-        "notes": "Version 5.5.0 is published on GitHub and npm, registry integrity matches the release assets, and isolated published-install verification passes.",
+        "updated": "2026-08-18T04:04:11.227Z",
+        "notes": "Version 6.0.0 is published on GitHub and npm; both latest tags, exact integrity, isolated root installation, and the MCP executable are verified.",
         "verification": {
           "commands": [
-            {
-              "command": "npm test",
-              "status": "pass",
-              "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "durationMs": 41300,
-              "diagnostics": "All test commands passed in 41.3 seconds."
-            },
             {
               "command": "npm run release:check",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T15:59:58.000Z",
-              "durationMs": 46000,
-              "diagnostics": "Official standards, complete tests, 94.64 percent line coverage, 79.26 percent branch coverage, dependency audit, self-project truth, and both package checks passed."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "114 test commands and 3,113 checks, 94.64 percent line coverage, 79.8 percent branch coverage, audit, self-truth, drift, and package gates passed."
             },
             {
-              "command": "gh run view 29264762305 && gh run view 29264958862",
+              "command": "npm run release:prepublication:check",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "Pull-request CI and merged-main CI both passed for the 5.5.0 release tree."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "The gate passed against hardening revision sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268 with zero unresolved or accepted Critical findings."
             },
             {
-              "command": "gh run view 29264981272",
+              "command": "gh run view 32096760451 && gh run view 32097014555",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "The provenance publication workflow passed the release and prepublication gates and published both npm packages."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Pull-request and merged-main CI passed for the exact 6.0.0 release tree."
             },
             {
-              "command": "npm view godpowers@5.5.0 version && npm view @godpowers/mcp@5.5.0 version",
+              "command": "git rev-list -n 1 v6.0.0",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "Both packages are published as 5.5.0 under the latest tag with matching integrity."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Annotated tag v6.0.0 resolves to merged main commit 9eb6a5cbdff3399e6d65a5cc660bf135814de7b7."
             },
             {
-              "command": "node scripts/verify-published-install.js godpowers@5.5.0",
+              "command": "npm view godpowers@6.0.0 version && npm view @godpowers/mcp@6.0.0 version",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "Published root CLI, Quick Proof, read-only project inspection, dashboard, next route, Claude install, and Codex install verification passed from an isolated exact-spec installation."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Both exact packages are published with provenance and both latest tags resolve to 6.0.0."
             },
             {
-              "command": "npx -y -p @godpowers/mcp@5.5.0 godpowers-mcp --help",
+              "command": "node scripts/verify-published-install.js godpowers@6.0.0",
               "status": "pass",
               "exitCode": 0,
-              "ranAt": "2026-07-13T16:09:44.000Z",
-              "diagnostics": "The published MCP executable resolved from npm and rendered its help surface."
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "Isolated exact-version root CLI, Quick Proof, inspection, dashboard, next route, Claude, and Codex checks passed."
+            },
+            {
+              "command": "npx -y -p @godpowers/mcp@6.0.0 godpowers-mcp --help",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "The published MCP executable resolved and rendered its help surface."
+            },
+            {
+              "command": "gh release view v6.0.0",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-18T04:04:11.227Z",
+              "diagnostics": "GitHub Release v6.0.0 is public with the release notes record."
             }
           ]
         },
         "launch-scope": "published-release",
-        "release-version": "5.5.0",
-        "publication-verification": "passed for pull-request CI, merged-main CI, GitHub Release, npm root, npm MCP, isolated published root install, Claude, Codex, and MCP executable",
+        "release-version": "6.0.0",
+        "publication-verification": "passed for pull-request CI, merged-main CI, staged provenance publication, recovery promotion, npm root, npm MCP, registry integrity, GitHub Release, isolated root install, Claude, Codex, and MCP executable",
         "production-user-evidence": "unavailable; repository records zero production users"
       }
     }

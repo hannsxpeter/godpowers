@@ -54,19 +54,19 @@ see_also: [arch, quality, deploy]
 ### Godpowers artifact sources
 
 - Sync mode: auto-applied by yolo.
+- Related artifact: `.godpowers/state.json`.
 - Related artifact: `RELEASE.md`.
-- Related artifact: `docs/ROADMAP.md`.
 - Rule: keep this pillar aligned when these artifacts change durable context truth.
 
 ### Extracted durable signals
 
 From `RELEASE.md`:
-- [DECISION] Godpowers 5.5.0 is the Arc-Ready and Pillars conformance release.
-- [DECISION] The public surface contains 123 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
-- [DECISION] The core package contains 112 runtime library modules and keeps zero production dependencies.
-- [DECISION] The `@godpowers/mcp` companion remains read-only and shares version 5.5.0.
-- [DECISION] Product routing selects one of six forms before applying product archetype, industry, or regulatory overlays.
-- [DECISION] Each product form carries a distinct vertical slice and completion-evidence contract, so web assumptions do not leak into API, CLI, mobile, data, or infrastructure work.
-- [DECISION] OWASP hardening uses the 2025 Web Top 10 and routes supply-chain failures plus exceptional-condition handling as first-class checks.
-- [DECISION] Public activation requires `.godpowers/launch/PREPUBLICATION.mdx`, bound to the exact hardening findings hash, authoritative hardening timestamp, and Critical count.
+- [DECISION] Godpowers 6.0.0 hardens the complete coding-agent harness: verification output, specialist context, larger-change design, slice resume, maintainability interpretation, and sequential changeability evidence now have executable contracts.
+- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; no command, specialist, workflow, or recipe was added, removed, or renamed.
+- [DECISION] The core package contains 112 runtime library modules, supports Node.js 18 or newer, and keeps zero production dependencies.
+- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.0.0, uses the MCP v2 server package, and requires Node.js 20 or newer.
+- [DECISION] The package contains 110 focused test scripts, including the new harness-quality and authorized provenance suites.
+- [DECISION] `npm test -- --agent-output` retains complete child bytes in a private log while presenting bounded aggregate success or focused first-failure evidence; normal output remains unchanged without the flag.
+- [DECISION] All 41 specialists declare required context, optional context, inline inputs, and a positive token cap or an explicit no-project-context contract; file sources reject symlinks and retain pinned bytes, and every loadout event path preserves complete counts but no source contents.
+- [DECISION] Medium and large Build plans require a program design approved by a hash-bound `user.resolve` event, while small plans require a recorded size and skip rationale; plan text cannot authorize itself.
 <!-- godpowers:pillar-sync:end -->

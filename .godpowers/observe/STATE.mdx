@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:86c38f5425369ed7bdf129d516a89504bf86c37939c51ba39e2c0c85bb046c88 -->
+<!-- godpowers:checksum sha256:a19e4a6957ba507857b13d29d56d25b7667d380692f5037c121d34f34cd55f90 -->
 # Godpowers Observe State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.observe`.
@@ -9,22 +9,25 @@
 - [DECISION] Step: Shipping: Observe.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/observe/STATE.mdx`.
-- [DECISION] Updated: 2026-07-13T07:59:42.000Z.
-- [DECISION] Notes: Provider-neutral event vocabulary and evidence-derived outcome metrics are locally verified..
+- [DECISION] Updated: 2026-08-18T04:04:11.227Z.
+- [DECISION] Notes: Provider-neutral event vocabulary, bounded context-loadout evidence, maintainability trajectories, evolution evidence, and evidence-derived outcome metrics are locally verified for 6.0.0..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| node scripts/test-outcome-metrics.js | pass | 0 | 2026-07-13T05:12:51.236Z | 100 | Outcome metric evidence and no-data behavior tests passed. |
-| npm test | pass | 0 | 2026-07-13T07:59:42.000Z | 44100 | Event, metrics, cost, reporting, and observability behavior passed in the full suite. |
+| npm test -- --agent-output | pass | 0 | 2026-08-18T04:04:11.227Z | 79900 | 114 test commands and 3,113 checks passed with bounded console output and complete retained child bytes. |
+| node scripts/test-cost-saver.js | pass | 0 | 2026-08-18T04:04:11.227Z | - | 63 context, event, cost, and cache checks passed. |
+| node scripts/test-maintainability-trajectory.js | pass | 0 | 2026-08-18T04:04:11.227Z | - | 13 deterministic snapshot, delta, validation, and resource-bound checks passed. |
+| node scripts/test-evolution-benchmark.js | pass | 0 | 2026-08-18T04:04:11.227Z | - | 18 sequential benchmark, isolation, interruption, evidence, and resource-bound checks passed. |
+| node scripts/test-outcome-metrics.js | pass | 0 | 2026-08-18T04:04:11.227Z | - | Outcome metrics preserve evidence-only claims and explicit no-data behavior. |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
-| metrics-evidence | lib/outcome-metrics.js derives time, cost, intervention, resume, deployment, and rollback metrics only from recorded events. |
+| metrics-evidence | lib/outcome-metrics.js derives outcome metrics from events; lib/maintainability-trajectory.js and lib/evolution-benchmark.js record separate changeability evidence without claiming causation. |
 | no-data-policy | Unavailable production outcomes remain explicitly unavailable. |
-| provider-access | not-required for local release readiness |
+| provider-access | not-required for local and npm release verification |
 
 <!-- godpowers:state-view:end -->

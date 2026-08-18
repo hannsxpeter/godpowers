@@ -15,7 +15,7 @@ see_also: [security]
 ## Context
 
 - [DECISION] The root `godpowers` package and `@godpowers/mcp` workspace publish the same semantic version.
-- [DECISION] GitHub releases attach both npm tarballs and a `SHA256SUMS` file.
+- [DECISION] GitHub releases provide the human-readable notes and immutable tag record; npm registry artifacts and their integrity metadata are the authoritative package source.
 - [DECISION] Tag-triggered GitHub Actions publish both npm packages with provenance.
 
 ## Decisions
@@ -34,7 +34,7 @@ see_also: [security]
 
 1. [DECISION] Prepare version metadata and release notes on a release branch.
 2. [DECISION] Pass local and pull-request release gates.
-3. [DECISION] Merge, tag the merge commit, create checksummed assets, and let the provenance workflow publish npm packages.
+3. [DECISION] Merge, tag the merge commit, let the provenance workflow publish npm packages, and create the GitHub Release notes record.
 4. [DECISION] Verify registry integrity and isolated installation before cleanup.
 
 ## Watchouts
