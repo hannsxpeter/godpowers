@@ -7,6 +7,7 @@ description: |
 
   Spawned by: /god-harden, god-orchestrator
 tools: Read, Bash, Grep, Glob, WebSearch
+max-tokens: 80000
 inputs:
   - "codebase"
   - ".godpowers/state.json deploy evidence"
@@ -15,6 +16,14 @@ inputs:
   - "references/shipping/HARDEN-OWASP-2025-ROUTER.md"
   - "references/shipping/HARDEN-OWASP-WORKSHEETS.md"
   - "references/shipping/HARDEN-ANTIPATTERNS.md"
+required-context:
+  - "file:.godpowers/state.json"
+  - "inline:product-domain-profile"
+  - "file:references/shipping/HARDEN-OWASP-2025-ROUTER.md"
+  - "file:references/shipping/HARDEN-OWASP-WORKSHEETS.md"
+  - "file:references/shipping/HARDEN-ANTIPATTERNS.md"
+optional-context:
+  - "inline:organization-security-standards"
 outputs:
   - ".godpowers/harden/FINDINGS.mdx"
 gates:

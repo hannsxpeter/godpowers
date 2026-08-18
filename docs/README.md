@@ -31,6 +31,7 @@ productive; the rest are there when you need them.
 - [command-flows.md](./command-flows.md) - how commands chain together into flows.
 - [host-capabilities.md](./host-capabilities.md) - what each AI tool can and cannot do.
 - [mcp.md](./mcp.md) - the optional read-only `@godpowers/mcp` companion.
+- [harness-quality.md](./harness-quality.md) - compact verification, bounded context, program design, handoffs, maintainability, and evolution evidence.
 
 **Particular situations**
 

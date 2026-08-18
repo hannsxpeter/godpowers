@@ -1,9 +1,23 @@
 {
   "P-MUST-01": [
-    "agents/god-orchestrator.md"
+    "agents/god-orchestrator.md",
+    "docs/change-propagation.md",
+    "docs/linkage.md",
+    "lib/code-scanner.js",
+    "references/building/BUILD-ANTIPATTERNS.md",
+    "references/planning/WAYFINDING.md",
+    "scripts/test-integration.js",
+    "scripts/test-linkage.js",
+    "scripts/test-reverse-sync.js",
+    "skills/god-link.md",
+    "specialists/god-executor.md",
+    "specialists/god-pm.md",
+    "templates/PRD.mdx"
   ],
   "P-MUST-02": [
-    "lib/state.js"
+    "lib/state.js",
+    "scripts/test-linkage.js",
+    "specialists/god-executor.md"
   ],
   "P-MUST-03": [
     "lib/multi-repo-detector.js"
@@ -102,5 +116,138 @@
   ],
   "P-COULD-04": [
     "agents/god-spike-runner.md"
+  ],
+  "P-SHOULD-08": [
+    ".github/workflows/publish-pack.yml",
+    "extensions/provenance-pack/agents/god-ai-provenance-cleaner.md",
+    "extensions/provenance-pack/references/provenance-client.js",
+    "extensions/provenance-pack/skills/god-remove-ai-marks.md",
+    "scripts/test-provenance-pack.js"
+  ],
+  "P-...": [
+    "CHANGELOG.md",
+    "specialists/god-executor.md",
+    "specialists/god-quality-reviewer.md",
+    "specialists/god-reconstructor.md",
+    "specialists/god-spec-reviewer.md"
+  ],
+  "ADR-007": [
+    "docs/linkage.md",
+    "lib/code-scanner.js",
+    "scripts/test-linkage.js"
+  ],
+  "colors.primary": [
+    "docs/linkage.md",
+    "lib/code-scanner.js",
+    "scripts/test-linkage.js"
+  ],
+  "C-auth-service": [
+    "docs/linkage.md"
+  ],
+  "P-MUST-23": [
+    "extensions/provenance-pack/agents/god-ai-provenance-cleaner.md",
+    "extensions/provenance-pack/references/provenance-client.js",
+    "extensions/provenance-pack/skills/god-remove-ai-marks.md",
+    "scripts/test-provenance-pack.js"
+  ],
+  "C-provenance-specialist": [
+    "extensions/provenance-pack/agents/god-ai-provenance-cleaner.md"
+  ],
+  "ADR-004": [
+    "extensions/provenance-pack/agents/god-ai-provenance-cleaner.md",
+    "extensions/provenance-pack/skills/god-remove-ai-marks.md"
+  ],
+  "ADR-005": [
+    "extensions/provenance-pack/agents/god-ai-provenance-cleaner.md",
+    "extensions/provenance-pack/references/provenance-client.js"
+  ],
+  "ADR-006": [
+    "extensions/provenance-pack/agents/god-ai-provenance-cleaner.md",
+    "extensions/provenance-pack/references/provenance-client.js"
+  ],
+  "C-provenance-client": [
+    "extensions/provenance-pack/references/provenance-client.js"
+  ],
+  "C-provenance-skill": [
+    "extensions/provenance-pack/skills/god-remove-ai-marks.md"
+  ],
+  "https": [
+    "lib/agent-browser-driver.js"
+  ],
+  "P-MUST-NN": [
+    "lib/code-scanner.js",
+    "skills/god-docs.md",
+    "skills/god-feature.md",
+    "skills/god-hotfix.md",
+    "skills/god-postmortem.md",
+    "skills/god-refactor.md",
+    "skills/god-spike.md",
+    "skills/god-update-deps.md",
+    "skills/god-upgrade.md"
+  ],
+  "D-button-primary": [
+    "lib/code-scanner.js"
+  ],
+  "C-extension-authoring": [
+    "lib/extension-authoring.js"
+  ],
+  "C-installer-core": [
+    "lib/installer-core.js"
+  ],
+  "S-": [
+    "lib/reverse-sync.js"
+  ],
+  "ADR-001": [
+    "references/planning/ARCH-ANATOMY.md",
+    "templates/ARCH.mdx"
+  ],
+  "ADR-002": [
+    "references/planning/ARCH-ANATOMY.md",
+    "scripts/static-check.js",
+    "templates/ARCH.mdx"
+  ],
+  "P-MUST-99": [
+    "scripts/test-linkage.js"
+  ],
+  "STORY-auth-001": [
+    "scripts/test-story-validator.js",
+    "specialists/god-storyteller.md"
+  ],
+  "etc.": [
+    "skills/god-docs.md",
+    "skills/god-feature.md",
+    "skills/god-hotfix.md",
+    "skills/god-postmortem.md",
+    "skills/god-refactor.md",
+    "skills/god-spike.md",
+    "skills/god-update-deps.md",
+    "skills/god-upgrade.md"
+  ],
+  "STORY-": [
+    "skills/god-story-build.md",
+    "skills/god-story-close.md",
+    "specialists/god-cartographer.md"
+  ],
+  "P-MUST-25": [
+    "lib/context-budget.js",
+    "lib/events.js"
+  ],
+  "P-MUST-29": [
+    "lib/evolution-benchmark.js"
+  ],
+  "P-MUST-26": [
+    "lib/gate.js",
+    "lib/program-design.js"
+  ],
+  "P-MUST-28": [
+    "lib/maintainability-trajectory.js",
+    "lib/style-stats.js"
+  ],
+  "P-MUST-27": [
+    "lib/slice-handoff.js"
+  ],
+  "P-MUST-24": [
+    "scripts/run-tests.js",
+    "scripts/test-test-runner.js"
   ]
 }

@@ -77,5 +77,8 @@ node scripts/test-extensions-publish.js
   `scripts/check-package-contents.js`.
 - [DECISION] Release-surface sync checks that the authoring test remains wired
   into the release gate.
+- [DECISION] First-party packs publish only from a `<pack>-v<version>` tag whose
+  package name and version match the workflow input and whose commit is already
+  merged into `main`.
 
 Built something useful? Tell us. See [USERS.md](../USERS.md) for where.

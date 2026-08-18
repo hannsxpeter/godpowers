@@ -337,25 +337,288 @@ test('estimateTokens for text counts UTF-8 bytes / 4', () => {
   assert(budget.estimateTokens(text) === 3, `tokens: ${budget.estimateTokens(text)}`);
 });
 
-test('parseAgentBudget extracts required + optional + max-tokens', () => {
+test('P-MUST-25: parseAgentBudget reads explicit ordered file and inline sources', () => {
   const tmp = mkProject();
   const agentPath = path.join(tmp, 'agent.md');
   fs.writeFileSync(agentPath,
     `---
 name: g
-required-context: [.godpowers/prd/PRD.mdx, .godpowers/state.json]
-optional-context: [.godpowers/runs/latest/events.jsonl]
+inputs:
+  - "prose mentions optional phantom.md but is never parsed"
+required-context:
+  - "file:.godpowers/prd/PRD.mdx"
+  - "inline:user-intent"
+optional-context:
+  - "file:.godpowers/runs/**/events.jsonl"
 max-tokens: 50000
 ---
 body`
   );
   const b = budget.parseAgentBudget(agentPath);
-  assert(b.required.length === 2, `required: ${b.required.length}`);
-  assert(b.optional.length === 1, `optional: ${b.optional.length}`);
+  assert(b.sources.length === 3, `sources: ${b.sources.length}`);
+  assert(b.sources[0].kind === 'file', `first kind: ${b.sources[0].kind}`);
+  assert(b.sources[0].key === '.godpowers/prd/PRD.mdx', `first key: ${b.sources[0].key}`);
+  assert(b.sources[0].required === true, 'first source should be required');
+  assert(b.sources[1].kind === 'inline', `second kind: ${b.sources[1].kind}`);
+  assert(b.sources[1].key === 'user-intent', `second key: ${b.sources[1].key}`);
+  assert(b.sources[1].required === true, 'second source should be required');
+  assert(b.sources[2].kind === 'file', `third kind: ${b.sources[2].kind}`);
+  assert(b.sources[2].key === '.godpowers/runs/**/events.jsonl', `third key: ${b.sources[2].key}`);
+  assert(b.sources[2].required === false, 'optional array status was not preserved');
+  assert(!b.sources.some(source => source.key.includes('phantom.md')), 'inputs prose was inferred as context');
   assert(b.maxTokens === 50000, `maxTokens: ${b.maxTokens}`);
 });
 
-test('plan loads required, drops optional that exceeds cap', () => {
+test('P-MUST-25: validateAgentContract accepts an explicit no-project-context contract', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: context-free-agent
+no-project-context: true
+---
+body`);
+  const result = budget.validateAgentContract(agentPath);
+  assert(result.valid === true, `errors: ${result.errors.join(', ')}`);
+  assert(result.mode === 'no-project-context', `mode: ${result.mode}`);
+  const loadout = budget.planForAgent(tmp, agentPath, {}, {});
+  assert(loadout.blocked === false, 'explicit no-context contract should not block');
+  assert(loadout.loadout.length === 0, `loadout: ${loadout.loadout.length}`);
+});
+
+test('validateAgentContract rejects empty source identifiers', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - ""
+required-context:
+  - "inline:"
+optional-context: []
+max-tokens: 100
+---
+body`);
+  const result = budget.validateAgentContract(agentPath);
+  assert(result.valid === false, 'empty identifier was accepted');
+  assert(result.errors.some(error => /empty/i.test(error)), `errors: ${result.errors.join(', ')}`);
+});
+
+test('validateAgentContract rejects an empty specialist name identifier', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: ""
+inputs:
+  - "user intent"
+required-context:
+  - "inline:user-intent"
+optional-context: []
+max-tokens: 100
+---
+body`);
+  const result = budget.validateAgentContract(agentPath);
+  assert(result.valid === false, 'empty specialist name was accepted');
+  assert(result.errors.some(error => /name identifier.*empty/i.test(error)),
+    `errors: ${result.errors.join(', ')}`);
+});
+
+test('validateAgentContract rejects contradictory required and optional duplicates', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - "user intent"
+required-context:
+  - "inline:user-intent"
+optional-context:
+  - "inline:user-intent"
+max-tokens: 100
+---
+body`);
+  const result = budget.validateAgentContract(agentPath);
+  assert(result.valid === false, 'contradictory duplicate was accepted');
+  assert(result.errors.some(error => /required and optional/i.test(error)),
+    `errors: ${result.errors.join(', ')}`);
+});
+
+test('validateAgentContract rejects no-project-context combined with inputs', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+no-project-context: true
+inputs:
+  - "user intent"
+---
+body`);
+  const result = budget.validateAgentContract(agentPath);
+  assert(result.valid === false, 'conflicting no-context and inputs were accepted');
+  assert(result.errors.some(error => /cannot declare inputs/i.test(error)),
+    `errors: ${result.errors.join(', ')}`);
+});
+
+test('validateAgentContract rejects no-project-context combined with max-tokens', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+no-project-context: true
+max-tokens: 100
+---
+body`);
+  const result = budget.validateAgentContract(agentPath);
+  assert(result.valid === false, 'conflicting no-context and max-tokens were accepted');
+  assert(result.errors.some(error => /cannot declare max-tokens/i.test(error)),
+    `errors: ${result.errors.join(', ')}`);
+});
+
+test('validateAgentContract rejects prose and unknown explicit source forms', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - "task"
+required-context:
+  - "some prose filename.md"
+optional-context: []
+max-tokens: 100
+---
+body`);
+  const result = budget.validateAgentContract(agentPath);
+  assert(result.valid === false, 'implicit prose declaration was accepted');
+  assert(result.errors.some(error => /file: or inline:/i.test(error)),
+    `errors: ${result.errors.join(', ')}`);
+});
+
+test('resolveSources sizes file and supplied inline payloads without embedding content in manifests', () => {
+  const tmp = mkProject();
+  fs.mkdirSync(path.join(tmp, 'docs'));
+  fs.writeFileSync(path.join(tmp, 'docs', 'guide.md'), 'f'.repeat(40));
+  const declarations = [
+    { kind: 'file', key: 'docs/guide.md', required: true, order: 0 },
+    { kind: 'inline', key: 'user intent', required: true, order: 1 }
+  ];
+  const resolved = budget.resolveSources(tmp, declarations, {
+    'user intent': 'build the bounded loadout'
+  });
+  assert(resolved.sources.length === 2, `sources: ${resolved.sources.length}`);
+  assert(resolved.sources[0].bytes === 40, `file bytes: ${resolved.sources[0].bytes}`);
+  assert(resolved.sources[1].bytes === 25, `inline bytes: ${resolved.sources[1].bytes}`);
+  assert(resolved.sources[1].content === 'build the bounded loadout', 'inline payload missing from loadout source');
+  const manifest = budget.manifestFor(resolved.sources, { blocked: false });
+  assert(!JSON.stringify(manifest).includes('build the bounded loadout'), 'manifest leaked inline content');
+});
+
+test('resolveSources expands globs in declaration order and lexical match order', () => {
+  const tmp = mkProject();
+  fs.mkdirSync(path.join(tmp, 'docs', 'nested'), { recursive: true });
+  fs.writeFileSync(path.join(tmp, 'docs', 'z.md'), 'z');
+  fs.writeFileSync(path.join(tmp, 'docs', 'a.md'), 'a');
+  fs.writeFileSync(path.join(tmp, 'docs', 'nested', 'b.md'), 'b');
+  fs.writeFileSync(path.join(tmp, 'first.md'), 'first');
+  const resolved = budget.resolveSources(tmp, [
+    { kind: 'file', key: 'first.md', required: true, order: 0 },
+    { kind: 'file', key: 'docs/**/*.md', required: true, order: 1 }
+  ], {});
+  const names = resolved.sources.map(source => source.path);
+  assert(JSON.stringify(names) === JSON.stringify([
+    'first.md', 'docs/a.md', 'docs/nested/b.md', 'docs/z.md'
+  ]), `unstable glob order: ${JSON.stringify(names)}`);
+});
+
+test('required glob loads 500 execution sources while evidence stays bounded', () => {
+  const tmp = mkProject();
+  fs.mkdirSync(path.join(tmp, 'evidence'));
+  for (let index = 0; index < 500; index++) {
+    fs.writeFileSync(path.join(tmp, 'evidence', `${String(index).padStart(3, '0')}.md`), 'x');
+  }
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - "repository evidence"
+required-context:
+  - "file:evidence/*.md"
+optional-context: []
+max-tokens: 1000
+---
+body`);
+  const result = budget.planForAgent(tmp, agentPath, {}, {});
+  assert(result.blocked === false, `missing: ${JSON.stringify(result.missing)}`);
+  assert(result.loadout.length === 500, `execution loadout: ${result.loadout.length}`);
+  assert(result.manifest.loaded.length === budget.MAX_EVIDENCE_SOURCES,
+    `evidence loaded: ${result.manifest.loaded.length}`);
+  assert(result.manifest.omittedCounts.loaded === 500 - budget.MAX_EVIDENCE_SOURCES,
+    `omitted loaded: ${result.manifest.omittedCounts.loaded}`);
+  const h = events.startRun(tmp);
+  events.recordContextLoadout(h, result.manifest);
+  const ev = events.readRun(tmp, h.runId).find(event => event.name === 'context.loadout');
+  assert(ev.attrs.sourceCounts.loaded === 500,
+    `event source count: ${ev.attrs.sourceCounts.loaded}`);
+  assert(ev.attrs.omittedCounts.loaded === 500 - budget.MAX_EVIDENCE_SOURCES,
+    `event omitted count: ${ev.attrs.omittedCounts.loaded}`);
+});
+
+test('resolveSources rejects paths outside the project and every file symlink', () => {
+  const tmp = mkProject();
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-context-outside-'));
+  fs.writeFileSync(path.join(outside, 'secret.md'), 'secret');
+  fs.writeFileSync(path.join(tmp, 'inside.md'), 'inside');
+  fs.symlinkSync(path.join(outside, 'secret.md'), path.join(tmp, 'link.md'));
+  fs.symlinkSync(path.join(tmp, 'inside.md'), path.join(tmp, 'inside-link.md'));
+  const resolved = budget.resolveSources(tmp, [
+    { kind: 'file', key: '../secret.md', required: true, order: 0 },
+    { kind: 'file', key: 'link.md', required: true, order: 1 },
+    { kind: 'file', key: 'inside-link.md', required: true, order: 2 }
+  ], {});
+  assert(resolved.sources.length === 0, 'escaped files entered the loadout');
+  assert(resolved.missing.length === 3, `missing: ${resolved.missing.length}`);
+  assert(resolved.missing[0].reason === 'outside-project', JSON.stringify(resolved.missing));
+  assert(resolved.missing.slice(1).every(source => source.reason === 'symbolic-link'),
+    `reasons: ${resolved.missing.map(source => source.reason).join(', ')}`);
+});
+
+test('resolved file sources retain pinned bytes when the path changes later', () => {
+  const tmp = mkProject();
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-context-swap-'));
+  const file = path.join(tmp, 'stable.md');
+  fs.writeFileSync(file, 'approved project bytes');
+  fs.writeFileSync(path.join(outside, 'replacement.md'), 'outside replacement bytes');
+  const resolved = budget.resolveSources(tmp, [
+    { kind: 'file', key: 'stable.md', required: true, order: 0 }
+  ], {});
+  fs.rmSync(file);
+  fs.symlinkSync(path.join(outside, 'replacement.md'), file);
+  assert(resolved.sources.length === 1, JSON.stringify(resolved.missing));
+  assert(Buffer.isBuffer(resolved.sources[0].content), 'file source bytes were not pinned');
+  assert(resolved.sources[0].content.toString('utf8') === 'approved project bytes',
+    'resolved source changed after its path was replaced');
+  assert(resolved.sources[0].path === 'stable.md', `path: ${resolved.sources[0].path}`);
+});
+
+test('glob inventory stops at the declared traversal depth', () => {
+  const tmp = mkProject();
+  let current = tmp;
+  for (let depth = 0; depth <= budget.MAX_PROJECT_DEPTH; depth += 1) {
+    current = path.join(current, 'd');
+    fs.mkdirSync(current);
+  }
+  fs.writeFileSync(path.join(current, 'deep.md'), 'deep');
+  let traversalError;
+  try {
+    budget.resolveSources(tmp, [
+      { kind: 'file', key: '**/*.md', required: true, order: 0 }
+    ], {});
+  } catch (error) {
+    traversalError = error;
+  }
+  assert(traversalError && /traversal depth/i.test(traversalError.message),
+    'deep repository inventory was not bounded');
+});
+
+test('plan loads required and drops optional that exceeds cap', () => {
   const tmp = mkProject();
   const req = path.join(tmp, 'req.md');
   const opt1 = path.join(tmp, 'opt1.md');
@@ -374,12 +637,13 @@ test('plan loads required, drops optional that exceeds cap', () => {
   assert(p.dropped[0] === opt2, 'opt2 should be dropped');
 });
 
-test('plan reports exceeded when required alone overflows budget', () => {
+test('plan blocks when required context alone overflows budget', () => {
   const tmp = mkProject();
   const req = path.join(tmp, 'req.md');
   fs.writeFileSync(req, 'x'.repeat(10000));  // ~2500 tokens
   const p = budget.plan({ defaultMaxTokens: 100 }, [req], [], 'agent');
   assert(p.exceeded === true, 'exceeded should be true');
+  assert(p.blocked === true, 'required overflow must block dispatch');
   assert(p.loadout.length === 1, 'required still loaded');
 });
 
@@ -399,13 +663,328 @@ test('plan respects per-agent override', () => {
   assert(p2.loadout.length === 0, 'narrow agent drops optional');
 });
 
-test('plan tolerates missing files', () => {
+test('plan blocks when required files are missing', () => {
   const tmp = mkProject();
   const p = budget.plan({ defaultMaxTokens: 100 },
                          ['/nonexistent.md'], ['/also-missing.md'],
                          'agent');
   assert(p.loadout.length === 0, 'missing files not loaded');
   assert(p.exceeded === false, 'no overflow on empty loadout');
+  assert(p.blocked === true, 'missing required file must block dispatch');
+  assert(p.missing.length === 1, `missing required: ${p.missing.length}`);
+  assert(p.dropped.length === 1, `missing optional should be dropped: ${p.dropped.length}`);
+});
+
+test('planForAgent blocks missing inline context and honors the declared max-tokens', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - "required prompt"
+required-context:
+  - "inline:required-prompt"
+optional-context: []
+max-tokens: 8
+---
+body`);
+  const missing = budget.planForAgent(tmp, agentPath, {}, {});
+  assert(missing.blocked === true, 'missing inline input should block');
+  assert(missing.missing[0].key === 'required-prompt', `missing key: ${missing.missing[0].key}`);
+  const overflow = budget.planForAgent(tmp, agentPath, {
+    'required-prompt': 'x'.repeat(40)
+  }, {});
+  assert(overflow.blocked === true, 'inline overflow should block');
+  assert(overflow.exceeded === true, 'inline overflow should report exceeded');
+  assert(overflow.budget.tokens === 8, `declared cap ignored: ${overflow.budget.tokens}`);
+});
+
+test('planForAgent drops optional inline context without blocking', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - "required prompt"
+  - "optional extra evidence"
+required-context:
+  - "inline:required-prompt"
+optional-context:
+  - "inline:extra-evidence"
+max-tokens: 10
+---
+body`);
+  const result = budget.planForAgent(tmp, agentPath, {
+    'required-prompt': 'x'.repeat(20),
+    'extra-evidence': 'y'.repeat(40)
+  }, {});
+  assert(result.blocked === false, 'optional overflow should not block');
+  assert(result.loadout.length === 1, `loadout: ${result.loadout.length}`);
+  assert(result.dropped.length === 1, `dropped: ${result.dropped.length}`);
+  assert(result.dropped[0].key === 'extra-evidence', `dropped key: ${result.dropped[0].key}`);
+});
+
+test('required invalid inline payloads return controlled blocked findings', () => {
+  const cases = [
+    ['undefined', undefined],
+    ['unsupported', () => 'no'],
+    ['non-serializable', Object.defineProperty({}, 'bad', { enumerable: true, get() { throw new Error('raw'); } })]
+  ];
+  const cyclic = {};
+  cyclic.self = cyclic;
+  cases.push(['cyclic', cyclic]);
+  for (const [label, payload] of cases) {
+    const tmp = mkProject();
+    const agentPath = path.join(tmp, 'agent.md');
+    fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - "task payload"
+required-context:
+  - "inline:task-payload"
+optional-context: []
+max-tokens: 100
+---
+body`);
+    const result = budget.planForAgent(tmp, agentPath, { 'task-payload': payload }, {});
+    assert(result.blocked === true, `${label} required payload did not block`);
+    assert(result.missing[0].reason === `invalid-inline-${label}`,
+      `${label} reason: ${result.missing[0].reason}`);
+  }
+});
+
+test('optional invalid inline payloads are dropped without throwing or blocking', () => {
+  const tmp = mkProject();
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - "task payload"
+required-context:
+  - "inline:task-payload"
+optional-context:
+  - "inline:extra-payload"
+max-tokens: 100
+---
+body`);
+  const cyclic = {};
+  cyclic.self = cyclic;
+  const result = budget.planForAgent(tmp, agentPath, {
+    'task-payload': 'valid',
+    'extra-payload': cyclic
+  }, {});
+  assert(result.blocked === false, 'optional invalid payload blocked dispatch');
+  assert(result.dropped.length === 1, `dropped: ${result.dropped.length}`);
+  assert(result.dropped[0].reason === 'invalid-inline-cyclic',
+    `reason: ${result.dropped[0].reason}`);
+});
+
+test('planForAgent returns a stable content-free manifest', () => {
+  const tmp = mkProject();
+  fs.writeFileSync(path.join(tmp, 'context.md'), 'stable file');
+  const agentPath = path.join(tmp, 'agent.md');
+  fs.writeFileSync(agentPath, `---
+name: g
+inputs:
+  - "context.md"
+  - "user intent"
+required-context:
+  - "file:context.md"
+  - "inline:user-intent"
+optional-context: []
+max-tokens: 100
+---
+body`);
+  const payloads = { 'user-intent': 'private source text' };
+  const first = budget.planForAgent(tmp, agentPath, payloads, {});
+  const second = budget.planForAgent(tmp, agentPath, payloads, {});
+  assert(JSON.stringify(first.manifest) === JSON.stringify(second.manifest), 'manifest drifted');
+  assert(!JSON.stringify(first.manifest).includes('private source text'), 'manifest leaked source content');
+});
+
+test('manifests enforce deterministic UTF-8 byte, count, and identifier bounds', () => {
+  const sources = Array.from({ length: budget.MAX_EVIDENCE_SOURCES + 10 }, (_, index) => ({
+    kind: 'inline',
+    key: `${'界'.repeat(budget.MAX_IDENTIFIER_BYTES)}-${index}-secret-content-marker`,
+    required: true,
+    order: index,
+    bytes: 12,
+    tokens: 3
+  }));
+  const first = budget.manifestFor(sources, { agent: 'a'.repeat(1000), blocked: false });
+  const second = budget.manifestFor(sources, { agent: 'a'.repeat(1000), blocked: false });
+  const serialized = JSON.stringify(first);
+  assert(Buffer.byteLength(serialized, 'utf8') <= budget.MAX_MANIFEST_BYTES,
+    `manifest bytes: ${Buffer.byteLength(serialized, 'utf8')}`);
+  assert(first.loaded.length <= budget.MAX_EVIDENCE_SOURCES, `loaded: ${first.loaded.length}`);
+  assert(first.loaded.every(source => Buffer.byteLength(source.key, 'utf8') <= budget.MAX_IDENTIFIER_BYTES),
+    'source identifier exceeded UTF-8 bound');
+  assert(JSON.stringify(first) === JSON.stringify(second), 'bounded manifest is not deterministic');
+  assert(!serialized.includes('secret-content-marker'), 'truncated identifier tail leaked');
+});
+
+test('manifest byte bound is unconditional for hostile non-array fields', () => {
+  const cyclic = {};
+  cyclic.self = cyclic;
+  const hostileSource = {};
+  Object.defineProperty(hostileSource, 'reason', {
+    enumerable: true,
+    get() { throw new Error('raw reason getter'); }
+  });
+  const manifest = budget.manifestFor([hostileSource], {
+    agent: '界'.repeat(100000),
+    blocked: cyclic,
+    exceeded: 'yes',
+    budget: { tokens: 'x'.repeat(100000), extra: cyclic },
+    used: { bytes: Infinity, tokens: -1, extra: 'x'.repeat(100000) },
+    dropped: { not: 'an array' },
+    missing: 'not an array',
+    sourceCounts: cyclic,
+    extra: 'x'.repeat(100000)
+  });
+  const serialized = JSON.stringify(manifest);
+  const bytes = Buffer.byteLength(serialized, 'utf8');
+  assert(bytes <= budget.MAX_MANIFEST_BYTES,
+    `manifest ${bytes} bytes exceeds ${budget.MAX_MANIFEST_BYTES}`);
+  assert(manifest.budget === null, `budget: ${JSON.stringify(manifest.budget)}`);
+  assert(manifest.used === null, `used: ${JSON.stringify(manifest.used)}`);
+  assert(manifest.blocked === false, `blocked: ${manifest.blocked}`);
+  assert(Buffer.byteLength(manifest.agent, 'utf8') <= budget.MAX_IDENTIFIER_BYTES,
+    'hostile agent exceeded identifier bound');
+});
+
+test('recordContextLoadout emits content-free bounded evidence', () => {
+  const tmp = mkProject();
+  const h = events.startRun(tmp);
+  events.recordContextLoadout(h, {
+    agent: 'god-pm',
+    blocked: false,
+    budget: { tokens: 100 },
+    used: { bytes: 24, tokens: 6 },
+    loaded: [
+      { kind: 'inline', key: 'user intent', bytes: 24, tokens: 6,
+        content: 'private prompt text' },
+      ...Array.from({ length: events.MAX_CONTEXT_LOADOUT_EVENT_BYTES }, (_, index) => ({
+        kind: 'inline',
+        key: `${'界'.repeat(200)}-${index}`,
+        bytes: 1,
+        tokens: 1,
+        content: 'private prompt text'
+      }))
+    ],
+    dropped: [],
+    missing: []
+  });
+  const ev = events.readRun(tmp, h.runId).find(event => event.name === 'context.loadout');
+  assert(ev, 'context.loadout event missing');
+  assert(ev.attrs.agent === 'god-pm', `agent: ${ev.attrs.agent}`);
+  assert(ev.attrs.loaded[0].key === 'user intent', `key: ${ev.attrs.loaded[0].key}`);
+  assert(!JSON.stringify(ev.attrs).includes('private prompt text'), 'event leaked source content');
+  const eventLine = fs.readFileSync(h.file, 'utf8').trimEnd().split('\n').find(line =>
+    JSON.parse(line).name === 'context.loadout');
+  assert(Buffer.byteLength(eventLine, 'utf8') <= events.MAX_CONTEXT_LOADOUT_EVENT_BYTES,
+    `event bytes: ${Buffer.byteLength(eventLine, 'utf8')}`);
+});
+
+test('context.loadout event bound is unconditional for hostile manifest fields', () => {
+  const tmp = mkProject();
+  const h = events.startRun(tmp);
+  const cyclic = {};
+  cyclic.self = cyclic;
+  const hostile = {
+    agent: '界'.repeat(100000),
+    blocked: cyclic,
+    exceeded: 'true',
+    budget: { tokens: 'x'.repeat(100000), extra: cyclic },
+    used: { bytes: NaN, tokens: Infinity },
+    loaded: Array.from({ length: 1000 }, (_, index) => ({
+      kind: 'inline',
+      key: `key-${index}-${'界'.repeat(1000)}`,
+      required: true,
+      reason: 'reason'.repeat(1000),
+      content: 'must never appear'
+    })),
+    dropped: cyclic,
+    missing: 'not-array',
+    sourceCounts: { loaded: '9'.repeat(100000) }
+  };
+  events.recordContextLoadout(h, hostile);
+  const eventLine = fs.readFileSync(h.file, 'utf8').trimEnd().split('\n').find(line =>
+    JSON.parse(line).name === 'context.loadout');
+  const bytes = Buffer.byteLength(eventLine, 'utf8');
+  assert(bytes <= events.MAX_CONTEXT_LOADOUT_EVENT_BYTES,
+    `event ${bytes} bytes exceeds ${events.MAX_CONTEXT_LOADOUT_EVENT_BYTES}`);
+  const ev = JSON.parse(eventLine);
+  assert(ev.attrs.budget === null, `budget: ${JSON.stringify(ev.attrs.budget)}`);
+  assert(ev.attrs.used === null, `used: ${JSON.stringify(ev.attrs.used)}`);
+  assert(!eventLine.includes('must never appear'), 'event leaked source content');
+});
+
+test('generic event emission cannot bypass context.loadout normalization or byte caps', () => {
+  const tmp = mkProject();
+  const h = events.startRun(tmp);
+  const privateText = 'source-body-must-not-persist'.repeat(1000);
+  h.emit({
+    span_id: h.rootSpanId,
+    name: 'context.loadout',
+    attrs: {
+      agent: 'generic-emitter',
+      loaded: [{
+        kind: 'file',
+        key: 'context.md',
+        required: true,
+        order: 0,
+        path: 'context.md',
+        content: privateText
+      }],
+      dropped: [],
+      missing: [],
+      unrelated: privateText
+    }
+  });
+  const eventLine = fs.readFileSync(h.file, 'utf8').trimEnd().split('\n').find(line =>
+    JSON.parse(line).name === 'context.loadout');
+  assert(eventLine, 'generic context.loadout event missing');
+  assert(Buffer.byteLength(eventLine, 'utf8') <= events.MAX_CONTEXT_LOADOUT_EVENT_BYTES,
+    `event bytes: ${Buffer.byteLength(eventLine, 'utf8')}`);
+  assert(!eventLine.includes('source-body-must-not-persist'), 'generic event leaked source content');
+});
+
+test('shipped cartographer contract does not require a prior chart or planning artifacts', () => {
+  const tmp = mkProject();
+  const result = budget.planForAgent(tmp, path.join(__dirname, '..', 'specialists', 'god-cartographer.md'), {
+    'user-intent': 'Map this large feature'
+  }, {});
+  assert(result.blocked === false, `missing: ${JSON.stringify(result.missing)}`);
+  assert(result.dropped.some(source => source.key.includes('CHART.mdx')), 'prior chart was not optional');
+});
+
+test('shipped context-writer contract does not require DESIGN.md or PRODUCT.md', () => {
+  const tmp = mkProject();
+  fs.writeFileSync(path.join(tmp, '.godpowers', 'state.json'), '{}');
+  const result = budget.planForAgent(tmp, path.join(__dirname, '..', 'specialists', 'god-context-writer.md'), {}, {});
+  assert(result.blocked === false, `missing: ${JSON.stringify(result.missing)}`);
+  assert(result.dropped.some(source => source.key === 'DESIGN.md'), 'DESIGN.md was not optional');
+  assert(result.dropped.some(source => source.key === 'PRODUCT.md'), 'PRODUCT.md was not optional');
+});
+
+test('shipped planner contract does not require learning artifacts', () => {
+  const tmp = mkProject();
+  for (const relative of [
+    '.godpowers/roadmap/ROADMAP.mdx',
+    '.godpowers/arch/ARCH.mdx',
+    '.godpowers/stack/DECISION.mdx',
+    'references/building/BUILD-VERTICAL-SLICES.md',
+    'references/building/BUILD-WAVES.md'
+  ]) {
+    const file = path.join(tmp, relative);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, 'required');
+  }
+  const result = budget.planForAgent(tmp, path.join(__dirname, '..', 'specialists', 'god-planner.md'), {}, {});
+  assert(result.blocked === false, `missing: ${JSON.stringify(result.missing)}`);
+  assert(result.dropped.some(source => source.key.includes('LEARNINGS.mdx')),
+    'learning artifact glob was not optional');
 });
 
 report();

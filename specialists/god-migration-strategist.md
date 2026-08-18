@@ -7,10 +7,16 @@ description: |
 
   Spawned by: /god-upgrade
 tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
+max-tokens: 80000
 inputs:
   - "migration target"
   - ".godpowers/state.json build evidence"
   - "upstream changelog"
+required-context:
+  - "inline:migration-target"
+  - "file:.godpowers/state.json"
+optional-context:
+  - "inline:upstream-changelog"
 outputs:
   - ".godpowers/migrations/<slug>/MIGRATION.mdx"
   - "phased migration plan"

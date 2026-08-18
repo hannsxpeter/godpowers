@@ -7,9 +7,14 @@ description: |
 
   Spawned by: end of feature-addition recipe execution, /god-roadmap update
 tools: Read, Write, Edit, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers/roadmap/ROADMAP.mdx"
   - "completed feature change description"
+required-context:
+  - "file:.godpowers/roadmap/ROADMAP.mdx"
+  - "inline:completed-change-description"
+optional-context: []
 outputs:
   - "updated .godpowers/roadmap/ROADMAP.mdx"
   - "roadmap changelog entry"

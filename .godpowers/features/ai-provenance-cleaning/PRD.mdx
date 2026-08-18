@@ -1,0 +1,105 @@
+# Feature PRD: Authorized AI Provenance Cleaning
+
+## Feature Context
+
+- [DECISION] Godpowers will add authorized AI provenance inspection and cleaning as the first-party `@godpowers/provenance-pack` extension rather than expand the frozen core command surface.
+- [DECISION] The extension will expose `/god-remove-ai-marks` and a dedicated specialist that integrates with the user-operated `watermarks-remover` HTTP service selected by the user.
+- [DECISION] The integration will use the upstream `/health`, `/capabilities`, `/inspect`, and `/clean` endpoints without inventing or vendoring a second cleaning engine.
+
+## Problem
+
+- [DECISION] Godpowers users who own AI-assisted text, images, or documents currently have no Godpowers workflow that can inspect invisible Unicode, C2PA, EXIF, XMP, document properties, or related AI provenance signals before sharing those files.
+- [DECISION] Calling the upstream service by hand leaves output safety, remote-upload consent, capability checks, and residual-risk reporting to ad hoc shell commands.
+
+## User Outcome
+
+- [DECISION] A Godpowers user can invoke one extension command on authorized content, see what the upstream service detected, receive a separate cleaned output by default, and understand which signals may remain.
+
+## Functional Requirements
+
+### P-MUST-23: Inspect and clean authorized content through the upstream service
+
+- [DECISION] `/god-remove-ai-marks <input>` must verify ownership or processing authorization when the request does not already establish it.
+- [DECISION] The specialist must validate service health and capabilities before transmitting the input.
+- [DECISION] The specialist must call `/inspect` before `/clean` and summarize confirmed, probable, informational, and likely-false-positive findings when the service reports those classes.
+- [DECISION] A dependency-free bundled client must validate the service version and OpenAPI shape, reject mixed-trust network address sets, bound response data, sanitize service reports, and perform file writes without exposing raw content to the specialist.
+- [DECISION] The specialist must write a new output path by default and may replace the source only when the user explicitly requests in-place cleaning.
+- [DECISION] The specialist must verify the decoded response, preserve the pre-upload destination and parent identities, and use guarded atomic publication that retains recovery data instead of clobbering a changed path.
+- [DECISION] The specialist must never store bearer tokens or unnecessary source content in `.godpowers/`, logs, events, checkpoints, or reports.
+- [DECISION] The specialist must obtain explicit consent before sending file content to a service URL that is not loopback.
+- [DECISION] The specialist must reject service URLs containing embedded credentials and must send an optional bearer token only from `WATERMARKS_SERVICE_API_KEY`.
+- [DECISION] Pixel regeneration must run only after an explicit user request and only when `/capabilities` reports the selected backend.
+- [DECISION] Natural-language rewriting must remain optional because it can change wording or meaning, and the user must approve the selected rewrite strength before it runs.
+- [DECISION] The final report must separate verifiable deterministic removals from best-effort rewriting and unresolved pixel, soft-binding, audio, video, secret-key, or vendor-detector risk.
+- [DECISION] The final report must not claim that cleaned content is human-written or that every AI provenance signal is gone.
+
+Acceptance criteria:
+
+- [DECISION] A healthy loopback service receives an inspect request followed by a clean request, and the command writes `*.cleaned.*` without changing the source.
+- [DECISION] An unreachable service produces startup guidance and writes no output.
+- [DECISION] A non-loopback service receives no file bytes until the user explicitly approves that destination.
+- [DECISION] A requested unavailable pixel backend stops before cleaning and names the missing capability.
+- [DECISION] A malformed, unsuccessful, or incomplete clean response never replaces the source or final output.
+- [DECISION] A successful run reports deterministic actions, optional rewrite work, and residual risk as separate categories.
+
+### P-SHOULD-08: Preserve upstream compatibility without coupling the core runtime
+
+- [DECISION] The extension should remain a thin instruction and specialist pack with no new Godpowers production dependency.
+- [DECISION] The extension should identify the upstream project, tested service contract, and responsible-use boundary in its package documentation.
+- [DECISION] The first-party extension publish workflow should make `provenance-pack` selectable without changing root package installation defaults.
+
+Acceptance criteria:
+
+- [DECISION] The extension manifest, package metadata, skill, specialist, deterministic client, license, and package tarball pass the existing first-party extension checks.
+- [DECISION] Installing the root `godpowers` package does not activate or execute the provenance extension.
+- [DECISION] Installing the extension copies only its declared pack files and does not install or start the upstream service.
+
+## Non-Functional Requirements
+
+- [DECISION] Privacy: local processing remains the default because the service URL defaults to `http://127.0.0.1:8765`.
+- [DECISION] Security: the deterministic client keeps user paths out of interpolated code, credentials out of arguments and files, service-controlled strings out of agent instructions, and malformed, oversized, unsupported-format, or kind-mismatched responses away from output files.
+- [DECISION] Portability: the integration relies only on Node.js 18 or newer and its built-in modules, which match the Godpowers host environment.
+- [DECISION] Integrity: source files remain unchanged unless the user explicitly selects in-place cleaning.
+- [DECISION] Honesty: reports distinguish observed removals from unsupported or unverifiable claims.
+
+## Scope
+
+### In Scope
+
+- [DECISION] Text Layer A inspection and cleaning through the upstream service.
+- [DECISION] C2PA, EXIF, XMP, and supported container metadata inspection and cleaning through the upstream service.
+- [DECISION] Optional user-approved prose rewriting performed by the active agent after deterministic cleaning.
+- [DECISION] Optional capability-gated image pixel regeneration through an upstream backend.
+- [DECISION] Read-only directory audits that inspect supported files without silently cleaning them.
+
+### Not In Scope
+
+- [DECISION] Godpowers will not vendor, fork, install, start, or publish the upstream Python service or its heavy model backends.
+- [DECISION] Godpowers will not claim access to official vendor watermark detectors or secret keys.
+- [DECISION] Godpowers will not remove audio or video watermarks, C2PA soft binding, or model-training backdoors.
+- [DECISION] Godpowers will not help misrepresent authorship, bypass a required disclosure, or assert that a cleaned file was never AI-assisted.
+
+## Data Path Inventory
+
+- [DECISION] Collected fields are the input bytes, basename, requested cleaning options, and optional bearer credential needed by the selected service.
+- [DECISION] The purpose is user-requested inspection and cleaning of content the user owns or is authorized to process.
+- [DECISION] The destination is `WATERMARKS_SERVICE_URL`, with loopback as the default and explicit consent required for any other destination.
+- [DECISION] Godpowers does not define the service operator's retention behavior, so remote use must surface that unknown before upload.
+- [DECISION] Request and response bodies remain in process memory, while exclusive output temporary files are cleaned on handled failure, process signals, or an exact-name, same-owner, private-mode stale-file sweep.
+- [DECISION] User control consists of service selection, remote-upload consent, output selection, rewrite strength, and optional pixel backend selection.
+
+## Assumptions and Open Questions
+
+- [HYPOTHESIS] The upstream v0.5.0-compatible HTTP contract remains stable enough for a thin integration because its OpenAPI document is served from the same process that handles the requests.
+- [OPEN QUESTION] Should a future Godpowers integrations pillar define a shared remote-content consent contract for this and later file-processing services? Owner: maintainer. Due: before a second external file-processing extension ships.
+- [OPEN QUESTION] Should directory audit gain a machine-readable Godpowers artifact after adoption evidence shows that chat-only summaries are insufficient? Owner: maintainer. Due: after the first three authorized directory-audit uses.
+
+## Have-Nots Checklist
+
+- [x] [DECISION] The feature does not expand the frozen core slash-command surface.
+- [x] [DECISION] The feature does not add a Godpowers production dependency.
+- [x] [DECISION] The external data path names fields, purpose, destination, retention uncertainty, deletion, and user control.
+- [x] [DECISION] Remote content transmission requires visible consent.
+- [x] [DECISION] Source replacement requires explicit user intent.
+- [x] [DECISION] Optional destructive or content-drifting operations are capability-gated and user-approved.
+- [x] [DECISION] Reports cannot imply proof of human authorship or complete provenance removal.

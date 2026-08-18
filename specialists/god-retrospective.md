@@ -6,10 +6,16 @@ description: |
 
   Spawned by: /god-sprint retro
 tools: Read, Write, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "sprint plan"
   - "build state evidence"
   - "git log and events"
+required-context:
+  - "inline:sprint-plan"
+  - "inline:build-state-evidence"
+optional-context:
+  - "inline:git-event-evidence"
 outputs:
   - ".godpowers/sprints/sprint-<n>/RETRO.mdx"
 gates:

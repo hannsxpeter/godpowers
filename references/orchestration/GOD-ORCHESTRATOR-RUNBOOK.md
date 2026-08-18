@@ -17,13 +17,39 @@ agent spawn:
    - On miss, emit `cache.miss` and proceed.
 
 2. **Context budget** (always applied):
-   - Read the agent's `required-context` + `optional-context` from
-     its frontmatter via `lib/context-budget.parseAgentBudget`.
-   - Compute the loadout via `lib/context-budget.plan(budget,
-     required, optional, agentName)`.
-   - Pass the loadout files to the agent. If `exceeded: true`, emit
-     `budget.exceeded` warning but proceed (required files always
-     load).
+   - Validate the specialist with
+     `lib/context-budget.validateAgentContract`. A specialist declares
+     either ordered `required-context` and `optional-context` arrays plus
+     positive `max-tokens`, or the explicit `no-project-context: true`
+     contract. The no-context declaration is mutually exclusive with
+     `inputs`, both context arrays, and `max-tokens`.
+   - Keep `inputs` as human-facing task semantics only. Never infer a file,
+     glob, or payload identifier from prose. Every context declaration uses
+     `file:<project-relative-path-or-glob>` or `inline:<payload-id>`.
+   - Read bounded declarations with `lib/context-budget.parseAgentBudget`.
+     Missing or invalid required inline payloads block. Missing, invalid, or
+     oversized optional inline payloads are dropped with a reason.
+   - Keep loadout manifests and `context.loadout` evidence within the
+     exported source-count, identifier-byte, manifest-byte, and event-byte
+     bounds. Measure serialized limits as UTF-8 bytes and never include file
+     or inline payload content in evidence.
+   - Keep execution capacity separate from evidence display capacity.
+     `MAX_EXECUTION_SOURCES` supports 500 resolved paths per dispatch.
+     `MAX_EVIDENCE_SOURCES` limits only the displayed evidence projection;
+     omitted counts record the hidden remainder without dropping execution
+     sources.
+   - Resolve and compute the loadout via
+     `lib/context-budget.planForAgent(projectRoot, agentPath,
+     inlinePayloads, budget)`. Resolution must remain inside the project
+     root and must not follow a symlink to an outside path.
+   - Do not spawn when `blocked: true`. Missing required sources and
+     required context above the effective token cap block dispatch.
+     Optional missing or oversized sources appear in `dropped` and do
+     not block dispatch.
+   - Emit the returned content-free manifest with
+     `lib/events.recordContextLoadout(handle, result.manifest)` before
+     spawn. Evidence may include source identifiers, paths, sizes,
+     ordering, and verdicts, but never file or inline source content.
 
 3. **Model selection**:
    - Default model = `claude-3-5-sonnet` (standard tier).
@@ -46,6 +72,44 @@ agent spawn:
 
 `/god-cost`, `/god-budget`, and `/god-cache-clear` are read/configure
 surfaces over these mechanisms.
+
+## Program design before Build execution
+
+Before spawning an executor, read the approved build plan and run
+`lib/program-design.validateFile(planPath, { projectRoot, mode })`.
+
+- Every plan records scale as small, medium, or large.
+- A small plan passes only with both a sizing rationale and a program design
+  skip rationale.
+- A medium or large plan passes only with file-tree delta, module boundaries,
+  public contracts, call or data flow, reused patterns, non-goals, verification
+  points, and approval evidence.
+- Human-guided approval requires a hash-bound `user.resolve` event whose
+  attributes name `subject: program-design`, `decision: approved`, the
+  project-relative artifact, its SHA-256 content hash, and the reviewer.
+  Plan prose and frontmatter cannot authorize themselves. Under `--yolo`,
+  write the auto-approval and reason to `.godpowers/YOLO-DECISIONS.mdx` before
+  validation.
+- Do not spawn the executor or accept Build closeout evidence while validation
+  is missing, incomplete, or unapproved. `lib/gate.js` repeats this check when
+  the authoritative Build state declares a plan or scale.
+
+## Structured slice closeout and resume
+
+Whenever a slice completes, pauses, or changes owner, pass normalized plan,
+state, event, linkage, and verification records to `lib/slice-handoff.derive`.
+Persist the result with `lib/slice-handoff.write(projectRoot, runId, sliceId,
+handoff)` below `.godpowers/runs/<run-id>/handoffs/`.
+
+- Treat the handoff as a projection. Current state wins every conflict, and the
+  handoff records a warning for the ignored value.
+- Keep requirement ids, blockers, failed verification, and the next action
+  during size reduction. Store complete evidence on disk and retain its path
+  rather than embedding logs.
+- Reject a handoff above 8192 UTF-8 bytes and reject identifiers or symlinks
+  that would resolve outside the project run root.
+- On resume in a fresh process, read current state plus the handoff. Never use
+  the handoff to overwrite state or reconstruct facts from prior conversation.
 
 ## Concurrency: acquire lock + update CHECKPOINT after every mutation
 

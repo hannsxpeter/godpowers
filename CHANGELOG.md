@@ -7,6 +7,105 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.0] - 2026-08-17
+
+Harness-quality and MCP v2 release. Godpowers now bounds the information an
+agent must consume, validates larger code shape before Build can close, leaves
+state-authoritative slice handoffs, and measures changeability across six
+sequential requirement reveals. The root package still supports Node.js 18 and
+has zero production dependencies.
+
+### Breaking
+
+- `@godpowers/mcp` now requires Node.js 20 or newer and uses the MCP v2 server
+  package. Its nine tools remain read-only and protocol tests cover both the
+  current v2 client and the legacy v1 client. The root `godpowers` CLI continues
+  to support Node.js 18 or newer.
+- First-party extension pack peer ranges now accept Godpowers 6.x. Maintainers
+  of third-party packs should update any `<6.0.0` upper bound after validating
+  their pack against 6.0.0.
+
+### Added
+
+- Agent-oriented verification through `npm test -- --agent-output` and a JSON
+  mode. Passing output is aggregated, failure stops at the first failed child,
+  exact exit status is preserved, diagnostics are bounded, and complete child
+  bytes remain available in a private retained log. Normal human output remains
+  the default.
+- Explicit context contracts for all 41 workflow specialists. Required files,
+  optional files, inline task inputs, and positive token caps validate before
+  spawn. Required gaps fail closed, optional inputs drop in stable order, and
+  bounded `context.loadout` evidence records complete counts without source
+  contents.
+- Conditional program-design validation for Build. Medium and large plans must
+  record file-tree delta, module boundaries, public contracts, data flow,
+  reused patterns, non-goals, verification points, and affirmative approval.
+  Small changes must record their size and skip rationale.
+- Structured slice handoffs capped at 8 KiB. Requirement IDs, blockers, failed
+  verification, and next action survive compaction, while conflicting current
+  state always wins over the projection.
+- Deterministic maintainability trajectories covering source size, function
+  length distribution, comment density, TODO and FIXME markers, duplicated
+  blocks, dependency edges, and cyclic components. Measures include sample
+  counts and signed deltas and remain report-only for three release candidates.
+- A packaged six-checkpoint evolution benchmark that reveals one requirement at
+  a time in a temporary Git repository. It runs offline without model
+  credentials, records behavior and changeability evidence, retains bounded
+  JSON plus Markdown summaries, and cleans up on pass, failure, or handled
+  interruption.
+- Optional `@godpowers/provenance-pack` extension for authorized provenance
+  inspection and cleaning through a separately operated service. Loopback is
+  the default, remote uploads require destination-specific consent, credentials
+  remain environment-only, and source files are preserved by default.
+
+### Changed
+
+- `@godpowers/mcp` moved its production protocol dependency from the legacy SDK
+  to `@modelcontextprotocol/server` v2, while keeping the legacy SDK and current
+  client as test-only compatibility probes.
+- The Build gate rejects project-external program-design symlinks and accepts
+  approval only when the human or YOLO record is explicitly affirmative and not
+  negated.
+- Public documentation now explains compact verification, specialist loadouts,
+  program design, handoffs, trajectory evidence, and the evolution benchmark.
+  The canonical inspiration record documents the researched influences and the
+  parts Godpowers implemented independently.
+- Root and MCP publication now stages both exact versions under one release
+  tag, verifies the pair, and promotes `latest` only afterward. Reruns preserve
+  an already published half and recover the missing package without guessing
+  after an uncertain registry lookup.
+- First-party extension publication requires an exact pack version tag on a
+  commit already merged into `main`, with package name and version identity
+  verified before the release gate.
+
+### Security
+
+- MCP tool calls can no longer replace the server-configured project root.
+  Artifact lint paths are canonicalized inside that root and reject symbolic
+  links, closing both cross-project selection and symlink escape paths.
+- Human program-design approval is loaded only from a valid hash-chained
+  `user.resolve` event bound to the exact plan path and content hash. Plan prose
+  and frontmatter cannot authorize themselves.
+- Specialist file context rejects every symbolic-link component and returns
+  bytes pinned to a stable file identity. Generic `context.loadout` emission is
+  normalized and byte-capped just like the dedicated helper.
+- Remote provenance consent and the separate internal-network grant must each
+  match the normalized service origin exactly.
+- Evolution scenario manifests and checkpoints must be contained non-symlink
+  regular files. Inputs, scalar fields, machine evidence, and human summaries
+  have explicit UTF-8 byte caps.
+- Evolution baselines reject version-control metadata, run Git with isolated
+  configuration and empty hooks plus template directories, and enforce entry,
+  byte, and traversal-depth bounds. Context and maintainability tree walks have
+  explicit entry and depth limits as well.
+- The evolution behavior child denies direct network, DNS, UDP, subprocess,
+  worker, and cluster entry points. Adversarial tests cover a UDP custom-lookup
+  bypass, external symlinks, malformed handoffs, invalid metrics, and signal
+  cleanup.
+- The provenance client pins approved addresses, rejects redirects, enforces
+  deadlines and response caps, treats service strings as inert data, validates
+  canonical output bytes, and publishes through guarded atomic recovery.
+
 ## [5.17.1] - 2026-08-06
 
 Release-gate hardening. Closes the two recorded publish-run traps

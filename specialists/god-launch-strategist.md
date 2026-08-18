@@ -7,11 +7,18 @@ description: |
 
   Spawned by: /god-launch, god-orchestrator
 tools: Read, Write, Edit, Bash, Grep, WebSearch
+max-tokens: 80000
 inputs:
   - ".godpowers/prd/PRD.mdx"
   - ".godpowers/harden/FINDINGS.mdx"
   - ".godpowers/state.json launch prerequisites"
   - "references/shipping/LAUNCH-ANTIPATTERNS.md"
+required-context:
+  - "file:.godpowers/prd/PRD.mdx"
+  - "file:.godpowers/harden/FINDINGS.mdx"
+  - "file:.godpowers/state.json"
+  - "file:references/shipping/LAUNCH-ANTIPATTERNS.md"
+optional-context: []
 outputs:
   - ".godpowers/state.json launch evidence"
   - ".godpowers/launch/PREPUBLICATION.mdx before public activation"

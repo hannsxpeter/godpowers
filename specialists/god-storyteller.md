@@ -9,10 +9,17 @@ description: |
 
   Spawned by: /god-story, /god-story --kind, /god-feature --with-stories
 tools: Read, Write, Bash, Grep
+max-tokens: 80000
 inputs:
   - "user story prompt"
   - "feature decomposition"
   - "optional PRD and roadmap context"
+required-context:
+  - "inline:user-story-prompt"
+  - "inline:feature-decomposition"
+optional-context:
+  - "file:.godpowers/prd/PRD.mdx"
+  - "file:.godpowers/roadmap/ROADMAP.mdx"
 outputs:
   - "STORY.md content"
   - "acceptance criteria"

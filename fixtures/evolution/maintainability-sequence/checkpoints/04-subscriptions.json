@@ -1,0 +1,8 @@
+{
+  "id": "04-subscriptions",
+  "requirement": "Represent configuration subscriptions as an independent capability.",
+  "feature": {
+    "name": "subscriptions",
+    "value": "supported"
+  }
+}

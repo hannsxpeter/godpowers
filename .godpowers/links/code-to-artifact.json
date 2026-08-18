@@ -45,10 +45,16 @@
     "P-MUST-13"
   ],
   "lib/reverse-sync.js": [
-    "P-MUST-14"
+    "P-MUST-14",
+    "S-"
   ],
   "lib/code-scanner.js": [
-    "P-MUST-14"
+    "ADR-007",
+    "D-button-primary",
+    "P-MUST-01",
+    "P-MUST-14",
+    "P-MUST-NN",
+    "colors.primary"
   ],
   "lib/drift-detector.js": [
     "P-MUST-15"
@@ -72,6 +78,7 @@
     "P-MUST-20"
   ],
   "lib/installer-core.js": [
+    "C-installer-core",
     "P-MUST-21"
   ],
   "bin/install.js": [
@@ -112,5 +119,181 @@
   ],
   "agents/god-spike-runner.md": [
     "P-COULD-04"
+  ],
+  ".github/workflows/publish-pack.yml": [
+    "P-SHOULD-08"
+  ],
+  "CHANGELOG.md": [
+    "P-..."
+  ],
+  "docs/change-propagation.md": [
+    "P-MUST-01"
+  ],
+  "docs/linkage.md": [
+    "ADR-007",
+    "C-auth-service",
+    "P-MUST-01",
+    "colors.primary"
+  ],
+  "extensions/provenance-pack/agents/god-ai-provenance-cleaner.md": [
+    "ADR-004",
+    "ADR-005",
+    "ADR-006",
+    "C-provenance-specialist",
+    "P-MUST-23",
+    "P-SHOULD-08"
+  ],
+  "extensions/provenance-pack/references/provenance-client.js": [
+    "ADR-005",
+    "ADR-006",
+    "C-provenance-client",
+    "P-MUST-23",
+    "P-SHOULD-08"
+  ],
+  "extensions/provenance-pack/skills/god-remove-ai-marks.md": [
+    "ADR-004",
+    "C-provenance-skill",
+    "P-MUST-23",
+    "P-SHOULD-08"
+  ],
+  "lib/agent-browser-driver.js": [
+    "https"
+  ],
+  "lib/extension-authoring.js": [
+    "C-extension-authoring"
+  ],
+  "references/building/BUILD-ANTIPATTERNS.md": [
+    "P-MUST-01"
+  ],
+  "references/planning/ARCH-ANATOMY.md": [
+    "ADR-001",
+    "ADR-002"
+  ],
+  "references/planning/WAYFINDING.md": [
+    "P-MUST-01"
+  ],
+  "scripts/static-check.js": [
+    "ADR-002"
+  ],
+  "scripts/test-integration.js": [
+    "P-MUST-01"
+  ],
+  "scripts/test-linkage.js": [
+    "ADR-007",
+    "P-MUST-01",
+    "P-MUST-02",
+    "P-MUST-99",
+    "colors.primary"
+  ],
+  "scripts/test-provenance-pack.js": [
+    "P-MUST-23",
+    "P-SHOULD-08"
+  ],
+  "scripts/test-reverse-sync.js": [
+    "P-MUST-01"
+  ],
+  "scripts/test-story-validator.js": [
+    "STORY-auth-001"
+  ],
+  "skills/god-docs.md": [
+    "P-MUST-NN",
+    "etc."
+  ],
+  "skills/god-feature.md": [
+    "P-MUST-NN",
+    "etc."
+  ],
+  "skills/god-hotfix.md": [
+    "P-MUST-NN",
+    "etc."
+  ],
+  "skills/god-link.md": [
+    "P-MUST-01"
+  ],
+  "skills/god-postmortem.md": [
+    "P-MUST-NN",
+    "etc."
+  ],
+  "skills/god-refactor.md": [
+    "P-MUST-NN",
+    "etc."
+  ],
+  "skills/god-spike.md": [
+    "P-MUST-NN",
+    "etc."
+  ],
+  "skills/god-story-build.md": [
+    "STORY-"
+  ],
+  "skills/god-story-close.md": [
+    "STORY-"
+  ],
+  "skills/god-update-deps.md": [
+    "P-MUST-NN",
+    "etc."
+  ],
+  "skills/god-upgrade.md": [
+    "P-MUST-NN",
+    "etc."
+  ],
+  "specialists/god-cartographer.md": [
+    "STORY-"
+  ],
+  "specialists/god-executor.md": [
+    "P-...",
+    "P-MUST-01",
+    "P-MUST-02"
+  ],
+  "specialists/god-pm.md": [
+    "P-MUST-01"
+  ],
+  "specialists/god-quality-reviewer.md": [
+    "P-..."
+  ],
+  "specialists/god-reconstructor.md": [
+    "P-..."
+  ],
+  "specialists/god-spec-reviewer.md": [
+    "P-..."
+  ],
+  "specialists/god-storyteller.md": [
+    "STORY-auth-001"
+  ],
+  "templates/ARCH.mdx": [
+    "ADR-001",
+    "ADR-002"
+  ],
+  "templates/PRD.mdx": [
+    "P-MUST-01"
+  ],
+  "lib/context-budget.js": [
+    "P-MUST-25"
+  ],
+  "lib/events.js": [
+    "P-MUST-25"
+  ],
+  "lib/evolution-benchmark.js": [
+    "P-MUST-29"
+  ],
+  "lib/gate.js": [
+    "P-MUST-26"
+  ],
+  "lib/maintainability-trajectory.js": [
+    "P-MUST-28"
+  ],
+  "lib/program-design.js": [
+    "P-MUST-26"
+  ],
+  "lib/slice-handoff.js": [
+    "P-MUST-27"
+  ],
+  "lib/style-stats.js": [
+    "P-MUST-28"
+  ],
+  "scripts/run-tests.js": [
+    "P-MUST-24"
+  ],
+  "scripts/test-test-runner.js": [
+    "P-MUST-24"
   ]
 }

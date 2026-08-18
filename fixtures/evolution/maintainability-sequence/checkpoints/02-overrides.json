@@ -1,0 +1,8 @@
+{
+  "id": "02-overrides",
+  "requirement": "Add explicit configuration overrides without changing defaults.",
+  "feature": {
+    "name": "overrides",
+    "value": "explicit"
+  }
+}

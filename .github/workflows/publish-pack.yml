@@ -1,5 +1,7 @@
 name: Publish extension pack
 
+# Implements: P-SHOULD-08
+
 # Manually publish a first-party extension pack to npm. Triggered from
 # the GitHub Actions UI (workflow_dispatch). Bump the pack's package.json
 # version first, then run this workflow with the pack name.
@@ -8,13 +10,18 @@ on:
   workflow_dispatch:
     inputs:
       pack:
-        description: 'Pack to publish (security-pack, launch-pack, data-pack)'
+        description: 'Pack to publish (security-pack, launch-pack, data-pack, provenance-pack)'
         required: true
         type: choice
         options:
           - security-pack
           - launch-pack
           - data-pack
+          - provenance-pack
+      version:
+        description: 'Exact package version and tag suffix to publish'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -27,6 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -43,6 +51,33 @@ jobs:
 
       - name: Install pinned official Agent Skills validator
         run: python -m pip install -r requirements/skills-ref.txt
+
+      - name: Verify merged tag and pack identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          pack="${{ inputs.pack }}"
+          requested_version="${{ inputs.version }}"
+          expected_tag="${pack}-v${requested_version}"
+          package_name="$(node -p "require('./extensions/${pack}/package.json').name")"
+          package_version="$(node -p "require('./extensions/${pack}/package.json').version")"
+          if [[ "$package_name" != "@godpowers/$pack" || "$package_version" != "$requested_version" ]]; then
+            echo "Selected pack identity does not match @godpowers/$pack@$requested_version."
+            exit 1
+          fi
+          if [[ "${GITHUB_REF_TYPE}" != "tag" || "${GITHUB_REF_NAME}" != "$expected_tag" ]]; then
+            echo "Dispatch this workflow from the exact tag $expected_tag."
+            exit 1
+          fi
+          git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main; then
+            echo "Selected pack commit is not merged into main."
+            exit 1
+          fi
+          if [[ "$(git rev-parse "refs/tags/$expected_tag^{commit}")" != "$GITHUB_SHA" ]]; then
+            echo "Tag $expected_tag does not identify the checked-out commit."
+            exit 1
+          fi
 
       - name: Verify pack publishability
         run: npm run release:check

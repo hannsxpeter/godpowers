@@ -112,5 +112,266 @@
   ],
   "P-COULD-04\u0000agents/god-spike-runner.md": [
     "reconstruct"
+  ],
+  "P-SHOULD-08\u0000.github/workflows/publish-pack.yml": [
+    "code-scanner"
+  ],
+  "P-...\u0000CHANGELOG.md": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000docs/change-propagation.md": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000docs/linkage.md": [
+    "code-scanner"
+  ],
+  "ADR-007\u0000docs/linkage.md": [
+    "code-scanner"
+  ],
+  "colors.primary\u0000docs/linkage.md": [
+    "code-scanner"
+  ],
+  "C-auth-service\u0000docs/linkage.md": [
+    "code-scanner"
+  ],
+  "P-MUST-23\u0000extensions/provenance-pack/agents/god-ai-provenance-cleaner.md": [
+    "code-scanner"
+  ],
+  "P-SHOULD-08\u0000extensions/provenance-pack/agents/god-ai-provenance-cleaner.md": [
+    "code-scanner"
+  ],
+  "C-provenance-specialist\u0000extensions/provenance-pack/agents/god-ai-provenance-cleaner.md": [
+    "code-scanner"
+  ],
+  "ADR-004\u0000extensions/provenance-pack/agents/god-ai-provenance-cleaner.md": [
+    "code-scanner"
+  ],
+  "ADR-005\u0000extensions/provenance-pack/agents/god-ai-provenance-cleaner.md": [
+    "code-scanner"
+  ],
+  "ADR-006\u0000extensions/provenance-pack/agents/god-ai-provenance-cleaner.md": [
+    "code-scanner"
+  ],
+  "P-MUST-23\u0000extensions/provenance-pack/references/provenance-client.js": [
+    "code-scanner"
+  ],
+  "P-SHOULD-08\u0000extensions/provenance-pack/references/provenance-client.js": [
+    "code-scanner"
+  ],
+  "C-provenance-client\u0000extensions/provenance-pack/references/provenance-client.js": [
+    "code-scanner"
+  ],
+  "ADR-005\u0000extensions/provenance-pack/references/provenance-client.js": [
+    "code-scanner"
+  ],
+  "ADR-006\u0000extensions/provenance-pack/references/provenance-client.js": [
+    "code-scanner"
+  ],
+  "P-MUST-23\u0000extensions/provenance-pack/skills/god-remove-ai-marks.md": [
+    "code-scanner"
+  ],
+  "P-SHOULD-08\u0000extensions/provenance-pack/skills/god-remove-ai-marks.md": [
+    "code-scanner"
+  ],
+  "C-provenance-skill\u0000extensions/provenance-pack/skills/god-remove-ai-marks.md": [
+    "code-scanner"
+  ],
+  "ADR-004\u0000extensions/provenance-pack/skills/god-remove-ai-marks.md": [
+    "code-scanner"
+  ],
+  "https\u0000lib/agent-browser-driver.js": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000lib/code-scanner.js": [
+    "code-scanner"
+  ],
+  "ADR-007\u0000lib/code-scanner.js": [
+    "code-scanner"
+  ],
+  "colors.primary\u0000lib/code-scanner.js": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000lib/code-scanner.js": [
+    "code-scanner"
+  ],
+  "D-button-primary\u0000lib/code-scanner.js": [
+    "code-scanner"
+  ],
+  "C-extension-authoring\u0000lib/extension-authoring.js": [
+    "code-scanner"
+  ],
+  "C-installer-core\u0000lib/installer-core.js": [
+    "code-scanner"
+  ],
+  "S-\u0000lib/reverse-sync.js": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000references/building/BUILD-ANTIPATTERNS.md": [
+    "code-scanner"
+  ],
+  "ADR-001\u0000references/planning/ARCH-ANATOMY.md": [
+    "code-scanner"
+  ],
+  "ADR-002\u0000references/planning/ARCH-ANATOMY.md": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000references/planning/WAYFINDING.md": [
+    "code-scanner"
+  ],
+  "ADR-002\u0000scripts/static-check.js": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000scripts/test-integration.js": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000scripts/test-linkage.js": [
+    "code-scanner"
+  ],
+  "P-MUST-02\u0000scripts/test-linkage.js": [
+    "code-scanner"
+  ],
+  "ADR-007\u0000scripts/test-linkage.js": [
+    "code-scanner"
+  ],
+  "colors.primary\u0000scripts/test-linkage.js": [
+    "code-scanner"
+  ],
+  "P-MUST-99\u0000scripts/test-linkage.js": [
+    "code-scanner"
+  ],
+  "P-MUST-23\u0000scripts/test-provenance-pack.js": [
+    "code-scanner"
+  ],
+  "P-SHOULD-08\u0000scripts/test-provenance-pack.js": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000scripts/test-reverse-sync.js": [
+    "code-scanner"
+  ],
+  "STORY-auth-001\u0000scripts/test-story-validator.js": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000skills/god-docs.md": [
+    "code-scanner"
+  ],
+  "etc.\u0000skills/god-docs.md": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000skills/god-feature.md": [
+    "code-scanner"
+  ],
+  "etc.\u0000skills/god-feature.md": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000skills/god-hotfix.md": [
+    "code-scanner"
+  ],
+  "etc.\u0000skills/god-hotfix.md": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000skills/god-link.md": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000skills/god-postmortem.md": [
+    "code-scanner"
+  ],
+  "etc.\u0000skills/god-postmortem.md": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000skills/god-refactor.md": [
+    "code-scanner"
+  ],
+  "etc.\u0000skills/god-refactor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000skills/god-spike.md": [
+    "code-scanner"
+  ],
+  "etc.\u0000skills/god-spike.md": [
+    "code-scanner"
+  ],
+  "STORY-\u0000skills/god-story-build.md": [
+    "code-scanner"
+  ],
+  "STORY-\u0000skills/god-story-close.md": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000skills/god-update-deps.md": [
+    "code-scanner"
+  ],
+  "etc.\u0000skills/god-update-deps.md": [
+    "code-scanner"
+  ],
+  "P-MUST-NN\u0000skills/god-upgrade.md": [
+    "code-scanner"
+  ],
+  "etc.\u0000skills/god-upgrade.md": [
+    "code-scanner"
+  ],
+  "STORY-\u0000specialists/god-cartographer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-02\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-...\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000specialists/god-pm.md": [
+    "code-scanner"
+  ],
+  "P-...\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-...\u0000specialists/god-reconstructor.md": [
+    "code-scanner"
+  ],
+  "P-...\u0000specialists/god-spec-reviewer.md": [
+    "code-scanner"
+  ],
+  "STORY-auth-001\u0000specialists/god-storyteller.md": [
+    "code-scanner"
+  ],
+  "ADR-001\u0000templates/ARCH.mdx": [
+    "code-scanner"
+  ],
+  "ADR-002\u0000templates/ARCH.mdx": [
+    "code-scanner"
+  ],
+  "P-MUST-01\u0000templates/PRD.mdx": [
+    "code-scanner"
+  ],
+  "P-MUST-25\u0000lib/context-budget.js": [
+    "code-scanner"
+  ],
+  "P-MUST-25\u0000lib/events.js": [
+    "code-scanner"
+  ],
+  "P-MUST-29\u0000lib/evolution-benchmark.js": [
+    "code-scanner"
+  ],
+  "P-MUST-26\u0000lib/gate.js": [
+    "code-scanner"
+  ],
+  "P-MUST-28\u0000lib/maintainability-trajectory.js": [
+    "code-scanner"
+  ],
+  "P-MUST-26\u0000lib/program-design.js": [
+    "code-scanner"
+  ],
+  "P-MUST-27\u0000lib/slice-handoff.js": [
+    "code-scanner"
+  ],
+  "P-MUST-28\u0000lib/style-stats.js": [
+    "code-scanner"
+  ],
+  "P-MUST-24\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-24\u0000scripts/test-test-runner.js": [
+    "code-scanner"
   ]
 }

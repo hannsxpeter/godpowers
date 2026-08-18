@@ -6,6 +6,7 @@ description: |
 
   Spawned by: /god-stack, god-orchestrator
 tools: Read, Write, Bash, Grep, WebSearch
+max-tokens: 80000
 inputs:
   - ".godpowers/arch/ARCH.mdx"
   - "optional org constraints"
@@ -13,6 +14,14 @@ inputs:
   - "references/planning/STACK-ANATOMY.md"
   - "references/planning/STACK-ANTIPATTERNS.md"
   - "references/planning/DIVERGENCE.md"
+required-context:
+  - "file:.godpowers/arch/ARCH.mdx"
+  - "file:references/planning/STACK-ANATOMY.md"
+  - "file:references/planning/STACK-ANTIPATTERNS.md"
+  - "file:references/planning/DIVERGENCE.md"
+optional-context:
+  - "inline:organization-constraints"
+  - "inline:imported-stack-signals"
 outputs:
   - ".godpowers/stack/DECISION.mdx"
 gates:

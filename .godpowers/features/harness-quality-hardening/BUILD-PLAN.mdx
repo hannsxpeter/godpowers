@@ -1,0 +1,149 @@
+---
+stage: build-plan
+durability: durable
+owner: godpowers-maintainer
+system_of_record: repo
+status: approved
+review_cadence: on-change
+scale: large
+program_design_approval: user-authorized
+requirements:
+  - P-MUST-24
+  - P-MUST-25
+  - P-MUST-26
+  - P-MUST-27
+  - P-MUST-28
+  - P-MUST-29
+---
+
+# Build Plan: Harness Quality Hardening
+
+## Scale And Approval
+
+- [DECISION] Scale: large, because the feature changes verification, specialist dispatch, build gates, slice closeout, quality review evidence, package fixtures, and release behavior.
+- [DECISION] Approval: the user explicitly authorized implementation, documentation, release, merge, and npm publication in the current request.
+- [DECISION] Approval authority: the orchestrator records that user decision as a hash-bound `user.resolve` event before final plan validation; this plan cannot approve itself.
+- [DECISION] Program-design review status: approved for the contracts recorded below.
+
+## Program Design
+
+### File Tree Delta
+
+- [DECISION] Add `lib/program-design.js`, `lib/slice-handoff.js`, `lib/maintainability-trajectory.js`, and `lib/evolution-benchmark.js` as dependency-free CommonJS modules.
+- [DECISION] Add focused behavioral tests under `scripts/`, a six-checkpoint fixture under `fixtures/evolution/`, and package-content assertions for the shipped runtime and fixture.
+- [DECISION] Modify `scripts/run-tests.js`, `lib/context-budget.js`, `lib/events.js`, `schema/events.v1.json`, `lib/gate.js`, `lib/style-stats.js`, specialist contracts, and the orchestrator runbook.
+- [DECISION] Update feature artifacts, product artifacts, public documentation, release documentation, and version surfaces only after runtime verification passes.
+
+### Module Boundaries
+
+- [DECISION] `scripts/run-tests.js` owns child-process execution and terminal presentation but no workflow state.
+- [DECISION] `lib/context-budget.js` owns declaration parsing, source resolution, byte estimation, deterministic loadout planning, and a spawn-blocking verdict.
+- [DECISION] `lib/program-design.js` owns plan parsing and validation, while `lib/gate.js` owns whether its findings block Build.
+- [DECISION] `lib/slice-handoff.js` owns a bounded projection and cannot write or reinterpret authoritative state.
+- [DECISION] `lib/maintainability-trajectory.js` owns deterministic measurements and signed deltas, while the quality reviewer owns interpretation.
+- [DECISION] `lib/evolution-benchmark.js` owns checkpoint reveal order and evidence aggregation but does not call a model or mutate the real project.
+
+### Public Contracts
+
+- [DECISION] Verification exposes `parseOptions`, `runCommands`, and `renderAgentSummary` for behavioral testing while preserving direct CLI use.
+- [DECISION] Context budgeting exposes `parseAgentBudget`, `resolveSources`, `plan`, and `planForAgent`, with pinned file bytes, missing required sources, and required overflow represented before spawn.
+- [DECISION] Program design exposes `validateText(text, opts)` and `validateFile(file, opts)` returning checks, findings, scale, approval, and verdict.
+- [DECISION] Slice handoff exposes `derive(input)`, `serialize(handoff)`, and `write(projectRoot, runId, sliceId, handoff)`.
+- [DECISION] Maintainability exposes `snapshot(projectRoot, opts)`, `diff(before, after)`, and `render(report)`.
+- [DECISION] Evolution benchmarking exposes `loadScenario`, `createRun`, `recordCheckpoint`, `summarize`, and `render`.
+
+### Call And Data Flow
+
+1. [DECISION] Orchestration resolves a specialist declaration and actual inline payloads through context budgeting before spawn.
+2. [DECISION] Planning produces a size and either a complete approved program design or a small-change skip rationale.
+3. [DECISION] The build gate validates that plan before accepting Build closure evidence.
+4. [DECISION] The executor records a maintainability baseline, implements one slice, verifies behavior, and records the post-slice delta.
+5. [DECISION] Slice closeout projects plan, state, event, linkage, and verification evidence into one bounded handoff.
+6. [DECISION] The independent reviewer consumes the code diff, verification evidence, and maintainability trajectory.
+7. [DECISION] The evolution benchmark repeats the same evidence shape across six isolated checkpoint reveals.
+
+### Reused Patterns
+
+- [DECISION] Reuse `lib/frontmatter.js` for specialist and plan metadata, `lib/events.js` for bounded evidence vocabulary, `lib/atomic-write.js` for durable writes, and `scripts/test-harness.js` for behavioral tests.
+- [DECISION] Reuse `lib/style-stats.js` exclusions and sample-count discipline instead of introducing parser dependencies.
+- [DECISION] Reuse the existing build gate, fresh-context executor, specification reviewer, quality reviewer, and release package checks.
+
+### Non-Goals
+
+- [DECISION] Do not add HumanLayer, Fold, Effect, Kubernetes, model calls, network calls, a new MCP tool, a UI, or a second authoritative state store.
+- [DECISION] Do not make maintainability values an independent pass or fail threshold during calibration.
+- [DECISION] Do not change normal test output unless compact mode is explicitly selected.
+
+### Verification Points
+
+- [DECISION] Every new module receives targeted behavioral coverage and clears the per-file line floor.
+- [DECISION] Static checks validate all specialist context contracts and the updated MCP dependency boundary.
+- [DECISION] The full test suite, lint, audit, package checks, self-project truth checks, and pre-publication checks must pass before release.
+- [DECISION] The release must verify both npm packages and the isolated published installation after the tag workflow completes.
+
+## Wave 1: Independent Runtime Foundations
+
+### Slice 1.1: Maintainers receive compact verification without losing evidence
+
+- [DECISION] Requirements: P-MUST-24.
+- [DECISION] Files: `scripts/run-tests.js` and `scripts/test-test-runner.js`.
+- [DECISION] Tests first: cover opt-in selection, compact pass output, first-failure stop, bounded diagnostics, exact exit propagation, complete retained logs, JSON summary, and unchanged normal mode.
+- [DECISION] Implementation: buffer child output in compact mode, append complete output to a private temporary log, extract stable result counts, render no more than one line per relevant result, and retain full failure evidence by path.
+- [DECISION] Verification: `node scripts/test-test-runner.js` passes.
+- [DECISION] Dependencies: none.
+
+### Slice 1.2: Every specialist receives a deterministic bounded loadout
+
+- [DECISION] Requirements: P-MUST-25.
+- [DECISION] Files: `lib/context-budget.js`, `scripts/test-cost-saver.js`, `scripts/static-check.js`, `lib/events.js`, `schema/events.v1.json`, all `specialists/*.md`, and the context-budget section of `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`.
+- [DECISION] Tests first: cover file and inline sources, glob order, path containment, missing required sources, required overflow, optional dropping, deterministic manifests, event schema alignment, and repository-wide specialist coverage.
+- [DECISION] Implementation: derive ordered sources from `inputs`, require positive `max-tokens`, resolve project-contained paths without following symlink escapes, size supplied inline payloads, block missing or oversized required context, and emit content-free `context.loadout` evidence.
+- [DECISION] Verification: `node scripts/test-cost-saver.js`, `node scripts/test-events.js`, and `node scripts/static-check.js` pass.
+- [DECISION] Dependencies: none.
+
+### Slice 1.3: Reviewers receive deterministic maintainability trajectory evidence
+
+- [DECISION] Requirements: P-MUST-28.
+- [DECISION] Files: `lib/style-stats.js`, `lib/maintainability-trajectory.js`, `scripts/test-style-stats.js`, and `scripts/test-maintainability-trajectory.js`.
+- [DECISION] Tests first: cover stable unchanged snapshots, file and source-line growth, function counts and lengths, marker counts, repeated blocks, dependency edges, cycles, exclusions, sample counts, signed deltas, and report-only rendering.
+- [DECISION] Implementation: extend style summaries with raw counts, scan normalized source blocks and local import edges, detect directed cycles without executing code, and compare stable snapshots field by field.
+- [DECISION] Verification: `node scripts/test-style-stats.js` and `node scripts/test-maintainability-trajectory.js` pass.
+- [DECISION] Dependencies: none.
+
+## Wave 2: Build Control And Resume
+
+### Slice 2.1: Larger changes cannot execute without approved code shape and bounded handoff
+
+- [DECISION] Requirements: P-MUST-26 and P-MUST-27.
+- [DECISION] Files: `lib/program-design.js`, `lib/slice-handoff.js`, `lib/gate.js`, `scripts/test-program-design.js`, `scripts/test-slice-handoff.js`, `scripts/test-gate.js`, `specialists/god-planner.md`, `specialists/god-executor.md`, `specialists/god-spec-reviewer.md`, and the program-design and slice-closeout sections of `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`.
+- [DECISION] Tests first: cover large-plan requirements, small-plan skip rationale, approval modes, build-gate blocking, authoritative-state conflict resolution, mandatory-field preservation, 8 KiB limits, path containment, and fresh-process resume.
+- [DECISION] Implementation: validate program-design sections mechanically, integrate findings into the Build gate, derive handoffs only from normalized authoritative records, and require planner, executor, and reviewer contracts to consume the new evidence.
+- [DECISION] Verification: `node scripts/test-program-design.js`, `node scripts/test-slice-handoff.js`, and `node scripts/test-gate.js` pass.
+- [DECISION] Dependencies: Wave 1 provides the context and maintainability evidence referenced by the closeout contract.
+
+## Wave 3: Incremental Changeability Proof And Integration
+
+### Slice 3.1: Releases can measure changeability across six hidden requirement reveals
+
+- [DECISION] Requirements: P-MUST-29 plus integration closure for P-MUST-24 through P-MUST-28.
+- [DECISION] Files: `lib/evolution-benchmark.js`, `fixtures/evolution/maintainability-sequence/**`, `scripts/test-evolution-benchmark.js`, `scripts/run-tests.js`, `scripts/check-package-contents.js`, `lib/README.md`, `specialists/god-quality-reviewer.md`, and `specialists/god-executor.md` only where Wave 2 did not already own the target lines.
+- [DECISION] Tests first: cover exactly six ordered checkpoints, future-checkpoint isolation, offline operation, temporary cleanup, incomplete-evidence failure, attempts, rework, changed lines, accepted outcomes, handoff completeness, deterministic JSON evidence, and human summary.
+- [DECISION] Implementation: add the held-out scenario and runner, register every new test in the delegated full runner, ship the runtime and fixture, and make executor and reviewer contracts capture and interpret trajectory evidence without metric gating.
+- [DECISION] Verification: `node scripts/test-evolution-benchmark.js`, `node scripts/static-check.js`, `npm test -- --agent-output`, and `npm run pack:check` pass.
+- [DECISION] Dependencies: Waves 1 and 2.
+
+## Final Verification
+
+- [DECISION] Run `npm run lint` and repair every static failure.
+- [DECISION] Run `npm test -- --agent-output` and repair the first failure until the full suite passes.
+- [DECISION] Run `npm run release:check` and `npm run release:prepublication:check` from the release commit candidate.
+- [DECISION] Run independent specification, quality, and hardening reviews against P-MUST-24 through P-MUST-29 and the existing provenance feature.
+- [DECISION] Update linkage, product artifacts, public documentation, Pillars, changelog, release notes, and version surfaces only from verified implementation evidence.
+
+## Done Criteria
+
+- [x] [DECISION] Every feature requirement is assigned to at least one vertical slice.
+- [x] [DECISION] Every slice names exact files, tests-first work, verification, and dependencies.
+- [x] [DECISION] Parallel Wave 1 slices have non-overlapping runtime ownership.
+- [x] [DECISION] Program design is complete and explicitly approved.
+- [x] [DECISION] No slice weakens an existing release, security, package, or evidence gate.

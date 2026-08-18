@@ -9,10 +9,16 @@ description: |
 
   Spawned by: /god-design, god-orchestrator (mid-arc DESIGN/PRODUCT changes)
 tools: Read, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - "DESIGN.md diff"
   - "PRODUCT.md"
   - "PRD and design context"
+required-context:
+  - "inline:design-diff"
+  - "file:PRODUCT.md"
+  - "file:.godpowers/prd/PRD.mdx"
+optional-context: []
 outputs:
   - "design review verdict"
   - ".godpowers/design/REJECTED.mdx on block"

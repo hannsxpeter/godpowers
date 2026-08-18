@@ -642,7 +642,7 @@ godpowers/
 ├── README.md, CHANGELOG.md, LICENSE, CONTRIBUTING.md, SECURITY.md, USERS.md
 ├── ARCHITECTURE.md                <- Design doc
 ├── ARCHITECTURE-MAP.md            <- This file
-├── package.json (v5.17.1)
+├── package.json (v6.0.0)
 ├── .github/workflows/              <- CI, npm publish, daily security audit
 │
 ├── bin/install.js                 <- CLI installer (15 runtimes)
@@ -675,7 +675,7 @@ godpowers/
 │   ├── events.v1.json
 │   └── workflow.v1.json
 │
-├── lib/                           <- Real JS runtime (108 modules)
+├── lib/                           <- Real JS runtime (112 modules)
 │   ├── state.js                   <- state model + drift detection
 │   ├── events.js                  <- OTel-shape event log + hash chain
 │   ├── router.js                  <- command routing
@@ -687,6 +687,11 @@ godpowers/
 │   ├── requirements.js            <- deliverable ledger (requirement/increment status)
 │   ├── linkage.js                 <- requirement-to-code linkage map
 │   ├── reverse-sync.js            <- scan code, refresh linkage + ledger
+│   ├── context-budget.js          <- bounded specialist loadouts
+│   ├── program-design.js          <- conditional code-shape validation
+│   ├── slice-handoff.js           <- state-authoritative resume projection
+│   ├── maintainability-trajectory.js <- report-only code-shape deltas
+│   ├── evolution-benchmark.js     <- six-checkpoint changeability evidence
 │   ├── dogfood-runner.js          <- messy-repo dogfood gate
 │   ├── host-capabilities.js       <- host guarantee detection
 │   ├── extension-authoring.js     <- extension scaffold helper
@@ -699,10 +704,12 @@ godpowers/
 ├── extensions/
 │   ├── security-pack/             <- SOC2, HIPAA, PCI auditors
 │   ├── launch-pack/               <- Show HN, PH, IH, OSS strategists
-│   └── data-pack/                 <- ETL, ML, dashboards
+│   ├── data-pack/                 <- ETL, ML, dashboards
+│   └── provenance-pack/           <- authorized provenance inspection and cleaning
 │
 ├── fixtures/
-│   └── dogfood/                   <- messy-repo dogfood scenarios
+│   ├── dogfood/                   <- messy-repo dogfood scenarios
+│   └── evolution/                 <- offline sequential-requirement benchmark
 │
 ├── tests/
 │   ├── lib/                       <- replay, fixture, runner
@@ -722,6 +729,7 @@ godpowers/
 │   ├── getting-started.md
 │   ├── concepts.md
 │   ├── reference.md
+│   ├── harness-quality.md
 │   ├── ROADMAP.md
 │   ├── tutorials/first-project.md
 │   └── RFC/                       <- Design discussions
@@ -738,7 +746,7 @@ godpowers/
 
 ---
 
-## Numbers (as of v5.17.1)
+## Numbers (as of v6.0.0)
 
 | Component | Count |
 |-----------|-------|
@@ -753,12 +761,12 @@ godpowers/
 | Templates | 15 |
 | Reference documents | 53 |
 | JSON Schemas | 7 |
-| **JS runtime modules** | **108** |
+| **JS runtime modules** | **112** |
 | **External integrations** | **5** (all detect-and-delegate; none vendored): Google Labs design.md, Impeccable, awesome-design-md, SkillUI, vercel-labs/agent-browser + Playwright |
 | Hooks | 2 |
 | Dogfood scenarios | 5 |
-| Documentation pages | 35 under docs/ plus reference material |
-| **Test suites** | **103 script files plus integration tests** |
+| Documentation pages | 36 under docs/ plus reference material |
+| **Test suites** | **110 script files plus integration tests** |
 | **Tests** | **Full behavioral suite gated by npm test** |
 | Supported AI runtimes | 15+ |
 | Verification axes | **3**: static (lint, design-spec, have-nots), linkage (drift, reverse-sync), runtime (headless browser audit + functional test) |

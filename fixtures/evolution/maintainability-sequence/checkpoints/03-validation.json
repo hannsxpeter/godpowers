@@ -1,0 +1,8 @@
+{
+  "id": "03-validation",
+  "requirement": "Reject unknown configuration names with a stable error.",
+  "feature": {
+    "name": "validation",
+    "value": "strict"
+  }
+}

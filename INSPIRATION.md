@@ -83,6 +83,30 @@ Beyond what was inherited, godpowers added:
   rounds cap (`polish-rounds-limit`) and a dry-round detector close the
   loop on their own, because unbounded iteration is also unbounded cost.
 
+- **Harness quality and intentional context engineering**
+  (`scripts/run-tests.js`, `lib/context-budget.js`, `lib/program-design.js`,
+  `lib/slice-handoff.js`, `lib/maintainability-trajectory.js`, and
+  `lib/evolution-benchmark.js`). The framing of compact verification with
+  complete retained evidence was influenced by HumanLayer's Harness
+  Engineering work
+  ([humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents)).
+  Intentional compaction, bounded specialist loadouts, and fresh-context
+  workers were influenced by HumanLayer's Advanced Context Engineering work
+  ([humanlayer.dev/blog/advanced-context-engineering](https://www.humanlayer.dev/blog/advanced-context-engineering))
+  and the open source 12-factor-agents repository
+  ([github.com/humanlayer/12-factor-agents](https://github.com/humanlayer/12-factor-agents)).
+  The research, plan, implement sequence and concrete program-design record
+  were influenced by HumanLayer's `create_plan` command
+  ([github.com/humanlayer/humanlayer/blob/main/.claude/commands/create_plan.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/create_plan.md)).
+  The six-checkpoint evolution benchmark and report-only maintainability
+  trajectory were influenced by HumanLayer's published SlopCodeBench
+  methodology
+  ([github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/benchmarking-opus-5-on-slop-code-bench.md](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/benchmarking-opus-5-on-slop-code-bench.md)).
+  No code, prose, fixture, or benchmark result is vendored, and there is no
+  runtime dependency. Godpowers implements these ideas on its own
+  disk-authoritative substrate with dependency-free CommonJS helpers,
+  bounded projections, independent reviews, and release evidence.
+
 ## Why this is the only mention
 
 Acknowledging influences once, in a single dedicated file, keeps the

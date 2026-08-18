@@ -22,6 +22,9 @@ see_also: [quality]
 - [DECISION] `lib/outcome-metrics.js` derives time to accepted change, recorded cost, manual intervention, resume success, deployment completion, and rollback proof without filling absent evidence.
 - [DECISION] `lib/dashboard.js` renders disk-derived project status, action brief, proactive checks, and host guarantees.
 - [DECISION] Event vocabulary includes local helper, dashboard, host capability, dogfood, source-system import, sync-back, repo-doc sync, and repo-surface sync events.
+- [DECISION] `context.loadout` events preserve complete loaded and omitted counts plus bounded source identifiers without recording file or inline contents.
+- [DECISION] `lib/slice-handoff.js` derives an at-most-8-KiB resume projection from authoritative plan, state, event, linkage, and verification evidence.
+- [DECISION] Evolution benchmark evidence records behavior, attempts, rework, changed lines, acceptance, handoff completeness, and maintainability deltas for each of six ordered checkpoints.
 
 ## Decisions
 

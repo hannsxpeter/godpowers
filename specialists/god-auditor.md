@@ -7,10 +7,16 @@ description: |
 
   Spawned by: /god-preflight, /god-audit, god-orchestrator (gate checks)
 tools: Read, Bash, Grep, Glob
+max-tokens: 80000
 inputs:
   - ".godpowers artifacts"
   - "repository structure"
   - "Pillars and workflow evidence"
+required-context:
+  - "inline:audit-scope"
+optional-context:
+  - "inline:repository-structure"
+  - "inline:pillars-workflow-evidence"
 outputs:
   - ".godpowers/preflight/PREFLIGHT.mdx"
   - ".godpowers/AUDIT-REPORT.mdx"

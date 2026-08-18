@@ -17,6 +17,7 @@ see_also: [security, deploy]
 ### Commands
 
 - [DECISION] `npm test` is the required full verification command.
+- [DECISION] `npm test -- --agent-output` keeps successful agent output within a bounded summary, stops at the first failed child, and names the private complete retained log.
 - [DECISION] `npm run test:quick-proof` checks README, Quick Proof, release verification, runtime expectations, and adoption canary alignment.
 - [DECISION] `npm run test:audit` runs dependency audit, `git diff --check`, and documentation surface count tests.
 - [DECISION] `npm run pack:check` verifies the npm package contains required runtime files and excludes local-only files.
@@ -28,6 +29,9 @@ see_also: [security, deploy]
 - [DECISION] Arc-Ready leverage tests cover six product forms, four-axis domain composition, Arc artifact import and sync-back, OWASP 2025, and hash-bound pre-publication invalidation.
 - [DECISION] Build and review agents enforce request-trace discipline: assumptions, public behavior, expected files, and verification command must be explicit before implementation.
 - [DECISION] Reviewers block speculative flexibility, unrelated cleanup, and diff churn that cannot be traced to the user request, slice plan, failing test, or implementation-caused cleanup.
+- [DECISION] Medium and large Build plans require mechanically valid program-design sections plus affirmative human or YOLO approval; small plans require explicit sizing and skip rationales.
+- [DECISION] Independent quality review receives before-and-after maintainability measures with signed deltas and sample counts, but those values remain report-only for the first three release candidates.
+- [DECISION] `lib/evolution-benchmark.js` runs the packaged six-checkpoint scenario without network access or model credentials and retains deterministic JSON plus Markdown evidence.
 
 ## Decisions
 

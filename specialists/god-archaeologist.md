@@ -8,10 +8,16 @@ description: |
 
   Spawned by: /god-archaeology, brownfield-arc workflow
 tools: Read, Bash, Grep, Glob, WebSearch
+max-tokens: 80000
 inputs:
   - "brownfield codebase"
   - "git history"
   - "repository documentation"
+required-context:
+  - "inline:task-request"
+optional-context:
+  - "inline:git-history"
+  - "inline:repository-documentation"
 outputs:
   - ".godpowers/archaeology/REPORT.mdx"
 gates:

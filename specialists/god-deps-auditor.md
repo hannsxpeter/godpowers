@@ -7,11 +7,18 @@ description: |
 
   Spawned by: /god-update-deps
 tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
+max-tokens: 80000
 inputs:
   - "package manifests"
   - "lockfiles"
   - "stack decision"
   - "security advisories"
+required-context:
+  - "inline:dependency-audit-scope"
+optional-context:
+  - "inline:package-manifests"
+  - "inline:lockfiles"
+  - "inline:security-advisories"
 outputs:
   - ".godpowers/deps/AUDIT.mdx"
   - "classified dependency update plan"

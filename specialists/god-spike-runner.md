@@ -8,10 +8,16 @@ description: |
 
   Spawned by: /god-spike
 tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
+max-tokens: 80000
 inputs:
   - "specific technical question"
   - "time-box"
   - "minimal relevant context"
+required-context:
+  - "inline:technical-question"
+  - "inline:time-box"
+optional-context:
+  - "inline:relevant-context"
 outputs:
   - ".godpowers/spikes/<slug>/SPIKE.mdx"
   - "throwaway proof-of-concept code"
