@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:5dab0abcae51db8760b60898008ad3467792425f73f33e5f5c12eb87747b699b -->
+<!-- godpowers:checksum sha256:0e21e6ca1518c5cabba40bd4fc25baafa453f12a18b7fdfcc569188172ceec13 -->
 # Godpowers Deploy State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.deploy`.
@@ -9,29 +9,29 @@
 - [DECISION] Step: Shipping: Deploy.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/deploy/STATE.mdx`.
-- [DECISION] Updated: 2026-07-13T16:09:44.000Z.
-- [DECISION] Notes: Godpowers 5.5.0 and the MCP companion are published with provenance from merged main, and registry integrity matches the locally packed GitHub Release assets..
+- [DECISION] Updated: 2026-08-18T04:04:11.227Z.
+- [DECISION] Notes: Godpowers 6.0.0 and the MCP companion are published with npm provenance from merged main; both latest tags, registry integrity records, GitHub Release notes, and isolated consumer checks are verified..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| npm run pack:check | pass | 0 | 2026-07-13T16:09:44.000Z | - | Root npm package contents verified: 582 files. |
-| npm run pack:mcp:check | pass | 0 | 2026-07-13T16:09:44.000Z | - | MCP package contents verified: 8 files. |
-| git cat-file -e v5.4.0^{commit} | pass | 0 | 2026-07-13T16:09:44.000Z | - | The prior v5.4.0 release tag resolves as the rollback reference. |
-| gh run view 29264981272 | pass | 0 | 2026-07-13T16:09:44.000Z | - | The identity-bound provenance workflow completed successfully for merged main commit 84fbd00066d2bd833929d6d0b6b769de45275313. |
-| gh release view v5.5.0 | pass | 0 | 2026-07-13T16:09:44.000Z | - | The GitHub Release contains root and MCP tarballs plus SHA256SUMS with matching SHA-256 asset digests. |
-| npm view godpowers@5.5.0 version && npm view @godpowers/mcp@5.5.0 version | pass | 0 | 2026-07-13T16:09:44.000Z | - | Both npm packages resolve to 5.5.0 under the latest tag and match the locally packed integrity values. |
-| node scripts/verify-published-install.js godpowers@5.5.0 | pass | 0 | 2026-07-13T16:09:44.000Z | - | An isolated exact-spec install passed Quick Proof, read-only project inspection, dashboard, next route, Claude install, and Codex install verification. |
-| npx -y -p @godpowers/mcp@5.5.0 godpowers-mcp --help | pass | 0 | 2026-07-13T16:09:44.000Z | - | The published MCP executable resolved and rendered its command surface. |
+| gh pr view 91 && gh run view 32096760451 | pass | 0 | 2026-08-18T04:04:11.227Z | - | Pull request 91 passed Node.js 18, 20, and 22 plus the package gate before merging. |
+| gh run view 32097014555 | pass | 0 | 2026-08-18T04:04:11.227Z | - | Merged-main CI passed the full matrix and package gate for commit 9eb6a5cbdff3399e6d65a5cc660bf135814de7b7. |
+| gh run view 32097275283 | pass | 0 | 2026-08-18T04:04:11.227Z | - | The provenance workflow passed release identity, release, and pre-publication gates and published both immutable 6.0.0 artifacts under release-6-0-0; an immediate registry propagation read stopped automated promotion. |
+| npm view godpowers@6.0.0 version dist.integrity && npm view @godpowers/mcp@6.0.0 version dist.integrity | pass | 0 | 2026-08-18T04:04:11.227Z | - | Both exact versions resolve with the registry integrity values recorded in RELEASE.md. |
+| npm view godpowers dist-tags.latest && npm view @godpowers/mcp dist-tags.latest | pass | 0 | 2026-08-18T04:04:11.227Z | - | Recovery promoted MCP first and root second without republishing; both latest tags resolve to 6.0.0. |
+| gh release view v6.0.0 | pass | 0 | 2026-08-18T04:04:11.227Z | - | GitHub Release v6.0.0 is public as the notes and immutable tag record. |
+| node scripts/verify-published-install.js godpowers@6.0.0 | pass | 0 | 2026-08-18T04:04:11.227Z | - | An isolated exact-version install passed Quick Proof, read-only inspection, dashboard, next route, Claude install, and Codex install checks. |
+| npx -y -p @godpowers/mcp@6.0.0 godpowers-mcp --help | pass | 0 | 2026-08-18T04:04:11.227Z | - | The published MCP executable resolves and renders its command surface on Node.js 20 or newer. |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
-| publication-targets | https://github.com/hannsxpeter/godpowers/releases/tag/v5.5.0, npm godpowers@5.5.0, and npm @godpowers/mcp@5.5.0 |
-| rollback-evidence | The v5.4.0 tag resolves locally as the prior release rollback reference. |
-| target-evidence | GitHub Release assets and npm registry packages share exact integrity values; isolated published CLI and MCP executable verification passed. |
+| publication-targets | https://github.com/hannsxpeter/godpowers/releases/tag/v6.0.0, npm godpowers@6.0.0, and npm @godpowers/mcp@6.0.0 |
+| rollback-evidence | The v5.17.1 tag resolves as the prior release rollback reference. |
+| target-evidence | npm exact versions and latest tags agree at 6.0.0; registry integrity values are pinned in RELEASE.md; isolated root and MCP consumer checks pass. |
 | verified-target-type | published-npm-release |
 
 <!-- godpowers:state-view:end -->

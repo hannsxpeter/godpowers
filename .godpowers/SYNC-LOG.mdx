@@ -35,7 +35,18 @@
 - [DECISION] Independent specification and quality reviews pass for every harness slice, and independent release hardening resolved 2 Critical, 3 High, and 4 Medium findings with zero unresolved findings or security launch blockers.
 - [DECISION] The root and MCP package versions are aligned at 6.0.0, the root keeps Node.js 18 compatibility and zero production dependencies, and MCP v2 requires Node.js 20 or newer.
 - [DECISION] Root plus MCP publication now uses a recoverable staging tag and exact-pair verification before `latest` promotion; first-party pack publication requires a matching merged version tag.
-- [DECISION] The final local 6.0.0 release gate passes 114 test commands and 3,114 checks, 94.64 percent line coverage, 79.8 percent branch coverage, the 70 percent per-file floor across 110 included runtime modules, zero dependency vulnerabilities, 140 self-project truth checks, 645 root package files, and 8 MCP package files.
+- [DECISION] The final local 6.0.0 release gate passes 114 test commands and 3,113 checks, 94.64 percent line coverage, 79.8 percent branch coverage, the 70 percent per-file floor across 110 included runtime modules, zero dependency vulnerabilities, 140 self-project truth checks, 645 root package files, and 8 MCP package files.
 - [DECISION] The vendored evidence producer is synchronized to Mythify 5.6.0 commit `62eeb7a046f4c56abe67d7e46310f53a47e80eaa`; executed verification records now carry unique identities, the record-shape drift gate passes, and Godpowers-specific atomic, state, and event adaptations remain intact.
 - [DECISION] The pre-publication gate passes against hardening revision `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268` with zero unresolved or accepted Critical findings.
-- [HYPOTHESIS] Pull-request CI, merge identity, tag workflow, npm integrity, GitHub Release assets, and isolated exact-version installation remain pending until external release steps execute.
+- [DECISION] Pull-request CI, merge identity, tag publication, npm integrity, GitHub Release notes, and isolated exact-version installation are complete; the evidence is recorded below.
+
+## 2026-08-18: Godpowers 6.0.0 Publication Evidence
+
+- [DECISION] Pull request 91 passed CI run 32096760451 and merged as `main` commit `9eb6a5cbdff3399e6d65a5cc660bf135814de7b7`; merged-main CI run 32097014555 passed against that exact commit.
+- [DECISION] Annotated tag `v6.0.0` resolves to merge commit `9eb6a5cbdff3399e6d65a5cc660bf135814de7b7`.
+- [DECISION] Provenance workflow 32097275283 passed identity, release, and pre-publication gates and published both version 6.0.0 packages under the recoverable `release-6-0-0` tag.
+- [DECISION] An immediate registry propagation delay stopped workflow promotion after both immutable artifacts were published; recovery verified both exact versions, promoted MCP first and root second without republishing, and confirmed both `latest` tags resolve to 6.0.0.
+- [DECISION] Root registry integrity is `sha512-R7tLOkMP9JhXZzYLIGOhXwgB6YIXKi5RjiiY1t7uNRvCpd2RlhexyoCImtu3zSOA2BgqrpF8R6cBKbkNOT6cnQ==`; MCP registry integrity is `sha512-hfwyLGgjuPsh6yJeNq/SYgNZ3s8h5xxoil/R+288VmgFrXHqTzBLWfgAc361gKPG2VTLoVFMbC3mNk56FQJomA==`.
+- [DECISION] Isolated exact-version root installation and published MCP executable verification pass.
+- [DECISION] GitHub Release `v6.0.0` is published at `https://github.com/hannsxpeter/godpowers/releases/tag/v6.0.0` with notes and no duplicate package assets; npm is the authoritative artifact source.
+- [DECISION] The publication workflow now retries exact-version registry reads for up to 120 seconds before stopping pair verification, preventing the observed propagation race from failing immediately.

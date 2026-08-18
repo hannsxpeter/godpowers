@@ -22,10 +22,11 @@ see_also: [security, observe]
 - [DECISION] `.github/workflows/publish-pack.yml` runs `npm run release:check` before publishing first-party extension packs.
 - [DECISION] `package.json` exposes `bin.godpowers` at `./bin/install.js`.
 - [DECISION] Manual tarball publish is a fallback only when the tag-triggered workflow cannot run, and provenance is unavailable for that publish.
-- [DECISION] Source version `5.5.0` published through identity-bound provenance workflow 29264981272 from merged `main` commit `84fbd00066d2bd833929d6d0b6b769de45275313`.
-- [DECISION] npm `godpowers@5.5.0` and `@godpowers/mcp@5.5.0` are the `latest` versions and their registry integrity values match the locally packed release tarballs.
+- [DECISION] Source version `6.0.0` published with npm provenance through identity-bound workflow 32097275283 from merged `main` commit `9eb6a5cbdff3399e6d65a5cc660bf135814de7b7`.
+- [DECISION] npm `godpowers@6.0.0` and `@godpowers/mcp@6.0.0` are the `latest` versions; their exact registry integrity values are recorded in `RELEASE.md`.
+- [DECISION] The 6.0.0 workflow published both immutable artifacts under `release-6-0-0`, then stopped on an immediate registry propagation read; recovery promoted the verified pair without republishing, and the workflow now retries those reads for up to 120 seconds.
 - [DECISION] Isolated published-install verification passes for Quick Proof, read-only project inspection, dashboard, next route, Claude, Codex, and the MCP executable.
-- [DECISION] The prior `v5.4.0` tag remains the tested rollback reference.
+- [DECISION] The prior `v5.17.1` tag remains the rollback reference.
 
 ## Decisions
 
@@ -56,18 +57,19 @@ see_also: [security, observe]
 ### Godpowers artifact sources
 
 - Sync mode: auto-applied by yolo.
+- Related artifact: `.godpowers/state.json`.
 - Related artifact: `RELEASE.md`.
 - Rule: keep this pillar aligned when these artifacts change durable deploy truth.
 
 ### Extracted durable signals
 
 From `RELEASE.md`:
-- [DECISION] Godpowers 5.5.0 is the Arc-Ready and Pillars conformance release.
-- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
-- [DECISION] The core package contains 112 runtime library modules and keeps zero production dependencies.
-- [DECISION] The `@godpowers/mcp` companion remains read-only and shares version 5.5.0.
-- [DECISION] Product routing selects one of six forms before applying product archetype, industry, or regulatory overlays.
-- [DECISION] Each product form carries a distinct vertical slice and completion-evidence contract, so web assumptions do not leak into API, CLI, mobile, data, or infrastructure work.
-- [DECISION] OWASP hardening uses the 2025 Web Top 10 and routes supply-chain failures plus exceptional-condition handling as first-class checks.
-- [DECISION] Public activation requires `.godpowers/launch/PREPUBLICATION.mdx`, bound to the exact hardening findings hash, authoritative hardening timestamp, and Critical count.
+- [DECISION] Godpowers 6.0.0 hardens the complete coding-agent harness: verification output, specialist context, larger-change design, slice resume, maintainability interpretation, and sequential changeability evidence now have executable contracts.
+- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; no command, specialist, workflow, or recipe was added, removed, or renamed.
+- [DECISION] The core package contains 112 runtime library modules, supports Node.js 18 or newer, and keeps zero production dependencies.
+- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.0.0, uses the MCP v2 server package, and requires Node.js 20 or newer.
+- [DECISION] The package contains 110 focused test scripts, including the new harness-quality and authorized provenance suites.
+- [DECISION] `npm test -- --agent-output` retains complete child bytes in a private log while presenting bounded aggregate success or focused first-failure evidence; normal output remains unchanged without the flag.
+- [DECISION] All 41 specialists declare required context, optional context, inline inputs, and a positive token cap or an explicit no-project-context contract; file sources reject symlinks and retain pinned bytes, and every loadout event path preserves complete counts but no source contents.
+- [DECISION] Medium and large Build plans require a program design approved by a hash-bound `user.resolve` event, while small plans require a recorded size and skip rationale; plan text cannot authorize itself.
 <!-- godpowers:pillar-sync:end -->

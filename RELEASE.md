@@ -1,6 +1,6 @@
 # Godpowers 6.0.0 Release
 
-> Status: Release candidate, publication pending
+> Status: Published and verified
 > Date: 2026-08-17
 
 - [DECISION] Godpowers 6.0.0 hardens the complete coding-agent harness: verification output, specialist context, larger-change design, slice resume, maintainability interpretation, and sequential changeability evidence now have executable contracts.
@@ -40,9 +40,11 @@
 - [DECISION] The evolution benchmark quality review exposed and drove repairs for symlink containment, network guard bypasses, interruption cleanup, evidence bounds, Git metadata and hooks, baseline resource limits, invalid numeric evidence, canonical handoff validation, falsy handoff substitution, and test-temporary cleanup; the repaired focused suite passes 18 checks.
 - [DECISION] The release hardening review exposed and drove repairs for MCP root containment, authoritative plan approval, context identity pinning, exact-origin consent, universal event bounds, resource-bounded scans, recoverable pair publication, and merged-tag pack publication.
 - [DECISION] Provenance client and pack suites pass 20 and 14 checks, the extension publication suite passes 65 checks, and the MCP protocol suite passes with modern and legacy clients.
-- [DECISION] The final local release gate passes 114 test commands and 3,114 checks, 94.64 percent line coverage, 79.8 percent branch coverage, the 70 percent per-file floor across 110 included runtime modules, zero dependency vulnerabilities, 140 self-project truth checks, synchronized Mythify 5.6.0 evidence provenance, and root plus MCP package-content verification.
+- [DECISION] The final local release gate passes 114 test commands and 3,113 checks, 94.64 percent line coverage, 79.8 percent branch coverage, the 70 percent per-file floor across 110 included runtime modules, zero dependency vulnerabilities, 140 self-project truth checks, synchronized Mythify 5.6.0 evidence provenance, and root plus MCP package-content verification.
 - [DECISION] The pre-publication gate passes against hardening revision `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268` with zero unresolved or accepted Critical findings.
-- [HYPOTHESIS] Pull-request CI, tag workflow, registry integrity, and isolated published installation remain pending until their corresponding steps execute.
+- [DECISION] Pull-request CI, merged-main CI, exact package publication, registry integrity, `latest` promotion, GitHub Release creation, and isolated published installation are complete.
+- [DECISION] The tag workflow published both immutable packages with npm provenance under `release-6-0-0`; its immediate exact-version read encountered registry propagation delay, so the documented recovery path verified both versions and promoted MCP first and root second without republishing either artifact.
+- [DECISION] The publication workflow now retries exact-version reads for up to 120 seconds before treating registry propagation as a failed pair verification.
 
 ## Upgrade
 
@@ -53,4 +55,13 @@
 
 ## Publication Evidence
 
-- [OPEN QUESTION] The merge commit, `v6.0.0` tag, provenance workflow run, npm integrity values, GitHub Release, and isolated exact-version verification will be recorded after the external publication steps complete.
+- [DECISION] Pull request 91 passed Node.js 18, 20, and 22 plus the package gate in CI run 32096760451 and merged as `main` commit `9eb6a5cbdff3399e6d65a5cc660bf135814de7b7`.
+- [DECISION] Merged-main CI run 32097014555 passed the same Node.js matrix and package gate against the exact merge commit.
+- [DECISION] Annotated tag `v6.0.0` resolves to merge commit `9eb6a5cbdff3399e6d65a5cc660bf135814de7b7`.
+- [DECISION] Provenance workflow 32097275283 passed release identity, the full release gate, and the fresh pre-publication gate, then published `godpowers@6.0.0` and `@godpowers/mcp@6.0.0` under `release-6-0-0` with npm provenance.
+- [DECISION] The workflow encountered an npm registry propagation delay during its immediate exact-version read and stopped before promotion; recovery verified both staged artifacts, promoted `@godpowers/mcp@6.0.0` first and `godpowers@6.0.0` second, and confirmed both `latest` tags resolve to 6.0.0.
+- [DECISION] Root registry integrity is `sha512-R7tLOkMP9JhXZzYLIGOhXwgB6YIXKi5RjiiY1t7uNRvCpd2RlhexyoCImtu3zSOA2BgqrpF8R6cBKbkNOT6cnQ==` with shasum `e6f63897d83b06b21da20659202fe0614b24809e`.
+- [DECISION] MCP registry integrity is `sha512-hfwyLGgjuPsh6yJeNq/SYgNZ3s8h5xxoil/R+288VmgFrXHqTzBLWfgAc361gKPG2VTLoVFMbC3mNk56FQJomA==` with shasum `6c70dc38f938a7852da0cc7ea570d1d7cc0b1395`.
+- [DECISION] Isolated exact-version verification with `node scripts/verify-published-install.js godpowers@6.0.0` passes Quick Proof, read-only project inspection, dashboard, next route, Claude install, and Codex install checks.
+- [DECISION] The published MCP executable resolves through `npx -y -p @godpowers/mcp@6.0.0 godpowers-mcp --help` on Node.js 20 or newer.
+- [DECISION] GitHub Release `v6.0.0` is published at `https://github.com/hannsxpeter/godpowers/releases/tag/v6.0.0` as the notes and tag record; npm remains the authoritative package artifact source.
