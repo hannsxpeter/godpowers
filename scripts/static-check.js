@@ -799,6 +799,8 @@ test('publish workflow includes MCP companion package', () => {
     for (const required of [
       'staging_tag="release-${version//./-}"',
       'Verify the exact package pair before promotion',
+      'for attempt in {1..12}',
+      'Registry propagation did not expose',
       'npm dist-tag add "@godpowers/mcp@$version" latest',
       'npm dist-tag add "godpowers@$version" latest',
       'Registry state is uncertain; refusing to publish.'

@@ -108,8 +108,21 @@ jobs:
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
-          [[ "$(npm view "godpowers@$version" version)" == "$version" ]]
-          [[ "$(npm view "@godpowers/mcp@$version" version)" == "$version" ]]
+          verify_exact_version() {
+            package_spec="$1"
+            for attempt in {1..12}; do
+              if actual="$(npm view "$package_spec@$version" version 2>/dev/null)" && [[ "$actual" == "$version" ]]; then
+                return 0
+              fi
+              if [[ "$attempt" -lt 12 ]]; then
+                sleep 10
+              fi
+            done
+            echo "Registry propagation did not expose $package_spec@$version after 12 attempts."
+            return 1
+          }
+          verify_exact_version "godpowers"
+          verify_exact_version "@godpowers/mcp"
 
       - name: Promote the verified pair to latest
         shell: bash
