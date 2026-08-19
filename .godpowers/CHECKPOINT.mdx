@@ -1,5 +1,5 @@
 ---
-id: CHECKPOINT-2026-08-19T06-45-56-035Z
+id: CHECKPOINT-2026-08-19T07-30-07-783Z
 project: godpowers
 mode: B
 mode-d-suite: false
@@ -11,9 +11,9 @@ progress-complete: 19
 progress-total: 19
 current-step: 19
 last-action: tier-0.sync done
-last-actor: unknown
-last-update: 2026-08-19T06:45:56.035Z
-facts-hash: sha256:6bae3971008651bba3c5c4943ef21f4acfe4d2a17ac57b165f4c03bf8682d9d9
+last-actor: god-updater
+last-update: 2026-08-19T07:30:07.783Z
+facts-hash: sha256:a7681a235154344fcd95a1884c9fa8f6ad1a086e02db0b71bce021d4b2481f51
 ---
 # Checkpoint
 
@@ -28,35 +28,39 @@ facts-hash: sha256:6bae3971008651bba3c5c4943ef21f4acfe4d2a17ac57b165f4c03bf8682d
 - Lifecycle phase: **steady-state-active**
 - Progress: **100%** (19 of 19 steps complete; current step 19 of 19)
 - Current tier: **tier-3** / **launch**
-- Last action: `tier-0.sync done` by unknown at 2026-08-19T06:45:56.035Z
+- Last action: `tier-0.sync done` by god-updater at 2026-08-19T07:30:07.783Z
 
 ## What happened recently
 
-_(no recent actions recorded yet)_
+- [2026-08-19T07:29:02.481Z] [tier-0] god-updater: agent.end
+- [2026-08-19T07:29:02.481Z] gate.pass
 
 ## What happens next
 
-- /god-ship
-- The reviewed 31-test evidence correction is synchronized for the 6.1.0 source candidate; publication remains pending.
+- /god-status --full
+- Verify the disk-derived 6.1.0 publication state after final documentation sync.
 
 ## Next suggested command
 
-`/god-ship` - The reviewed 31-test evidence correction is synchronized for the 6.1.0 source candidate; publication remains pending.
+`/god-status --full` - Verify the disk-derived 6.1.0 publication state after final documentation sync.
 
 ## Last actions (most recent first, max 20)
 
-_(no actions recorded yet)_
+- [2026-08-19T07:29:02.481Z] [tier-0] god-updater: agent.end
+- [2026-08-19T07:29:02.481Z] gate.pass
 
 ## Held facts (top 10 critical decisions)
 
-- Godpowers 6.0.0 is published from merged main commit 9eb6a5cbdff3399e6d65a5cc660bf135814de7b7.
-- npm godpowers@6.0.0 and @godpowers/mcp@6.0.0 are latest and isolated consumer verification passes.
-- Publication workflow 32097275283 published both provenance artifacts; recovery handled registry propagation before latest promotion.
-- GitHub Release v6.0.0 is public and all 2 Critical, 3 High, and 4 Medium release-hardening findings are resolved.
-- Pull-request CI 32096760451 and merged-main CI 32097014555 passed every required check.
-- Root and MCP registry integrity values are pinned in RELEASE.md.
-- The publication workflow retries registry propagation for up to 120 seconds before failing exact-pair verification.
-- The 6.0.0 release gate passed 114 test commands and 3,113 checks with 94.64 percent line and 79.8 percent branch coverage.
+- Godpowers 6.1.0 is published from merged main commit b52c919bc3e02ff3dfae50e35c4a1fe070f0e619.
+- Pull-request CI 32226287260 and merged-main CI 32226644093 passed the Node.js matrix and package job.
+- Annotated tag v6.1.0 resolves to the merged release commit.
+- Provenance workflow 32227120049 passed in 4 minutes 22 seconds and published the exact root and MCP pair.
+- npm godpowers@6.1.0 and @godpowers/mcp@6.1.0 are both latest.
+- Root registry integrity and shasum are pinned in state and RELEASE.md.
+- MCP registry integrity and shasum are pinned in state and RELEASE.md.
+- GitHub Release v6.1.0 was published at 2026-08-19T07:22:41Z.
+- Isolated exact-version installs passed and both published CLIs ran.
+- The isolated published-package dependency tree reported zero vulnerabilities.
 
 ## If you are a new session
 
@@ -74,7 +78,7 @@ _(no actions recorded yet)_
 
 ## Provenance
 
-- Generated: 2026-08-19T06:45:56.035Z
+- Generated: 2026-08-19T07:30:07.783Z
 - Schema version: 1.0
 - Authoritative state: `.godpowers/state.json`
 - Authoritative history: `.godpowers/runs/<id>/events.jsonl` + `.godpowers/log`

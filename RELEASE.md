@@ -1,6 +1,6 @@
 # Godpowers 6.1.0 Release
 
-> Status: Release candidate
+> Status: Published and verified
 > Date: 2026-08-19
 
 - [DECISION] Godpowers 6.1.0 adds a shared post-draft prose audit, a pure
@@ -97,16 +97,16 @@
 - [DECISION] `node scripts/test-voice-lint.js` passes 11 of 11 tests.
 - [DECISION] The current package-content check reports 646 root package files
   and includes `lib/prose-lint.js` in the required payload.
-- [DECISION] The feature-branch full release gate passes every test command in
-  83 seconds with 94.68 percent line coverage and zero production dependency
-  vulnerabilities.
+- [DECISION] The final post-publication release gate passes 115 test commands
+  in 81.3 seconds with 94.68 percent line coverage and zero production
+  dependency vulnerabilities.
 - [DECISION] Pull-request CI, merged-main CI, the tag workflow, registry
-  verification, and the isolated published-install check remain pending and
-  are not claimed by this release candidate.
+  verification, GitHub Release creation, and isolated published-install checks
+  are complete.
 
 ## Upgrade
 
-- [DECISION] After publication, install the root CLI with
+- [DECISION] Install the root CLI with
   `npm install -g godpowers@6.1.0` or run it with `npx godpowers@6.1.0`.
 - [DECISION] Root CLI users need no state migration, artifact migration,
   command rename, or production dependency change for this upgrade.
@@ -115,19 +115,30 @@
 - [DECISION] Existing automation may continue treating artifact errors as its
   blocking signal because the new U-12 findings remain warnings.
 
-## Pending Publication Evidence
+## Publication Evidence
 
-- [OPEN QUESTION] Pull-request number, review state, and CI run remain pending.
-  Owner: release operator. Due: before merge.
-- [OPEN QUESTION] Clean-main full release-gate and pre-publication evidence
-  remain pending. Owner: release operator. Due: before tag creation.
-- [OPEN QUESTION] Merge commit and merged-main CI run remain pending. Owner:
-  release operator. Due: before tag publication.
-- [OPEN QUESTION] Annotated tag identity and provenance workflow run remain
-  pending. Owner: release operator. Due: before npm promotion.
-- [OPEN QUESTION] Root and MCP registry integrity, shasums, and `latest` tag
-  verification remain pending. Owner: release operator. Due: before marking
-  this release published and verified.
-- [OPEN QUESTION] GitHub Release URL and isolated exact-version install checks
-  remain pending. Owner: release operator. Due: before replacing this section
-  with completed publication evidence.
+- [DECISION] Pull request 93 passed Node.js 18, 20, and 22 plus the package gate
+  in CI run 32226287260 and merged as `main` commit
+  `b52c919bc3e02ff3dfae50e35c4a1fe070f0e619`.
+- [DECISION] Merged-main CI run 32226644093 passed the same Node.js matrix and
+  package gate against the exact merge commit.
+- [DECISION] Annotated tag `v6.1.0` resolves to merge commit
+  `b52c919bc3e02ff3dfae50e35c4a1fe070f0e619`.
+- [DECISION] Provenance workflow 32227120049 passed release identity, the full
+  release gate, and the fresh pre-publication gate; it published and verified
+  the exact root and MCP pair under `release-6-1-0`, then promoted both packages
+  to `latest`.
+- [DECISION] Root registry integrity is
+  `sha512-6Xw4aqYktmn/bZLU3JB2fYa4kY9PIgdKzKLnPgL8xOq9lTArMXz+0RC5TEw7Rv2+DZVaIBoERG5GLZ6/yyfVSQ==`
+  with shasum `2300fff21af7554f29966bc577f276bcc61714dd`.
+- [DECISION] MCP registry integrity is
+  `sha512-MnDTK2bZjQmQuRZ0ITd2xdgeQ5aYtJ+UKCLlezOzo/w0yOQy4JVOXbJtmwh1PNVwk7HDjo6LCcjJD8bERp3SkA==`
+  with shasum `ed351975f6fa662860376664455836b61aef7fa0`.
+- [DECISION] A fresh isolated install resolved both exact 6.1.0 packages,
+  reported zero dependency vulnerabilities, and ran the root and MCP help
+  commands successfully.
+- [DECISION] `npm audit signatures` verified registry signatures and
+  attestations for all five packages in the isolated dependency tree.
+- [DECISION] GitHub Release `v6.1.0` is published at
+  `https://github.com/hannsxpeter/godpowers/releases/tag/v6.1.0`; npm remains
+  the authoritative package artifact source.

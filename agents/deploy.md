@@ -22,11 +22,11 @@ see_also: [security, observe]
 - [DECISION] `.github/workflows/publish-pack.yml` runs `npm run release:check` before publishing first-party extension packs.
 - [DECISION] `package.json` exposes `bin.godpowers` at `./bin/install.js`.
 - [DECISION] Manual tarball publish is a fallback only when the tag-triggered workflow cannot run, and provenance is unavailable for that publish.
-- [DECISION] Source version `6.0.0` published with npm provenance through identity-bound workflow 32097275283 from merged `main` commit `9eb6a5cbdff3399e6d65a5cc660bf135814de7b7`.
-- [DECISION] npm `godpowers@6.0.0` and `@godpowers/mcp@6.0.0` are the `latest` versions; their exact registry integrity values are recorded in `RELEASE.md`.
-- [DECISION] The 6.0.0 workflow published both immutable artifacts under `release-6-0-0`, then stopped on an immediate registry propagation read; recovery promoted the verified pair without republishing, and the workflow now retries those reads for up to 120 seconds.
+- [DECISION] Source version `6.1.0` published with npm provenance through identity-bound workflow 32227120049 from merged `main` commit `b52c919bc3e02ff3dfae50e35c4a1fe070f0e619`.
+- [DECISION] npm `godpowers@6.1.0` and `@godpowers/mcp@6.1.0` are the `latest` versions; their exact registry integrity values and shasums are recorded in `RELEASE.md`.
+- [DECISION] The 6.1.0 workflow passed release identity, full release, and fresh pre-publication gates before publishing and promoting the exact root and MCP pair.
 - [DECISION] Isolated published-install verification passes for Quick Proof, read-only project inspection, dashboard, next route, Claude, Codex, and the MCP executable.
-- [DECISION] The prior `v5.17.1` tag remains the rollback reference.
+- [DECISION] The prior `v6.0.0` tag remains the rollback reference.
 
 ## Decisions
 
