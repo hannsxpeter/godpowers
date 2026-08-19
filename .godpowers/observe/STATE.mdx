@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:a19e4a6957ba507857b13d29d56d25b7667d380692f5037c121d34f34cd55f90 -->
+<!-- godpowers:checksum sha256:964e32d537fe3120dafda89fc983c28fd9e5a8392f2ec5127cd8c4a4ed1b94f3 -->
 # Godpowers Observe State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.observe`.
@@ -9,18 +9,15 @@
 - [DECISION] Step: Shipping: Observe.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/observe/STATE.mdx`.
-- [DECISION] Updated: 2026-08-18T04:04:11.227Z.
-- [DECISION] Notes: Provider-neutral event vocabulary, bounded context-loadout evidence, maintainability trajectories, evolution evidence, and evidence-derived outcome metrics are locally verified for 6.0.0..
+- [DECISION] Updated: 2026-08-19T07:29:02.463Z.
+- [DECISION] Notes: Provider-neutral event vocabulary, bounded context-loadout evidence, maintainability trajectories, evolution evidence, and evidence-derived outcome metrics remain verified in the 6.1.0 release gate and merged-main CI..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| npm test -- --agent-output | pass | 0 | 2026-08-18T04:04:11.227Z | 79900 | 114 test commands and 3,113 checks passed with bounded console output and complete retained child bytes. |
-| node scripts/test-cost-saver.js | pass | 0 | 2026-08-18T04:04:11.227Z | - | 63 context, event, cost, and cache checks passed. |
-| node scripts/test-maintainability-trajectory.js | pass | 0 | 2026-08-18T04:04:11.227Z | - | 13 deterministic snapshot, delta, validation, and resource-bound checks passed. |
-| node scripts/test-evolution-benchmark.js | pass | 0 | 2026-08-18T04:04:11.227Z | - | 18 sequential benchmark, isolation, interruption, evidence, and resource-bound checks passed. |
-| node scripts/test-outcome-metrics.js | pass | 0 | 2026-08-18T04:04:11.227Z | - | Outcome metrics preserve evidence-only claims and explicit no-data behavior. |
+| gh run view 32226644093 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Merged-main CI passed the Node.js 18, 20, and 22 matrix and package job for the 6.1.0 release commit. |
+| gh run view 32227120049 | pass | 0 | 2026-08-19T07:29:02.463Z | 262000 | The 6.1.0 publication workflow reran the complete release gate and passed in 4 minutes 22 seconds. |
 
 ## Evidence Fields
 

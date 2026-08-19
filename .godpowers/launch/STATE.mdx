@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:8945bad8620cada32e9b6d97928a06a92f8b6b4bebca5162944951247353afe4 -->
+<!-- godpowers:checksum sha256:85fe63ccc616ba05b153b72c80fa40c5ee776af058bb8284aceaac993b89d4b9 -->
 # Godpowers Launch State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.launch`.
@@ -9,29 +9,42 @@
 - [DECISION] Step: Shipping: Launch.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/launch/STATE.mdx`.
-- [DECISION] Updated: 2026-08-18T04:04:11.227Z.
-- [DECISION] Notes: Version 6.0.0 is published on GitHub and npm; both latest tags, exact integrity, isolated root installation, and the MCP executable are verified..
+- [DECISION] Updated: 2026-08-19T07:29:02.463Z.
+- [DECISION] Notes: Version 6.1.0 is published on GitHub and npm; both latest tags, exact integrity and shasums, isolated installs, both CLIs, and zero-vulnerability audit evidence are verified..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| npm run release:check | pass | 0 | 2026-08-18T04:04:11.227Z | - | 114 test commands and 3,113 checks, 94.64 percent line coverage, 79.8 percent branch coverage, audit, self-truth, drift, and package gates passed. |
-| npm run release:prepublication:check | pass | 0 | 2026-08-18T04:04:11.227Z | - | The gate passed against hardening revision sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268 with zero unresolved or accepted Critical findings. |
-| gh run view 32096760451 && gh run view 32097014555 | pass | 0 | 2026-08-18T04:04:11.227Z | - | Pull-request and merged-main CI passed for the exact 6.0.0 release tree. |
-| git rev-list -n 1 v6.0.0 | pass | 0 | 2026-08-18T04:04:11.227Z | - | Annotated tag v6.0.0 resolves to merged main commit 9eb6a5cbdff3399e6d65a5cc660bf135814de7b7. |
-| npm view godpowers@6.0.0 version && npm view @godpowers/mcp@6.0.0 version | pass | 0 | 2026-08-18T04:04:11.227Z | - | Both exact packages are published with provenance and both latest tags resolve to 6.0.0. |
-| node scripts/verify-published-install.js godpowers@6.0.0 | pass | 0 | 2026-08-18T04:04:11.227Z | - | Isolated exact-version root CLI, Quick Proof, inspection, dashboard, next route, Claude, and Codex checks passed. |
-| npx -y -p @godpowers/mcp@6.0.0 godpowers-mcp --help | pass | 0 | 2026-08-18T04:04:11.227Z | - | The published MCP executable resolved and rendered its help surface. |
-| gh release view v6.0.0 | pass | 0 | 2026-08-18T04:04:11.227Z | - | GitHub Release v6.0.0 is public with the release notes record. |
+| npm run release:check | pass | 0 | 2026-08-19T07:29:02.463Z | - | The complete 6.1.0 release gate passed before merge and in the tag publication workflow. |
+| npm run release:prepublication:check | pass | 0 | 2026-08-19T07:29:02.463Z | - | The fresh pre-publication gate passed with zero unresolved or accepted Critical findings. |
+| gh run view 32226287260 && gh run view 32226644093 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Pull-request and merged-main CI passed for the exact 6.1.0 release tree. |
+| git rev-list -n 1 v6.1.0 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Annotated tag v6.1.0 resolves to b52c919bc3e02ff3dfae50e35c4a1fe070f0e619. |
+| gh run view 32227120049 | pass | 0 | 2026-08-19T07:29:02.463Z | 262000 | The tag-triggered provenance workflow passed in 4 minutes 22 seconds and published the exact 6.1.0 package pair. |
+| npm view godpowers@6.1.0 version dist.integrity dist.shasum && npm view @godpowers/mcp@6.1.0 version dist.integrity dist.shasum | pass | 0 | 2026-08-19T07:29:02.463Z | - | Both exact packages are published, both latest tags resolve to 6.1.0, and registry integrity and shasums match the recorded evidence. |
+| node scripts/verify-published-install.js godpowers@6.1.0 | pass | 0 | 2026-08-19T07:29:02.463Z | - | The isolated exact-version root installation passed and the published root CLI ran. |
+| npx -y -p @godpowers/mcp@6.1.0 godpowers-mcp --help | pass | 0 | 2026-08-19T07:29:02.463Z | - | The isolated exact-version MCP installation passed and the published MCP CLI ran. |
+| npm audit --omit=dev | pass | 0 | 2026-08-19T07:29:02.463Z | - | The isolated published-package dependency tree reported zero vulnerabilities. |
+| gh release view v6.1.0 | pass | 0 | 2026-08-19T07:29:02.463Z | - | GitHub Release v6.1.0 is public at https://github.com/hannsxpeter/godpowers/releases/tag/v6.1.0 and was published at 2026-08-19T07:22:41Z. |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
+| github-release | https://github.com/hannsxpeter/godpowers/releases/tag/v6.1.0 |
 | launch-scope | published-release |
+| merged-main-ci | https://github.com/hannsxpeter/godpowers/actions/runs/32226644093 |
+| npm-mcp-integrity | sha512-MnDTK2bZjQmQuRZ0ITd2xdgeQ5aYtJ+UKCLlezOzo/w0yOQy4JVOXbJtmwh1PNVwk7HDjo6LCcjJD8bERp3SkA== |
+| npm-mcp-shasum | ed351975f6fa662860376664455836b61aef7fa0 |
+| npm-root-integrity | sha512-6Xw4aqYktmn/bZLU3JB2fYa4kY9PIgdKzKLnPgL8xOq9lTArMXz+0RC5TEw7Rv2+DZVaIBoERG5GLZ6/yyfVSQ== |
+| npm-root-shasum | 2300fff21af7554f29966bc577f276bcc61714dd |
 | production-user-evidence | unavailable; repository records zero production users |
-| publication-verification | passed for pull-request CI, merged-main CI, staged provenance publication, recovery promotion, npm root, npm MCP, registry integrity, GitHub Release, isolated root install, Claude, Codex, and MCP executable |
-| release-version | 6.0.0 |
+| publication-verification | passed for pull-request CI, merged-main CI, annotated tag identity, provenance publication, npm root, npm MCP, latest tags, exact registry integrity and shasums, GitHub Release, isolated installs, both CLIs, and zero-vulnerability audit |
+| publish-workflow | https://github.com/hannsxpeter/godpowers/actions/runs/32227120049 |
+| published-at | 2026-08-19T07:22:41Z |
+| pull-request | https://github.com/hannsxpeter/godpowers/pull/93 |
+| pull-request-ci | https://github.com/hannsxpeter/godpowers/actions/runs/32226287260 |
+| release-commit | b52c919bc3e02ff3dfae50e35c4a1fe070f0e619 |
+| release-version | 6.1.0 |
 
 <!-- godpowers:state-view:end -->

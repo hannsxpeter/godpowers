@@ -2,10 +2,10 @@
 
 - [DECISION] `@godpowers/mcp` is the first-party read-only MCP companion package for Godpowers.
 - [DECISION] The main `godpowers` package stays dependency-free at runtime, and the MCP SDK dependency lives only in this companion package.
-- [DECISION] Version 6.0.0 exposes nine read-only tools: `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`, `work_report`, `change_metrics`, `route`, and `verification_history`.
-- [DECISION] Mutation tools are intentionally absent through the 6.0.0 release; the MCP surface stays read-only and external write actions are delegated to host connectors (see `/god-connect`).
-- [DECISION] Version 6.0.0 uses the MCP v2 server package and requires Node.js 20 or newer. The root `godpowers` CLI continues to support Node.js 18 or newer.
-- [DECISION] Runtime skew caveat: 6.0.0 reads `.mdx`-canonical project artifacts (with legacy `.md` fallback). Pair it with a `godpowers` runtime at 4.0.0 or later; a pre-4.0 runtime cannot see `.mdx` artifacts, so mixed versions report incomplete state.
+- [DECISION] Version 6.1.0 exposes nine read-only tools: `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`, `work_report`, `change_metrics`, `route`, and `verification_history`.
+- [DECISION] Mutation tools are intentionally absent through the 6.1.0 release; the MCP surface stays read-only and external write actions are delegated to host connectors (see `/god-connect`).
+- [DECISION] Version 6.1.0 uses the MCP v2 server package and requires Node.js 20 or newer. The root `godpowers` CLI continues to support Node.js 18 or newer.
+- [DECISION] Runtime skew caveat: 6.1.0 reads `.mdx`-canonical project artifacts (with legacy `.md` fallback). Pair it with a `godpowers` runtime at 4.0.0 or later; a pre-4.0 runtime cannot see `.mdx` artifacts, so mixed versions report incomplete state.
 
 ## Install
 

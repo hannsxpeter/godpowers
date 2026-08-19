@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:0e21e6ca1518c5cabba40bd4fc25baafa453f12a18b7fdfcc569188172ceec13 -->
+<!-- godpowers:checksum sha256:a5f4af8c57a61b50146cb3cf66ff8e981953b91fb8736d8a4e8e64abf36768a9 -->
 # Godpowers Deploy State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.deploy`.
@@ -9,29 +9,44 @@
 - [DECISION] Step: Shipping: Deploy.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/deploy/STATE.mdx`.
-- [DECISION] Updated: 2026-08-18T04:04:11.227Z.
-- [DECISION] Notes: Godpowers 6.0.0 and the MCP companion are published with npm provenance from merged main; both latest tags, registry integrity records, GitHub Release notes, and isolated consumer checks are verified..
+- [DECISION] Updated: 2026-08-19T07:29:02.463Z.
+- [DECISION] Notes: Godpowers 6.1.0 and the MCP companion are published with npm provenance from merged main; both latest tags, exact registry integrity and shasums, GitHub Release, isolated package installs, CLI runs, and audit evidence are verified..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| gh pr view 91 && gh run view 32096760451 | pass | 0 | 2026-08-18T04:04:11.227Z | - | Pull request 91 passed Node.js 18, 20, and 22 plus the package gate before merging. |
-| gh run view 32097014555 | pass | 0 | 2026-08-18T04:04:11.227Z | - | Merged-main CI passed the full matrix and package gate for commit 9eb6a5cbdff3399e6d65a5cc660bf135814de7b7. |
-| gh run view 32097275283 | pass | 0 | 2026-08-18T04:04:11.227Z | - | The provenance workflow passed release identity, release, and pre-publication gates and published both immutable 6.0.0 artifacts under release-6-0-0; an immediate registry propagation read stopped automated promotion. |
-| npm view godpowers@6.0.0 version dist.integrity && npm view @godpowers/mcp@6.0.0 version dist.integrity | pass | 0 | 2026-08-18T04:04:11.227Z | - | Both exact versions resolve with the registry integrity values recorded in RELEASE.md. |
-| npm view godpowers dist-tags.latest && npm view @godpowers/mcp dist-tags.latest | pass | 0 | 2026-08-18T04:04:11.227Z | - | Recovery promoted MCP first and root second without republishing; both latest tags resolve to 6.0.0. |
-| gh release view v6.0.0 | pass | 0 | 2026-08-18T04:04:11.227Z | - | GitHub Release v6.0.0 is public as the notes and immutable tag record. |
-| node scripts/verify-published-install.js godpowers@6.0.0 | pass | 0 | 2026-08-18T04:04:11.227Z | - | An isolated exact-version install passed Quick Proof, read-only inspection, dashboard, next route, Claude install, and Codex install checks. |
-| npx -y -p @godpowers/mcp@6.0.0 godpowers-mcp --help | pass | 0 | 2026-08-18T04:04:11.227Z | - | The published MCP executable resolves and renders its command surface on Node.js 20 or newer. |
+| gh pr view 93 && gh run view 32226287260 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Pull request 93 passed Node.js 18, 20, and 22 plus the package job, then merged on 2026-08-19 as b52c919bc3e02ff3dfae50e35c4a1fe070f0e619. |
+| gh run view 32226644093 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Merged-main CI passed the full Node.js matrix and package job against commit b52c919bc3e02ff3dfae50e35c4a1fe070f0e619. |
+| git rev-list -n 1 v6.1.0 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Annotated tag v6.1.0 resolves to b52c919bc3e02ff3dfae50e35c4a1fe070f0e619. |
+| gh run view 32227120049 | pass | 0 | 2026-08-19T07:29:02.463Z | 262000 | The tag-triggered provenance workflow passed in 4 minutes 22 seconds and published the exact root and MCP 6.1.0 pair. |
+| npm view godpowers@6.1.0 version dist.integrity dist.shasum && npm view @godpowers/mcp@6.1.0 version dist.integrity dist.shasum | pass | 0 | 2026-08-19T07:29:02.463Z | - | Both exact versions resolve with the registry integrity values and shasums pinned in state and RELEASE.md. |
+| npm view godpowers dist-tags.latest && npm view @godpowers/mcp dist-tags.latest | pass | 0 | 2026-08-19T07:29:02.463Z | - | Both npm latest tags resolve to 6.1.0. |
+| gh release view v6.1.0 | pass | 0 | 2026-08-19T07:29:02.463Z | - | GitHub Release v6.1.0 is public at https://github.com/hannsxpeter/godpowers/releases/tag/v6.1.0 and was published at 2026-08-19T07:22:41Z. |
+| node scripts/verify-published-install.js godpowers@6.1.0 | pass | 0 | 2026-08-19T07:29:02.463Z | - | An isolated exact-version root package install passed and the published root CLI ran. |
+| npx -y -p @godpowers/mcp@6.1.0 godpowers-mcp --help | pass | 0 | 2026-08-19T07:29:02.463Z | - | An isolated exact-version MCP package install passed and the published MCP CLI ran. |
+| npm audit --omit=dev | pass | 0 | 2026-08-19T07:29:02.463Z | - | The isolated published-package dependency tree reported zero vulnerabilities. |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
-| publication-targets | https://github.com/hannsxpeter/godpowers/releases/tag/v6.0.0, npm godpowers@6.0.0, and npm @godpowers/mcp@6.0.0 |
-| rollback-evidence | The v5.17.1 tag resolves as the prior release rollback reference. |
-| target-evidence | npm exact versions and latest tags agree at 6.0.0; registry integrity values are pinned in RELEASE.md; isolated root and MCP consumer checks pass. |
+| github-release | https://github.com/hannsxpeter/godpowers/releases/tag/v6.1.0 |
+| merged-main-ci | https://github.com/hannsxpeter/godpowers/actions/runs/32226644093 |
+| npm-mcp-integrity | sha512-MnDTK2bZjQmQuRZ0ITd2xdgeQ5aYtJ+UKCLlezOzo/w0yOQy4JVOXbJtmwh1PNVwk7HDjo6LCcjJD8bERp3SkA== |
+| npm-mcp-shasum | ed351975f6fa662860376664455836b61aef7fa0 |
+| npm-root-integrity | sha512-6Xw4aqYktmn/bZLU3JB2fYa4kY9PIgdKzKLnPgL8xOq9lTArMXz+0RC5TEw7Rv2+DZVaIBoERG5GLZ6/yyfVSQ== |
+| npm-root-shasum | 2300fff21af7554f29966bc577f276bcc61714dd |
+| publication-targets | https://github.com/hannsxpeter/godpowers/releases/tag/v6.1.0, npm godpowers@6.1.0, and npm @godpowers/mcp@6.1.0 |
+| publish-workflow | https://github.com/hannsxpeter/godpowers/actions/runs/32227120049 |
+| published-at | 2026-08-19T07:22:41Z |
+| pull-request | https://github.com/hannsxpeter/godpowers/pull/93 |
+| pull-request-ci | https://github.com/hannsxpeter/godpowers/actions/runs/32226287260 |
+| registry-audit | zero vulnerabilities in the isolated exact-version install |
+| release-commit | b52c919bc3e02ff3dfae50e35c4a1fe070f0e619 |
+| release-version | 6.1.0 |
+| rollback-evidence | The v6.0.0 tag resolves as the prior release rollback reference. |
+| target-evidence | npm exact versions and latest tags agree at 6.1.0; root and MCP registry integrity and shasums are pinned in authoritative state; isolated installs and both CLIs pass. |
 | verified-target-type | published-npm-release |
 
 <!-- godpowers:state-view:end -->

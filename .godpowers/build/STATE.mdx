@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:5ce905a0c961df016fcc77d5ac194c47ab3bdf5bd90f2a3dd44fdf0cda9cdc0b -->
+<!-- godpowers:checksum sha256:84adc722e0251c02a21256dbfe656c24d4bed37ebe0bf3cd9e1210e85cab25a4 -->
 # Godpowers Build State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-2.build`.
@@ -9,23 +9,20 @@
 - [DECISION] Step: Building: Build.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/build/STATE.mdx`.
-- [DECISION] Updated: 2026-08-18T03:46:06.501Z.
-- [DECISION] Notes: All harness slices and the 6.0.0 release candidate pass focused behavior, independent specification, independent quality, security hardening, complete release, coverage, audit, drift, self-truth, and package-surface verification..
+- [DECISION] Updated: 2026-08-19T07:29:02.463Z.
+- [DECISION] Notes: The 6.1.0 release tree passed the complete release gate on the release branch, pull request, merged main, and tag publication workflow..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| npm run lint | pass | 0 | 2026-08-18T03:46:06.501Z | - | 34 static checks passed. |
-| npm test -- --agent-output | pass | 0 | 2026-08-18T03:46:06.501Z | 79900 | 114 test commands passed with 3,113 checks in the final release candidate. |
-| npm run coverage:lib | pass | 0 | 2026-08-18T03:46:06.501Z | - | 94.64 percent line and 79.8 percent branch coverage passed, with at least 70 percent line coverage across 110 included runtime modules. |
-| npm audit --omit=dev | pass | 0 | 2026-08-18T03:46:06.501Z | - | Registry audit reported zero vulnerabilities across the production dependency set. |
-| npm run release:check | pass | 0 | 2026-08-18T03:46:06.501Z | - | Version, standards, tests, coverage, live advisories, self-truth, Mythify 5.6.0 drift, 645-file root package, and 8-file MCP package gates passed. |
+| npm run release:check | pass | 0 | 2026-08-19T07:29:02.463Z | - | The complete 6.1.0 release gate passed before merge and again in the tag publication workflow. |
+| gh run view 32226287260 && gh run view 32226644093 && gh run view 32227120049 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Pull-request CI, merged-main CI, and the tag publication workflow passed for the exact 6.1.0 release tree. |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
-| release-version | 6.0.0 |
+| release-version | 6.1.0 |
 
 <!-- godpowers:state-view:end -->

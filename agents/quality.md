@@ -72,9 +72,9 @@ see_also: [security, deploy]
 ### Extracted durable signals
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-08-19T06:22:48.578Z`.
+- [DECISION] Evidence generated at: `2026-08-19T06:45:21.095Z`.
 - [DECISION] Source version: `6.1.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:7ac0f025625e6a182f31b0014dec0f2985e5791f1aa99b50dfa69db06e68aec2`.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:a9c6cc8ac62076152046d4885998527bfd77f1274b47dec1d1bc88a30f7ee475`.
 - [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:ea1a27cfdcf250b7fd990d08cf7a0c9dc4b125f333f1490f3605b1f7a6834189`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
 - [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
