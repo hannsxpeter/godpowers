@@ -93,6 +93,7 @@ describe things that look like security boundaries and are not.
 
 | Version | Supported |
 |---------|-----------|
+| 6.3.x   | Release candidate |
 | 6.2.x   | Yes |
 | 6.1.x   | Security fixes only |
 | 6.0.x   | Security fixes only |

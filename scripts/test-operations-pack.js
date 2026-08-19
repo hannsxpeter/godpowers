@@ -306,6 +306,11 @@ test('operations pack is registered in release checks and the publish workflow',
     'package guard registration missing');
   assert(workflow.includes('          - operations-pack'), 'publish workflow choice missing');
   assert(workflow.includes('operations-pack'), 'publish workflow description missing');
+  assert(workflow.includes('PACK: ${{ inputs.pack }}'), 'pack input must cross through the environment');
+  assert(workflow.includes('REQUESTED_VERSION: ${{ inputs.version }}'),
+    'version input must cross through the environment');
+  assert(!workflow.includes('requested_version="${{ inputs.version }}"'),
+    'free-form version input must not be interpolated into the shell program');
 });
 
 test('operations pack installs lazily with skills, agents, and references', () => {

@@ -1,6 +1,6 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v6.2.0 published release (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
+> Status: STABLE v6.3.0 release candidate (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
 > Authors: Godpowers Team
 > Last updated: 2026-08-06
 
@@ -346,6 +346,25 @@ the AI coding tool.
 [DECISION] The route graph is currently complete at the file level: 124
 `skills/*.md` command files match 124 `routing/*.yaml` route files, including
 the `god` front door and every shipped `god-*` command.
+
+[DECISION] Every canonical route file declares one closed invocation policy:
+`explicit-only`, `suggestible`, `auto-local`, `auto-bounded`, or
+`approval-required`. Router loading and route-quality checks derive command
+identity from the canonical filename, reject duplicates and spoofed metadata,
+and keep external, destructive, dependency, recovery, and release actions
+approval-required.
+
+[DECISION] Unknown prerequisite predicates fail closed. The canonical route
+set uses explicit handlers for codebase presence, PRD have-nots, incident
+resolution, and test-surface presence instead of relying on a permissive
+fallback.
+
+[DECISION] Event run paths remain beneath the selected project root, reject
+linked components, and cap verified snapshots at 8 MiB and 50,000 lines.
+SkillUI validates remote targets but never passes a URL or remote repository
+location to the external CLI; only already reviewed local directories reach
+the subprocess. Release recovery compares npm integrity and shasum to exact
+packed candidates before dist-tag promotion.
 
 [DECISION] The source surface also includes 41 `specialists/god-*.md` specialist
 agents, 13 workflow YAML files, and 45 intent recipes.
@@ -948,6 +967,7 @@ Lazy activation: extensions don't load until their skill is invoked.
 | `@godpowers/security-pack` | SOC2, HIPAA, PCI auditors |
 | `@godpowers/launch-pack` | Show HN, Product Hunt, Indie Hackers strategists |
 | `@godpowers/data-pack` | Data engineering tier (ETL, ML, dashboards) |
+| `@godpowers/operations-pack` | Approval-gated issue triage and human-only setup guidance |
 
 Community packs follow the same shape.
 

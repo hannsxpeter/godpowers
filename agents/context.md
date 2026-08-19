@@ -15,7 +15,7 @@ see_also: [arch, quality, deploy]
 ## Context
 
 - [DECISION] Godpowers is an AI-powered development system delivered as slash commands and specialist agents inside AI coding tools.
-- [DECISION] The package name is `godpowers`, and the current repository version is `6.2.0`.
+- [DECISION] The package name is `godpowers`, and the current repository version is `6.3.0`.
 - [DECISION] The primary audience is solo founders and small engineering teams using AI coding tools who need accountable production workflow discipline without enterprise process.
 - [DECISION] The product promise is one slash-command arc from idea to hardened, observable, launch-ready software with traceable artifacts on disk.
 - [DECISION] Godpowers uses a pure-skill model where `npx godpowers` installs runtime files and in-tool slash commands perform work.
@@ -24,6 +24,8 @@ see_also: [arch, quality, deploy]
 
 ## Decisions
 
+- [DECISION] Godpowers 6.3.0 adds product-form verification, feedback-loop debugging, deeper program design, cited why evidence, durable decision traces, and one canonical invocation policy per core route.
+- [DECISION] The optional `@godpowers/operations-pack` provides issue triage and a human-only setup wizard without adding a core command or root runtime dependency.
 - [DECISION] Existing `/god-review` and `/god-build` Stage 2 review uses `references/building/BLAST-RADIUS.md` to grade exactly one load-bearing safety fact against a five-level evidence ladder and 10 boundary classes.
 - [DECISION] The blast-radius behavior adds no command, route, recipe, workflow, specialist type, production dependency, evidence store, state writer, or execution authority.
 - [DECISION] The npm package includes `references/building/BLAST-RADIUS.md`, and installation copies the reference into `godpowers-references/` and the installed runtime bundle through existing data-directory behavior.
@@ -65,12 +67,12 @@ see_also: [arch, quality, deploy]
 ### Extracted durable signals
 
 From `RELEASE.md`:
-- [DECISION] Godpowers 6.2.0 adds a blast-radius safety case to existing Stage 2 review with exactly one load-bearing safety fact, 10 boundary classes, and a five-level evidence ladder.
-- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; the blast-radius release adds, removes, or renames none of those surfaces.
-- [DECISION] The core package contains 113 runtime library modules, supports Node.js 18 or newer, and keeps zero production dependencies.
-- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.2.0 and requires Node.js 20 or newer.
-- [DECISION] The repository contains 112 focused test scripts, and the published package checks report 647 root files and 8 MCP files.
-- [DECISION] Godpowers 6.2.0 is published from merged `main` commit `010f02dbccb17fce42107ce39d681adaa4879251`, and both exact packages resolve under `latest`.
+- [DECISION] Godpowers 6.3.0 adds explicit evidence and authority contracts to runtime verification, debugging, program design, archaeology, durable decision history, and command routing.
+- [DECISION] The release retains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
+- [DECISION] The core package contains 117 runtime library modules and keeps zero root production, optional, or peer dependencies.
+- [DECISION] The repository contains 117 focused test scripts and 54 core reference documents.
+- [DECISION] The root package-content check reports 659 files, including the new dependency-free validators and the optional operations pack publication surface.
+- [DECISION] The root `godpowers` package supports Node.js 18 or newer, while the read-only `@godpowers/mcp` companion requires Node.js 20 or newer; both manifests declare version 6.3.0.
 
 From `.godpowers/prd/PRD.mdx`:
 - [DECISION] AI coding agents like Claude Code can write code, but a single prompt cannot carry a project from raw idea to hardened production without losing the plan, skipping review, or forgetting what was already decided across sessions.
@@ -83,12 +85,12 @@ From `.godpowers/prd/PRD.mdx`:
 - [DECISION] For every release candidate, all release-gate checks reach zero failures within the 60-minute verification window before publication, measured by `scripts/run-tests.js` and `npm run release:check`.
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-08-19T10:25:32Z`.
-- [DECISION] Source version: `6.2.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:9dea40aead7efc6bbd0d4e43beac0ca462fcaa2c74068da756651743e9ff8a82`.
-- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:aeb0948014460064dfad465c88c34f7617861df21622d8921524e1730b2b14d5`.
+- [DECISION] Evidence generated at: `2026-08-19T14:01:08Z`.
+- [DECISION] Source version: `6.3.0`.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:00cbf26eb3167837f24d0f2ccb503744425bd659b08b5ca6939499f1adea14af`.
+- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:300ada031ed5a0c0ed6dce52b17074f56be14a66552c67a2fe5774cee44f33cc`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
 - [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, and blast-radius completion are backed by 55 linked requirements, the 6.2.0 full release gate, and focused executed proof, dual Stage 2, reconciliation, and hardening passes.
-- [DECISION] 2026-08-19: Published M-blast-radius-safety-case for P-MUST-36 through P-MUST-43 in Godpowers 6.2.0 after focused executed proof, 2 independent fresh-context Stage 2 passes, reconciliation, final scoped hardening, full release gates, merge and tag identity, provenance publication, registry integrity, and isolated installed-package verification passed.
+- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, blast-radius, and engineering-leverage completion are backed by 63 linked requirements, focused executed proof, and independent Stage 1 and Stage 2 review; publication remains gated on the 6.3.0 full release checks.
+- [DECISION] 2026-08-19: Added completed source increment M-engineering-leverage-contracts for P-MUST-44 through P-MUST-49 and P-COULD-05 through P-COULD-06 after focused executed suites and independent specification and quality reviews passed; full release and publication evidence remain required for 6.3.0.
 <!-- godpowers:pillar-sync:end -->

@@ -56,6 +56,26 @@ const MAP = {
   'P-MUST-27': ['lib/slice-handoff.js'],
   'P-MUST-28': ['lib/maintainability-trajectory.js', 'lib/style-stats.js'],
   'P-MUST-29': ['lib/evolution-benchmark.js'],
+  'P-MUST-30': ['references/shared/VOICE.md', 'scripts/test-prose-lint.js'],
+  'P-MUST-31': ['lib/prose-lint.js', 'scripts/test-prose-lint.js'],
+  'P-MUST-32': ['lib/have-nots-validator.js', 'scripts/test-prose-lint.js'],
+  'P-MUST-33': ['scripts/static-check.js', 'scripts/test-prose-lint.js'],
+  'P-MUST-34': ['specialists/god-docs-writer.md', 'specialists/god-launch-strategist.md'],
+  'P-MUST-35': ['INSPIRATION.md', 'scripts/check-package-contents.js'],
+  'P-MUST-36': ['references/building/BLAST-RADIUS.md', 'skills/god-review.md'],
+  'P-MUST-37': ['references/building/BLAST-RADIUS.md', 'scripts/test-blast-radius.js'],
+  'P-MUST-38': ['references/building/BLAST-RADIUS.md', 'specialists/god-quality-reviewer.md'],
+  'P-MUST-39': ['references/building/BLAST-RADIUS.md', 'scripts/test-blast-radius.js'],
+  'P-MUST-40': ['lib/evidence.js', 'scripts/test-evidence.js'],
+  'P-MUST-41': ['references/building/BLAST-RADIUS.md', 'skills/god-review.md'],
+  'P-MUST-42': ['lib/feature-awareness.js', 'specialists/god-quality-reviewer.md'],
+  'P-MUST-43': ['lib/impact.js', 'scripts/test-impact.js'],
+  'P-MUST-44': ['lib/verification-profile.js', 'scripts/test-verification-profile.js'],
+  'P-MUST-45': ['lib/debug-feedback-loop.js', 'scripts/test-debug-feedback-loop.js'],
+  'P-MUST-46': ['lib/program-design.js', 'scripts/test-program-design.js'],
+  'P-MUST-47': ['lib/why-evidence.js', 'skills/god-archaeology.md'],
+  'P-MUST-48': ['lib/events.js', 'lib/event-reader.js'],
+  'P-MUST-49': ['lib/invocation-policy.js', 'lib/router.js'],
   'P-SHOULD-01': ['specialists/god-deploy-engineer.md'],
   'P-SHOULD-02': ['specialists/god-observability-engineer.md'],
   'P-SHOULD-03': ['specialists/god-launch-strategist.md'],
@@ -67,7 +87,9 @@ const MAP = {
   'P-COULD-01': ['specialists/god-coordinator.md'],
   'P-COULD-02': ['specialists/god-automation-engineer.md'],
   'P-COULD-03': ['lib/otel-exporter.js'],
-  'P-COULD-04': ['specialists/god-spike-runner.md']
+  'P-COULD-04': ['specialists/god-spike-runner.md'],
+  'P-COULD-05': ['extensions/operations-pack/skills/god-issue-triage.md'],
+  'P-COULD-06': ['extensions/operations-pack/skills/god-setup-wizard.md']
 };
 
 function fail(msg) {

@@ -185,12 +185,12 @@ If the user wants to refresh a stale cache:
 
 ## SkillUI fallback (when site is not in catalog)
 
-When a user references a site that isn't in the awesome-design-md
-catalog (e.g., a competitor not yet curated, a private app, or any
-arbitrary URL), fall back to
-[SkillUI](https://www.npmjs.com/package/skillui) (MIT licensed): a CLI
-that statically analyzes a website / git repo / local directory and
-extracts a complete design system including a DESIGN.md.
+When a user references a site that is not in the awesome-design-md catalog,
+keep it as a named reference or ask for an already reviewed local directory.
+[SkillUI](https://www.npmjs.com/package/skillui) (MIT licensed) may analyze
+that local directory and extract a DESIGN.md. Godpowers does not pass URLs or
+remote repository locations to the external CLI because it cannot pin
+redirects and network addresses across that subprocess boundary.
 
 ### Detection cascade
 
@@ -200,8 +200,8 @@ User mentions a site reference (e.g., "feel like Acme.com")
        hit:  use the curated DESIGN.md from the catalog
        miss: fall through
   -> lib/skillui-bridge.isInstalled()
-       installed:     run skillui --url <best-guess-URL>; produces DESIGN.md
-       not installed: prompt user to `npm install -g skillui` or skip
+       installed:     offer named-reference use or an already reviewed local directory
+       not installed: offer named-reference use or skip
 ```
 
 ### Forms
@@ -209,10 +209,10 @@ User mentions a site reference (e.g., "feel like Acme.com")
 | Form | Behavior |
 |---|---|
 | `/god-design from <slug>` | Catalog lookup (Linear, Stripe, etc.); fast |
-| `/god-design from <url>` | Catalog lookup, falls through to SkillUI |
-| `/god-design scan <url>` | Always uses SkillUI; bypasses catalog |
-| `/god-design scan <url> --ultra` | SkillUI ultra mode (Playwright + screenshots) |
-| `/god-design scan-repo <git-url>` | Clone + scan via SkillUI dir mode |
+| `/god-design from <url>` | Catalog lookup, then named-reference use or local-directory request |
+| `/god-design scan <url>` | Returns `remote-target-disabled`; no subprocess receives the URL |
+| `/god-design scan <url> --ultra` | Returns `remote-target-disabled`; no browser launch occurs |
+| `/god-design scan-repo <git-url>` | Returns `remote-target-disabled`; provide a reviewed local checkout |
 | `/god-design scan-dir <path>` | Scan a local project (e.g., for migration) |
 
 ### Output flow
@@ -228,13 +228,13 @@ User mentions a site reference (e.g., "feel like Acme.com")
 
 ### Cost / install
 
-SkillUI default mode is pure static analysis (no browser, no API key).
-For ultra mode, requires Playwright + Chromium (one-time install).
-Both modes are local; no telemetry.
+Godpowers uses SkillUI only in directory mode. URL, ultra, and remote-repository
+forms fail closed at the bridge. Local directory analysis uses no API key.
 
 The bridge layer is `lib/skillui-bridge.js`. Detect-and-delegate; never
-vendored. If SkillUI isn't installed, the bridge returns
-`{ error: 'not-installed' }` with the install command for the user.
+vendored. Remote forms return `{ error: 'remote-target-disabled' }`. For a
+local directory, an absent SkillUI install returns `{ error: 'not-installed' }`
+with the install command for the user.
 
 ## See also
 

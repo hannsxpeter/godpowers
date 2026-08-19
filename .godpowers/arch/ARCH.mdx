@@ -28,6 +28,8 @@
 | C-evolution-benchmark | [DECISION] Reveal six ordered requirements to a temporary repository and retain deterministic correctness and changeability evidence. | [DECISION] Dependency-free Node.js CommonJS plus packaged fixtures. |
 | C-prose-lint within the Artifact layer | [DECISION] Scan caller-supplied Markdown as inert text and return ordered advisory U-12 prose findings. | [DECISION] Dependency-free Node.js CommonJS. |
 | C-evidence-review-resolver within the Decision runtime | [DECISION] Resolve one cited executed record against the existing verification ledger and hash-chained gate event, compare expected values, and return a sanitized fail-closed projection without writing state or evidence. | [DECISION] Dependency-free Node.js CommonJS in `lib/evidence.js`. |
+| C-engineering-contracts within the Decision runtime | [DECISION] Validate product-form verification, debug feedback, cited why evidence, durable decisions, and canonical route invocation authority without adding a new state writer. | [DECISION] Dependency-free Node.js CommonJS in `lib/verification-profile.js`, `lib/debug-feedback-loop.js`, `lib/why-evidence.js`, `lib/events.js`, and `lib/invocation-policy.js`. |
+| C-operations-pack | [DECISION] Provide lazy issue-triage and human-only setup contracts without adding a core route or automatic external mutation. | [DECISION] Optional Markdown and shell-template extension under `extensions/operations-pack/`. |
 
 ## Architecture Decision Records
 
@@ -113,6 +115,15 @@
 - [DECISION] Flip point: reconsider the wide-change threshold after two release candidates record trigger frequency and unique high-impact findings; reconsider resolver indexing only after a deterministic corpus benchmark demonstrates that linear local reads exceed the review latency envelope.
 - [DECISION] Consequence: static impact, source tracing, and reviewer agreement remain candidate evidence, the resolver remains read-only and fail closed, and the trusted-workspace chain is integrity evidence rather than authentication against an actor who controls every local trusted file.
 
+### ADR-011: Make engineering authority explicit and keep optional operations lazy
+
+- [DECISION] Context: runtime verification, debugging, archaeology, decision recall, route invocation, issue triage, and setup assistance can appear complete while omitting the product boundary, learning evidence, source diversity, authority class, or human approval that makes the result safe.
+- [DECISION] Decision: C-engineering-contracts adds bounded dependency-free validators to existing commands and event surfaces, every canonical route declares one deterministic invocation policy, and C-operations-pack remains a separately installed extension with no core command.
+- [DECISION] Decision: durable decision records stay inside the existing hash-chained event stream, the read-only trace verifies one immutable snapshot, and secret-bearing fields, values, authorities, queries, and unsafe fragments fail before append or projection.
+- [DECISION] Rationale: explicit machine-readable contracts make omissions observable while retaining one state authority, one event authority, the frozen 124-command surface, and approval-required handling for external or destructive actions.
+- [DECISION] Flip point: promote an operations-pack capability into core only after measured use shows it is required by most project runs and a core route can preserve the same human approval boundary without adding external mutation authority.
+- [DECISION] Consequence: existing commands become stricter where evidence or authority is required, optional operations stay lazy, and the root package keeps zero production dependencies.
+
 ## Critical Flows
 
 ### Authorized provenance inspection and cleaning
@@ -147,6 +158,15 @@
 4. [DECISION] A bounded change receives one fresh-context safety-case pass, while a wide change receives a second independent pass and a reconciliation that cannot convert agreement into proof.
 5. [DECISION] C-evidence-review-resolver checks each level 4 or level 5 citation against one unique fresh successful ledger record and its digest-bound gate event, then returns a sanitized projection to the reviewer.
 6. [DECISION] A confirmed blocking risk or high-impact Unproven Claim fails Stage 2; a lower-impact Unproven Claim remains visible with one exact next proof.
+
+### Engineering-leverage flow
+
+1. [DECISION] Product routing selects one of six verification forms, and C-engineering-contracts validates that form's material user paths, failure paths, and completion evidence before `/god-test-runtime` can report completion.
+2. [DECISION] `/god-debug` requires an executed deterministic reproduction before hypothesis work, then rejects repeated tests or predictions that add no information.
+3. [DECISION] Medium and large Build plans record callers, pressures, two alternative shapes, one selected shape, and a return-to-planning rule for repeated deviation.
+4. [DECISION] `/god-archaeology --why` validates independent cited evidence for one exact target, while default archaeology remains unchanged.
+5. [DECISION] Decision writers append validated `decision.recorded` events, and `/god-trace --decisions` projects only validated records from verified run snapshots.
+6. [DECISION] Router and route-quality checks derive invocation authority from canonical route identity, while the optional operations pack waits for explicit human approval before tracker or setup actions.
 
 ## Capacity Envelope
 
@@ -201,6 +221,9 @@
 | Review evidence integrity | Read-only digest-bound resolution through the existing ledger and event authority | ADR-001 and ADR-010 |
 | Review privacy | Sanitized reviewer projection with no raw record, event attributes, command arguments, claims, or output tails | ADR-010 |
 | Review trust | Trusted-workspace integrity validation without an authentication claim against a fully controlling local actor | ADR-010 |
+| Decision history privacy | Bounded allowlisted decision records plus fail-closed citation and secret validation | ADR-011 |
+| Invocation authority | Canonical route identity plus one closed invocation-policy enum | ADR-011 |
+| Optional operations safety | Lazy extension activation plus explicit human approval and static shell validation | ADR-011 |
 
 ## Trust Boundaries
 
@@ -216,6 +239,8 @@
 - [DECISION] Artifact-quality boundary: prose input remains inert caller-owned text, C-prose-lint performs no I/O, terminal control bytes are removed from excerpts, findings are capped at 160 characters, and U-12 remains advisory; this local path adds no external trust boundary.
 - [DECISION] Blast-radius evidence boundary: `lib/evidence.js` reads the existing local ledger and hash-chained events, compares caller-supplied expectations, and returns a sanitized projection without executing stored content or acquiring write authority.
 - [DECISION] Trusted-workspace boundary: digest and chain validation detects accidental or inconsistent local mutation but does not authenticate against an actor who can rewrite every trusted project file and recompute the complete chain; repository access controls, signed commits, CI identity, and publish provenance cover that stronger threat model.
+- [DECISION] Invocation boundary: canonical route filenames own command identity, duplicate or spoofed route metadata fails closed, and approval-required commands never inherit weaker authority from self-declared metadata.
+- [DECISION] Operations extension boundary: issue triage is advisory until separate maintainer approvals, generated setup scripts are statically checked rather than executed end to end, secrets use hidden input or stdin, and exact repository authority is verified before GitHub mutation.
 
 ## Data Ownership
 
@@ -240,6 +265,9 @@
 | Advisory prose findings | `lib/prose-lint.js`, with universal warning integration owned by `lib/have-nots-validator.js` |
 | Executed verification records and gate-event bindings | `lib/evidence.js`, `.godpowers/ledger/verifications.jsonl`, and `lib/events.js` under the existing evidence authority |
 | Sanitized evidence-review projection | C-evidence-review-resolver in `lib/evidence.js`, read-only and non-authoritative |
+| Product-form verification, debug feedback, why evidence, and invocation policy verdicts | C-engineering-contracts validators, read-only and non-authoritative |
+| Durable decision history and filtered projection | `lib/events.js` and `lib/event-reader.js` under the existing event authority |
+| Optional issue-triage and setup contracts | C-operations-pack, with every external mutation retained by the active human and host tool |
 
 ## Have-Nots Checklist
 
@@ -251,6 +279,7 @@
 
 ## Architecture Changelog
 
+- [DECISION] 2026-08-19: Added ADR-011, C-engineering-contracts, and C-operations-pack because verification form, debugging feedback, program shape, why evidence, decision history, route authority, triage, and setup now have explicit bounded contracts while the core command, state, event, and dependency boundaries remain stable.
 - [DECISION] 2026-08-19: Added ADR-010 and C-evidence-review-resolver inside the existing Decision runtime because blast-radius Stage 2 now binds one safety fact to fresh executed evidence, preserves the existing record and state authority, and exposes only a sanitized read-only projection.
 - [DECISION] 2026-08-19: Added ADR-009 and C-prose-lint inside the existing Artifact layer because deterministic inert-text scanning, bounded sanitized findings, and warning-only U-12 integration now participate in artifact validation without a new service or production dependency.
 - [DECISION] 2026-08-17: Added ADR-007, ADR-008, and six harness-quality containers because verified pre-spawn context, program design, compact verification, handoffs, trajectory measures, and evolution evidence now participate in the Build and release paths.
@@ -264,6 +293,7 @@
 ### Containers
 
 - **C-auth-service** (Source: `docs`)
+- **C-debug-feedback-loop** (Source: `lib`)
 - **C-extension-authoring** (Source: `lib`)
 - **C-installer-core** (Source: `lib`)
 - **C-provenance-client** (Source: `extensions/provenance-pack/references`)

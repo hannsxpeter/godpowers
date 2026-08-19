@@ -1,3 +1,10 @@
 2026-08-19T08:39:10.252Z verify PASS substep=tier-2.build exit=0 cmd=`node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js`
 2026-08-19T08:55:58.388Z verify PASS substep=tier-2.build exit=0 cmd=`node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js`
 2026-08-19T09:29:50.672Z verify PASS substep=tier-2.build exit=0 cmd=`node scripts/test-evidence.js && node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js`
+2026-08-19T15:30:38.686Z verify PASS substep=tier-3.harden exit=0 cmd=`node scripts/test-events.js && node scripts/test-event-reader.js && node scripts/test-skillui-bridge.js && node scripts/test-router.js`
+2026-08-19T15:30:39.170Z verify PASS substep=tier-3.harden exit=0 cmd=`node scripts/test-verification-profile.js && node scripts/test-debug-feedback-loop.js`
+2026-08-19T15:30:45.602Z verify PASS substep=tier-3.harden exit=0 cmd=`node scripts/test-provenance-pack.js && node scripts/test-operations-pack.js && npm run lint`
+2026-08-19T15:30:46.450Z verify PASS substep=tier-3.harden exit=0 cmd=`npm audit --omit=dev`
+2026-08-19T15:30:47.916Z verify PASS substep=tier-3.harden exit=0 cmd=`npm audit signatures`
+2026-08-19T15:36:40.027Z verify PASS substep=tier-3.harden exit=0 cmd=`npm run release:check`
+2026-08-19T15:41:11.695Z verify PASS substep=tier-3.harden exit=0 cmd=`npm run release:check`

@@ -249,6 +249,8 @@ Skill packs add specialists for particular domains:
   specialists
 - `@godpowers/provenance-pack` - authorized AI provenance inspection and
   cleaning through a user-operated service
+- `@godpowers/operations-pack` - approval-gated issue triage and a human-only
+  setup wizard with statically checked shell helpers
 
 Install one with `/god-extension-add @godpowers/security-pack`. To build your
 own, start from the scaffold:

@@ -144,6 +144,28 @@ test('rejects an unknown product form without throwing', () => {
     JSON.stringify(result.findings));
 });
 
+test('rejects oversized feature and evidence collections before excess access', () => {
+  for (const field of ['features', 'completionEvidence']) {
+    const profile = completeProfile('cli-or-sdk');
+    const maximum = field === 'features'
+      ? verification.MAX_FEATURES
+      : verification.MAX_COMPLETION_EVIDENCE;
+    const collection = Array(maximum + 1).fill(field === 'features' ? profile.features[0] : 'tests pass');
+    Object.defineProperty(collection, maximum, {
+      enumerable: true,
+      get() {
+        throw new Error('unbounded verification collection access');
+      }
+    });
+    profile[field] = collection;
+    const result = verification.validateProfile(profile);
+    assert(result.verdict === 'fail', `${field} overflow passed`);
+    assert(result.findings.some((finding) =>
+      finding.id === 'verification-profile:collection-bounds'), JSON.stringify(result));
+    assert(result.checks.length <= 3, `overflow emitted unbounded checks: ${result.checks.length}`);
+  }
+});
+
 test('keeps compatibility names while routing runtime verification across all product forms', () => {
   const root = path.resolve(__dirname, '..');
   const skill = fs.readFileSync(path.join(root, 'skills', 'god-test-runtime.md'), 'utf8');

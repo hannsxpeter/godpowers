@@ -376,7 +376,11 @@ After running, `REVIEW-REQUIRED.mdx` is populated with new findings.
 
 ## Runtime axis
 
-The browser layer. Verifies the running app matches what artifacts say.
+The delivery-boundary layer. It selects one declared product form before
+verification: CLI, SDK, API, UI, service, or library. Each form must name its
+material user paths, failure paths, and completion evidence. UI products also
+use the browser audit below. Existing `test-only`, `audit-only`, and
+`a11y-only` modes remain available.
 
 ### What it checks
 

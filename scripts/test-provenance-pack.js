@@ -228,12 +228,17 @@ test('P-SHOULD-08: provenance pack is selectable in the publish workflow', () =>
   assert(workflow.includes('          - provenance-pack'), 'publish workflow missing provenance-pack choice');
   for (const contract of [
     'Verify merged tag and pack identity',
+    'REQUESTED_VERSION: ${{ inputs.version }}',
+    'requested_version="$REQUESTED_VERSION"',
+    "semver_pattern='^(0|[1-9][0-9]*)",
     'expected_tag="${pack}-v${requested_version}"',
     'git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main',
     'refs/tags/$expected_tag^{commit}'
   ]) {
     assert(workflow.includes(contract), `publish workflow missing identity contract: ${contract}`);
   }
+  assert(!workflow.includes('requested_version="${{ inputs.version }}"'),
+    'free-form workflow input must not be interpolated into the shell program');
 });
 
 test('P-SHOULD-08: current extension documentation lists the provenance pack', () => {

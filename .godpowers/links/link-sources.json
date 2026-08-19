@@ -168,7 +168,8 @@
     "code-scanner"
   ],
   "P-MUST-23\u0000extensions/provenance-pack/skills/god-remove-ai-marks.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-SHOULD-08\u0000extensions/provenance-pack/skills/god-remove-ai-marks.md": [
     "code-scanner"
@@ -240,10 +241,12 @@
     "code-scanner"
   ],
   "P-MUST-23\u0000scripts/test-provenance-pack.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-SHOULD-08\u0000scripts/test-provenance-pack.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-01\u0000scripts/test-reverse-sync.js": [
     "code-scanner"
@@ -345,43 +348,55 @@
     "code-scanner"
   ],
   "P-MUST-25\u0000lib/context-budget.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-25\u0000lib/events.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-29\u0000lib/evolution-benchmark.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-26\u0000lib/gate.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-28\u0000lib/maintainability-trajectory.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-26\u0000lib/program-design.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-27\u0000lib/slice-handoff.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-28\u0000lib/style-stats.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-24\u0000scripts/run-tests.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-24\u0000scripts/test-test-runner.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-30\u0000SKILL.md": [
     "code-scanner"
   ],
   "P-MUST-32\u0000lib/have-nots-validator.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-31\u0000lib/prose-lint.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-33\u0000lib/prose-lint.js": [
     "code-scanner"
@@ -390,31 +405,38 @@
     "code-scanner"
   ],
   "P-MUST-30\u0000references/shared/VOICE.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-35\u0000scripts/check-package-contents.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-33\u0000scripts/run-tests.js": [
     "code-scanner"
   ],
   "P-MUST-33\u0000scripts/static-check.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-32\u0000scripts/test-artifact-linter.js": [
     "code-scanner"
   ],
   "P-MUST-30\u0000scripts/test-prose-lint.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-31\u0000scripts/test-prose-lint.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-32\u0000scripts/test-prose-lint.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-33\u0000scripts/test-prose-lint.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-34\u0000scripts/test-prose-lint.js": [
     "code-scanner"
@@ -423,43 +445,53 @@
     "code-scanner"
   ],
   "P-MUST-34\u0000specialists/god-docs-writer.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-34\u0000specialists/god-launch-strategist.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-40\u0000lib/evidence.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-36\u0000lib/feature-awareness.js": [
     "code-scanner"
   ],
   "P-MUST-42\u0000lib/feature-awareness.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-43\u0000lib/impact.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-35\u0000lib/repo-doc-sync.js": [
     "code-scanner"
   ],
   "P-MUST-36\u0000references/building/BLAST-RADIUS.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-37\u0000references/building/BLAST-RADIUS.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-38\u0000references/building/BLAST-RADIUS.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-39\u0000references/building/BLAST-RADIUS.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-40\u0000references/building/BLAST-RADIUS.md": [
     "code-scanner"
   ],
   "P-MUST-41\u0000references/building/BLAST-RADIUS.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-42\u0000references/building/BLAST-RADIUS.md": [
     "code-scanner"
@@ -525,13 +557,15 @@
     "code-scanner"
   ],
   "P-MUST-37\u0000scripts/test-blast-radius.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-38\u0000scripts/test-blast-radius.js": [
     "code-scanner"
   ],
   "P-MUST-39\u0000scripts/test-blast-radius.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-40\u0000scripts/test-blast-radius.js": [
     "code-scanner"
@@ -546,7 +580,8 @@
     "code-scanner"
   ],
   "P-MUST-40\u0000scripts/test-evidence.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-36\u0000scripts/test-feature-awareness.js": [
     "code-scanner"
@@ -555,7 +590,8 @@
     "code-scanner"
   ],
   "P-MUST-43\u0000scripts/test-impact.js": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-35\u0000scripts/test-repo-doc-sync.js": [
     "code-scanner"
@@ -588,7 +624,8 @@
     "code-scanner"
   ],
   "P-MUST-36\u0000skills/god-review.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-37\u0000skills/god-review.md": [
     "code-scanner"
@@ -603,7 +640,8 @@
     "code-scanner"
   ],
   "P-MUST-41\u0000skills/god-review.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-42\u0000skills/god-review.md": [
     "code-scanner"
@@ -636,7 +674,8 @@
     "code-scanner"
   ],
   "P-MUST-38\u0000specialists/god-quality-reviewer.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-39\u0000specialists/god-quality-reviewer.md": [
     "code-scanner"
@@ -648,7 +687,8 @@
     "code-scanner"
   ],
   "P-MUST-42\u0000specialists/god-quality-reviewer.md": [
-    "code-scanner"
+    "code-scanner",
+    "reconstruct"
   ],
   "P-MUST-43\u0000specialists/god-quality-reviewer.md": [
     "code-scanner"
@@ -709,5 +749,179 @@
   ],
   "M-blast-radius-safety-case\u0000scripts/check-package-contents.js": [
     "canonical-blast-radius-closeout"
+  ],
+  "P-MUST-01\u0000specialists/god-orchestrator.md": [
+    "reconstruct"
+  ],
+  "P-MUST-04\u0000specialists/god-pm.md": [
+    "reconstruct"
+  ],
+  "P-MUST-05\u0000specialists/god-architect.md": [
+    "reconstruct"
+  ],
+  "P-MUST-06\u0000specialists/god-roadmapper.md": [
+    "reconstruct"
+  ],
+  "P-MUST-07\u0000specialists/god-stack-selector.md": [
+    "reconstruct"
+  ],
+  "P-MUST-08\u0000specialists/god-repo-scaffolder.md": [
+    "reconstruct"
+  ],
+  "P-MUST-09\u0000specialists/god-executor.md": [
+    "reconstruct"
+  ],
+  "P-MUST-09\u0000specialists/god-planner.md": [
+    "reconstruct"
+  ],
+  "P-MUST-10\u0000specialists/god-spec-reviewer.md": [
+    "reconstruct"
+  ],
+  "P-MUST-10\u0000specialists/god-quality-reviewer.md": [
+    "reconstruct"
+  ],
+  "P-MUST-22\u0000specialists/god-harden-auditor.md": [
+    "reconstruct"
+  ],
+  "P-MUST-35\u0000INSPIRATION.md": [
+    "reconstruct"
+  ],
+  "P-MUST-44\u0000lib/verification-profile.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-44\u0000scripts/test-verification-profile.js": [
+    "reconstruct"
+  ],
+  "P-MUST-45\u0000lib/debug-feedback-loop.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-45\u0000scripts/test-debug-feedback-loop.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-46\u0000lib/program-design.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-46\u0000scripts/test-program-design.js": [
+    "reconstruct"
+  ],
+  "P-MUST-47\u0000lib/why-evidence.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-47\u0000skills/god-archaeology.md": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-48\u0000lib/events.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-48\u0000lib/event-reader.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-49\u0000lib/invocation-policy.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-MUST-49\u0000lib/router.js": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-SHOULD-01\u0000specialists/god-deploy-engineer.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-02\u0000specialists/god-observability-engineer.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-03\u0000specialists/god-launch-strategist.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-04\u0000specialists/god-updater.md": [
+    "reconstruct"
+  ],
+  "P-SHOULD-08\u0000extensions/provenance-pack/manifest.yaml": [
+    "reconstruct"
+  ],
+  "P-COULD-01\u0000specialists/god-coordinator.md": [
+    "reconstruct"
+  ],
+  "P-COULD-02\u0000specialists/god-automation-engineer.md": [
+    "reconstruct"
+  ],
+  "P-COULD-04\u0000specialists/god-spike-runner.md": [
+    "reconstruct"
+  ],
+  "P-COULD-05\u0000extensions/operations-pack/skills/god-issue-triage.md": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-COULD-06\u0000extensions/operations-pack/skills/god-setup-wizard.md": [
+    "code-scanner",
+    "reconstruct"
+  ],
+  "P-COULD-05\u0000extensions/operations-pack/agents/god-issue-triager.md": [
+    "code-scanner"
+  ],
+  "P-COULD-06\u0000extensions/operations-pack/agents/god-setup-wizard.md": [
+    "code-scanner"
+  ],
+  "C-debug-feedback-loop\u0000lib/debug-feedback-loop.js": [
+    "code-scanner"
+  ],
+  "P-MUST-49\u0000lib/route-quality-sync.js": [
+    "code-scanner"
+  ],
+  "P-MUST-26\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-46\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-49\u0000scripts/check-package-contents.js": [
+    "code-scanner"
+  ],
+  "P-MUST-49\u0000scripts/test-invocation-policy.js": [
+    "code-scanner"
+  ],
+  "P-COULD-05\u0000scripts/test-operations-pack.js": [
+    "code-scanner"
+  ],
+  "P-COULD-06\u0000scripts/test-operations-pack.js": [
+    "code-scanner"
+  ],
+  "P-MUST-45\u0000skills/god-debug.md": [
+    "code-scanner"
+  ],
+  "P-MUST-48\u0000skills/god-trace.md": [
+    "code-scanner"
+  ],
+  "P-MUST-47\u0000specialists/god-archaeologist.md": [
+    "code-scanner"
+  ],
+  "P-MUST-45\u0000specialists/god-debugger.md": [
+    "code-scanner"
+  ],
+  "P-MUST-46\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-26\u0000specialists/god-planner.md": [
+    "code-scanner"
+  ],
+  "P-MUST-46\u0000specialists/god-planner.md": [
+    "code-scanner"
+  ],
+  "P-MUST-46\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-26\u0000specialists/god-spec-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-46\u0000specialists/god-spec-reviewer.md": [
+    "code-scanner"
   ]
 }

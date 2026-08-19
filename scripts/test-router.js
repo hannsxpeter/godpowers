@@ -544,6 +544,44 @@ test('evaluateCheck: OR handles mixed state predicates', () => {
   if (ok !== true) throw new Error('second state OR branch should pass');
 });
 
+test('evaluateCheck: unknown or security-looking predicates fail closed', () => {
+  for (const predicate of ['permission:admin', 'auth:maintainer', 'unknown-security-gate', '', null]) {
+    if (router.evaluateCheck(predicate, tmp) !== false) {
+      throw new Error(`unsupported predicate passed: ${predicate}`);
+    }
+  }
+});
+
+test('evaluateCheck: named route predicates have explicit bounded behavior', () => {
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'router-named-predicates-'));
+  try {
+    if (router.evaluateCheck('codebase-present', proj) !== false) {
+      throw new Error('empty project passed codebase-present');
+    }
+    fs.writeFileSync(path.join(proj, 'package.json'), '{"scripts":{}}');
+    if (router.evaluateCheck('codebase-present', proj) !== true) {
+      throw new Error('material project failed codebase-present');
+    }
+    if (router.evaluateCheck('tests-exist-on-affected-surface', proj) !== false) {
+      throw new Error('project without tests passed the test-surface predicate');
+    }
+    fs.mkdirSync(path.join(proj, 'tests'));
+    fs.writeFileSync(path.join(proj, 'tests', 'thing.test.js'), 'module.exports = true;');
+    if (router.evaluateCheck('tests-exist-on-affected-surface', proj) !== true) {
+      throw new Error('project test surface was not detected');
+    }
+    state.init(proj, 'router-named-predicates');
+    const current = state.read(proj);
+    current['lifecycle-phase'] = 'incident-resolved';
+    state.write(proj, current);
+    if (router.evaluateCheck('incident-resolved', proj) !== true) {
+      throw new Error('explicit incident resolution was not detected');
+    }
+  } finally {
+    fs.rmSync(proj, { recursive: true, force: true });
+  }
+});
+
 test('routing files all have apiVersion: godpowers/v1', () => {
   router.clearCache();
   const all = router.loadAll();

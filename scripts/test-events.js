@@ -152,6 +152,41 @@ test('readRun returns [] for missing run', () => {
     `expected empty array, got ${JSON.stringify(all)}`);
 });
 
+test('event readers and writers fail closed before loading oversized run files', () => {
+  const project = mkProject();
+  const h = events.startRun(project);
+  fs.truncateSync(h.file, events.MAX_EVENTS_FILE_BYTES + 1);
+  assert(events.readRun(project, h.runId).length === 0, 'oversized readRun was accepted');
+  const snapshot = events.readVerifiedRunSnapshot(project, h.runId);
+  assert(snapshot.valid === false && snapshot.error === 'events-resource-limit',
+    JSON.stringify(snapshot));
+  const chain = events.verifyChain(h.file);
+  assert(chain.valid === false && chain.error === 'events-resource-limit', JSON.stringify(chain));
+  let error = null;
+  try {
+    h.emit({ span_id: h.rootSpanId, name: 'warn', attrs: { note: 'bounded' } });
+  } catch (err) {
+    error = err;
+  }
+  assert(error && /exceeds/.test(error.message), 'writer accepted an oversized run file');
+});
+
+test('event reads reject traversal and symlinked run directories', () => {
+  const tmp = mkProject();
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-events-outside-'));
+  fs.writeFileSync(path.join(outside, 'events.jsonl'), '{"outside":true}\n');
+  assert(events.readRun(tmp, '../../../outside-run').length === 0,
+    'traversal read escaped the project');
+
+  const runsDir = path.join(tmp, '.godpowers', 'runs');
+  fs.mkdirSync(runsDir, { recursive: true });
+  fs.symlinkSync(outside, path.join(runsDir, 'linked-run'));
+  assert(events.readRun(tmp, 'linked-run').length === 0,
+    'symlinked run read escaped the project');
+  assert(!events.listRuns(tmp).includes('linked-run'),
+    'listRuns exposed a symlinked run directory');
+});
+
 test('VALID_EVENT_NAMES exposes the vocabulary set', () => {
   assert(events.VALID_EVENT_NAMES instanceof Set,
     'VALID_EVENT_NAMES should be a Set');

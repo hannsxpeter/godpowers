@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-6.2.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-6.3.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 ### Your AI writes code fast. Godpowers makes it accountable.
@@ -55,6 +55,8 @@ Not just code. A project someone else could pick up:
 - **A record of the hard calls.** Which options were considered, which one won, and why.
 - **Code with tests.** Written test-first, not bolted on afterward.
 - **A security pass.** Known critical issues block the launch instead of shipping with it.
+- **Evidence for why.** Optional archaeology explains one exact target from bounded independent citations, and durable engineering decisions stay queryable in the existing event trail.
+- **Explicit execution authority.** Every core route states whether it is suggestible, safe for local or bounded automation, explicit-only, or approval-required.
 - **A next action.** Always. Godpowers reads the project from disk and tells you the next move.
 
 ---
@@ -458,6 +460,11 @@ Under those numbers, a few ideas do the heavy lifting:
   before industry and regulatory constraints get layered on.
 - **Fresh-context workers in parallel.** Specialists run side by side with
   atomic commits. No degraded memory, no single-file bottleneck.
+- **Product-form verification.** Runtime testing selects the material paths for
+  a CLI, SDK, API, UI, service, or library before it can report completion.
+- **Feedback-bearing engineering.** Debugging starts from an executed
+  reproduction, larger plans compare alternative shapes, and repeated
+  no-learning loops return to observation or planning.
 - **Publication integrity.** Going public is tied to a fresh security hash, a
   timestamp, and a policy on critical findings.
 
@@ -470,13 +477,13 @@ exposes nine read-only tools (`status`, `next`, `gate_check`, `lint_artifact`,
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@5.0.0 -p @godpowers/mcp@5.0.0 godpowers-mcp serve --project=.
+npx -y -p godpowers@6.3.0 -p @godpowers/mcp@6.3.0 godpowers-mcp serve --project=.
 ```
 
 Registering it with a host is opt-in:
 
 ```bash
-npx -y -p godpowers@5.0.0 -p @godpowers/mcp@5.0.0 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@6.3.0 -p @godpowers/mcp@6.3.0 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 Actions that change anything outside your project never go through this surface.

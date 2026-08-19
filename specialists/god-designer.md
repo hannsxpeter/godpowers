@@ -48,9 +48,8 @@ Before doing anything:
    existing PRODUCT.md to discover whether the user has named known
    sites as references (e.g., "we want it to feel like Linear",
    "Stripe-style payment cards").
-3. Call `lib/skillui-bridge.isInstalled()` to determine whether SkillUI
-   is available for arbitrary-URL extraction (used as fallback when a
-   site reference is not in the catalog).
+3. Call `lib/skillui-bridge.isInstalled()` only when an already reviewed local
+   directory is available. URL and remote-repository dispatch are disabled.
 
 Cascade:
 
@@ -64,19 +63,18 @@ Cascade:
     3. Skip the catalog and proceed with normal flow
   ```
   Defaults vary by --yolo / --conservative; ask in default mode.
-- **Site reference NOT in catalog (and SkillUI installed)**: offer
-  static-analysis extraction.
+- **Site reference NOT in catalog**: offer named-reference use or request an
+  already reviewed local directory.
   ```
   Detected: "Acme.com" mentioned in PRD but not in awesome-design-md catalog.
 
   Options:
-    1. Run skillui --url https://acme.com to extract a DESIGN.md
-       (cached at .godpowers/cache/skillui/acme-com/)
-    2. Use Acme as a named reference in PRODUCT.md only
+    1. Use Acme as a named reference in PRODUCT.md
+    2. Provide an already reviewed local directory for SkillUI dir mode
     3. Skip and proceed with normal flow
   ```
-- **Site reference NOT in catalog (and SkillUI not installed)**: prompt
-  to install SkillUI or skip.
+- **Local directory selected and SkillUI not installed**: prompt to install
+  SkillUI or skip.
   ```
   Detected: "Acme.com" not in catalog. SkillUI is not installed.
 

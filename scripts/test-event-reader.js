@@ -234,6 +234,23 @@ test('P-MUST-48: decisions excludes every event from a tampered run', () => {
   ]), `broken chain was not surfaced safely: ${JSON.stringify(projection.integrityFailures)}`);
 });
 
+test('P-MUST-48: decisions rejects a symlinked run outside the project', () => {
+  const tmp = mkProject();
+  const outside = mkProject();
+  const outsideRun = events.startRun(outside);
+  events.recordDecision(outsideRun, decisionRecord({ result: 'must-not-cross-root' }));
+  const runId = 'linked-external-run';
+  fs.mkdirSync(path.join(tmp, '.godpowers', 'runs'), { recursive: true });
+  fs.symlinkSync(path.dirname(outsideRun.file), path.join(tmp, '.godpowers', 'runs', runId));
+
+  const projection = reader.decisions(tmp, runId);
+  assert(projection.items.length === 0,
+    `external decision crossed the project root: ${JSON.stringify(projection)}`);
+  assert(JSON.stringify(projection.integrityFailures) === JSON.stringify([
+    { runId, reason: 'unsafe-events-path' }
+  ]), `unsafe run path was not diagnosed: ${JSON.stringify(projection)}`);
+});
+
 test('P-MUST-48: decisions supports exact filters and a bounded limit', () => {
   const tmp = mkProject();
   const h = events.startRun(tmp);
@@ -328,6 +345,16 @@ test('P-MUST-48: explicit falsey run selections never widen to every run', () =>
       failure.reason === 'invalid-run-selection'),
     `falsey selector was not diagnosed: ${JSON.stringify(selection)}`);
   }
+});
+
+test('P-MUST-48: decisions reports bounded event snapshots as integrity failures', () => {
+  const tmp = mkProject();
+  const h = events.startRun(tmp);
+  fs.truncateSync(h.file, events.MAX_EVENTS_FILE_BYTES + 1);
+  const projection = reader.decisions(tmp, h.runId);
+  assert(projection.items.length === 0, JSON.stringify(projection));
+  assert(projection.integrityFailures.some((failure) =>
+    failure.reason === 'events-resource-limit'), JSON.stringify(projection));
 });
 
 test('P-MUST-48: decisions rejects oversized exact filters without echoing them', () => {

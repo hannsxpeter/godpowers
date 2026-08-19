@@ -252,6 +252,30 @@ test('malformed and unknown records fail closed', () => {
   }
 });
 
+test('oversized and recursively hostile feedback inputs fail with bounded output', () => {
+  const reproductions = Array(debugFeedbackLoop.MAX_REPRODUCTIONS + 1).fill(baseRecord());
+  Object.defineProperty(reproductions, debugFeedbackLoop.MAX_REPRODUCTIONS, {
+    enumerable: true,
+    get() {
+      throw new Error('unbounded reproduction access');
+    }
+  });
+  const overflow = validate({
+    symptom: 'CLI exits 1 after parsing a valid config',
+    reproductions
+  });
+  assert(overflow.verdict === 'fail' && overflow.checks.length === 1, JSON.stringify(overflow));
+  assert(overflow.findings[0].id === 'feedback-loop:resource-bounds', JSON.stringify(overflow));
+
+  let nested = { value: 'bounded leaf' };
+  for (let index = 0; index <= debugFeedbackLoop.MAX_SCAN_DEPTH; index++) {
+    nested = { nested };
+  }
+  const deep = validate(inputWith(baseRecord({ direct: nested })));
+  assert(deep.verdict === 'fail' && deep.findings.length === 1, JSON.stringify(deep));
+  assert(deep.findings[0].id === 'feedback-loop:resource-bounds', JSON.stringify(deep));
+});
+
 test('the debug skill and specialist make the feedback-loop gate load-bearing', () => {
   const skill = fs.readFileSync(path.join(ROOT, 'skills', 'god-debug.md'), 'utf8');
   const specialist = fs.readFileSync(path.join(ROOT, 'specialists', 'god-debugger.md'), 'utf8');

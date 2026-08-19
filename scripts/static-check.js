@@ -840,14 +840,19 @@ test('publish workflow includes MCP companion package', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
   const workflow = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'publish.yml'), 'utf8');
   if (Array.isArray(pkg.workspaces) && pkg.workspaces.includes('packages/mcp')) {
-    if (!workflow.includes('npm publish --workspace @godpowers/mcp --provenance --access public')) {
+    if (!workflow.includes('npm pack --workspace @godpowers/mcp --json')
+      || !workflow.includes('npm publish "$tarball" --provenance --access public')) {
       throw new Error('publish.yml must publish @godpowers/mcp when the workspace exists');
     }
     for (const required of [
       'staging_tag="release-${version//./-}"',
+      'Pack exact release candidates',
+      'dist.integrity',
+      'dist.shasum',
+      'does not match the packed release candidate',
       'Verify the exact package pair before promotion',
       'for attempt in {1..12}',
-      'Registry propagation did not expose',
+      'Registry did not expose the exact packed candidate',
       'npm dist-tag add "@godpowers/mcp@$version" latest',
       'npm dist-tag add "godpowers@$version" latest',
       'Registry state is uncertain; refusing to publish.'

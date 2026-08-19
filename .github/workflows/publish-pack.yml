@@ -55,10 +55,25 @@ jobs:
 
       - name: Verify merged tag and pack identity
         shell: bash
+        env:
+          PACK: ${{ inputs.pack }}
+          REQUESTED_VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
-          pack="${{ inputs.pack }}"
-          requested_version="${{ inputs.version }}"
+          pack="$PACK"
+          requested_version="$REQUESTED_VERSION"
+          case "$pack" in
+            security-pack|launch-pack|data-pack|provenance-pack|operations-pack) ;;
+            *)
+              echo "Selected pack is not allowlisted."
+              exit 1
+              ;;
+          esac
+          semver_pattern='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
+          if [[ ! "$requested_version" =~ $semver_pattern ]]; then
+            echo "Requested version is not strict SemVer."
+            exit 1
+          fi
           expected_tag="${pack}-v${requested_version}"
           package_name="$(node -p "require('./extensions/${pack}/package.json').name")"
           package_version="$(node -p "require('./extensions/${pack}/package.json').version")"

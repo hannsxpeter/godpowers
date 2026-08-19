@@ -27,7 +27,12 @@ see_also: [security, observe]
 - [DECISION] The 6.2.0 workflow passed release identity, full release, and fresh prepublication gates before publishing and promoting the exact root and MCP pair.
 - [DECISION] Isolated published-install verification passes for the exact package pair, Quick Proof, read-only project inspection, status, next route, Claude, Codex, MCP `--help`, and MCP read-only setup JSON.
 - [DECISION] The isolated dependency audit reports zero vulnerabilities, and registry signature verification covers all 5 installed packages and their attestations.
-- [DECISION] The prior `v6.1.0` tag remains the rollback reference.
+- [DECISION] The published `v6.2.0` tag is the rollback reference for the 6.3.0 release candidate.
+- [DECISION] The 6.3.0 release candidate retains the tag-triggered root and MCP provenance workflow and adds `operations-pack` to the explicit first-party pack publication selector.
+- [DECISION] The root and MCP workflow publishes exact packed tarballs and verifies registry integrity plus shasum before any recovery run can promote an existing version.
+- [DECISION] The first-party pack workflow passes dispatch inputs through environment variables, allowlists pack names, and validates strict SemVer before identity or publication steps.
+- [DECISION] The 6.3.0 public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
+- [DECISION] The 6.3.0 core package contains 117 runtime library modules and its package-content check reports 659 files while keeping zero root production dependencies.
 
 ## Decisions
 
@@ -65,10 +70,10 @@ see_also: [security, observe]
 ### Extracted durable signals
 
 From `RELEASE.md`:
-- [DECISION] Godpowers 6.2.0 adds a blast-radius safety case to existing Stage 2 review with exactly one load-bearing safety fact, 10 boundary classes, and a five-level evidence ladder.
-- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; the blast-radius release adds, removes, or renames none of those surfaces.
-- [DECISION] The core package contains 113 runtime library modules, supports Node.js 18 or newer, and keeps zero production dependencies.
-- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.2.0 and requires Node.js 20 or newer.
-- [DECISION] The published package checks report 647 root files and 8 MCP files.
-- [DECISION] Pull request 95, merged-main CI, annotated tag identity, provenance workflow 32242093455, both npm packages, GitHub Release, isolated installs, dependency audit, registry signatures, and attestations all pass for 6.2.0.
+- [DECISION] Godpowers 6.3.0 adds explicit evidence and authority contracts to runtime verification, debugging, program design, archaeology, durable decision history, and command routing.
+- [DECISION] The release retains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
+- [DECISION] The core package contains 117 runtime library modules and keeps zero root production, optional, or peer dependencies.
+- [DECISION] The repository contains 117 focused test scripts and 54 core reference documents.
+- [DECISION] The root package-content check reports 659 files, including the new dependency-free validators and the optional operations pack publication surface.
+- [HYPOTHESIS] Record the 6.3.0 merge, tag, workflows, npm integrity, GitHub Release, and isolated installation evidence after publication.
 <!-- godpowers:pillar-sync:end -->
