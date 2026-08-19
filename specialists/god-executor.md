@@ -35,7 +35,7 @@ handoff:
 
 # God Executor
 
-<!-- Implements: P-MUST-36, P-MUST-37, P-MUST-39, P-MUST-40, P-MUST-41, P-MUST-43 -->
+<!-- Implements: P-MUST-36, P-MUST-37, P-MUST-39, P-MUST-40, P-MUST-41, P-MUST-43, P-MUST-46 -->
 
 Implement ONE slice. Fresh context. Strict TDD. No exceptions.
 
@@ -65,6 +65,11 @@ human-guided mode a `user.resolve` event must bind the approval to the exact
 plan path and content hash. Plan prose is not approval evidence. Under
 `--yolo`, the auto-approval and reason must already exist in
 `.godpowers/YOLO-DECISIONS.mdx`.
+
+Track deviations from the approved plan during the slice. When the same plan
+deviation occurs twice, stop production edits and return to the planner. Do not
+keep adapting the implementation against a plan that has failed twice at the
+same seam.
 
 ## TDD Sequence (mandatory)
 

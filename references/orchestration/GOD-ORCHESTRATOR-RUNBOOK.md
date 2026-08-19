@@ -75,6 +75,8 @@ surfaces over these mechanisms.
 
 ## Program design before Build execution
 
+<!-- Implements: P-MUST-26, P-MUST-46 -->
+
 Before spawning an executor, read the approved build plan and run
 `lib/program-design.validateFile(planPath, { projectRoot, mode })`.
 
@@ -82,8 +84,13 @@ Before spawning an executor, read the approved build plan and run
 - A small plan passes only with both a sizing rationale and a program design
   skip rationale.
 - A medium or large plan passes only with file-tree delta, module boundaries,
-  public contracts, call or data flow, reused patterns, non-goals, verification
-  points, and approval evidence.
+  public contracts, call or data flow, caller usage, interface burden, seam
+  justification, alternative shapes, deviation return rule, reused patterns,
+  non-goals, verification points, and approval evidence.
+- Alternative Shapes must record at least two distinct alternatives and one
+  selected shape.
+- Deviation Return Rule must state that when the same plan deviation occurs
+  twice, production edits stop and control returns to planning.
 - Human-guided approval requires a hash-bound `user.resolve` event whose
   attributes name `subject: program-design`, `decision: approved`, the
   project-relative artifact, its SHA-256 content hash, and the reviewer.
@@ -93,6 +100,10 @@ Before spawning an executor, read the approved build plan and run
 - Do not spawn the executor or accept Build closeout evidence while validation
   is missing, incomplete, or unapproved. `lib/gate.js` repeats this check when
   the authoritative Build state declares a plan or scale.
+- Track plan deviations across executor and review repair turns. When the same
+  plan deviation occurs twice, stop production edits, return to the planner,
+  revise the plan, record fresh approval evidence, and rerun program-design
+  validation before dispatching another executor.
 
 ## Structured slice closeout and resume
 

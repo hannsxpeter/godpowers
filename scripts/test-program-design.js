@@ -40,6 +40,28 @@ function completePlan(scale = 'large', approval = 'user-authorized') {
     '',
     '1. [DECISION] The gate reads the plan and invokes validation.',
     '',
+    '### Caller Usage',
+    '',
+    '- [DECISION] The build gate calls `validateText(plan)` and reads its plain-object verdict.',
+    '',
+    '### Interface Burden',
+    '',
+    '- [DECISION] Callers provide only plan text and do not configure parsing rules.',
+    '',
+    '### Seam Justification',
+    '',
+    '- [DECISION] Text validation is the seam because plans are Markdown while gates require deterministic checks.',
+    '',
+    '### Alternative Shapes',
+    '',
+    '- [DECISION] Alternative A: validate required headings only, which misses semantic omissions.',
+    '- [DECISION] Alternative B: parse plans into a full AST, which adds dependency and maintenance cost.',
+    '- [DECISION] Selected shape: validate bounded section semantics with the existing dependency-free parser.',
+    '',
+    '### Deviation Return Rule',
+    '',
+    '- [DECISION] When the same plan deviation occurs twice, stop production edits and return to planning.',
+    '',
     '### Reused Patterns',
     '',
     '- [DECISION] Reuse `lib/frontmatter.js` and the test harness.',
@@ -101,6 +123,76 @@ test('larger plans require the code-shape sections inside Program Design', () =>
   assert(result.verdict === 'fail', 'headings outside Program Design must not satisfy the contract');
   assert(result.findings.some((finding) => finding.id === 'program-design:file-tree-delta'),
     JSON.stringify(result.findings));
+});
+
+test('P-MUST-46: medium and large plans require caller and design-pressure sections', () => {
+  for (const scale of ['medium', 'large']) {
+    for (const [heading, id] of [
+      ['Caller Usage', 'caller-usage'],
+      ['Interface Burden', 'interface-burden'],
+      ['Seam Justification', 'seam-justification'],
+      ['Alternative Shapes', 'alternative-shapes'],
+      ['Deviation Return Rule', 'deviation-return-rule']
+    ]) {
+      const pattern = new RegExp(`### ${heading}[\\s\\S]*?(?=### )`);
+      const result = programDesign.validateText(completePlan(scale).replace(pattern, ''), {
+        mode: 'human'
+      });
+      assert(result.verdict === 'fail', `${scale} plan passed without ${heading}`);
+      assert(result.findings.some((finding) => finding.id === `program-design:${id}`),
+        JSON.stringify(result.findings));
+    }
+  }
+});
+
+test('P-MUST-46: Alternative Shapes requires two distinct alternatives and one selected shape', () => {
+  const oneAlternative = completePlan().replace(
+    '- [DECISION] Alternative B: parse plans into a full AST, which adds dependency and maintenance cost.\n',
+    ''
+  );
+  const duplicateAlternatives = completePlan().replace(
+    'Alternative B: parse plans into a full AST, which adds dependency and maintenance cost.',
+    'Alternative B: validate required headings only, which misses semantic omissions.'
+  );
+  const noSelectedShape = completePlan().replace(
+    '- [DECISION] Selected shape: validate bounded section semantics with the existing dependency-free parser.\n',
+    ''
+  );
+
+  for (const [name, text, expectedId] of [
+    ['one alternative', oneAlternative, 'program-design:alternative-shapes:distinct'],
+    ['duplicate alternatives', duplicateAlternatives, 'program-design:alternative-shapes:distinct'],
+    ['no selected shape', noSelectedShape, 'program-design:alternative-shapes:selected']
+  ]) {
+    const result = programDesign.validateText(text, { mode: 'human' });
+    assert(result.verdict === 'fail', `${name} should fail`);
+    assert(result.findings.some((finding) => finding.id === expectedId),
+      JSON.stringify(result.findings));
+  }
+});
+
+test('P-MUST-46: Deviation Return Rule stops editing and returns after the same deviation twice', () => {
+  const weakRules = [
+    'When a plan deviation occurs, notify the planner.',
+    'When the same plan deviation occurs twice, continue editing and report it at closeout.',
+    'When deviations recur, stop production edits and return to planning.',
+    'When the same plan deviation occurs twice, continue production edits. Later, stop production edits and return to planning.',
+    'When the same plan deviation occurs twice, stop reviewing and return to planning. Production edits may proceed.',
+    'When the same plan deviation occurs twice, stop reviewing but allow production edits and return to planning.',
+    'When the same plan deviation occurs twice, do not stop production edits or return to planning.',
+    'When the same plan deviation occurs twice, stop production edits but do not return to planning.'
+  ];
+
+  for (const rule of weakRules) {
+    const text = completePlan().replace(
+      'When the same plan deviation occurs twice, stop production edits and return to planning.',
+      rule
+    );
+    const result = programDesign.validateText(text, { mode: 'human' });
+    assert(result.verdict === 'fail', `weak deviation rule passed: ${rule}`);
+    assert(result.findings.some((finding) => finding.id === 'program-design:deviation-return-rule:semantics'),
+      JSON.stringify(result.findings));
+  }
 });
 
 test('small plans require both sizing and program design skip rationales', () => {
@@ -238,17 +330,39 @@ test('the repository feature build plan satisfies the program design contract', 
   assert(result.verdict === 'pass', JSON.stringify(result.findings));
 });
 
-test('planner executor reviewer and runbook enforce program design before execution', () => {
+test('P-MUST-46: the authoritative approved build plan satisfies its own program design contract', () => {
+  const root = path.resolve(__dirname, '..');
+  const source = path.join(root, '.godpowers', 'build', 'PLAN.mdx');
+  const result = programDesign.validateFile(source, { mode: 'human', projectRoot: root });
+  assert(result.verdict === 'pass', JSON.stringify(result.findings));
+  assert(result.approval.status === 'approved', JSON.stringify(result.approval));
+});
+
+test('P-MUST-46: planner executor reviewers and runbook return repeated deviations to planning', () => {
   const root = path.resolve(__dirname, '..');
   const planner = fs.readFileSync(path.join(root, 'specialists', 'god-planner.md'), 'utf8');
   const executor = fs.readFileSync(path.join(root, 'specialists', 'god-executor.md'), 'utf8');
-  const reviewer = fs.readFileSync(path.join(root, 'specialists', 'god-spec-reviewer.md'), 'utf8');
+  const specReviewer = fs.readFileSync(path.join(root, 'specialists', 'god-spec-reviewer.md'), 'utf8');
+  const qualityReviewer = fs.readFileSync(path.join(root, 'specialists', 'god-quality-reviewer.md'), 'utf8');
   const runbook = fs.readFileSync(path.join(root, 'references', 'orchestration',
     'GOD-ORCHESTRATOR-RUNBOOK.md'), 'utf8');
   assert(/lib\/program-design\.validateFile/.test(planner), 'planner must name mechanical validation');
   assert(/before (?:any )?production edit/i.test(executor), 'executor must validate before production edits');
-  assert(/program.design approval/i.test(reviewer), 'reviewer must verify program design approval');
+  assert(/program.design approval/i.test(specReviewer), 'reviewer must verify program design approval');
   assert(/## Program design before Build execution/.test(runbook), 'runbook program design section missing');
+  for (const [name, contract] of [
+    ['planner', planner],
+    ['executor', executor],
+    ['spec reviewer', specReviewer],
+    ['quality reviewer', qualityReviewer],
+    ['runbook', runbook]
+  ]) {
+    assert(
+      /same\s+plan\s+deviation[\s\S]{0,80}\btwice[\s\S]{0,160}\bstop\s+(?:production\s+)?edit[\s\S]{0,80}\breturn\s+to\s+(?:the\s+)?plann(?:er|ing)/i
+        .test(contract),
+      `${name} must stop editing and return repeated deviations to planning`
+    );
+  }
 });
 
 report('Program design tests');

@@ -2,13 +2,13 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-test-runtime
-  description: Headless browser runtime verification
+  description: Cross-form runtime verification
   tier: 3
   family: verify
 
 prerequisites:
   required:
-    - .godpowers/design/DESIGN.mdx
+    - .godpowers/prd/PRD.mdx
 
 execution:
   spawns: [god-browser-tester]

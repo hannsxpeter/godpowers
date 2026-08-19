@@ -35,6 +35,8 @@ handoff:
 
 # God Planner
 
+<!-- Implements: P-MUST-26, P-MUST-46 -->
+
 Plan the build.
 
 ## Gate Check
@@ -100,8 +102,14 @@ frontmatter and in the Scale And Approval section.
 - A small plan records both a sizing rationale and a program design skip
   rationale.
 - A medium or large plan records File Tree Delta, Module Boundaries, Public
-  Contracts, Call And Data Flow, Reused Patterns, Non-Goals, and Verification
-  Points.
+  Contracts, Call And Data Flow, Caller Usage, Interface Burden, Seam
+  Justification, Alternative Shapes, Deviation Return Rule, Reused Patterns,
+  Non-Goals, and Verification Points.
+- Alternative Shapes records at least two distinct alternatives and identifies
+  one selected shape.
+- Deviation Return Rule states that when the same plan deviation occurs twice,
+  stop production edits and return to planning before revising the approved
+  shape.
 - Human-guided work records a hash-bound `user.resolve` event with the
   project-relative plan path, plan SHA-256 hash, approving reviewer, and exact
   `program-design` subject. Plan text cannot approve itself. Under `--yolo`,

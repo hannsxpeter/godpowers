@@ -9,6 +9,8 @@ description: |
 
 # /god-debug
 
+<!-- Implements: P-MUST-45 -->
+
 Spawn the **god-debugger** agent in a fresh context via the host platform's native agent spawning mechanism.
 
 ## Setup
@@ -23,12 +25,20 @@ Spawn the **god-debugger** agent in a fresh context via the host platform's nati
    instrumentation did not narrow the failure boundary, the agent widens the
    hypothesis set per `references/planning/DIVERGENCE.md` rather than re-running
    the same anchored context.
-4. The agent writes a regression test FIRST, then the fix
-5. The agent commits with explanation of root cause
+4. Before forming any hypothesis, require the specialist to write the
+   structured reproduction record to `.godpowers/debug/REPRO.json` and run
+   `lib/debug-feedback-loop.validateFeedbackLoop` against it. Continue only
+   when the result passes with one already-executed exact-symptom command that
+   is red-capable, repeatable, fast, and agent-runnable. Evidence must be
+   redacted and the record must contain no raw secrets.
+5. The agent writes a regression test FIRST, then the fix
+6. The agent commits with explanation of root cause
 
 ## Verification
 
 After god-debugger returns:
-1. Verify the regression test exists and now passes
-2. Verify the full test suite passes (no regressions)
-3. Verify the commit message explains root cause
+1. Verify `.godpowers/debug/REPRO.json` passes
+   `lib/debug-feedback-loop.validateFeedbackLoop`
+2. Verify the regression test exists and now passes
+3. Verify the full test suite passes (no regressions)
+4. Verify the commit message explains root cause

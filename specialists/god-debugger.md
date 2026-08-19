@@ -11,6 +11,7 @@ max-tokens: 80000
 inputs:
   - "bug report"
   - "failing command evidence"
+  - "structured reproduction record"
   - "codebase and recent commits"
   - "references/planning/DIVERGENCE.md"
 required-context:
@@ -20,10 +21,12 @@ required-context:
 optional-context:
   - "inline:recent-commit-evidence"
 outputs:
+  - ".godpowers/debug/REPRO.json"
   - "regression test"
   - "minimal fix"
   - "debug conclusion summary"
 gates:
+  - "debug feedback-loop validation passes before hypothesis formation"
   - "observe-minimize-instrument-hypothesize-test-conclude sequence"
   - "regression test passes"
 handoff:
@@ -31,6 +34,8 @@ handoff:
 ---
 
 # God Debugger
+
+<!-- Implements: P-MUST-45 -->
 
 Systematic debugging. Not guess-and-check.
 
@@ -80,6 +85,42 @@ Add or use focused evidence probes before forming a hypothesis:
 
 Do not proceed until the instrumentation either narrows the failure boundary or
 proves that more observation is needed.
+
+## Pre-Hypothesis Feedback-Loop Gate
+
+Before forming any hypothesis, write the reproduction record to
+`.godpowers/debug/REPRO.json` and run
+`lib/debug-feedback-loop.validateFeedbackLoop`. Do not enter Phase 4 until the
+validator returns `verdict: pass` for one already-executed command that is
+red-capable for the exact symptom, deterministic or backed by a pinned high
+reproduction rate, completes within 60 seconds, and is agent-runnable.
+
+The record type must be direct test or script, differential, bisection,
+fuzz/property, or structured human-guided script. Include every type-specific
+field required by the validator. Evidence must be redacted, summarized, and
+contain no raw secrets or raw output fields.
+
+Record the common fields `type`, `symptom`, `command`, `executed`,
+`redCapable`, `agentRunnable`, `durationMs`, `repeatability`,
+`evidence.redacted`, and `evidence.summary`. Set `repeatability.deterministic`
+to true, or record at least 3 attempts with `repeatability.attempts`,
+`repeatability.symptomMatches`, and a `repeatability.minimumRate` of at least
+0.8.
+
+Use these additional fields for the selected type:
+
+- Direct: `direct.kind` is `test` or `script`, and `direct.target` names the
+  runnable target.
+- Differential: `differential.baseline`, `differential.candidate`, and
+  `differential.distinguishingSignal` name the two sides and observed split.
+- Bisection: `bisection.goodRevision`, `bisection.badRevision`, and
+  `bisection.predicate` bound the search.
+- Fuzz/property: `fuzzProperty.property`, `fuzzProperty.seed`,
+  `fuzzProperty.cases`, and `fuzzProperty.failingInputSummary` make the failure
+  replayable without storing raw input.
+- Human-guided: `humanGuided.reset`, `humanGuided.steps`,
+  `humanGuided.expectedObservation`, and `humanGuided.actualObservation`
+  structure the script. Every step records an `action` and `expected` value.
 
 ## Phase 4: Hypothesize
 
