@@ -1,12 +1,12 @@
 # Godpowers 6.2.0 Release
 
-> Status: Release candidate
+> Status: Published
 > Date: 2026-08-19
 
 - [DECISION] Godpowers 6.2.0 adds a blast-radius safety case to the existing
   Stage 2 review so a PASS depends on one explicit, evidence-graded safety fact
   rather than direct-caller inspection, static search, or reviewer agreement.
-- [DECISION] The release candidate retains 124 slash commands and 41 specialist agents.
+- [DECISION] The release retains 124 slash commands and 41 specialist agents.
 - [DECISION] It also retains 13 workflows and 45 recipes.
 - [DECISION] The core package contains 113 runtime library modules and keeps
   zero root production, optional, or peer dependencies.
@@ -169,7 +169,9 @@
   prose warnings across 234 scanned files.
 - [DECISION] `node scripts/check-package-contents.js` passed and reported 647
   root package files.
-- [DECISION] The observed full suite passed 116 commands and 3,173 tests.
+- [DECISION] The observed full release gate passed 116 commands and 3,173
+  tests with 94.7 percent line coverage, 79.98 percent branch coverage, and
+  97.2 percent function coverage.
 - [DECISION] Independent Stage 1 specification review returned PASS.
 - [DECISION] Two independent fresh-context Stage 2 safety-case reviews returned
   PASS, and their reconciliation returned PASS without treating agreement as
@@ -177,15 +179,19 @@
 - [DECISION] The final scoped hardening review returned PASS with zero
   remaining Critical, High, Medium, or Low findings and zero high-impact
   unproven claims.
-- [DECISION] These results establish the current source-review baseline only;
-  release checking, prepublication evidence, merge identity, publication, and
-  installed-package verification remain pending.
+- [DECISION] `npm run release:prepublication:check` passed against the fresh
+  `2026-08-19T10:07:48.020Z` gate record and hardening revision
+  `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268`.
+- [DECISION] Pull-request CI, merged-main CI, tag identity, provenance
+  publication, registry metadata, GitHub Release, isolated installs, both
+  published CLIs, dependency audit, registry signatures, and attestations all
+  passed for the published 6.2.0 release.
 
 ## Upgrade
 
 - [DECISION] Root CLI users need no state migration, artifact migration,
   command rename, or production dependency change for 6.2.0.
-- [DECISION] After publication, install the root CLI with
+- [DECISION] Install the published root CLI with
   `npm install -g godpowers@6.2.0` or run it with
   `npx godpowers@6.2.0`.
 - [DECISION] Root CLI users continue to need Node.js 18 or newer; MCP users
@@ -202,26 +208,40 @@
   npx godpowers verify "<focused probe>" --substep=<canonical-id> --claim="<load-bearing safety fact>" --project=.
   ```
 
-## Pending Publication Checklist And Evidence
+## Publication Evidence
 
-- [DECISION] `npm run release:check` passed for this release candidate with all
-  116 commands, 3,173 tests, coverage gates, audits, self-truth checks,
-  evidence-drift checks, and package checks green.
+- [DECISION] `npm run release:check` passed with all 116 commands, 3,173 tests,
+  94.7 percent line coverage, 79.98 percent branch coverage, 97.2 percent
+  function coverage, audits, self-truth checks, evidence-drift checks, and
+  package checks green.
 - [DECISION] `npm run release:prepublication:check` passed against the fresh
   2026-08-19T10:07:48.020Z gate record and hardening revision
   `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268`.
-- [OPEN QUESTION] Pull-request CI evidence for Node.js 18, 20, and 22 plus the
-  package gate has not yet been recorded. Owner: maintainer. Due: before merge.
-- [OPEN QUESTION] The approved pull request and exact merged `main` commit have
-  not yet been recorded. Owner: maintainer. Due: before tagging.
-- [OPEN QUESTION] Annotated tag `v6.2.0` and its exact merged commit have not yet
-  been recorded. Owner: maintainer. Due: before publication.
-- [OPEN QUESTION] Provenance workflow, staged npm publication, exact root and
-  MCP registry versions, integrity values, and promotion to `latest` have not
-  yet been recorded. Owner: maintainer. Due: before publication closeout.
-- [OPEN QUESTION] GitHub Release `v6.2.0` has not yet been created or verified.
-  Owner: maintainer. Due: before publication closeout.
-- [OPEN QUESTION] Fresh isolated installation, root CLI behavior, MCP
-  executable behavior, dependency audit, registry signatures, and attestations
-  have not yet been recorded. Owner: maintainer. Due: before publication
-  closeout.
+- [DECISION] [Pull request 95](https://github.com/hannsxpeter/godpowers/pull/95)
+  passed CI run 32241228965 on Node.js 18, 20, and 22 plus the package job.
+- [DECISION] Pull request 95 merged to `main` as commit
+  `010f02dbccb17fce42107ce39d681adaa4879251` at
+  `2026-08-19T10:13:14Z`, and merged-main CI run 32241605432 passed against
+  that exact commit.
+- [DECISION] Annotated tag `v6.2.0` resolves to
+  `010f02dbccb17fce42107ce39d681adaa4879251`.
+- [DECISION] [Provenance workflow 32242093455](https://github.com/hannsxpeter/godpowers/actions/runs/32242093455)
+  passed in 4 minutes 37 seconds, published `godpowers@6.2.0` and
+  `@godpowers/mcp@6.2.0`, and promoted both exact packages to `latest`.
+- [DECISION] Root registry integrity is
+  `sha512-h4yAnVeG/aT5Njqt4ib3C/qyaJiy8UN5VXL3ozv4DRJ726uRJzxhDwTuU4c0wnvBN1QwxNPgh0naWCktxfm9eg==`
+  with shasum `de0cd6c8ee9703c34b6b3a4de68dfc0252e19421`.
+- [DECISION] MCP registry integrity is
+  `sha512-FV6slw62sYCkpbr3yhxg+cjnP4+F3w70rYZ5EQIjZrnLwziV6AICBOkDtuLdK7N4ZtCtjU2WJ2YhURoh+v0jQg==`
+  with shasum `08ecd923d85cec31d2c13f1b47dae6e4cf3d84d8`.
+- [DECISION] [GitHub Release v6.2.0](https://github.com/hannsxpeter/godpowers/releases/tag/v6.2.0)
+  was published at `2026-08-19T10:25:32Z`.
+- [DECISION] `node scripts/verify-published-install.js godpowers@6.2.0`
+  passed exact isolated root installation, Quick Proof, project inspection,
+  status, next route, Claude installation, and Codex installation.
+- [DECISION] An isolated exact registry pair install passed, and the published
+  MCP executable passed `--help` plus read-only setup JSON verification.
+- [DECISION] The isolated published dependency tree reported zero
+  vulnerabilities, and `npm audit signatures` verified registry signatures
+  and attestations for all 5 installed packages.
+- [DECISION] Package checks reported 647 root files and 8 MCP files.

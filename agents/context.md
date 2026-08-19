@@ -65,14 +65,12 @@ see_also: [arch, quality, deploy]
 ### Extracted durable signals
 
 From `RELEASE.md`:
-- [DECISION] Godpowers 6.1.0 adds a shared post-draft prose audit, a pure advisory scanner, and universal non-blocking U-12 findings without changing the existing three-label, substitution, or blocking artifact checks.
-- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; this release adds, removes, or renames none of those surfaces.
+- [DECISION] Godpowers 6.2.0 adds a blast-radius safety case to existing Stage 2 review with exactly one load-bearing safety fact, 10 boundary classes, and a five-level evidence ladder.
+- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; the blast-radius release adds, removes, or renames none of those surfaces.
 - [DECISION] The core package contains 113 runtime library modules, supports Node.js 18 or newer, and keeps zero production dependencies.
-- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.1.0 and requires Node.js 20 or newer.
-- [DECISION] The repository contains 111 focused test scripts, and the current root package-content check reports 646 files.
-- [DECISION] `references/shared/VOICE.md` now runs one post-draft audit after the draft's meaning, requirements, and evidence are settled.
-- [DECISION] The audit checks each claim for a named actor, action or decision, mechanism or source, observable effect, and reader action when one is needed.
-- [DECISION] The audit preserves requirements, verified facts, code terms, quotations, and user-approved tone; it does not replace the three-label rule or substitution test.
+- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.2.0 and requires Node.js 20 or newer.
+- [DECISION] The repository contains 112 focused test scripts, and the published package checks report 647 root files and 8 MCP files.
+- [DECISION] Godpowers 6.2.0 is published from merged `main` commit `010f02dbccb17fce42107ce39d681adaa4879251`, and both exact packages resolve under `latest`.
 
 From `.godpowers/prd/PRD.mdx`:
 - [DECISION] AI coding agents like Claude Code can write code, but a single prompt cannot carry a project from raw idea to hardened production without losing the plan, skipping review, or forgetting what was already decided across sessions.
@@ -85,12 +83,12 @@ From `.godpowers/prd/PRD.mdx`:
 - [DECISION] For every release candidate, all release-gate checks reach zero failures within the 60-minute verification window before publication, measured by `scripts/run-tests.js` and `npm run release:check`.
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-08-19T06:45:21.095Z`.
-- [DECISION] Source version: `6.1.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:a9c6cc8ac62076152046d4885998527bfd77f1274b47dec1d1bc88a30f7ee475`.
-- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:ea1a27cfdcf250b7fd990d08cf7a0c9dc4b125f333f1490f3605b1f7a6834189`.
+- [DECISION] Evidence generated at: `2026-08-19T10:25:32Z`.
+- [DECISION] Source version: `6.2.0`.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:9dea40aead7efc6bbd0d4e43beac0ca462fcaa2c74068da756651743e9ff8a82`.
+- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:aeb0948014460064dfad465c88c34f7617861df21622d8921524e1730b2b14d5`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
 - [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, and prose-quality completion are backed by 47 linked requirements, the recorded final release gate for the published baseline, and the current source's focused Stage 1, Stage 2, and hardening passes.
-- [DECISION] 2026-08-19: Added completed source increment M-prose-quality-hardening for P-MUST-30 through P-MUST-35 after the focused 31-test suite plus independent specification, quality, and hardening reviews passed, with package and full release gates required before publication.
+- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, and blast-radius completion are backed by 55 linked requirements, the 6.2.0 full release gate, and focused executed proof, dual Stage 2, reconciliation, and hardening passes.
+- [DECISION] 2026-08-19: Published M-blast-radius-safety-case for P-MUST-36 through P-MUST-43 in Godpowers 6.2.0 after focused executed proof, 2 independent fresh-context Stage 2 passes, reconciliation, final scoped hardening, full release gates, merge and tag identity, provenance publication, registry integrity, and isolated installed-package verification passed.
 <!-- godpowers:pillar-sync:end -->

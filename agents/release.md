@@ -24,6 +24,9 @@ see_also: [security]
 - [DECISION] Raising a published workspace package's minimum Node.js version or adopting an incompatible protocol major uses a major release for both version-locked packages.
 - [DECISION] The release containing `@modelcontextprotocol/server` v2 and the `@godpowers/mcp` Node 20-plus engine is the Godpowers 6.0.0 major line.
 - [DECISION] A release is complete only after GitHub, npm, package integrity, and isolated installed behavior agree.
+- [DECISION] Godpowers 6.2.0 is published from merged `main` commit `010f02dbccb17fce42107ce39d681adaa4879251` through annotated tag `v6.2.0` and provenance workflow 32242093455.
+- [DECISION] npm `godpowers@6.2.0` and `@godpowers/mcp@6.2.0` are promoted to `latest`, and their exact integrity values and shasums are recorded in `RELEASE.md`.
+- [DECISION] GitHub Release `v6.2.0` was published at `2026-08-19T10:25:32Z` after PR and merged-main CI passed.
 
 ## Rules
 

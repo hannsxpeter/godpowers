@@ -1,5 +1,5 @@
 ---
-id: CHECKPOINT-2026-08-19T09-54-34-565Z
+id: CHECKPOINT-2026-08-19T10-35-20-349Z
 project: godpowers
 mode: B
 mode-d-suite: false
@@ -12,8 +12,8 @@ progress-total: 19
 current-step: 19
 last-action: gate.pass
 last-actor: system
-last-update: 2026-08-19T09:54:34.565Z
-facts-hash: sha256:121b50e2549dd4207ea2665c089d331af8a4f83f41ab31709d3fc546b09c8a84
+last-update: 2026-08-19T10:35:20.349Z
+facts-hash: sha256:2123c3ce982db5b1b9b6785312cfbc129db294344642a1b87fe9b3499de66c53
 ---
 # Checkpoint
 
@@ -28,7 +28,7 @@ facts-hash: sha256:121b50e2549dd4207ea2665c089d331af8a4f83f41ab31709d3fc546b09c8
 - Lifecycle phase: **steady-state-active**
 - Progress: **100%** (19 of 19 steps complete; current step 19 of 19)
 - Current tier: **tier-3** / **launch**
-- Last action: `gate.pass` by system at 2026-08-19T09:54:34.565Z
+- Last action: `gate.pass` by system at 2026-08-19T10:35:20.349Z
 
 ## What happened recently
 
@@ -38,12 +38,12 @@ facts-hash: sha256:121b50e2549dd4207ea2665c089d331af8a4f83f41ab31709d3fc546b09c8
 
 ## What happens next
 
-- /god-version
-- Prepare the coordinated 6.2.0 version surfaces without treating source closeout as publication evidence.
+- /god-status --full
+- Inspect the complete disk-derived dashboard after the verified 6.2.0 publication closeout.
 
 ## Next suggested command
 
-`/god-version` - Prepare the coordinated 6.2.0 version surfaces without treating source closeout as publication evidence.
+`/god-status --full` - Inspect the complete disk-derived dashboard after the verified 6.2.0 publication closeout.
 
 ## Last actions (most recent first, max 20)
 
@@ -53,16 +53,16 @@ facts-hash: sha256:121b50e2549dd4207ea2665c089d331af8a4f83f41ab31709d3fc546b09c8
 
 ## Held facts (top 10 critical decisions)
 
-- M-blast-radius-safety-case is complete in source for P-MUST-36 through P-MUST-43 with 100 percent requirement linkage.
-- Two independent fresh-context Stage 2 passes, reconciliation, and final scoped hardening passed; feature review evidence is in .godpowers/features/blast-radius-safety-case/REVIEW.mdx.
-- The published baseline remains 6.1.0; 6.2.0 version synchronization and all publication evidence remain pending.
-- M-blast-radius-safety-case is complete in source for P-MUST-36 through P-MUST-43 with 100 percent requirement linkage.
-- Two independent fresh-context Stage 2 passes, reconciliation, and final scoped hardening passed; feature review evidence is in .godpowers/features/blast-radius-safety-case/REVIEW.mdx.
-- The published baseline remains 6.1.0; 6.2.0 version synchronization and all publication evidence remain pending.
-- Godpowers 6.1.0 is published from merged main commit b52c919bc3e02ff3dfae50e35c4a1fe070f0e619.
-- Pull-request CI 32226287260 and merged-main CI 32226644093 passed the Node.js matrix and package job.
-- Annotated tag v6.1.0 resolves to the merged release commit.
-- Provenance workflow 32227120049 passed in 4 minutes 22 seconds and published the exact root and MCP pair.
+- Godpowers 6.2.0 is published from merged main commit 010f02dbccb17fce42107ce39d681adaa4879251.
+- Pull request 95 and merged-main CI passed the Node.js matrix and package gate.
+- Annotated tag v6.2.0 resolves to the exact merged release commit.
+- Provenance workflow 32242093455 published both exact packages and promoted both to latest.
+- GitHub Release v6.2.0 was published at 2026-08-19T10:25:32Z.
+- The full release gate passed 116 commands and 3,173 tests.
+- Registry integrity and shasums are pinned for both 6.2.0 packages.
+- Isolated root, exact package pair, published MCP, vulnerability, signature, and attestation verification passed.
+- Production-user evidence remains unavailable and is not implied by publication verification.
+- A deterministic 500-file and 1,000-candidate capacity fixture remains a non-blocking follow-up before the second release candidate containing ADR-010.
 
 ## If you are a new session
 
@@ -80,7 +80,7 @@ facts-hash: sha256:121b50e2549dd4207ea2665c089d331af8a4f83f41ab31709d3fc546b09c8
 
 ## Provenance
 
-- Generated: 2026-08-19T09:54:34.565Z
+- Generated: 2026-08-19T10:35:20.349Z
 - Schema version: 1.0
 - Authoritative state: `.godpowers/state.json`
 - Authoritative history: `.godpowers/runs/<id>/events.jsonl` + `.godpowers/log`

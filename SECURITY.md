@@ -93,8 +93,8 @@ describe things that look like security boundaries and are not.
 
 | Version | Supported |
 |---------|-----------|
-| 6.2.x   | Release candidate |
-| 6.1.x   | Yes |
+| 6.2.x   | Yes |
+| 6.1.x   | Security fixes only |
 | 6.0.x   | Security fixes only |
 | 5.17.x   | Security fixes only |
 | 5.16.x   | Security fixes only |
@@ -140,6 +140,17 @@ describe things that look like security boundaries and are not.
 
 Godpowers repo documentation sync checks this table as part of release
 readiness, but support policy changes still require maintainer review.
+
+## 6.2.0 Release Verification
+
+- [DECISION] The fresh prepublication gate passed at
+  `2026-08-19T10:07:48.020Z` against hardening revision
+  `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268`
+  with zero Critical findings.
+- [DECISION] The isolated exact 6.2.0 package pair reported zero dependency
+  vulnerabilities.
+- [DECISION] `npm audit signatures` verified registry signatures and
+  attestations for all 5 installed packages.
 
 ## Disclosure Policy
 
