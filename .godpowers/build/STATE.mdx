@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:9814c12fbc5c1263bc6790940c6637c6f0e43d6ca2b26ce9a9ef3ecf8ac0de6c -->
+<!-- godpowers:checksum sha256:02496ff1c7f744fe0aa8a39da777a386fda97cffe000fc85426999ea3cac1525 -->
 # Godpowers Build State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-2.build`.
@@ -9,15 +9,16 @@
 - [DECISION] Step: Building: Build.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/build/STATE.mdx`.
-- [DECISION] Updated: 2026-08-19T09:52:41.909Z.
-- [DECISION] Notes: The blast-radius source increment passed focused executed proof, two independent fresh-context Stage 2 passes, reconciliation, and final scoped hardening; the published baseline remains 6.1.0 and feature publication is pending..
+- [DECISION] Updated: 2026-08-19T10:33:41.390Z.
+- [DECISION] Notes: The blast-radius increment is published in 6.2.0 after focused executed proof, two independent fresh-context Stage 2 passes, reconciliation, final scoped hardening, the 116-command release gate, exact release identity, provenance publication, and installed-package verification passed..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| npm run release:check | pass | 0 | 2026-08-19T07:29:02.463Z | - | The complete 6.1.0 release gate passed before merge and again in the tag publication workflow. |
-| gh run view 32226287260 && gh run view 32226644093 && gh run view 32227120049 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Pull-request CI, merged-main CI, and the tag publication workflow passed for the exact 6.1.0 release tree. |
+| npm run release:check | pass | 0 | 2026-08-19T10:07:48.020Z | - | The complete 6.2.0 release gate passed 116 commands and 3,173 tests with 94.7 percent line, 79.98 percent branch, and 97.2 percent function coverage; package checks reported 647 root files and 8 MCP files. |
+| npm run release:prepublication:check | pass | 0 | 2026-08-19T10:07:48.020Z | - | The fresh prepublication gate passed against hardening revision sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268. |
+| gh run view 32241228965 && gh run view 32241605432 | pass | 0 | 2026-08-19T10:25:32Z | - | Pull-request CI and merged-main CI passed for the exact 6.2.0 release tree at 010f02dbccb17fce42107ce39d681adaa4879251. |
 | node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js | pass | 0 | 2026-08-19T08:55:57.418Z | 968 | - |
 | node scripts/test-evidence.js && node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js | pass | 0 | 2026-08-19T09:29:49.093Z | 1578 | - |
 
@@ -26,8 +27,8 @@
 | Field | Value |
 |---|---|
 | executed-proof-record | v-20260819092949093-f8e074d4fd48 |
-| publication-status | pending version synchronization, full release gates, merge identity, tag, registry, and isolated installed-package verification |
-| release-version | 6.1.0 |
+| publication-status | published-and-verified |
+| release-version | 6.2.0 |
 | review-evidence | features/blast-radius-safety-case/REVIEW.mdx |
 | source-increment | M-blast-radius-safety-case |
 | source-increment-status | done |

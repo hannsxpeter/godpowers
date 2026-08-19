@@ -78,12 +78,12 @@ see_also: [security, deploy]
 ### Extracted durable signals
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-08-19T06:45:21.095Z`.
-- [DECISION] Source version: `6.1.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:a9c6cc8ac62076152046d4885998527bfd77f1274b47dec1d1bc88a30f7ee475`.
-- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:ea1a27cfdcf250b7fd990d08cf7a0c9dc4b125f333f1490f3605b1f7a6834189`.
+- [DECISION] Evidence generated at: `2026-08-19T10:25:32Z`.
+- [DECISION] Source version: `6.2.0`.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:9dea40aead7efc6bbd0d4e43beac0ca462fcaa2c74068da756651743e9ff8a82`.
+- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:aeb0948014460064dfad465c88c34f7617861df21622d8921524e1730b2b14d5`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
 - [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, and prose-quality completion are backed by 47 linked requirements, the recorded final release gate for the published baseline, and the current source's focused Stage 1, Stage 2, and hardening passes.
-- [DECISION] 2026-08-19: Added completed source increment M-prose-quality-hardening for P-MUST-30 through P-MUST-35 after the focused 31-test suite plus independent specification, quality, and hardening reviews passed, with package and full release gates required before publication.
+- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, and blast-radius completion are backed by 55 linked requirements, the 6.2.0 full release gate, and focused executed proof, dual Stage 2, reconciliation, and hardening passes.
+- [DECISION] The published 6.2.0 full release gate passed 116 commands and 3,173 tests with 94.7 percent line coverage, 79.98 percent branch coverage, and 97.2 percent function coverage.
 <!-- godpowers:pillar-sync:end -->

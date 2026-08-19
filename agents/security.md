@@ -21,6 +21,8 @@ see_also: [deploy]
 - [DECISION] `lib/evidence.resolveReviewEvidence` is a read-only local resolver that checks one exact record against expected claim, command, canonical substep, freshness, digest-bound gate event, and event hash chain.
 - [DECISION] Stage 2 receives the resolver's sanitized projection without raw ledger records, event attributes, commands, claims, stdout tails, or stderr tails.
 - [DECISION] The resolver proves internal consistency only inside a trusted workspace; it does not authenticate against an actor able to rewrite every trusted file and recompute the chain.
+- [DECISION] The 6.2.0 prepublication gate passed at `2026-08-19T10:07:48.020Z` against hardening revision `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268` with zero Critical findings.
+- [DECISION] The isolated exact 6.2.0 package pair reported zero vulnerabilities, and `npm audit signatures` verified registry signatures and attestations for all 5 installed packages.
 
 ## Rules
 

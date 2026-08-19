@@ -22,11 +22,12 @@ see_also: [security, observe]
 - [DECISION] `.github/workflows/publish-pack.yml` runs `npm run release:check` before publishing first-party extension packs.
 - [DECISION] `package.json` exposes `bin.godpowers` at `./bin/install.js`.
 - [DECISION] Manual tarball publish is a fallback only when the tag-triggered workflow cannot run, and provenance is unavailable for that publish.
-- [DECISION] Source version `6.1.0` published with npm provenance through identity-bound workflow 32227120049 from merged `main` commit `b52c919bc3e02ff3dfae50e35c4a1fe070f0e619`.
-- [DECISION] npm `godpowers@6.1.0` and `@godpowers/mcp@6.1.0` are the `latest` versions; their exact registry integrity values and shasums are recorded in `RELEASE.md`.
-- [DECISION] The 6.1.0 workflow passed release identity, full release, and fresh pre-publication gates before publishing and promoting the exact root and MCP pair.
-- [DECISION] Isolated published-install verification passes for Quick Proof, read-only project inspection, dashboard, next route, Claude, Codex, and the MCP executable.
-- [DECISION] The prior `v6.0.0` tag remains the rollback reference.
+- [DECISION] Source version `6.2.0` published with npm provenance through identity-bound workflow 32242093455 from merged `main` commit `010f02dbccb17fce42107ce39d681adaa4879251`.
+- [DECISION] npm `godpowers@6.2.0` and `@godpowers/mcp@6.2.0` are the `latest` versions; their exact registry integrity values and shasums are recorded in `RELEASE.md`.
+- [DECISION] The 6.2.0 workflow passed release identity, full release, and fresh prepublication gates before publishing and promoting the exact root and MCP pair.
+- [DECISION] Isolated published-install verification passes for the exact package pair, Quick Proof, read-only project inspection, status, next route, Claude, Codex, MCP `--help`, and MCP read-only setup JSON.
+- [DECISION] The isolated dependency audit reports zero vulnerabilities, and registry signature verification covers all 5 installed packages and their attestations.
+- [DECISION] The prior `v6.1.0` tag remains the rollback reference.
 
 ## Decisions
 
@@ -64,12 +65,10 @@ see_also: [security, observe]
 ### Extracted durable signals
 
 From `RELEASE.md`:
-- [DECISION] Godpowers 6.1.0 adds a shared post-draft prose audit, a pure advisory scanner, and universal non-blocking U-12 findings without changing the existing three-label, substitution, or blocking artifact checks.
-- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; this release adds, removes, or renames none of those surfaces.
+- [DECISION] Godpowers 6.2.0 adds a blast-radius safety case to existing Stage 2 review with exactly one load-bearing safety fact, 10 boundary classes, and a five-level evidence ladder.
+- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; the blast-radius release adds, removes, or renames none of those surfaces.
 - [DECISION] The core package contains 113 runtime library modules, supports Node.js 18 or newer, and keeps zero production dependencies.
-- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.1.0 and requires Node.js 20 or newer.
-- [DECISION] The repository contains 111 focused test scripts, and the current root package-content check reports 646 files.
-- [DECISION] `references/shared/VOICE.md` now runs one post-draft audit after the draft's meaning, requirements, and evidence are settled.
-- [DECISION] The audit checks each claim for a named actor, action or decision, mechanism or source, observable effect, and reader action when one is needed.
-- [DECISION] The audit preserves requirements, verified facts, code terms, quotations, and user-approved tone; it does not replace the three-label rule or substitution test.
+- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.2.0 and requires Node.js 20 or newer.
+- [DECISION] The published package checks report 647 root files and 8 MCP files.
+- [DECISION] Pull request 95, merged-main CI, annotated tag identity, provenance workflow 32242093455, both npm packages, GitHub Release, isolated installs, dependency audit, registry signatures, and attestations all pass for 6.2.0.
 <!-- godpowers:pillar-sync:end -->

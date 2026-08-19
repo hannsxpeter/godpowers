@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:964e32d537fe3120dafda89fc983c28fd9e5a8392f2ec5127cd8c4a4ed1b94f3 -->
+<!-- godpowers:checksum sha256:0e495e15afe43e761a9e194a4ec82eff5f970f01dc625ec7667a9efc64091edc -->
 # Godpowers Observe State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-3.observe`.
@@ -9,15 +9,15 @@
 - [DECISION] Step: Shipping: Observe.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/observe/STATE.mdx`.
-- [DECISION] Updated: 2026-08-19T07:29:02.463Z.
-- [DECISION] Notes: Provider-neutral event vocabulary, bounded context-loadout evidence, maintainability trajectories, evolution evidence, and evidence-derived outcome metrics remain verified in the 6.1.0 release gate and merged-main CI..
+- [DECISION] Updated: 2026-08-19T10:33:41.390Z.
+- [DECISION] Notes: Provider-neutral events, bounded evidence, checkpoints, outcome metrics, maintainability trajectories, and evolution evidence remain verified by the 6.2.0 release gate, merged-main CI, and provenance publication workflow..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| gh run view 32226644093 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Merged-main CI passed the Node.js 18, 20, and 22 matrix and package job for the 6.1.0 release commit. |
-| gh run view 32227120049 | pass | 0 | 2026-08-19T07:29:02.463Z | 262000 | The 6.1.0 publication workflow reran the complete release gate and passed in 4 minutes 22 seconds. |
+| gh run view 32241228965 && gh run view 32241605432 | pass | 0 | 2026-08-19T10:25:32Z | - | Pull-request CI passed Node.js 18, 20, and 22 plus the package job, and merged-main CI passed against the exact 6.2.0 release commit. |
+| gh run view 32242093455 | pass | 0 | 2026-08-19T10:25:32Z | 277000 | The 6.2.0 provenance publication workflow passed in 4 minutes 37 seconds and published the exact package pair. |
 
 ## Evidence Fields
 
@@ -25,6 +25,6 @@
 |---|---|
 | metrics-evidence | lib/outcome-metrics.js derives outcome metrics from events; lib/maintainability-trajectory.js and lib/evolution-benchmark.js record separate changeability evidence without claiming causation. |
 | no-data-policy | Unavailable production outcomes remain explicitly unavailable. |
-| provider-access | not-required for local and npm release verification |
+| provider-access | not-required for local, CI, npm, and GitHub release verification |
 
 <!-- godpowers:state-view:end -->

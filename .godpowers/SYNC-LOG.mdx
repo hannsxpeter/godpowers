@@ -92,3 +92,19 @@
 - [OPEN QUESTION] A deterministic end-to-end capacity fixture for 500 changed files and 1,000 static candidates remains due before the second release candidate containing ADR-010; owner: Godpowers maintainer. This lower-impact follow-up does not block the completed source increment.
 - [DECISION] Pillars, repository narrative documentation, repository surface files, source-system sync, versions, changelog, release notes, package manifests, and publication evidence were outside this canonical closeout scope and were not changed by this sync.
 - [DECISION] Version synchronization, the complete release gate, pull-request and merged-main identity, annotated tag, GitHub Release, npm publication, registry integrity, and isolated installed-package verification remain pending for the feature release and are not marked complete.
+
+## 2026-08-19: Godpowers 6.2.0 Publication Evidence
+
+- [DECISION] The full release gate passed 116 commands and 3,173 tests with 94.7 percent line coverage, 79.98 percent branch coverage, 97.2 percent function coverage, 647 root package files, and 8 MCP package files.
+- [DECISION] The fresh prepublication gate passed at `2026-08-19T10:07:48.020Z` against hardening revision `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268`.
+- [DECISION] Pull request 95 passed CI run 32241228965 on Node.js 18, 20, and 22 plus the package job, then merged to `main` as commit `010f02dbccb17fce42107ce39d681adaa4879251` at `2026-08-19T10:13:14Z`.
+- [DECISION] Merged-main CI run 32241605432 passed against the exact release commit, and annotated tag `v6.2.0` resolves to that commit.
+- [DECISION] Provenance workflow 32242093455 passed in 4 minutes 37 seconds, published `godpowers@6.2.0` and `@godpowers/mcp@6.2.0`, and promoted both exact packages to `latest`.
+- [DECISION] Root registry integrity is `sha512-h4yAnVeG/aT5Njqt4ib3C/qyaJiy8UN5VXL3ozv4DRJ726uRJzxhDwTuU4c0wnvBN1QwxNPgh0naWCktxfm9eg==` with shasum `de0cd6c8ee9703c34b6b3a4de68dfc0252e19421`.
+- [DECISION] MCP registry integrity is `sha512-FV6slw62sYCkpbr3yhxg+cjnP4+F3w70rYZ5EQIjZrnLwziV6AICBOkDtuLdK7N4ZtCtjU2WJ2YhURoh+v0jQg==` with shasum `08ecd923d85cec31d2c13f1b47dae6e4cf3d84d8`.
+- [DECISION] GitHub Release `v6.2.0` was published at `https://github.com/hannsxpeter/godpowers/releases/tag/v6.2.0` on `2026-08-19T10:25:32Z`.
+- [DECISION] `node scripts/verify-published-install.js godpowers@6.2.0` passed exact isolated root installation, Quick Proof, project inspection, status, next route, Claude installation, and Codex installation.
+- [DECISION] An isolated exact registry pair install passed, and the published MCP executable passed `--help` plus read-only setup JSON verification.
+- [DECISION] The isolated published dependency tree reported zero vulnerabilities, and `npm audit signatures` verified registry signatures and attestations for all 5 installed packages.
+- [DECISION] Canonical build, deploy, observe, harden, launch, sync, generated state views, checkpoint, release documents, and Pillars projections now record the observed 6.2.0 publication evidence.
+- [OPEN QUESTION] A deterministic end-to-end capacity fixture for 500 changed files and 1,000 static candidates remains due before the second release candidate containing ADR-010; owner: Godpowers maintainer. This lower-impact follow-up does not block the published 6.2.0 release.
