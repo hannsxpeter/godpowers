@@ -249,5 +249,35 @@
   "P-MUST-24": [
     "scripts/run-tests.js",
     "scripts/test-test-runner.js"
+  ],
+  "P-MUST-30": [
+    "SKILL.md",
+    "references/shared/VOICE.md",
+    "scripts/test-prose-lint.js"
+  ],
+  "P-MUST-32": [
+    "lib/have-nots-validator.js",
+    "references/HAVE-NOTS.md",
+    "scripts/test-artifact-linter.js",
+    "scripts/test-prose-lint.js"
+  ],
+  "P-MUST-31": [
+    "lib/prose-lint.js",
+    "scripts/test-prose-lint.js"
+  ],
+  "P-MUST-33": [
+    "lib/prose-lint.js",
+    "scripts/run-tests.js",
+    "scripts/static-check.js",
+    "scripts/test-prose-lint.js"
+  ],
+  "P-MUST-35": [
+    "scripts/check-package-contents.js",
+    "scripts/test-prose-lint.js"
+  ],
+  "P-MUST-34": [
+    "scripts/test-prose-lint.js",
+    "specialists/god-docs-writer.md",
+    "specialists/god-launch-strategist.md"
   ]
 }

@@ -64,12 +64,12 @@ see_also: [security, observe]
 ### Extracted durable signals
 
 From `RELEASE.md`:
-- [DECISION] Godpowers 6.0.0 hardens the complete coding-agent harness: verification output, specialist context, larger-change design, slice resume, maintainability interpretation, and sequential changeability evidence now have executable contracts.
-- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; no command, specialist, workflow, or recipe was added, removed, or renamed.
-- [DECISION] The core package contains 112 runtime library modules, supports Node.js 18 or newer, and keeps zero production dependencies.
-- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.0.0, uses the MCP v2 server package, and requires Node.js 20 or newer.
-- [DECISION] The package contains 110 focused test scripts, including the new harness-quality and authorized provenance suites.
-- [DECISION] `npm test -- --agent-output` retains complete child bytes in a private log while presenting bounded aggregate success or focused first-failure evidence; normal output remains unchanged without the flag.
-- [DECISION] All 41 specialists declare required context, optional context, inline inputs, and a positive token cap or an explicit no-project-context contract; file sources reject symlinks and retain pinned bytes, and every loadout event path preserves complete counts but no source contents.
-- [DECISION] Medium and large Build plans require a program design approved by a hash-bound `user.resolve` event, while small plans require a recorded size and skip rationale; plan text cannot authorize itself.
+- [DECISION] Godpowers 6.1.0 adds a shared post-draft prose audit, a pure advisory scanner, and universal non-blocking U-12 findings without changing the existing three-label, substitution, or blocking artifact checks.
+- [DECISION] The public surface contains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes; this release adds, removes, or renames none of those surfaces.
+- [DECISION] The core package contains 113 runtime library modules, supports Node.js 18 or newer, and keeps zero production dependencies.
+- [DECISION] The read-only `@godpowers/mcp` companion shares version 6.1.0 and requires Node.js 20 or newer.
+- [DECISION] The repository contains 111 focused test scripts, and the current root package-content check reports 646 files.
+- [DECISION] `references/shared/VOICE.md` now runs one post-draft audit after the draft's meaning, requirements, and evidence are settled.
+- [DECISION] The audit checks each claim for a named actor, action or decision, mechanism or source, observable effect, and reader action when one is needed.
+- [DECISION] The audit preserves requirements, verified facts, code terms, quotations, and user-approved tone; it does not replace the three-label rule or substitution test.
 <!-- godpowers:pillar-sync:end -->

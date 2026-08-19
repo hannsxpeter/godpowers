@@ -79,6 +79,7 @@ describe things that look like security boundaries and are not.
 
 | Version | Supported |
 |---------|-----------|
+| 6.1.x   | Release candidate |
 | 6.0.x   | Yes |
 | 5.17.x   | Security fixes only |
 | 5.16.x   | Security fixes only |

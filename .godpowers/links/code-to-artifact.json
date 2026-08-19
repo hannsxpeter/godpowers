@@ -36,7 +36,8 @@
     "P-MUST-10"
   ],
   "lib/have-nots-validator.js": [
-    "P-MUST-11"
+    "P-MUST-11",
+    "P-MUST-32"
   ],
   "lib/artifact-linter.js": [
     "P-MUST-12"
@@ -173,7 +174,8 @@
     "P-MUST-01"
   ],
   "scripts/static-check.js": [
-    "ADR-002"
+    "ADR-002",
+    "P-MUST-33"
   ],
   "scripts/test-integration.js": [
     "P-MUST-01"
@@ -291,9 +293,43 @@
     "P-MUST-28"
   ],
   "scripts/run-tests.js": [
-    "P-MUST-24"
+    "P-MUST-24",
+    "P-MUST-33"
   ],
   "scripts/test-test-runner.js": [
     "P-MUST-24"
+  ],
+  "SKILL.md": [
+    "P-MUST-30"
+  ],
+  "lib/prose-lint.js": [
+    "P-MUST-31",
+    "P-MUST-33"
+  ],
+  "references/HAVE-NOTS.md": [
+    "P-MUST-32"
+  ],
+  "references/shared/VOICE.md": [
+    "P-MUST-30"
+  ],
+  "scripts/check-package-contents.js": [
+    "P-MUST-35"
+  ],
+  "scripts/test-artifact-linter.js": [
+    "P-MUST-32"
+  ],
+  "scripts/test-prose-lint.js": [
+    "P-MUST-30",
+    "P-MUST-31",
+    "P-MUST-32",
+    "P-MUST-33",
+    "P-MUST-34",
+    "P-MUST-35"
+  ],
+  "specialists/god-docs-writer.md": [
+    "P-MUST-34"
+  ],
+  "specialists/god-launch-strategist.md": [
+    "P-MUST-34"
   ]
 }

@@ -107,6 +107,17 @@ Beyond what was inherited, godpowers added:
   disk-authoritative substrate with dependency-free CommonJS helpers,
   bounded projections, independent reviews, and release evidence.
 
+- **Meaning-preserving post-draft prose review**
+  (`references/shared/VOICE.md`, `lib/prose-lint.js`, and the U-12 integration
+  in `lib/have-nots-validator.js`). The scan, targeted rewrite, preservation of
+  meaning and intended tone, and final self-audit sequence were influenced by
+  pstack's unslop skill
+  ([github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md](https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md)).
+  Godpowers implements its own seven-rule advisory scanner, masking rules,
+  documentation and launch treatments, fixtures, performance bound, and
+  zero-warning self-dogfood gate. No upstream prose, rule catalog, code,
+  fixture, or result is vendored, and there is no runtime dependency.
+
 ## Why this is the only mention
 
 Acknowledging influences once, in a single dedicated file, keeps the

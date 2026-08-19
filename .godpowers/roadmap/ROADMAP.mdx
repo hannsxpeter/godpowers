@@ -1,18 +1,18 @@
 # Roadmap
 
-> Reconciled against the published Godpowers 5.5.0 baseline and current Godpowers 5.17.1 source. Increments carry a
+> Reconciled against the published Godpowers 6.0.0 baseline and current Godpowers 6.1.0 source. Increments carry a
 > stable M-slug id, a Status, and the PRD requirement ids they deliver. Status is
 > derived from current artifacts, linkage, and executable evidence.
 
 ## Evidence Provenance
 
-- [DECISION] Evidence generated at: `2026-08-17T15:03:08.771Z`.
-- [DECISION] Source version: `6.0.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:d70edef001750a67bab54c8ab5da3ccc15807c4db5cc81b5caceff8c259dc455`.
-- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:10ca122919058cf829dbd16649679adbb9d5d3b785ae1759e1028cf538ba5509`.
+- [DECISION] Evidence generated at: `2026-08-19T06:45:21.095Z`.
+- [DECISION] Source version: `6.1.0`.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:a9c6cc8ac62076152046d4885998527bfd77f1274b47dec1d1bc88a30f7ee475`.
+- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:ea1a27cfdcf250b7fd990d08cf7a0c9dc4b125f333f1490f3605b1f7a6834189`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
 - [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, advanced, and provenance-extension completion are backed by 35 linked requirements, the recorded final release gate for the published baseline, and the feature-scoped Stage 1, Stage 2, and hardening passes for current source.
+- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, and prose-quality completion are backed by 47 linked requirements, the recorded final release gate for the published baseline, and the current source's focused Stage 1, Stage 2, and hardening passes.
 
 ## Now (current source capabilities)
 
@@ -185,6 +185,21 @@
   - P-MUST-28
   - P-MUST-29
 
+### Delivery Increment 15: Prose quality hardening
+- **ID**: M-prose-quality-hardening
+- **Status**: done
+- **Goal**: [DECISION] Godpowers teaches plain and concrete prose, reports high-confidence theater sentences as advisory U-12 warnings, and preserves output-specific voice while keeping artifact gates and release safeguards intact.
+- **Completion gate**: [DECISION] The focused 31-test prose suite, independent Stage 1 specification review, independent Stage 2 quality review, scoped hardening review, scanner package guard, and full release gate all pass before publication.
+- **Size**: M
+- **Depends on**: M-harness-quality-hardening, M-shipping
+- **Features (from PRD)**:
+  - P-MUST-30
+  - P-MUST-31
+  - P-MUST-32
+  - P-MUST-33
+  - P-MUST-34
+  - P-MUST-35
+
 ## Later (intent, not commitment)
 
 ### Theme: Deeper traceability and ecosystem
@@ -208,6 +223,7 @@
 
 ## Roadmap Changelog
 
+- [DECISION] 2026-08-19: Added completed source increment M-prose-quality-hardening for P-MUST-30 through P-MUST-35 after the focused 31-test suite plus independent specification, quality, and hardening reviews passed, with package and full release gates required before publication.
 - [DECISION] 2026-08-17: Added completed source increment M-harness-quality-hardening for P-MUST-24 through P-MUST-29 after focused behavior suites and independent specification and quality reviews passed.
 - [DECISION] 2026-08-17: Added completed source increment M-authorized-ai-provenance-cleaning for P-MUST-23 and P-SHOULD-08 after independent specification, quality, and security reviews passed.
 

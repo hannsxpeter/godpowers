@@ -1,4 +1,5 @@
 # Godpowers Have-Nots Catalog
+<!-- Implements: P-MUST-32 -->
 
 > Named failure modes that disqualify an artifact. Each is grep-testable.
 > Spawned agents check their tier's have-nots before declaring done.
@@ -91,7 +92,12 @@ Fail.
 
 ### U-12 Theater sentences
 Sentences that read fine but say nothing measurable, decidable, or testable.
-Fail.
+Human review fails the sentence. `lib/prose-lint.js` detects only a bounded set
+of high-confidence sentence patterns, and `lib/have-nots-validator.js` reports
+those findings as advisory U-12 warnings. A U-12 warning does not increase the
+artifact error count, rewrite prose, or claim complete mechanical detection.
+Review the sentence in context, then name the actor, mechanism, evidence,
+observable result, or next action that is missing.
 
 ### U-13 MDX-unsafe artifact content
 Artifact body contains content that breaks MDX compilation or violates the

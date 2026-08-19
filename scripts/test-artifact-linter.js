@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Implements: P-MUST-32
 /**
  * Behavioral tests for lib/have-nots-validator.js + lib/artifact-linter.js.
  *
@@ -186,6 +187,33 @@ test('U-01 accepts sentence with specific numbers', () => {
   const content = 'Our app helps users save 30% of time by automating their reports.';
   const findings = validator.checkSubstitution(content);
   if (findings.length !== 0) throw new Error(`expected 0, got ${findings.length}`);
+});
+
+// ============================================================================
+// U-12 theater prose advisory
+// ============================================================================
+
+test('P-MUST-32: U-12 maps prose findings to warnings with remediation', () => {
+  const findings = validator.runChecks(
+    '[DECISION] It is important to note that the release provides value.',
+    null
+  );
+  const u12 = findingsByCode(findings, 'U-12');
+  if (u12.length !== 1) throw new Error(`expected one U-12 finding, got ${u12.length}`);
+  if (u12[0].severity !== 'warning') throw new Error(`expected warning, got ${u12[0].severity}`);
+  if (!u12[0].message || !u12[0].suggestion) throw new Error('U-12 remediation is incomplete');
+});
+
+test('P-MUST-32: U-12-only artifact retains zero errors and a warning count', () => {
+  const tmp = mkTmp();
+  const file = path.join(tmp, 'NOTES.md');
+  fs.writeFileSync(file, '[DECISION] Overall, this is a significant step forward.\n');
+  const result = linter.lintFile(file, { projectRoot: tmp });
+  if (result.summary.errors !== 0) throw new Error(`expected 0 errors, got ${result.summary.errors}`);
+  if (result.summary.byCode['U-12'] !== 1) throw new Error('U-12 per-code count missing');
+  if (!linter.formatReport(result).includes('[U-12] WARNING line 1')) {
+    throw new Error('formatted report omitted the U-12 warning and line');
+  }
 });
 
 // ============================================================================

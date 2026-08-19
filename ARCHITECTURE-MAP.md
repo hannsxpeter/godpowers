@@ -642,7 +642,7 @@ godpowers/
 ├── README.md, CHANGELOG.md, LICENSE, CONTRIBUTING.md, SECURITY.md, USERS.md
 ├── ARCHITECTURE.md                <- Design doc
 ├── ARCHITECTURE-MAP.md            <- This file
-├── package.json (v6.0.0)
+├── package.json (v6.1.0)
 ├── .github/workflows/              <- CI, npm publish, daily security audit
 │
 ├── bin/install.js                 <- CLI installer (15 runtimes)
@@ -675,7 +675,7 @@ godpowers/
 │   ├── events.v1.json
 │   └── workflow.v1.json
 │
-├── lib/                           <- Real JS runtime (112 modules)
+├── lib/                           <- Real JS runtime (113 modules)
 │   ├── state.js                   <- state model + drift detection
 │   ├── events.js                  <- OTel-shape event log + hash chain
 │   ├── router.js                  <- command routing
@@ -692,6 +692,7 @@ godpowers/
 │   ├── slice-handoff.js           <- state-authoritative resume projection
 │   ├── maintainability-trajectory.js <- report-only code-shape deltas
 │   ├── evolution-benchmark.js     <- six-checkpoint changeability evidence
+│   ├── prose-lint.js              <- dependency-free advisory prose scanner
 │   ├── dogfood-runner.js          <- messy-repo dogfood gate
 │   ├── host-capabilities.js       <- host guarantee detection
 │   ├── extension-authoring.js     <- extension scaffold helper
@@ -722,6 +723,7 @@ godpowers/
 │   ├── test-dogfood-runner.js     <- dogfood gate
 │   ├── test-host-capabilities.js  <- host guarantee gate
 │   ├── test-extension-authoring.js <- extension scaffold gate
+│   ├── test-prose-lint.js         <- advisory prose scanner regression gate
 │   ├── test-runtime.js            <- 13 unit tests for lib/
 │   └── check-package-contents.js  <- npm payload gate
 │
@@ -746,7 +748,7 @@ godpowers/
 
 ---
 
-## Numbers (as of v6.0.0)
+## Numbers (as of v6.1.0)
 
 | Component | Count |
 |-----------|-------|
@@ -757,16 +759,16 @@ godpowers/
 | Specialist agents | 41 |
 | Workflows (core YAMLs) | 13 |
 | Intent recipes | 45 |
-| Have-nots | 183 documented + 25 mechanically validated by linter |
+| Have-nots | 183 documented + 26 mechanically validated by linter |
 | Templates | 15 |
 | Reference documents | 53 |
 | JSON Schemas | 7 |
-| **JS runtime modules** | **112** |
+| **JS runtime modules** | **113** |
 | **External integrations** | **5** (all detect-and-delegate; none vendored): Google Labs design.md, Impeccable, awesome-design-md, SkillUI, vercel-labs/agent-browser + Playwright |
 | Hooks | 2 |
 | Dogfood scenarios | 5 |
 | Documentation pages | 36 under docs/ plus reference material |
-| **Test suites** | **110 script files plus integration tests** |
+| **Test suites** | **111 script files plus integration tests** |
 | **Tests** | **Full behavioral suite gated by npm test** |
 | Supported AI runtimes | 15+ |
 | Verification axes | **3**: static (lint, design-spec, have-nots), linkage (drift, reverse-sync), runtime (headless browser audit + functional test) |

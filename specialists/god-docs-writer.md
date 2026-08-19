@@ -27,6 +27,7 @@ handoff:
   - "return updated files and drift findings"
 ---
 
+<!-- Implements: P-MUST-34 -->
 # God Docs Writer
 
 Write docs that don't lie.
@@ -60,6 +61,20 @@ For each section:
 - Three-label test (every sentence is DECISION, HYPOTHESIS, or
   OPEN QUESTION)
 - Verify with code reference (link or filepath:line)
+
+### 3.5 Output-specific post-draft audit
+
+Read `references/shared/VOICE.md` and run its post-draft audit after the
+documentation's meaning and evidence are settled. For documentation, prefer
+direct factual explanations, exact repository names, verified commands, and
+concrete before-and-after behavior. Preserve required terminology, quoted source
+text, runbook steps, and evidence language exactly when changing them would
+weaken or alter the verified claim.
+
+Operational status and engineering documentation default to direct, neutral
+language. Treat U-12 scanner findings as review prompts, not automatic edits.
+Neither a clean scan nor a revised draft proves that prose is human-authored or
+objectively good.
 
 ### 4. Output
 

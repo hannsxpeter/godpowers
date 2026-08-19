@@ -80,6 +80,12 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - P-MUST-27 [DECISION] Derive a compact structured slice handoff from authoritative disk evidence on completion, pause, or ownership change -- Acceptance: the handoff remains at or below 8 KiB, protects requirements, blockers, failed verification, and next action, and never overrides conflicting current state.
 - P-MUST-28 [DECISION] Capture deterministic before-and-after maintainability evidence with signed deltas and sample counts for independent quality review -- Acceptance: source size, function lengths, comment density, markers, duplication, dependency edges, and cyclic components are reported through one exclusion policy and remain report-only for three release candidates.
 - P-MUST-29 [DECISION] Run a deterministic six-checkpoint evolution benchmark that reveals requirements one at a time and measures continued correctness and changeability -- Acceptance: every checkpoint records behavior, attempts, rework, changed lines, acceptance, handoff completeness, and maintainability deltas without network access, model credentials, or future-checkpoint visibility.
+- P-MUST-30 [DECISION] Extend the shared voice contract with plain and concrete prose guidance plus a separate post-draft audit -- Acceptance: the contract tells agents to name actors, mechanisms, evidence, effects, and reader actions while preserving facts, requirements, code terms, quotations, and approved tone, and it includes at least three Godpowers-specific bad and good pairs.
+- P-MUST-31 [DECISION] Provide a dependency-free deterministic advisory prose scanner -- Acceptance: `lib/prose-lint.js` returns ordered structured findings for high-confidence sentence patterns, masks non-prose Markdown regions, performs no file or network I/O, keeps excerpts at or below 160 characters, and scans a 1 MiB fixture within 250 milliseconds at p95 across 20 runs.
+- P-MUST-32 [DECISION] Integrate prose findings into universal artifact validation as U-12 warnings -- Acceptance: prose-only findings leave the artifact error count at zero, existing blocking errors and universal severities remain unchanged, and the scanner never claims complete mechanical detection.
+- P-MUST-33 [DECISION] Verify prose lint behavior, precision, performance, integration, and shipped-framework self-dogfood -- Acceptance: the focused 31-test suite passes, positive fixture recall is at least 90 percent, negative fixture false positives are at most 5 percent, and the full static path scans the fixed `skills/`, `specialists/`, `agents/`, and `references/` scope deterministically.
+- P-MUST-34 [DECISION] Apply the shared prose contract through the documentation and launch specialists according to output type -- Acceptance: engineering documentation stays direct and evidence-based, launch copy preserves approved product voice and positioning, and both specialists run a separate post-draft audit without presenting warnings as proof of authorship or objective quality.
+- P-MUST-35 [DECISION] Preserve independent authorship and release discipline for the pstack `unslop`-inspired prose-quality feature -- Acceptance: Godpowers records the limited upstream inspiration without vendoring prose, rules, code, fixtures, or results, adds no production dependency or command, packages the scanner, documents advisory behavior, and passes the full release gate before publication.
 
 ### SHOULD (V1 if time permits)
 - P-SHOULD-01 [DECISION] Set up a deploy pipeline that promotes the same artifact with tested rollback -- Acceptance: staging and production deploy the identical build. -- Validation: a rollback drill restores the prior version.
@@ -111,6 +117,8 @@ by `scripts/run-tests.js` and `npm run release:check`.
 | Context economy | Agent-oriented passing output remains within 25 lines and 32 KiB, while context evidence stores identifiers and counts instead of source contents | [DECISION] |
 | Changeability evidence | Structured handoffs stay within 8 KiB and maintainability snapshots plus six-checkpoint benchmark summaries remain deterministic for identical inputs | [DECISION] |
 | Harness isolation | Compact verification, context planning, handoff generation, maintainability scanning, and the evolution benchmark run locally without network or model credentials | [DECISION] |
+| Advisory prose quality | [DECISION] U-12 reports high-confidence sentence patterns as warnings without rewriting prose or weakening existing blocking artifact errors. | [DECISION] |
+| Prose scan isolation | [DECISION] The dependency-free scanner treats caller input as inert text, performs no I/O, sanitizes control bytes, bounds excerpts to 160 characters, and remains deterministic for identical input. | [DECISION] |
 
 ## Scope and No-Gos
 
@@ -157,6 +165,7 @@ Before declaring done, verify:
 
 ## PRD Changelog
 
+- [DECISION] 2026-08-19: Added P-MUST-30 through P-MUST-35 because shared plain-language guidance, a dependency-free advisory U-12 scanner, output-specific specialist audits, focused self-dogfood evidence, and release provenance now form one verified prose-quality increment.
 - [DECISION] 2026-08-17: Added P-MUST-24 through P-MUST-29 because compact verification, explicit specialist context, conditional program design, structured handoffs, maintainability trajectories, and sequential evolution evidence now form one verified harness-quality increment.
 - [DECISION] 2026-08-17: Added P-MUST-23 and P-SHOULD-08 because the completed first-party provenance extension introduced an authorized external file-processing path, guarded output publication, and a separately operated upstream compatibility boundary.
 
@@ -196,6 +205,12 @@ Before declaring done, verify:
 - **P-MUST-27** -> `lib/slice-handoff.js`
 - **P-MUST-28** -> `lib/maintainability-trajectory.js`, `lib/style-stats.js`
 - **P-MUST-29** -> `lib/evolution-benchmark.js`
+- **P-MUST-30** -> `SKILL.md`, `references/shared/VOICE.md`, `scripts/test-prose-lint.js`
+- **P-MUST-31** -> `lib/prose-lint.js`, `scripts/test-prose-lint.js`
+- **P-MUST-32** -> `lib/have-nots-validator.js`, `references/HAVE-NOTS.md`, `scripts/test-artifact-linter.js`, `scripts/test-prose-lint.js`
+- **P-MUST-33** -> `lib/prose-lint.js`, `scripts/run-tests.js`, `scripts/static-check.js`, `scripts/test-prose-lint.js`
+- **P-MUST-34** -> `scripts/test-prose-lint.js`, `specialists/god-docs-writer.md`, `specialists/god-launch-strategist.md`
+- **P-MUST-35** -> `scripts/check-package-contents.js`, `scripts/test-prose-lint.js`
 - **P-MUST-99** -> `scripts/test-linkage.js`
 
 ### P-SHOULD requirements

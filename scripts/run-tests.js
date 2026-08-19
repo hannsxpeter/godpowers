@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Implements: P-MUST-24
+// Implements: P-MUST-24, P-MUST-33
 /**
  * Full test runner for the Godpowers release gate.
  */
@@ -44,6 +44,7 @@ const TEST_COMMANDS = [
   [node, ['scripts/test-pillars.js']],
   [node, ['scripts/test-pillars-conformance.js']],
   [node, ['scripts/test-artifact-linter.js']],
+  [node, ['scripts/test-prose-lint.js']],
   [node, ['scripts/test-eval-set.js']],
   [node, ['scripts/test-voice-lint.js']],
   [node, ['scripts/test-artifact-diff.js']],

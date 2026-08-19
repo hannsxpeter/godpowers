@@ -5,19 +5,19 @@
 > `/god-progress`, `/god-status`, or `/god-sync`. Do not hand-edit statuses;
 > they are recomputed from disk.
 
-Updated: 2026-08-18T03:04:41.200Z
+Updated: 2026-08-19T06:21:23.536Z
 Source: PRD + ROADMAP + linkage forward map + build state
-Progress: [####################] 41/41 done (100%) | 0 in progress | 0 not started
+Progress: [####################] 47/47 done (100%) | 0 in progress | 0 not started
 
 ## By priority
 
 | Priority | Done | In progress | Not started | Total |
 |----------|------|-------------|-------------|-------|
-| MUST | 29 | 0 | 0 | 29 |
+| MUST | 35 | 0 | 0 | 35 |
 | SHOULD | 8 | 0 | 0 | 8 |
 | COULD | 4 | 0 | 0 | 4 |
 
-## Done (41)
+## Done (47)
 
 - [x] **P-MUST-01** Run a full idea-to-production project autonomously through tiered specialist agents _(increment: M-orchestration)_ - agents/god-orchestrator.md, docs/change-propagation.md, docs/linkage.md, lib/code-scanner.js, +9 more
 - [x] **P-MUST-02** Hold project state on disk and re-derive it every turn, never from agent memory _(increment: M-orchestration)_ - lib/state.js, scripts/test-linkage.js, specialists/god-executor.md
@@ -48,6 +48,12 @@ Progress: [####################] 41/41 done (100%) | 0 in progress | 0 not start
 - [x] **P-MUST-27** Derive a compact structured slice handoff from authoritative disk evidence on completion, pause, or ownership change _(increment: M-harness-quality-hardening)_ - lib/slice-handoff.js
 - [x] **P-MUST-28** Capture deterministic before-and-after maintainability evidence with signed deltas and sample counts for independent quality review _(increment: M-harness-quality-hardening)_ - lib/maintainability-trajectory.js, lib/style-stats.js
 - [x] **P-MUST-29** Run a deterministic six-checkpoint evolution benchmark that reveals requirements one at a time and measures continued correctness and changeability _(increment: M-harness-quality-hardening)_ - lib/evolution-benchmark.js
+- [x] **P-MUST-30** Extend the shared voice contract with plain and concrete prose guidance plus a separate post-draft audit _(increment: M-prose-quality-hardening)_ - SKILL.md, references/shared/VOICE.md, scripts/test-prose-lint.js
+- [x] **P-MUST-31** Provide a dependency-free deterministic advisory prose scanner _(increment: M-prose-quality-hardening)_ - lib/prose-lint.js, scripts/test-prose-lint.js
+- [x] **P-MUST-32** Integrate prose findings into universal artifact validation as U-12 warnings _(increment: M-prose-quality-hardening)_ - lib/have-nots-validator.js, references/HAVE-NOTS.md, scripts/test-artifact-linter.js, scripts/test-prose-lint.js
+- [x] **P-MUST-33** Verify prose lint behavior, precision, performance, integration, and shipped-framework self-dogfood _(increment: M-prose-quality-hardening)_ - lib/prose-lint.js, scripts/run-tests.js, scripts/static-check.js, scripts/test-prose-lint.js
+- [x] **P-MUST-34** Apply the shared prose contract through the documentation and launch specialists according to output type _(increment: M-prose-quality-hardening)_ - scripts/test-prose-lint.js, specialists/god-docs-writer.md, specialists/god-launch-strategist.md
+- [x] **P-MUST-35** Preserve independent authorship and release discipline for the pstack `unslop`-inspired prose-quality feature _(increment: M-prose-quality-hardening)_ - scripts/check-package-contents.js, scripts/test-prose-lint.js
 - [x] **P-SHOULD-01** Set up a deploy pipeline that promotes the same artifact with tested rollback _(increment: M-shipping)_ - agents/god-deploy-engineer.md
 - [x] **P-SHOULD-02** Wire observability with SLOs tied to product success metrics _(increment: M-shipping)_ - agents/god-observability-engineer.md
 - [x] **P-SHOULD-03** Produce launch readiness: landing copy, Open Graph cards, and a launch runbook _(increment: M-shipping)_ - agents/god-launch-strategist.md
@@ -85,4 +91,5 @@ Progress: [####################] 41/41 done (100%) | 0 in progress | 0 not start
 - [x] **M-advanced**: Advanced capabilities _[next]_ - done - 4/4 requirements done
 - [x] **M-authorized-ai-provenance-cleaning**: Authorized AI provenance cleaning _[next]_ - done - 2/2 requirements done
 - [x] **M-harness-quality-hardening**: Harness quality hardening _[next]_ - done - 6/6 requirements done
+- [x] **M-prose-quality-hardening**: Prose quality hardening _[next]_ - done - 6/6 requirements done
 - [ ] **M-deeper-traceability-and-ecosystem**: Deeper traceability and ecosystem _[later]_ - pending - 0/0 requirements done

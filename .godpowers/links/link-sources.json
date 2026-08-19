@@ -373,5 +373,59 @@
   ],
   "P-MUST-24\u0000scripts/test-test-runner.js": [
     "code-scanner"
+  ],
+  "P-MUST-30\u0000SKILL.md": [
+    "code-scanner"
+  ],
+  "P-MUST-32\u0000lib/have-nots-validator.js": [
+    "code-scanner"
+  ],
+  "P-MUST-31\u0000lib/prose-lint.js": [
+    "code-scanner"
+  ],
+  "P-MUST-33\u0000lib/prose-lint.js": [
+    "code-scanner"
+  ],
+  "P-MUST-32\u0000references/HAVE-NOTS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-30\u0000references/shared/VOICE.md": [
+    "code-scanner"
+  ],
+  "P-MUST-35\u0000scripts/check-package-contents.js": [
+    "code-scanner"
+  ],
+  "P-MUST-33\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-33\u0000scripts/static-check.js": [
+    "code-scanner"
+  ],
+  "P-MUST-32\u0000scripts/test-artifact-linter.js": [
+    "code-scanner"
+  ],
+  "P-MUST-30\u0000scripts/test-prose-lint.js": [
+    "code-scanner"
+  ],
+  "P-MUST-31\u0000scripts/test-prose-lint.js": [
+    "code-scanner"
+  ],
+  "P-MUST-32\u0000scripts/test-prose-lint.js": [
+    "code-scanner"
+  ],
+  "P-MUST-33\u0000scripts/test-prose-lint.js": [
+    "code-scanner"
+  ],
+  "P-MUST-34\u0000scripts/test-prose-lint.js": [
+    "code-scanner"
+  ],
+  "P-MUST-35\u0000scripts/test-prose-lint.js": [
+    "code-scanner"
+  ],
+  "P-MUST-34\u0000specialists/god-docs-writer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-34\u0000specialists/god-launch-strategist.md": [
+    "code-scanner"
   ]
 }
