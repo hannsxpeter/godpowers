@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Implements: P-MUST-35
 /**
  * Behavioral tests for lib/repo-doc-sync.js.
  */
@@ -99,6 +100,71 @@ test('published versions cannot retain release-candidate architecture status', (
   const architecture = readRel(tmp, 'ARCHITECTURE.md');
   assert(architecture.includes('STABLE v9.8.7 published release'));
   assert(!architecture.includes('release candidate'));
+});
+
+test('unpublished current source receives release-candidate architecture status', () => {
+  const tmp = mkFixture();
+  writeRel(tmp, 'USERS.md',
+    'The current source version is v9.8.7, and the latest published release is v9.7.0.\n');
+  writeRel(tmp, 'docs/ROADMAP.md',
+    'Current source: v9.8.7. Latest published: v9.7.0.\n'
+      + '**4 slash commands**\n**2 specialist agents**\n');
+  writeRel(tmp, 'ARCHITECTURE.md',
+    'STABLE v9.8.7 published release\nCore: 4 skills, 2 agents, 1 workflows\n');
+
+  const before = repoDocSync.detect(tmp);
+  assert(before.stale.some((check) => check.id === 'architecture-publication-status'));
+
+  repoDocSync.run(tmp, { log: false });
+  const architecture = readRel(tmp, 'ARCHITECTURE.md');
+  assert(architecture.includes('STABLE v9.8.7 release candidate'));
+  assert(!architecture.includes('published release'));
+});
+
+test('same-minor patch candidate keeps one published SECURITY status and reaches fresh', () => {
+  const tmp = mkFixture();
+  writeRel(tmp, 'package.json', JSON.stringify({
+    name: 'godpowers',
+    version: '6.1.1',
+    description: 'AI-powered system: 4 slash commands and 2 specialist agents.'
+  }, null, 2));
+  writeRel(tmp, '.godpowers/state.json', JSON.stringify({
+    tiers: { 'tier-3': { launch: { 'release-version': '6.1.0' } } }
+  }, null, 2));
+  writeRel(tmp, 'README.md',
+    '[![Version](https://img.shields.io/badge/version-6.1.1-blue)](CHANGELOG.md)\nall 4 skills + 2 agents\n');
+  writeRel(tmp, 'USERS.md',
+    'The current source version is v6.1.1, and the latest published release is v6.1.0.\n');
+  writeRel(tmp, 'ARCHITECTURE.md',
+    'STABLE v6.1.1 release candidate\nCore: 4 skills, 2 agents, 1 workflows\n');
+  writeRel(tmp, 'docs/ROADMAP.md',
+    'Current source: v6.1.1. Latest published: v6.1.0.\n'
+      + '**4 slash commands**\n**2 specialist agents**\n');
+  writeRel(tmp, 'docs/reference.md',
+    'reference for v6.1.1\nSlash commands (4 total)\nSpecialist agents (2 total)\n');
+  writeRel(tmp, 'skills/god-version.md', 'Surface: 4 skills, 2 agents, 1 workflows, 1 recipes\n');
+  writeRel(tmp, 'skills/god-doctor.md', '[OK] 4 skills installed\n[OK] 2 agents installed\n');
+  writeRel(tmp, 'RELEASE.md', '# Godpowers 6.1.1 Release\n');
+  writeRel(tmp, 'CHANGELOG.md', '# Changelog\n\n## [6.1.1] - 2026-01-01\n');
+  writeRel(tmp, 'SECURITY.md',
+    '| Version | Supported |\n|---------|-----------|\n| 6.1.x | Release candidate |\n');
+  writeRel(tmp, 'CONTRIBUTING.md', 'Releases use repo documentation sync.\n');
+
+  const before = repoDocSync.detect(tmp);
+  const securityChecks = before.checks.filter((check) => check.path === 'SECURITY.md');
+  assert(securityChecks.length === 1, 'same-minor source produced contradictory SECURITY expectations');
+  assert(securityChecks[0].expected.includes('| 6.1.x   | Yes |'),
+    'same-minor published series must remain supported');
+
+  const result = repoDocSync.run(tmp, { log: false });
+  const security = readRel(tmp, 'SECURITY.md');
+  assert((security.match(/\|\s*6\.1\.x\s*\|/g) || []).length === 1,
+    'same-minor SECURITY table must contain exactly one 6.1.x row');
+  assert(/\|\s*6\.1\.x\s*\|\s*Yes\s*\|/.test(security),
+    'same-minor SECURITY row must remain supported');
+  assert(!/\|\s*6\.1\.x\s*\|\s*Release candidate\s*\|/.test(security),
+    'same-minor SECURITY row must not contradict published support');
+  assert(result.after.status === 'fresh', 'same-minor repo-doc run did not reach fresh');
 });
 
 test('run writes a Godpowers repo-doc sync log', () => {

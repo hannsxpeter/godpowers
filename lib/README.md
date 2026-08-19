@@ -85,10 +85,19 @@ package-level integrations.
 | `evolution-benchmark.js` | Run the offline six-checkpoint changeability fixture and retain deterministic machine and human evidence. |
 | `findings-verdict.js` | Shared verdict authority for harden FINDINGS.mdx: one parser, two named policies (launch honors human-accepted risk, publication never does); no auditor-authored summary line satisfies a gate. |
 | `have-nots-validator.js` | Check artifacts against known failure modes. |
+| `prose-lint.js` | Scan inert text for seven context-sensitive prose patterns and return ordered advisory findings without dependencies or file-system writes. |
 | `voice-lint.js` | Detect sycophancy and gratitude-loop filler (have-not U-14); backs the artifact linter and the shipped-prose self-dogfood. |
 | `meta-linter.js` | Validate Godpowers documentation and skill metadata. |
 | `story-validator.js` | Validate story artifacts and story lifecycle state. |
 | `style-stats.js` | Measure the style genome: comment density, naming-casing histograms, and function-length distribution per language, so `CODEDNA.md` carries measured numbers instead of estimates. |
+
+`have-nots-validator.js` maps prose findings to advisory U-12 warnings, which
+do not block an artifact by themselves. Pattern matching can produce false
+positives and miss prose that needs revision. A clean scan does not prove
+correctness, human authorship, or objective quality.
+
+Documentation defaults to direct, verified engineering language. Launch copy
+may preserve an approved founder or product voice.
 
 ## Design, context, and integrations
 

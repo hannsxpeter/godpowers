@@ -157,7 +157,7 @@ which.
 ### Have-nots
 
 A **have-not** is a named, specific way a document can be bad. There are
-183 named failure modes. 25 are mechanical (regex-checkable);
+183 named failure modes. 26 are mechanical (regex-checkable);
 the rest need judgment. A few examples:
 
 | Code | The failure |
@@ -169,7 +169,7 @@ the rest need judgment. A few examples:
 | L-04 | A launch with no source attribution |
 | H-07 | A critical security finding recorded with no remediation options |
 
-The full catalog lives in `references/HAVE-NOTS.md`. The mechanical 25 are wired
+The full catalog lives in `references/HAVE-NOTS.md`. The mechanical 26 are wired
 into `lib/have-nots-validator.js` and enforced by `/god-lint`, which means they
 are not opinions. They either pass or they do not.
 

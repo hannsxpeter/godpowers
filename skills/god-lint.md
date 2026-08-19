@@ -122,8 +122,8 @@ and `god-spec-reviewer` / `god-quality-reviewer` (per-artifact two-stage
 review).
 
 The catalog of 183 have-nots is split:
-- 25 mechanical (cataloged in `lib/have-nots-validator.js`)
-- 158 interpretive (delegated to agents)
+- 26 mechanical (cataloged in `lib/have-nots-validator.js`)
+- 157 interpretive (delegated to agents)
 
 This split is published in `references/HAVE-NOTS.md` per check.
 

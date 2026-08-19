@@ -1,0 +1,168 @@
+---
+stage: frame
+durability: durable
+owner: godpowers-maintainer
+system_of_record: repo
+status: implemented
+review_cadence: on-change
+covers:
+  - references/shared/VOICE.md
+  - lib/prose-lint.js
+  - lib/have-nots-validator.js
+  - lib/artifact-linter.js
+  - scripts/test-prose-lint.js
+  - scripts/static-check.js
+  - specialists/god-docs-writer.md
+  - specialists/god-launch-strategist.md
+  - INSPIRATION.md
+  - lib/README.md
+  - docs/validation.md
+  - scripts/run-tests.js
+  - CHANGELOG.md
+  - RELEASE.md
+---
+
+# Feature PRD: Prose Quality Hardening
+
+## Feature Context
+
+- [DECISION] This feature extends the global product requirement namespace after shipped requirement `P-MUST-29`, so its requirements use stable IDs `P-MUST-30` through `P-MUST-35` and must never be renumbered or reused after release.
+- [DECISION] This feature hardens the existing Godpowers voice contract, artifact linter, specialist contracts, self-dogfood suite, and release evidence without changing disk authority, the pure-skill operating model, or the public slash-command surface.
+- [DECISION] The existing product charter and root PRD govern this bounded feature addition, so the documentation profile does not require a second initiation brief for the prose-quality increment.
+- [DECISION] The feature treats the pstack `unslop` skill as inspiration for plain, concrete writing and a post-draft self-audit, while Godpowers authors its own guidance, rules, fixtures, messages, and implementation.
+
+## 1. Problem Statement
+
+- [DECISION] Godpowers can reject unlabeled, generic, MDX-unsafe, or sycophantic artifact text, but it cannot yet point out a labeled sentence that still hides the actor, mechanism, observable result, or decision behind polished wording.
+- [DECISION] A Godpowers maintainer can therefore pass the current artifact checks with text that satisfies formatting rules yet leaves a solo founder, reviewer, or later specialist unable to tell what happened, what changes, or what evidence would settle the claim.
+- [DECISION] The gap is most costly in shared agent guidance, project documentation, and launch material because those surfaces teach later agents how to write, explain product behavior to new users, and turn verified product facts into public claims.
+- [HYPOTHESIS] Shared plain and concrete prose guidance, a post-draft audit, and high-precision advisory U-12 findings will reduce theater sentences without flattening user-approved brand voice; validation will compare labeled positive and negative fixtures and review warnings from the first two release candidates containing the feature.
+
+## 2. Target Users
+
+- [DECISION] Primary: the Godpowers maintainer or contributor who edits Markdown skill contracts, specialist instructions, shared references, project docs, and release material, then runs dependency-free Node.js checks across Node.js 18, 20, and 22 before publishing the npm package.
+- [DECISION] Secondary: solo founders and engineering teams of 1 to 5 people who read Godpowers planning artifacts, status reports, documentation, and launch copy inside Claude Code, Codex, Cursor, Windsurf, Gemini, or another supported host and need each claim to name a concrete action, mechanism, result, or next decision.
+- [DECISION] Supporting actors: `god-docs-writer` must explain repository behavior without filler, while `god-launch-strategist` must keep claims concrete without replacing an approved product or founder voice with one universal engineering tone.
+
+## 3. Success Metrics
+
+| Metric | Target | Timeline | Measurement |
+|---|---|---|---|
+| Shared contract coverage | [DECISION] 100 percent of the root voice contract, docs specialist, and launch specialist expose the plain and concrete prose rule plus a post-draft audit step. | [DECISION] Before the first release candidate containing this feature. | [DECISION] A focused repository-surface test inspects `references/shared/VOICE.md` and both specialist contracts. |
+| Detection recall on approved fixtures | [DECISION] At least 90 percent of a reviewed set of 40 theater-sentence fixtures produce one or more U-12 warnings. | [DECISION] Before the first release candidate containing this feature. | [DECISION] `scripts/test-prose-lint.js` runs the versioned positive fixture set through `lib/prose-lint.js`. |
+| False-positive ceiling | [DECISION] No more than 5 percent of a reviewed set of 60 concrete or context-sensitive prose fixtures produce a U-12 warning. | [DECISION] Before the first release candidate containing this feature. | [DECISION] `scripts/test-prose-lint.js` includes technical terms, quoted examples, brand-voice samples, code spans, links, and prose that uses suspect words concretely. |
+| Advisory artifact integration | [DECISION] 100 percent of prose-quality findings emitted through the artifact linter carry code `U-12` and severity `warning`, and 0 U-12 findings increase the error count. | [DECISION] Before the first release candidate containing this feature. | [DECISION] Focused validator and artifact-linter fixtures assert finding shape, summaries, and unchanged error totals. |
+| Self-dogfood execution | [DECISION] 100 percent of eligible Markdown and MDX files under the agreed `skills/`, `specialists/`, `agents/`, and `references/` scope complete an advisory prose scan without an exception or hidden file skip. | [DECISION] On every full test run beginning with the first release candidate containing this feature. | [DECISION] The self-dogfood test enumerates the fixed scope, reports file and warning counts, and asserts that two scans of unchanged bytes return identical findings. |
+| Release compatibility | [DECISION] 100 percent of Node.js 18, 20, and 22 CI jobs pass the focused test, full suite, audit checks, package check, and release gate with 0 new production dependencies. | [DECISION] Before publication of the first release containing this feature. | [DECISION] CI evidence comes from `npm test`, `npm run test:audit`, `npm run pack:check`, and `npm run release:check`, plus the production dependency count in package metadata. |
+
+## 4. Functional Requirements
+
+### MUST
+
+- P-MUST-30 [DECISION] Godpowers must extend its shared voice and craft contract with guidance that prefers plain words, concrete actors, named mechanisms, observable effects, and one post-draft audit after meaning is settled.
+  - [DECISION] Acceptance: the shared contract tells an agent to inspect a completed draft for sentences that conceal who acts, what changes, how the claim is known, or what the reader should do, then rewrite or remove those sentences while preserving requirements, facts, code terms, quotations, and user-approved tone.
+  - [DECISION] Acceptance: the guidance includes at least 3 Godpowers-specific bad and good pairs covering an artifact decision, a technical explanation, and public launch copy, with each correction preserving the original factual commitment.
+  - [DECISION] Acceptance: the post-draft audit is a separate revision step and does not ask an agent to narrate the audit, rewrite verified evidence, or substitute style judgment for the three-label and substitution tests.
+
+- P-MUST-31 [DECISION] Godpowers must provide `lib/prose-lint.js` as a dependency-free, deterministic, advisory scanner for high-confidence prose patterns associated with U-12 theater sentences.
+  - [DECISION] Acceptance: `scan(text, options)` accepts empty, null, and multiline input without throwing and returns ordered findings containing `ruleId`, `line`, `column`, `excerpt`, `message`, and `suggestion` without reading files, using the network, invoking a model, or mutating the input.
+  - [DECISION] Acceptance: two calls with identical text and options return byte-equivalent findings on Node.js 18, 20, and 22, and one 1 MiB prose fixture completes within 250 milliseconds at p95 across 20 runs on the release test host.
+  - [DECISION] Acceptance: the scanner masks fenced code, inline code, link destinations, frontmatter, and clearly quoted bad examples, and every warning explains the matched sentence pattern rather than banning a standalone word.
+  - [DECISION] Acceptance: focused negative fixtures prove that project terms such as `surface`, `harness`, `primitive`, `robust`, and `leverage` remain unflagged when a sentence uses them as an exact code, security, mathematical, or product term and states a concrete fact.
+
+- P-MUST-32 [DECISION] Godpowers must integrate prose-quality findings into the existing artifact validation path as non-blocking U-12 warnings.
+  - [DECISION] Acceptance: `lib/have-nots-validator.js` registers one U-12 wrapper in the universal check set, and `lib/artifact-linter.js` reports its warnings with the existing line, message, suggestion, per-code count, and aggregate-warning fields.
+  - [DECISION] Acceptance: an artifact containing only U-12 findings retains zero errors and does not fail an existing artifact gate, while any existing error still blocks through the unchanged gate behavior.
+  - [DECISION] Acceptance: the integration does not change the meaning or severity of U-01, U-02, U-08, U-09, U-10, U-11, U-13, or U-14 and does not convert the human U-12 review obligation into a claim of complete mechanical detection.
+
+- P-MUST-33 [DECISION] Godpowers must verify prose lint with focused behavior tests and an advisory self-dogfood scan of shipped framework prose.
+  - [DECISION] Acceptance: `scripts/test-prose-lint.js` covers every rule identifier, exact line and column reporting, multiline ordering, null input, masked regions, context-sensitive non-matches, artifact integration, warning severity, deterministic output, and the positive and negative fixture thresholds in this PRD.
+  - [DECISION] Acceptance: the full test runner executes the focused suite, and the static self-dogfood path scans every eligible Markdown or MDX file in the fixed `skills/`, `specialists/`, `agents/`, and `references/` scope without treating advisory warnings as a user-artifact gate failure.
+  - [DECISION] Acceptance: self-dogfood output identifies every warning by relative path, line, rule identifier, and short excerpt, and the test fails only for scanner errors, nondeterministic results, unexplained scope omissions, malformed findings, or an unreviewed increase from the recorded baseline.
+
+- P-MUST-34 [DECISION] Godpowers must make `god-docs-writer` and `god-launch-strategist` apply the shared prose guidance and post-draft audit according to the output type they own.
+  - [DECISION] Acceptance: `god-docs-writer` prefers direct factual explanations, exact repository names, verified commands, and concrete before-and-after behavior while preserving required terminology, quoted source text, runbook steps, and evidence language.
+  - [DECISION] Acceptance: `god-launch-strategist` removes empty claims and decoration words but preserves explicit founder or product voice, approved positioning, channel constraints, and the existing human pause for brand tone or final headline approval.
+  - [DECISION] Acceptance: operational status and engineering artifacts default to direct and neutral language, public product copy follows its approved brand voice, and neither specialist presents the advisory scanner as proof that prose is human-authored or objectively good.
+  - [DECISION] Acceptance: a repository-surface test fails if either specialist loses its reference to the shared contract or its output-specific post-draft audit obligation.
+
+- P-MUST-35 [DECISION] Godpowers must acknowledge the upstream pstack `unslop` inspiration, preserve independent authorship, and carry the feature through the existing documentation, packaging, and release checks.
+  - [DECISION] Acceptance: `INSPIRATION.md` links to the upstream Cursor pstack `unslop` skill, names only the plain and concrete prose plus post-draft audit ideas that influenced Godpowers, and states that no upstream prose, rule catalog, code, fixture, or result is vendored.
+  - [DECISION] Acceptance: the implementation introduces no pstack runtime, model call, external service, Python requirement, new slash command, or new npm production dependency.
+  - [DECISION] Acceptance: `lib/README.md`, validation documentation, `CHANGELOG.md`, and `RELEASE.md` explain the advisory behavior, U-12 integration, false-positive boundary, and output-type voice treatment before publication.
+  - [DECISION] Acceptance: package-content verification includes `lib/prose-lint.js`, focused and full tests pass, `npm run test:audit` and `npm run pack:check` pass, and `npm run release:check` passes before a maintainer performs any tag, GitHub Release, or npm publish action.
+
+### SHOULD
+
+- [DECISION] This feature has no SHOULD requirements because partial delivery would either leave guidance unenforced, leave warnings unexplained, or ship a release surface without its tests and provenance record.
+
+### COULD
+
+- [DECISION] This feature has no COULD requirements because rewrite automation, personalized voice models, and additional commands are outside the bounded prose-quality increment.
+
+## 5. Non-Functional Requirements
+
+| Category | Requirement | Source |
+|---|---|---|
+| Latency | [DECISION] `lib/prose-lint.js` must scan a 1 MiB prose fixture within 250 milliseconds at p95 across 20 runs on the release test host. | [DECISION] P-MUST-31 local advisory scan. |
+| Availability | [DECISION] Guidance, scanning, artifact integration, and self-dogfood must work offline in 100 percent of Node.js 18, 20, and 22 CI jobs without a model credential or external service. | [DECISION] Godpowers host and release contract. |
+| Security | [DECISION] The scanner must treat input as inert text, execute no embedded content, make no network request, retain no input outside the caller-owned process, and return bounded excerpts of at most 160 characters. | [DECISION] Existing local validation trust boundary. |
+| Scale | [DECISION] One scan must accept at least 1 MiB or 10,000 lines of UTF-8 text and return findings in source order without recursion over user-controlled structures. | [DECISION] Capacity above current planning and shared-reference artifacts. |
+| Determinism | [DECISION] Identical text and options must produce byte-equivalent ordered findings after no timestamp, absolute path, locale, or environment field is added. | [DECISION] Disk-authoritative evidence posture. |
+| Compatibility | [DECISION] The implementation must remain CommonJS, use Node.js built-ins only, preserve Node.js 18 or newer support, and add no npm production dependency. | [DECISION] ADR-002 and stack Pillar. |
+| Advisory safety | [DECISION] U-12 findings must remain warnings in artifact summaries and must not fail existing artifact gates, mutate prose, or trigger an automatic rewrite. | [DECISION] User-authorized feature boundary. |
+| Precision | [DECISION] Rules must match sentence patterns or structure with explanatory context and must not treat any standalone vocabulary item as a universal failure. | [DECISION] No-blanket-word-ban boundary. |
+
+## Scope and No-Gos
+
+### In Scope
+
+- [DECISION] Shared plain and concrete prose guidance plus one explicit post-draft audit in `references/shared/VOICE.md`.
+- [DECISION] A pure dependency-free `lib/prose-lint.js` scanner with deterministic structured findings and context-sensitive exclusions.
+- [DECISION] Universal U-12 warning integration through the existing have-nots validator and artifact-linter report path.
+- [DECISION] Focused behavior, precision, performance, determinism, artifact-integration, and self-dogfood tests in the existing test runner and static-check surface.
+- [DECISION] Output-specific adoption by the documentation and launch specialists, including preservation of verified technical language and user-approved brand voice.
+- [DECISION] Upstream inspiration acknowledgement, library and validation docs, changelog and release notes, package verification, and the existing release gate.
+
+### Explicitly Not In Scope
+
+- [DECISION] This feature will not add `/god-unslop`, `/god-prose-lint`, or any other slash command, route, recipe, workflow, or specialist agent.
+- [DECISION] This feature will not copy, vendor, translate, or lightly rewrite the upstream pstack `unslop` prose, pattern catalog, examples, code, tests, or results.
+- [DECISION] This feature will not ban words such as `surface`, `harness`, `primitive`, `robust`, or `leverage` without sentence context and a concrete reason for the warning.
+- [DECISION] This feature will not rewrite files, auto-apply suggestions, call a language model, infer human authorship, or score whether a person has soul, taste, or originality.
+- [DECISION] This feature will not force one voice across planning artifacts, engineering docs, operational status, launch copy, quoted source material, and user-approved brand language.
+- [DECISION] This feature will not make advisory U-12 warnings block user artifact gates or weaken existing blocking errors, security checks, package checks, or release approval boundaries.
+- [DECISION] This feature will not add a production dependency, a Python runtime, a hosted prose service, analytics collection, or persistence for scanned text.
+
+## 7. Appetite
+
+- [DECISION] Time budget: implement, document, dogfood, review, and reach release-ready evidence within 5 working days and one minor-release cycle.
+- [DECISION] Resource budget: one primary maintainer using existing Godpowers planning, execution, review, docs, and launch specialists, with no new paid service or standing operations role.
+- [DECISION] Technical constraints: preserve CommonJS, Node.js 18, 20, and 22 compatibility, zero core production dependencies, the frozen slash-command surface, existing artifact-linter APIs, and advisory warning semantics.
+- [DECISION] Delivery constraint: implementation must use focused tests first, requirement linkage annotations, independent specification and quality review, self-dogfood, full tests, audit checks, package verification, release notes, and `npm run release:check` before publication.
+
+## 8. Open Questions
+
+| Question | Owner | Due Date | Resolution |
+|---|---|---|---|
+| [OPEN QUESTION] Should any reviewed U-12 rule become blocking after two release candidates provide precision and maintainer-override evidence? | [OPEN QUESTION] Godpowers maintainer. | [OPEN QUESTION] 2026-11-30. | [OPEN QUESTION] Unresolved; the safe default keeps all prose-quality findings advisory. |
+| [OPEN QUESTION] Should a future feature let repositories configure output-type voice rules after the fixed engineering, documentation, operational, and launch classes have two release cycles of use? | [OPEN QUESTION] Godpowers maintainer. | [OPEN QUESTION] 2026-11-30. | [OPEN QUESTION] Unresolved; the safe default keeps configuration out of this feature. |
+
+## Risks and Mitigations
+
+| Risk | Mitigation |
+|---|---|
+| [HYPOTHESIS] Context-free phrase matching could flag exact technical terms or user-approved language and train contributors to write around the checker. | [DECISION] Match sentence patterns, mask non-prose regions, require clean context fixtures, explain each warning, and keep findings advisory. |
+| [HYPOTHESIS] One neutral engineering voice could erase a founder's approved launch tone or make every Godpowers output sound identical. | [DECISION] Scope voice by output type, preserve the launch specialist's human approval pauses, and treat plain and concrete as clarity constraints rather than a personality template. |
+| [HYPOTHESIS] A self-dogfood baseline could hide existing warnings or turn every upstream reference update into unrelated cleanup. | [DECISION] Report the complete warning set, record reviewed baseline changes explicitly, and fail only on scanner defects, scope omissions, malformed findings, nondeterminism, or unexplained warning growth. |
+| [HYPOTHESIS] An upstream acknowledgement could drift into copied wording or imply that Godpowers vendors pstack. | [DECISION] Keep acknowledgement in `INSPIRATION.md`, name the limited ideas adopted, state the no-vendoring boundary, and test that the runtime remains dependency-free and command-neutral. |
+
+## Have-Nots Checklist
+
+- [x] [DECISION] Every substantive artifact sentence carries exactly one decision, hypothesis, or open-question label.
+- [x] [DECISION] The problem statement names Godpowers-specific validation, specialist, artifact, and reader failures and fails the substitution test.
+- [x] [DECISION] Every success metric has a number, timeline, and measurement method.
+- [x] [DECISION] Functional requirements use stable IDs `P-MUST-30` through `P-MUST-35`, and every requirement has observable acceptance criteria.
+- [x] [DECISION] Scope explicitly excludes new commands, blanket word bans, copied upstream prose, automatic rewrites, universal voice flattening, blocking U-12 warnings, and new production dependencies.
+- [x] [DECISION] Every open question has a role owner, exact due date, and safe default that does not block implementation.
+- [x] [DECISION] The PRD preserves the root product PRD, current architecture, current roadmap, Pillars truth, pure-skill runtime, and release approval boundaries.

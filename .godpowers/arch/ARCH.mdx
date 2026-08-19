@@ -26,6 +26,7 @@
 | C-slice-handoff | [DECISION] Project authoritative plan, state, event, linkage, and verification facts into one bounded resume record. | [DECISION] Dependency-free Node.js CommonJS and JSON. |
 | C-maintainability-trajectory | [DECISION] Capture stable code-shape snapshots and signed deltas without executing repository imports. | [DECISION] Dependency-free Node.js CommonJS. |
 | C-evolution-benchmark | [DECISION] Reveal six ordered requirements to a temporary repository and retain deterministic correctness and changeability evidence. | [DECISION] Dependency-free Node.js CommonJS plus packaged fixtures. |
+| C-prose-lint within the Artifact layer | [DECISION] Scan caller-supplied Markdown as inert text and return ordered advisory U-12 prose findings. | [DECISION] Dependency-free Node.js CommonJS. |
 
 ## Architecture Decision Records
 
@@ -93,6 +94,14 @@
 - [DECISION] Flip point: advisory maintainability thresholds may be considered after three release-candidate datasets, but state authority remains fixed by ADR-001.
 - [DECISION] Consequence: slice transitions remain resumable and measurable without promoting one metric or summary to source-of-truth status.
 
+### ADR-009: Keep prose-quality detection advisory and local
+
+- [DECISION] Context: labeled Godpowers prose can still hide actors, mechanisms, evidence, effects, or reader actions behind polished wording.
+- [DECISION] Decision: C-prose-lint stays inside the existing Artifact layer, treats input as inert text, returns bounded sanitized findings, and enters universal validation only as U-12 warnings.
+- [DECISION] Rationale: local structured warnings support human review without automatic rewriting, a model call, persistence, or a new external trust boundary.
+- [DECISION] Flip point: reconsider a rule's advisory severity only after two release candidates provide reviewed precision evidence and a maintainer-approved override design.
+- [DECISION] Consequence: existing artifact errors keep their severity, while maintainers receive deterministic prose findings that cannot block a gate by themselves.
+
 ## Critical Flows
 
 ### Authorized provenance inspection and cleaning
@@ -112,6 +121,13 @@
 5. [DECISION] C-slice-handoff writes a bounded projection for resume, with current state winning every conflict.
 6. [DECISION] C-evolution-benchmark repeats behavior and maintainability evidence across six isolated checkpoint reveals and retains JSON plus Markdown summaries after temporary cleanup.
 
+### Advisory prose-quality flow
+
+1. [DECISION] The Artifact layer passes caller-owned Markdown or MDX text to C-prose-lint without granting filesystem, network, model, or mutation authority.
+2. [DECISION] C-prose-lint masks frontmatter, fenced code, inline code, link destinations, and clearly quoted bad examples before matching high-confidence sentence patterns.
+3. [DECISION] C-prose-lint returns ordered findings with bounded excerpts after terminal control bytes are removed.
+4. [DECISION] The universal have-nots wrapper maps each finding to a U-12 warning, while the existing artifact linter preserves every blocking error and aggregate warning count.
+
 ## Capacity Envelope
 
 | Input | Supported envelope | Source |
@@ -125,6 +141,7 @@
 | Slice handoff | [DECISION] One canonical JSON record at or below 8 KiB, with mandatory recovery fields protected from trimming. | [DECISION] P-MUST-27 serialization fixtures. |
 | Evolution checkpoints | [DECISION] Exactly six sequential checkpoints with no parallel project mutation or future-checkpoint reads. | [DECISION] P-MUST-29 packaged scenario and isolation fixtures. |
 | Evolution input and output | [DECISION] Manifests and checkpoints are each capped at 16 KiB, scalar fields at 4 KiB, baselines at 64 MiB, 5,000 entries, and depth 48, machine evidence at 256 KiB, and human summaries at 128 KiB. | [DECISION] P-MUST-29 adversarial boundary fixtures. |
+| Prose scan | [DECISION] At least 1 MiB or 10,000 lines per invocation, excerpts capped at 160 characters, and a 1 MiB fixture completing within 250 milliseconds at p95 across 20 runs. | [DECISION] P-MUST-31 focused performance and boundary fixtures. |
 
 ## Failure and Degradation
 
@@ -137,6 +154,7 @@
 | Guarded publication | [DECISION] Reject parent or destination identity changes and attempt one local restoration when replacement publication fails. | [DECISION] Preserve the competing file, restore the prior destination when possible, and report any retained recovery path. |
 | Context or plan validation | [DECISION] Complete each local validation within a 30 second harness deadline, reject missing, escaped, contradictory, oversized, or negatively approved evidence, and never retry; the read-only validation is idempotent by input-byte digest. | [DECISION] Return bounded findings and leave authoritative state unchanged. |
 | Trajectory or benchmark input | [DECISION] Complete each fixture checkpoint within a 30 second behavior deadline, reject incompatible snapshots, malformed manifests, future-checkpoint access, or incomplete evidence, and never retry a mutation; snapshot reads are idempotent by repository-byte digest. | [DECISION] Stop at the first invalid checkpoint, retain partial evidence, and remove the temporary repository. |
+| Advisory prose scan | [DECISION] Complete one local pass without retry, execute no input content, make no I/O request, and leave caller bytes unchanged; identical input and options are idempotent by returned finding bytes. | [DECISION] Return bounded sanitized U-12 warnings, or a scanner error that leaves existing artifact state and severity unchanged. |
 
 ## NFR-to-Architecture Map
 
@@ -155,6 +173,8 @@
 | Deterministic resume | State-authoritative structured handoffs capped at 8 KiB | ADR-008 |
 | Changeability evidence | Report-only maintainability deltas plus isolated sequential benchmark checkpoints | ADR-008 |
 | Harness isolation | Dependency-free local helpers, inert source parsing, and an offline temporary-repository benchmark | ADR-007 and ADR-008 |
+| Advisory prose quality | Local inert-text scanning, bounded sanitized findings, and warning-only U-12 integration | ADR-002 and ADR-009 |
+| Prose scan isolation | No filesystem, network, model, persistence, or mutation authority for caller-owned text | ADR-002 and ADR-009 |
 
 ## Trust Boundaries
 
@@ -167,6 +187,7 @@
 - [DECISION] Provenance filesystem boundary: the bundled client pins input, parent, and destination identities, rejects unsafe links and concurrent changes, and retains a named recovery path when guarded restoration cannot complete.
 - [DECISION] Harness path boundary: context files reject symlinks and retain pinned bytes, program-design approval binds to an exact path and digest, and handoff plus benchmark paths resolve within their declared roots before reads or writes.
 - [DECISION] Harness content boundary: repository source and imports are inert measurement input, loadout events omit contents, and compact logs never add environment dumps or credentials.
+- [DECISION] Artifact-quality boundary: prose input remains inert caller-owned text, C-prose-lint performs no I/O, terminal control bytes are removed from excerpts, findings are capped at 160 characters, and U-12 remains advisory; this local path adds no external trust boundary.
 
 ## Data Ownership
 
@@ -188,6 +209,7 @@
 | Slice handoff projection | `lib/slice-handoff.js`, with workflow authority retained by `.godpowers/state.json` |
 | Maintainability snapshots and deltas | `lib/maintainability-trajectory.js` plus the independent quality reviewer |
 | Evolution checkpoint evidence | `lib/evolution-benchmark.js` and `fixtures/evolution/maintainability-sequence/` |
+| Advisory prose findings | `lib/prose-lint.js`, with universal warning integration owned by `lib/have-nots-validator.js` |
 
 ## Have-Nots Checklist
 
@@ -199,6 +221,7 @@
 
 ## Architecture Changelog
 
+- [DECISION] 2026-08-19: Added ADR-009 and C-prose-lint inside the existing Artifact layer because deterministic inert-text scanning, bounded sanitized findings, and warning-only U-12 integration now participate in artifact validation without a new service or production dependency.
 - [DECISION] 2026-08-17: Added ADR-007, ADR-008, and six harness-quality containers because verified pre-spawn context, program design, compact verification, handoffs, trajectory measures, and evolution evidence now participate in the Build and release paths.
 - [DECISION] 2026-08-17: Added ADR-004 through ADR-006 and the five provenance containers because the completed extension introduced a lazy package boundary, a deterministic upstream client, a visible external transfer gate, and guarded local publication.
 

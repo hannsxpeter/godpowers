@@ -134,6 +134,40 @@ Universal (apply to all artifacts):
 - **U-10** phantom reference (link to nonexistent file)
 - **U-11** future-dated timestamp in body
 - **U-01** generic claim (substitution test risk)
+- **U-12** theater sentence pattern (advisory warning only)
+
+#### U-12 advisory prose scan
+
+`lib/prose-lint.js` is a pure, dependency-free scanner. It treats its input as
+inert text and returns ordered findings with a rule id, line, column, excerpt,
+message, and suggested review action. `lib/have-nots-validator.js` maps those
+findings into universal U-12 warnings. A U-12 warning increments the warning
+count but never the error count, so it does not block artifact advancement by
+itself.
+
+The scanner has seven context-sensitive sentence-pattern rules: filler, vague
+attribution, stacked hedging, stock framing, inflated phrasing, empty
+conclusions, and dense sentences. Matching is bounded to one finding per rule
+per line. It does not ban standalone words, and a clean scan does not prove that
+prose is human-authored, correct, or objectively good.
+
+Before matching, the scanner masks opening YAML frontmatter, fenced code,
+inline code, Markdown link destinations, and marked bad, avoid, or wrong
+examples. It sanitizes terminal control characters from excerpts and limits
+each excerpt to 160 characters. This masking is structural pattern matching,
+not a complete Markdown parser, so findings remain prompts for human judgment.
+
+`scripts/static-check.js` also scans every Markdown and MDX file under
+`skills/`, `specialists/`, `agents/`, and `references/`. The checked-in baseline
+is zero warnings; warning growth fails that repository self-dogfood check until
+the new finding is reviewed.
+
+Documentation and launch work share the post-draft audit in
+`references/shared/VOICE.md`, then apply different output rules. Documentation
+keeps engineering explanations direct and preserves exact repository names,
+verified commands, runbook steps, and evidence language. Launch copy may keep
+an approved founder or product voice, positioning, and channel constraints,
+while operational status and engineering evidence stay direct and neutral.
 
 PRD-specific:
 - **P-04** success metric without timeline
@@ -158,10 +192,10 @@ DESIGN-specific (via `lib/design-spec`):
 ### Mechanical vs interpretive
 
 Of the 183 documented have-nots in `references/HAVE-NOTS.md`:
-- **25 are mechanical** (regex-checkable; in `lib/have-nots-validator.js`)
-- **158 are interpretive** (judgment-required; documented for human + AI review)
+- **26 are mechanical** (regex-checkable; in `lib/have-nots-validator.js`)
+- **157 are interpretive** (judgment-required; documented for human + AI review)
 
-The mechanical 25 are caught by `/god-lint`. The interpretive checks are
+The mechanical 26 are caught by `/god-lint`. The interpretive checks are
 the responsibility of `god-auditor` (retroactive scoring) and the
 two-stage code review (`god-spec-reviewer` + `god-quality-reviewer`).
 
@@ -200,7 +234,7 @@ Returns structured findings:
 ```
 
 Errors block agent advancement (cannot auto-resolve, even under --yolo).
-Warnings surface but don't block.
+Warnings surface but don't block. This includes U-12 prose-pattern findings.
 
 ## Linkage axis
 

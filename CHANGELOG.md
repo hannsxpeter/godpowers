@@ -7,6 +7,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.1.0] - 2026-08-19
+
+Prose-quality hardening release. Godpowers now separates meaning-preserving
+post-draft review from its existing three-label and substitution checks, and
+reports sentence-pattern findings through the universal artifact validator
+without turning writing preferences into blocking errors.
+
+### Added
+
+- Shared plain and concrete post-draft audit in `references/shared/VOICE.md`.
+  The audit asks for named actors, mechanisms, evidence, observable effects,
+  and reader actions after meaning is settled, while preserving requirements,
+  verified facts, code terms, quotations, and user-approved tone.
+- Dependency-free `lib/prose-lint.js` advisory scanner. Seven
+  context-sensitive rules cover filler, vague attribution, stacked hedging,
+  stock framing, inflated phrasing, empty conclusions, and dense sentences;
+  findings include stable rule ids, source locations, bounded excerpts,
+  explanations, and review suggestions.
+- Universal U-12 integration in `lib/have-nots-validator.js`. Prose findings
+  remain warnings, do not increase the artifact error count, and do not weaken
+  existing blocking severities.
+- Thirty-one focused regression tests plus a static self-dogfood gate with a
+  reviewed baseline of zero warnings across 233 shipped Markdown and MDX files
+  under `skills/`, `specialists/`, `agents/`, and `references/`.
+
+### Changed
+
+- Documentation review now favors direct factual explanations, exact repository
+  names, verified commands, and preserved runbook evidence. Launch review keeps
+  approved founder or product voice, positioning, channel constraints, and
+  brand decisions while engineering evidence stays direct and neutral.
+- Public validation and runtime documentation now explains the advisory
+  boundary, masking behavior, false-positive limits, and 160-character excerpt
+  cap. `INSPIRATION.md` acknowledges pstack's unslop skill and records that no
+  upstream prose, rule catalog, code, fixture, or result is vendored.
+- The npm package guard explicitly requires `lib/prose-lint.js`, and the full
+  test runner includes its focused suite. This release adds no slash command
+  and no root production dependency.
+
+### Security
+
+- Scanner input stays inert. The scanner performs no file-system write,
+  network call, subprocess launch, or dynamic evaluation.
+- Markdown hardening masks opening YAML frontmatter, matching fenced code,
+  inline code, link destinations, and marked bad examples before matching.
+  Regression coverage includes nested delimiter lengths, malformed fence
+  closers, CRLF input, indentation boundaries, and double-backtick spans.
+- Finding excerpts replace terminal control bytes and stop at 160 characters.
+  Adversarial delimiter scans and a 1 MiB fixture remain under the focused
+  250-millisecond p95 bounds on the release test host.
+
 ## [6.0.0] - 2026-08-17
 
 Harness-quality and MCP v2 release. Godpowers now bounds the information an

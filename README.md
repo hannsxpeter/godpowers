@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-6.0.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-6.1.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 ### Your AI writes code fast. Godpowers makes it accountable.
@@ -341,6 +341,7 @@ Every document and every change clears these automatic checks before it counts:
 | Substitution test | Generic filler that would read the same for any product |
 | Three-label test | Guesses quietly presented as decisions |
 | Have-nots | A named list of known failure modes, checked mechanically |
+| Prose-pattern review | Filler, vague attribution, stacked hedges, stock framing, inflated phrasing, empty conclusions, and dense sentences |
 | Artifact-on-disk | The AI claiming "done" when the file was never written |
 | Critical-finding gate | Shipping with a known security hole |
 | TDD enforcement | Code without tests |
@@ -351,6 +352,16 @@ Every document and every change clears these automatic checks before it counts:
 every check and still be the wrong plan. The point is to eliminate generic,
 missing, and untraceable work, so that whatever human judgment is left is
 visible and yours to make.
+
+The prose-pattern review reports advisory U-12 warnings. Those warnings never
+block an artifact by themselves and never authorize an automatic rewrite. The
+scanner looks for seven sentence patterns, not standalone words, so technical
+uses of terms such as `surface`, `harness`, `primitive`, `robust`, and `leverage`
+remain valid when the sentence states a concrete fact.
+
+Pattern matching can produce false positives and miss prose that needs
+revision. A clean scan does not prove correctness, human authorship, or
+objective quality.
 
 ### It writes things down where you can find them
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
+// Implements: P-MUST-35
+
 // Single source of version truth: package.json. This writes that version into
 // every version surface godpowers self-truth and surface-count checks assert -
 // docs, the MCP package and lockfile, the SECURITY supported series, the
@@ -22,22 +24,41 @@ const cadenceGuard = require('../lib/cadence-guard');
 const mismatches = [];
 const rd = (rel) => fs.readFileSync(path.join(root, rel), 'utf8');
 const wr = (rel, text) => { if (!check) fs.writeFileSync(path.join(root, rel), text); };
+const V = '[0-9]+\\.[0-9]+\\.[0-9]+';
+
+function latestPublishedVersion() {
+  try {
+    const state = JSON.parse(rd('.godpowers/state.json'));
+    const launch = state.tiers && state.tiers['tier-3'] && state.tiers['tier-3'].launch;
+    if (launch && new RegExp(`^${V}$`).test(launch['release-version'] || '')) {
+      return launch['release-version'];
+    }
+  } catch (err) {
+    // Fall through to the public marker when authoritative state is unavailable.
+  }
+  for (const [rel, regex] of [
+    ['USERS.md', new RegExp(`latest published release is v(${V})`, 'i')],
+    ['docs/ROADMAP.md', new RegExp(`Latest published: v(${V})`)]
+  ]) {
+    const match = rd(rel).match(regex);
+    if (match) return match[1];
+  }
+  return version;
+}
+
+const publishedVersion = latestPublishedVersion();
 
 // 1. Regex doc surfaces. Each regex captures the whole match in groups; the
 // numbered slots are the version groups. Rebuild the match from its groups,
 // substituting the target version at the version slots. Exact-semver capture
 // avoids swallowing sentence-ending periods.
-const V = '[0-9]+\\.[0-9]+\\.[0-9]+';
 const surfaces = [
   ['SKILL.md', new RegExp(`(\\n\\s+version:\\s*")(${V})(")`), [2]],
   ['README.md', new RegExp(`(version-)(${V})(-(?:blue|green))`), [2]],
-  ['USERS.md', new RegExp(`(current source version is v)(${V})(, and the latest published release is v)(${V})`), [2, 4]],
-  ['ARCHITECTURE.md', new RegExp(`(STABLE v)(${V})`), [2]],
   ['ARCHITECTURE-MAP.md', new RegExp(`(package\\.json \\(v)(${V})(\\))`), [2]],
   ['ARCHITECTURE-MAP.md', new RegExp(`(## Numbers \\(as of v)(${V})(\\))`), [2]],
   ['agents/context.md', new RegExp('(current repository version is `)(' + V + ')(`)'), [2]],
   ['docs/reference.md', new RegExp(`(reference for v)(${V})`), [2]],
-  ['docs/ROADMAP.md', new RegExp(`(Current source: v)(${V})(\\. Latest published: v)(${V})`), [2, 4]],
   ['.godpowers/roadmap/ROADMAP.mdx', new RegExp('(Source version: `)(' + V + ')(`)'), [2]],
   ['RELEASE.md', new RegExp(`(# Godpowers )(${V})( Release)`), [2]],
 ];
@@ -54,6 +75,24 @@ for (const [rel, regex, slots] of surfaces) {
   const corrected = caps.map((g, i) => (slots.includes(i + 1) ? version : g)).join('');
   if (match[0] === corrected) continue;
   if (check) mismatches.push(`${rel}: "${match[0].trim()}" should be "${corrected.trim()}"`);
+  else { wr(rel, text.replace(match[0], corrected)); process.stdout.write(`  synced ${rel}\n`); }
+}
+
+const releaseTruthSurfaces = [
+  ['USERS.md', new RegExp(`current source version is v${V}, and the latest published release is v${V}`),
+    `current source version is v${version}, and the latest published release is v${publishedVersion}`],
+  ['docs/ROADMAP.md', new RegExp(`Current source: v${V}\\. Latest published: v${V}`),
+    `Current source: v${version}. Latest published: v${publishedVersion}`],
+  ['ARCHITECTURE.md', new RegExp(`STABLE v${V}(?: (?:release candidate|published release))?`),
+    `STABLE v${version} ${version === publishedVersion ? 'published release' : 'release candidate'}`]
+];
+
+for (const [rel, regex, corrected] of releaseTruthSurfaces) {
+  const text = rd(rel);
+  const match = text.match(regex);
+  if (!match) { mismatches.push(`${rel}: no release-truth surface matched ${regex}`); continue; }
+  if (match[0] === corrected) continue;
+  if (check) mismatches.push(`${rel}: "${match[0]}" should be "${corrected}"`);
   else { wr(rel, text.replace(match[0], corrected)); process.stdout.write(`  synced ${rel}\n`); }
 }
 
@@ -79,21 +118,30 @@ for (const [rel, regex, slots] of surfaces) {
   }
 }
 
-// 4. SECURITY supported series: the current minor is "Yes", others demoted.
+// 4. SECURITY supported series: published is "Yes" and unpublished source is a candidate.
 {
   const rel = 'SECURITY.md';
-  const minorX = `${version.split('.').slice(0, 2).join('.')}.x`;
-  let text = rd(rel);
-  const hasCurrent = new RegExp(`\\|\\s*${minorX.replace(/\./g, '\\.')}\\s*\\|\\s*Yes\\s*\\|`).test(text);
-  const demoted = text.replace(/\|(\s*[0-9]+\.[0-9]+\.x\s*)\|\s*Yes\s*\|/g, (m, ver) =>
-    ver.trim() === minorX ? m : `|${ver}| Security fixes only |`);
-  let next = demoted;
-  if (!hasCurrent) {
-    // insert the current series as the first data row after the table header separator
-    next = demoted.replace(/(\|\s*Version\s*\|\s*Supported\s*\|\n\|[-\s|]+\|\n)/, `$1| ${minorX}   | Yes |\n`);
+  const sourceMinor = `${version.split('.').slice(0, 2).join('.')}.x`;
+  const publishedMinor = `${publishedVersion.split('.').slice(0, 2).join('.')}.x`;
+  const desired = new Map([[publishedMinor, 'Yes']]);
+  if (sourceMinor !== publishedMinor) desired.set(sourceMinor, 'Release candidate');
+  const text = rd(rel);
+  let next = text.replace(/\|\s*([0-9]+\.[0-9]+\.x)\s*\|\s*([^|]+?)\s*\|/g,
+    (match, minor, status) => {
+      if (desired.has(minor)) return `| ${minor}   | ${desired.get(minor)} |`;
+      if (/^(?:Yes|Release candidate)$/.test(status.trim())) {
+        return `| ${minor}   | Security fixes only |`;
+      }
+      return match;
+    });
+  const missing = [...desired.entries()].filter(([minor]) =>
+    !new RegExp(`\\|\\s*${minor.replace(/\./g, '\\.')}\\s*\\|`).test(next));
+  if (missing.length > 0) {
+    const rows = missing.map(([minor, status]) => `| ${minor}   | ${status} |\n`).join('');
+    next = next.replace(/(\|\s*Version\s*\|\s*Supported\s*\|\n\|[-\s|]+\|\n)/, `$1${rows}`);
   }
   if (next !== text) {
-    if (check) mismatches.push(`${rel}: supported series does not lead with ${minorX} = Yes`);
+    if (check) mismatches.push(`${rel}: published and candidate series do not match ${publishedVersion} and ${version}`);
     else { wr(rel, next); process.stdout.write(`  synced ${rel} supported series\n`); }
   }
 }

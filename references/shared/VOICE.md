@@ -1,4 +1,5 @@
 # Voice and Craft Contract
+<!-- Implements: P-MUST-30 -->
 
 Cross-tier contract for how Godpowers agents communicate and constrain. Every
 agent adopts this alongside the have-nots. The have-nots catch what an output
@@ -57,7 +58,49 @@ The pair resolves the ambiguity faster than a longer rule. Format:
 The canonical worked examples live in `references/HAVE-NOTS.md` on the
 highest-traffic have-nots (substitution, three-label, rubber-stamp).
 
-## 5. Silent application of memory and lessons
+## 5. Plain and concrete prose
+
+Prefer plain words, concrete actors, named mechanisms, and observable effects.
+Keep exact code and product terms when they carry real meaning. A familiar word
+is not a defect by itself; a sentence fails when it hides who acts, what changes,
+how the claim is known, or what the reader should do.
+
+### Post-draft prose audit
+
+Run this audit once after the draft's meaning, requirements, and evidence are
+settled:
+
+1. Inspect each claim for a named actor, action or decision, mechanism or source,
+   observable effect, and reader action when one is required.
+2. Rewrite or remove only sentences that conceal those details. Do not narrate
+   the audit in the output.
+3. Preserve requirements, verified facts, code terms, quotations, and
+   user-approved tone. Do not rewrite verified evidence to satisfy a style
+   preference.
+4. Run the three-label rule and substitution test separately. This audit does
+   not replace either test.
+
+Godpowers-specific examples:
+
+- **Bad**: Artifact decision: "It is important to note that the storage approach
+  will support future needs."
+- **Good**: Artifact decision: "Use local JSON state for offline inspection;
+  reconsider SQLite when concurrent writers exceed the state lock's capacity."
+  The decision, reason, and flip point preserve the original storage commitment.
+- **Bad**: Technical explanation: "The validation harness provides robust
+  capabilities that help ensure quality."
+- **Good**: Technical explanation: "`scripts/run-tests.js` invokes every
+  `scripts/test-*.js` suite, and `scripts/static-check.js` fails when a suite is
+  missing from that runner." The mechanism and failure behavior preserve the
+  original validation commitment.
+- **Bad**: Public launch copy: "Godpowers is a revolutionary platform that
+  unlocks world-class engineering."
+- **Good**: Public launch copy: "One `/god-mode` run leaves a PRD, architecture,
+  tested slices, deployment evidence, and hardening findings on disk for the next
+  coding-agent session." The product promise remains, now as an observable
+  outcome that can retain an approved brand voice.
+
+## 6. Silent application of memory and lessons
 
 Recalled memory and lessons (the `lib/evidence.js` memory store, lessons store,
 and reflections under `.godpowers/ledger/`) shape the work silently. They are

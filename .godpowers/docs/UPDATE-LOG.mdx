@@ -1,0 +1,99 @@
+# Docs Update Log
+
+Date: 2026-08-19
+Owner: `god-docs-writer`
+
+## Inventory
+
+- [DECISION] Reviewed `README.md`, `lib/README.md`, `docs/validation.md`,
+  `INSPIRATION.md`, and `ARCHITECTURE-MAP.md` against the implemented scanner,
+  validator integration, specialists, shared voice contract, and regression
+  tests.
+- [DECISION] Reviewed `lib/prose-lint.js`, `lib/have-nots-validator.js`,
+  `scripts/test-prose-lint.js`, `scripts/static-check.js`,
+  `references/shared/VOICE.md`, `specialists/god-docs-writer.md`, and
+  `specialists/god-launch-strategist.md` as the code and contract surfaces for
+  the documentation claims.
+- [DECISION] The local `lib/repo-doc-sync.run(projectRoot)` execution reported
+  fresh before and after status at `2026-08-19T05:41:28.799Z`; no documentation
+  sync agent ran.
+- [DECISION] The local `lib/repo-surface-sync.run(projectRoot)` execution
+  reported fresh before and after status at `2026-08-19T05:41:28.846Z`; no
+  repository surface sync agent ran.
+
+## Verified
+
+- [DECISION] `lib/prose-lint.js` is a pure CommonJS scanner with no imports,
+  file-system writes, network access, or runtime dependencies.
+- [DECISION] The scanner applies seven context-sensitive sentence-pattern
+  rules, returns at most one finding per rule per line, and does not ban
+  standalone words.
+- [DECISION] The scanner masks opening YAML frontmatter, fenced code, inline
+  code, Markdown link destinations, and marked bad examples before matching.
+- [DECISION] Finding excerpts replace terminal control characters and are
+  capped at 160 characters.
+- [DECISION] `lib/have-nots-validator.js` maps scanner findings to universal
+  U-12 warnings, while artifact errors retain their existing blocking
+  severities.
+- [DECISION] The documentation specialist preserves factual engineering prose,
+  exact repository terms, verified commands, runbook steps, and evidence
+  language during its post-draft audit.
+- [DECISION] The launch specialist may preserve approved founder or product
+  voice, positioning, and channel constraints while keeping operational status
+  and engineering evidence direct and neutral.
+- [DECISION] `scripts/static-check.js` scans 233 Markdown and MDX files under
+  `skills/`, `specialists/`, `agents/`, and `references/` against a zero-warning
+  baseline.
+- [DECISION] The pstack unslop skill influenced the scan, targeted rewrite,
+  meaning and tone preservation, and self-audit sequence documented in
+  `INSPIRATION.md`.
+- [DECISION] No upstream prose, rule catalog, code, fixture, or result is
+  vendored, and Godpowers has no runtime dependency on the pstack plugin.
+
+## Updated
+
+- [DECISION] `README.md` now explains the seven prose-pattern categories, the
+  advisory U-12 boundary, and the absence of standalone word bans.
+- [DECISION] `lib/README.md` now lists `lib/prose-lint.js` and its pure advisory
+  contract.
+- [DECISION] `docs/validation.md` now includes U-12 in the universal catalog and
+  documents its severity, finding shape, masking, excerpt safety, limitations,
+  self-dogfood scope, and output-specific review rules.
+- [DECISION] `INSPIRATION.md` now credits the exact pstack unslop source and
+  records the no-vendoring and no-runtime-dependency boundary.
+- [DECISION] `ARCHITECTURE-MAP.md` now records 113 JavaScript runtime modules,
+  111 script test suites, and the prose scanner module and test surfaces.
+
+## Created
+
+- [DECISION] `.godpowers/docs/UPDATE-LOG.mdx` records this documentation audit
+  and its verification evidence.
+
+## Verified Commands
+
+- [DECISION] `node scripts/test-prose-lint.js` passed 30 tests with zero
+  failures on 2026-08-19.
+- [DECISION] `node scripts/static-check.js` passed 35 checks with zero failures
+  and reported zero prose warnings across 233 files on 2026-08-19.
+- [DECISION] `git diff --check` passed on 2026-08-19.
+- [DECISION] `node scripts/test-doc-surface-counts.js` verified the updated
+  `ARCHITECTURE-MAP.md` counts, then stopped at the out-of-scope runtime-module
+  count in `RELEASE.md`.
+
+## Drift Found
+
+- [DECISION] `RELEASE.md`, `agents/context.md`, and `agents/deploy.md` still say
+  the core package has 112 runtime modules; an independent exact-text search
+  found those three stale claims.
+- [DECISION] The release and Pillars update owns those three claims and must
+  change them to 113 before the documentation surface-count gate can pass.
+
+## Have-Nots Checklist
+
+- [DECISION] Every new claim was checked against current code, tests, or the
+  recorded local sync result.
+- [DECISION] Every new documentation sentence is specific to the Godpowers
+  scanner, validator, specialist, or repository gate that supports it.
+- [DECISION] The post-draft prose audit preserved code terms, verified facts,
+  the U-12 severity boundary, and the upstream attribution boundary.
+- [DECISION] No runbook or unexecuted example was added.

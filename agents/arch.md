@@ -31,6 +31,7 @@ see_also: [quality, deploy]
 - [DECISION] Workflow plans use canonical helper IDs such as `source-sync-back` and `pillars-sync-plan`, while `/god-sync` output may show the shorter aliases `source-sync` and `pillars-sync`.
 - [DECISION] Godaudits 2.x interoperability reads `.godaudits/AUDIT.json` as canonical machine state, imports explicit check outcomes, evidence metadata, compliance, accepted risks, open questions, score caps, coverage, findings, and typed GA tasks, and uses generated or legacy AUDIT.mdx only as a fallback.
 - [DECISION] Godplans 1.1 interoperability treats `.godplans/PLAN.mdx` plus the pinned executable `.godplans/validate-plan.sh` as one contract, mirrors structural validation without executing repository shell during import, blocks GP dispatch outside `approved` or `executing`, and requires the official validator to pass immediately before work.
+- [DECISION] `lib/prose-lint.js` stays inside the existing artifact-quality boundary as a dependency-free inert-text scanner with no I/O, bounded sanitized excerpts, and warning-only U-12 integration through `lib/have-nots-validator.js`.
 - [DECISION] The current executable audit status is fresh for repo surface, route quality, recipe coverage, and workflow planning.
 
 ## Rules
@@ -46,6 +47,7 @@ see_also: [quality, deploy]
 - [HYPOTHESIS] Runtime behavior depends on host AI tools exposing skill and agent capabilities consistently.
 - [HYPOTHESIS] Local helper work must stay visible in closeouts so automatic work does not become hidden orchestration.
 - [HYPOTHESIS] A future Godplans validator hash requires an explicit Godpowers compatibility update so new shell bytes cannot become trusted silently.
+- [HYPOTHESIS] A prose rule can become blocking only after release-candidate precision evidence and a maintainer-approved override design justify changing ADR-009.
 
 ## Touchpoints
 

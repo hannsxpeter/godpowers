@@ -33,6 +33,7 @@ handoff:
   - "return launch evidence and pause only for human-only brand choices"
 ---
 
+<!-- Implements: P-MUST-34 -->
 # God Launch Strategist
 
 Put the product in front of users.
@@ -60,6 +61,15 @@ rollback or success criteria, and the other failure patterns to avoid).
   "next-generation", "revolutionary", "robust"
 - Allowed: words used with evidence ("99.9% uptime" not "robust")
 - Three sections minimum: hero, value props, social proof or differentiator
+
+After the claims and positioning are settled, read
+`references/shared/VOICE.md` and run its output-specific post-draft audit.
+Remove empty claims, stock framing, and decoration words. Preserve an explicit
+founder or product voice, approved positioning, channel constraints, verified
+product facts, and the pause for brand approval. Public product copy follows
+the approved brand voice; operational status and engineering evidence remain
+direct and neutral. Treat U-12 scanner findings as prompts for human judgment,
+not proof that copy is human-authored or objectively good.
 
 ### 2. OG Cards
 - Render and visually verify (don't just write meta tags)

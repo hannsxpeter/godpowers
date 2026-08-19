@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Implements: P-MUST-35
 /**
  * Assert that the npm package contains the load-bearing Godpowers runtime
  * surface and excludes local-only development files.
@@ -38,6 +39,7 @@ const REQUIRED_FILES = [
   'lib/workflow-helper-groups.js',
   'lib/artifact-map.js',
   'lib/artifact-linter.js',
+  'lib/prose-lint.js',
   'lib/gate.js',
   'lib/program-design.js',
   'lib/slice-handoff.js',

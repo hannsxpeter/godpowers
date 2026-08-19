@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Implements: P-MUST-33
 /**
  * Dependency-free static checks for release-sensitive JavaScript surfaces.
  */
@@ -6,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const proseLint = require('../lib/prose-lint');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECK_DIRS = ['bin', 'lib', 'scripts', 'tests', 'packages'];
@@ -354,6 +356,51 @@ test('shipped skill, specialist, and Pillars prose has no sycophancy filler (U-1
   }
   if (offenders.length > 0) {
     throw new Error(`U-14 sycophancy or gratitude loop in shipped prose: ${offenders.join(', ')}`);
+  }
+});
+
+const PROSE_SCOPE = ['skills', 'specialists', 'agents', 'references'];
+const PROSE_WARNING_BASELINE = 0;
+
+test('P-MUST-33: prose self-dogfood scans skills, specialists, agents, and references', () => {
+  const files = [];
+  for (const directory of PROSE_SCOPE) {
+    const base = path.join(ROOT, directory);
+    if (!fs.existsSync(base)) throw new Error(`prose scope missing: ${directory}`);
+    const scoped = walkMatching(base, file => /\.mdx?$/.test(file)).sort();
+    if (scoped.length === 0) throw new Error(`prose scope has no eligible files: ${directory}`);
+    files.push(...scoped);
+  }
+
+  const warnings = [];
+  for (const file of files.sort()) {
+    const content = fs.readFileSync(file, 'utf8');
+    const first = proseLint.scan(content);
+    const second = proseLint.scan(content);
+    if (JSON.stringify(first) !== JSON.stringify(second)) {
+      throw new Error(`nondeterministic prose findings: ${path.relative(ROOT, file)}`);
+    }
+    for (const finding of first) {
+      const valid = finding && typeof finding.ruleId === 'string' &&
+        Number.isInteger(finding.line) && finding.line > 0 &&
+        Number.isInteger(finding.column) && finding.column > 0 &&
+        typeof finding.excerpt === 'string' && finding.excerpt.length <= 160 &&
+        typeof finding.message === 'string' && typeof finding.suggestion === 'string';
+      if (!valid) {
+        throw new Error(`malformed prose finding: ${path.relative(ROOT, file)} ${JSON.stringify(finding)}`);
+      }
+      warnings.push({ file: path.relative(ROOT, file), ...finding });
+    }
+  }
+
+  console.log(`    Prose self-dogfood baseline: ${PROSE_WARNING_BASELINE} warnings across ${files.length} files.`);
+  for (const warning of warnings) {
+    console.log(`    Prose warning ${warning.file}:${warning.line} ${warning.ruleId}: ${warning.excerpt}`);
+  }
+  if (warnings.length > PROSE_WARNING_BASELINE) {
+    throw new Error(
+      `unreviewed prose warning growth: baseline ${PROSE_WARNING_BASELINE}, actual ${warnings.length}`
+    );
   }
 });
 
