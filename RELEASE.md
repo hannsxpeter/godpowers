@@ -1,6 +1,6 @@
 # Godpowers 6.2.0 Release
 
-> Status: Published
+> Status: Published and verified
 > Date: 2026-08-19
 
 - [DECISION] Godpowers 6.2.0 adds a blast-radius safety case to the existing
