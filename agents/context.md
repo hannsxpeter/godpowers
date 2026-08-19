@@ -26,6 +26,7 @@ see_also: [arch, quality, deploy]
 
 - [DECISION] Godpowers 6.3.0 adds product-form verification, feedback-loop debugging, deeper program design, cited why evidence, durable decision traces, and one canonical invocation policy per core route.
 - [DECISION] The optional `@godpowers/operations-pack` provides issue triage and a human-only setup wizard without adding a core command or root runtime dependency.
+- [DECISION] Godpowers 6.3.0 and `@godpowers/operations-pack` 0.1.0 are published and verified from merged `main` commit `c45d0473ad946fcd7c02a5706b02f51a40ed0d25`.
 - [DECISION] Existing `/god-review` and `/god-build` Stage 2 review uses `references/building/BLAST-RADIUS.md` to grade exactly one load-bearing safety fact against a five-level evidence ladder and 10 boundary classes.
 - [DECISION] The blast-radius behavior adds no command, route, recipe, workflow, specialist type, production dependency, evidence store, state writer, or execution authority.
 - [DECISION] The npm package includes `references/building/BLAST-RADIUS.md`, and installation copies the reference into `godpowers-references/` and the installed runtime bundle through existing data-directory behavior.
@@ -73,6 +74,8 @@ From `RELEASE.md`:
 - [DECISION] The repository contains 117 focused test scripts and 54 core reference documents.
 - [DECISION] The root package-content check reports 659 files, including the new dependency-free validators and the optional operations pack publication surface.
 - [DECISION] The root `godpowers` package supports Node.js 18 or newer, while the read-only `@godpowers/mcp` companion requires Node.js 20 or newer; both manifests declare version 6.3.0.
+- [DECISION] `/god-test-runtime` now selects one material verification profile for CLI, SDK, API, UI, service, or library products and rejects incomplete or generic completion evidence.
+- [DECISION] Existing `test-only`, `audit-only`, and `a11y-only` runtime modes remain available and keep their previous identifiers.
 
 From `.godpowers/prd/PRD.mdx`:
 - [DECISION] AI coding agents like Claude Code can write code, but a single prompt cannot carry a project from raw idea to hardened production without losing the plan, skipping review, or forgetting what was already decided across sessions.
@@ -85,12 +88,12 @@ From `.godpowers/prd/PRD.mdx`:
 - [DECISION] For every release candidate, all release-gate checks reach zero failures within the 60-minute verification window before publication, measured by `scripts/run-tests.js` and `npm run release:check`.
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-08-19T14:01:08Z`.
+- [DECISION] Evidence generated at: `2026-08-19T15:57:12Z`.
 - [DECISION] Source version: `6.3.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:00cbf26eb3167837f24d0f2ccb503744425bd659b08b5ca6939499f1adea14af`.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:8c44957bf8799f0b0b6796d5b9af8430702045c31997862d504da12d33b064e5`.
 - [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:300ada031ed5a0c0ed6dce52b17074f56be14a66552c67a2fe5774cee44f33cc`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
 - [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, blast-radius, and engineering-leverage completion are backed by 63 linked requirements, focused executed proof, and independent Stage 1 and Stage 2 review; publication remains gated on the 6.3.0 full release checks.
-- [DECISION] 2026-08-19: Added completed source increment M-engineering-leverage-contracts for P-MUST-44 through P-MUST-49 and P-COULD-05 through P-COULD-06 after focused executed suites and independent specification and quality reviews passed; full release and publication evidence remain required for 6.3.0.
+- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, blast-radius, and engineering-leverage completion are backed by 63 linked requirements, focused executed proof, independent Stage 1 and Stage 2 review, the 6.3.0 full release gate, exact merge and tag identity, provenance publication, registry integrity, and isolated installed-package verification.
+- [OPEN QUESTION] Add a deterministic 500-file and 1,000-candidate blast-radius capacity fixture before the second release candidate containing ADR-010; owner: Godpowers maintainer.
 <!-- godpowers:pillar-sync:end -->

@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:02496ff1c7f744fe0aa8a39da777a386fda97cffe000fc85426999ea3cac1525 -->
+<!-- godpowers:checksum sha256:f4d085ae227d4bb5e19bd2e98d7aea2dcbc7973dcad06664e8d2cea78fe3e8fa -->
 # Godpowers Build State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-2.build`.
@@ -9,28 +9,25 @@
 - [DECISION] Step: Building: Build.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/build/STATE.mdx`.
-- [DECISION] Updated: 2026-08-19T10:33:41.390Z.
-- [DECISION] Notes: The blast-radius increment is published in 6.2.0 after focused executed proof, two independent fresh-context Stage 2 passes, reconciliation, final scoped hardening, the 116-command release gate, exact release identity, provenance publication, and installed-package verification passed..
+- [DECISION] Updated: 2026-08-19T15:58:00Z.
+- [DECISION] Notes: The engineering-leverage increment is published in 6.3.0 after focused proof, independent specification and quality reviews, final hardening, the 121-command release gate, exact release identity, provenance publication, and installed-package verification passed..
 
 ## Verification Commands
 
 | Command | Status | Exit code | Ran at | Duration ms | Diagnostics |
 |---|---|---|---|---|---|
-| npm run release:check | pass | 0 | 2026-08-19T10:07:48.020Z | - | The complete 6.2.0 release gate passed 116 commands and 3,173 tests with 94.7 percent line, 79.98 percent branch, and 97.2 percent function coverage; package checks reported 647 root files and 8 MCP files. |
-| npm run release:prepublication:check | pass | 0 | 2026-08-19T10:07:48.020Z | - | The fresh prepublication gate passed against hardening revision sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268. |
-| gh run view 32241228965 && gh run view 32241605432 | pass | 0 | 2026-08-19T10:25:32Z | - | Pull-request CI and merged-main CI passed for the exact 6.2.0 release tree at 010f02dbccb17fce42107ce39d681adaa4879251. |
-| node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js | pass | 0 | 2026-08-19T08:55:57.418Z | 968 | - |
-| node scripts/test-evidence.js && node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js | pass | 0 | 2026-08-19T09:29:49.093Z | 1578 | - |
+| npm run release:check && npm run release:prepublication:check | pass | 0 | 2026-08-19T15:39:45.230Z | - | The 121-command release gate passed 3,290 tests with 94.70 percent line, 80.75 percent branch, and 97.32 percent function coverage; the fresh prepublication gate passed against hardening revision sha256:69bd088dc44e405b144536bd51701088bb0da7d5e2200685e9b3e13be7403f5f. |
+| gh pr view 97 && gh run view 32271677551 | pass | 0 | 2026-08-19T15:58:00Z | - | Pull request 97 passed Node.js 18, 20, and 22 plus the package job, then merged at 2026-08-19T15:47:11Z as c45d0473ad946fcd7c02a5706b02f51a40ed0d25. |
+| gh run view 32272127234 | pass | 0 | 2026-08-19T15:58:00Z | - | Merged-main CI passed against exact release commit c45d0473ad946fcd7c02a5706b02f51a40ed0d25. |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
-| executed-proof-record | v-20260819092949093-f8e074d4fd48 |
 | publication-status | published-and-verified |
-| release-version | 6.2.0 |
-| review-evidence | features/blast-radius-safety-case/REVIEW.mdx |
-| source-increment | M-blast-radius-safety-case |
+| release-version | 6.3.0 |
+| review-evidence | .godpowers/build/PLAN.mdx |
+| source-increment | M-engineering-leverage-contracts |
 | source-increment-status | done |
 
 <!-- godpowers:state-view:end -->

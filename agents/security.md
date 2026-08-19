@@ -33,6 +33,7 @@ see_also: [deploy]
 - [DECISION] Root and MCP recovery publication requires registry integrity and shasum to match the exact packed candidates before promotion.
 - [DECISION] The final 6.3.0 harden gate passed with one executed-backed release command, and the fresh prepublication gate passed against hardening revision `sha256:69bd088dc44e405b144536bd51701088bb0da7d5e2200685e9b3e13be7403f5f` with zero unresolved or accepted Critical findings.
 - [DECISION] The optional operations-pack setup template keeps secrets off command arguments, rejects tracked environment destinations, verifies exact repository authority, and uses temporary replacement with cleanup and error propagation.
+- [DECISION] The exact published 6.3.0 root, MCP, and operations-pack install reported zero vulnerabilities, and `npm audit signatures` verified registry signatures and attestations for all 6 installed packages.
 
 ## Rules
 
@@ -67,4 +68,11 @@ see_also: [deploy]
 - Sync mode: auto-applied by yolo.
 - Related artifact: `SECURITY.md`.
 - Rule: keep this pillar aligned when these artifacts change durable security truth.
+
+### Extracted durable signals
+
+From `SECURITY.md`:
+- [DECISION] The fresh prepublication gate passed at `2026-08-19T16:01:41.336Z` against hardening revision `sha256:69bd088dc44e405b144536bd51701088bb0da7d5e2200685e9b3e13be7403f5f` with zero Critical findings.
+- [DECISION] The isolated exact 6.3.0 root, MCP, and operations-pack set reported zero dependency vulnerabilities.
+- [DECISION] `npm audit signatures` verified registry signatures and attestations for all 6 installed packages.
 <!-- godpowers:pillar-sync:end -->

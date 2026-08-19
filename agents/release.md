@@ -27,8 +27,9 @@ see_also: [security]
 - [DECISION] Godpowers 6.2.0 is published from merged `main` commit `010f02dbccb17fce42107ce39d681adaa4879251` through annotated tag `v6.2.0` and provenance workflow 32242093455.
 - [DECISION] npm `godpowers@6.2.0` and `@godpowers/mcp@6.2.0` are promoted to `latest`, and their exact integrity values and shasums are recorded in `RELEASE.md`.
 - [DECISION] GitHub Release `v6.2.0` was published at `2026-08-19T10:25:32Z` after PR and merged-main CI passed.
-- [DECISION] Backward-compatible engineering evidence, route authority, and optional operations-pack additions make the next release Godpowers 6.3.0.
-- [DECISION] Godpowers 6.3.0 remains a release candidate until merged-main CI, annotated tags, provenance workflows, registry verification, GitHub Release creation, and isolated installs all pass.
+- [DECISION] Backward-compatible engineering evidence, route authority, and optional operations-pack additions shipped in Godpowers 6.3.0.
+- [DECISION] Godpowers 6.3.0 is published from merged `main` commit `c45d0473ad946fcd7c02a5706b02f51a40ed0d25` through annotated tags, provenance workflows 32272150358 and 32272475321, exact registry verification, GitHub Release creation, and isolated installs.
+- [DECISION] npm `godpowers@6.3.0`, `@godpowers/mcp@6.3.0`, and `@godpowers/operations-pack@0.1.0` are promoted to `latest`, and their exact integrity values and shasums are recorded in `RELEASE.md`.
 
 ## Rules
 

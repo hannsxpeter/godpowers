@@ -1,5 +1,5 @@
 ---
-id: CHECKPOINT-2026-08-19T10-35-20-349Z
+id: CHECKPOINT-2026-08-19T15-59-42-956Z
 project: godpowers
 mode: B
 mode-d-suite: false
@@ -12,8 +12,8 @@ progress-total: 19
 current-step: 19
 last-action: gate.pass
 last-actor: system
-last-update: 2026-08-19T10:35:20.349Z
-facts-hash: sha256:2123c3ce982db5b1b9b6785312cfbc129db294344642a1b87fe9b3499de66c53
+last-update: 2026-08-19T15:59:42.956Z
+facts-hash: sha256:90491cfb7c4219d2068033b37c33aa200cde8252441f000e53946a642195214a
 ---
 # Checkpoint
 
@@ -28,41 +28,48 @@ facts-hash: sha256:2123c3ce982db5b1b9b6785312cfbc129db294344642a1b87fe9b3499de66
 - Lifecycle phase: **steady-state-active**
 - Progress: **100%** (19 of 19 steps complete; current step 19 of 19)
 - Current tier: **tier-3** / **launch**
-- Last action: `gate.pass` by system at 2026-08-19T10:35:20.349Z
+- Last action: `gate.pass` by system at 2026-08-19T15:59:42.956Z
 
 ## What happened recently
 
-- [2026-08-19T09:29:50.682Z] [tier-2] gate.pass
-- [2026-08-19T08:55:58.397Z] [tier-2] gate.pass
-- [2026-08-19T08:39:10.261Z] [tier-2] gate.pass
+- [2026-08-19T15:41:11.704Z] [tier-3] gate.pass
+- [2026-08-19T15:36:40.036Z] [tier-3] gate.pass
+- [2026-08-19T15:30:47.924Z] [tier-3] gate.pass
 
 ## What happens next
 
 - /god-status --full
-- Inspect the complete disk-derived dashboard after the verified 6.2.0 publication closeout.
+- Inspect the complete disk-derived dashboard after the verified 6.3.0 publication closeout.
 
 ## Next suggested command
 
-`/god-status --full` - Inspect the complete disk-derived dashboard after the verified 6.2.0 publication closeout.
+`/god-status --full` - Inspect the complete disk-derived dashboard after the verified 6.3.0 publication closeout.
 
 ## Last actions (most recent first, max 20)
 
+- [2026-08-19T15:41:11.704Z] [tier-3] gate.pass
+- [2026-08-19T15:36:40.036Z] [tier-3] gate.pass
+- [2026-08-19T15:30:47.924Z] [tier-3] gate.pass
+- [2026-08-19T15:30:46.464Z] [tier-3] gate.pass
+- [2026-08-19T15:30:45.610Z] [tier-3] gate.pass
+- [2026-08-19T15:30:39.177Z] [tier-3] gate.pass
+- [2026-08-19T15:30:38.697Z] [tier-3] gate.pass
 - [2026-08-19T09:29:50.682Z] [tier-2] gate.pass
 - [2026-08-19T08:55:58.397Z] [tier-2] gate.pass
 - [2026-08-19T08:39:10.261Z] [tier-2] gate.pass
 
 ## Held facts (top 10 critical decisions)
 
-- Godpowers 6.2.0 is published from merged main commit 010f02dbccb17fce42107ce39d681adaa4879251.
-- Pull request 95 and merged-main CI passed the Node.js matrix and package gate.
-- Annotated tag v6.2.0 resolves to the exact merged release commit.
-- Provenance workflow 32242093455 published both exact packages and promoted both to latest.
-- GitHub Release v6.2.0 was published at 2026-08-19T10:25:32Z.
-- The full release gate passed 116 commands and 3,173 tests.
-- Registry integrity and shasums are pinned for both 6.2.0 packages.
-- Isolated root, exact package pair, published MCP, vulnerability, signature, and attestation verification passed.
+- Godpowers 6.3.0 is published from merged main commit c45d0473ad946fcd7c02a5706b02f51a40ed0d25.
+- Pull request 97 and merged-main CI passed the Node.js matrix and package gate.
+- Annotated tags v6.3.0 and operations-pack-v0.1.0 resolve to the exact merged release commit.
+- Provenance workflow 32272150358 published and promoted the exact root and MCP pair.
+- Provenance workflow 32272475321 published operations-pack 0.1.0.
+- GitHub Release v6.3.0 was published at 2026-08-19T15:50:34Z.
+- The full release gate passed 121 commands and 3,290 tests.
+- Registry integrity and shasums are pinned for all three published packages.
+- Isolated root, MCP, operations-pack, vulnerability, signature, and attestation verification passed.
 - Production-user evidence remains unavailable and is not implied by publication verification.
-- A deterministic 500-file and 1,000-candidate capacity fixture remains a non-blocking follow-up before the second release candidate containing ADR-010.
 
 ## If you are a new session
 
@@ -80,7 +87,7 @@ facts-hash: sha256:2123c3ce982db5b1b9b6785312cfbc129db294344642a1b87fe9b3499de66
 
 ## Provenance
 
-- Generated: 2026-08-19T10:35:20.349Z
+- Generated: 2026-08-19T15:59:42.956Z
 - Schema version: 1.0
 - Authoritative state: `.godpowers/state.json`
 - Authoritative history: `.godpowers/runs/<id>/events.jsonl` + `.godpowers/log`

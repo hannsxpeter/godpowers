@@ -79,12 +79,12 @@ see_also: [security, deploy]
 ### Extracted durable signals
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-08-19T14:01:08Z`.
+- [DECISION] Evidence generated at: `2026-08-19T15:57:12Z`.
 - [DECISION] Source version: `6.3.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:00cbf26eb3167837f24d0f2ccb503744425bd659b08b5ca6939499f1adea14af`.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:8c44957bf8799f0b0b6796d5b9af8430702045c31997862d504da12d33b064e5`.
 - [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:300ada031ed5a0c0ed6dce52b17074f56be14a66552c67a2fe5774cee44f33cc`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
 - [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, blast-radius, and engineering-leverage completion are backed by 63 linked requirements, focused executed proof, and independent Stage 1 and Stage 2 review; publication remains gated on the 6.3.0 full release checks.
-- [DECISION] The 6.3.0 candidate full release gate passed 121 commands and 3,290 tests with 94.70 percent line coverage, 80.75 percent branch coverage, and 97.32 percent function coverage.
+- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, blast-radius, and engineering-leverage completion are backed by 63 linked requirements, focused executed proof, independent Stage 1 and Stage 2 review, the 6.3.0 full release gate, exact merge and tag identity, provenance publication, registry integrity, and isolated installed-package verification.
+- [OPEN QUESTION] Add a deterministic 500-file and 1,000-candidate blast-radius capacity fixture before the second release candidate containing ADR-010; owner: Godpowers maintainer.
 <!-- godpowers:pillar-sync:end -->

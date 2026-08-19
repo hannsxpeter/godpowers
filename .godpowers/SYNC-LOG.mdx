@@ -110,3 +110,19 @@
 - [OPEN QUESTION] A deterministic end-to-end capacity fixture for 500 changed files and 1,000 static candidates remains due before the second release candidate containing ADR-010; owner: Godpowers maintainer. This lower-impact follow-up does not block the published 6.2.0 release.
 
 - 2026-08-19T15:08:57.975Z roadmap hash re-blessed deliberately via version-sync --bless-roadmap: bind reviewed 6.3.0 PRD and architecture source hashes
+
+## 2026-08-19: Godpowers 6.3.0 Publication Evidence
+
+- [DECISION] The full release gate passed 121 commands and 3,290 tests with 94.70 percent line coverage, 80.75 percent branch coverage, 97.32 percent function coverage, 659 root package files, and 8 MCP package files.
+- [DECISION] The fresh prepublication gate passed against hardening revision `sha256:69bd088dc44e405b144536bd51701088bb0da7d5e2200685e9b3e13be7403f5f` with zero unresolved or accepted Critical findings.
+- [DECISION] Pull request 97 passed CI run 32271677551 on Node.js 18, 20, and 22 plus the package job, then merged to `main` as commit `c45d0473ad946fcd7c02a5706b02f51a40ed0d25` at `2026-08-19T15:47:11Z`.
+- [DECISION] Merged-main CI run 32272127234 passed against the exact release commit, and annotated tags `v6.3.0` and `operations-pack-v0.1.0` resolve to that commit.
+- [DECISION] Provenance workflow 32272150358 passed in 2 minutes 38 seconds, published the exact `godpowers@6.3.0` and `@godpowers/mcp@6.3.0` pair, verified registry integrity and shasums, and promoted both packages to `latest`.
+- [DECISION] Provenance workflow 32272475321 passed in 2 minutes 17 seconds and published `@godpowers/operations-pack@0.1.0` after merged-tag identity, extension readiness, and fresh prepublication checks passed.
+- [DECISION] Root registry integrity is `sha512-pI+MKHwI17yFBc8KhS2AOa1Ny80eGnFZs3yec3071JrI8j7giP+EyP/a9Q5cyYSUwix5DjNgP/pZUukxz7SZYA==` with shasum `c6c04c6093a0cca595eb476c71f4814b8897ccd3`.
+- [DECISION] MCP registry integrity is `sha512-o6jz/g032LsvO5n2jH+aIW9dOejd+PwGCxe0dizY7g4qUtoUVhqkgjUo3NltNIlrjVeSVMsvyuWMoYshmS5nLg==` with shasum `cad46e61bb53b2684f95c3c07ca6a842b99fd110`.
+- [DECISION] Operations-pack registry integrity is `sha512-2nUBwKwrBNGzEn1bCd8+BYIMix2xLHfP/zqImVHzVVj0in0JVdR+16zkyQbTA3W1sQfCLf8gIyGaNp0GpJTSfg==` with shasum `c6dcd340dfad1025366b5cbbce072acac39c53fe`.
+- [DECISION] GitHub Release `v6.3.0` was published at `https://github.com/hannsxpeter/godpowers/releases/tag/v6.3.0` on `2026-08-19T15:50:34Z`.
+- [DECISION] The exact isolated root install passed Quick Proof, project inspection, status, next route, Claude installation, and Codex installation; the exact MCP executable passed `--help`; and the combined root, MCP, and operations-pack install exposed every expected package surface.
+- [DECISION] The combined exact-version dependency tree reported zero vulnerabilities, and `npm audit signatures` verified registry signatures and attestations for all 6 installed packages.
+- [DECISION] Canonical build, deploy, observe, harden, launch, sync, generated state views, checkpoint, release documents, and Pillars projections now record the observed 6.3.0 publication evidence.
