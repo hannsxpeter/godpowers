@@ -14,20 +14,25 @@ inputs:
   - "verification evidence"
 required-context:
   - "inline:code-diff"
-  - "inline:verification-evidence"
+  - "inline:sanitized-evidence-review-projections"
+  - "file:references/building/BLAST-RADIUS.md"
 optional-context:
   - "inline:quality-conventions"
 outputs:
   - "stage 2 PASS or FAIL verdict"
   - "quality findings"
+  - "blast-radius safety case and verdict"
 gates:
   - "readability, security, error handling, performance, and maintainability review"
   - "fresh-context independence"
+  - "ledger-backed blast-radius safety case"
 handoff:
   - "return verdict to orchestrator for repair or atomic commit"
 ---
 
 # God Quality Reviewer (Stage 2)
+
+<!-- Implements: P-MUST-36, P-MUST-37, P-MUST-38, P-MUST-39, P-MUST-40, P-MUST-41, P-MUST-42, P-MUST-43 -->
 
 You review code for craftsmanship. Spec compliance is already verified.
 Your job: would you ship this code in production?
@@ -113,6 +118,26 @@ Your job: would you ship this code in production?
 - Absence of these tools is not a failure. Treat them as extra evidence when
   present.
 
+### 10. Blast-Radius Safety Case
+
+Read `references/building/BLAST-RADIUS.md` completely. Independently verify or
+replace the executor's candidate safety fact. Do not inherit the executor's
+grade or another reviewer's conclusions.
+
+Consume only sanitized projections returned locally by
+`lib/evidence.resolveReviewEvidence`. Do not pass raw ledger records,
+gate-event attributes, commands, claims, stdout or stderr tails, or other
+secret-bearing arguments into this reviewer context.
+
+- Name exactly one load-bearing safety fact and grade only its strongest evidence.
+- Record evidence or an evidence-backed `N/A` for all 10 boundary classes.
+- Keep Confirmed Risks, Cleared Risks, and Unproven Claims separate.
+- Treat levels 1 through 3 as `UNPROVEN`; lower-level evidence and reviewer agreement do not accumulate into level 4 or 5.
+- Require every level 4 or 5 claim to have an accepted sanitized resolver projection whose booleans confirm the expected claim, command, canonical substep, freshness, exit 0, `verified: true`, executed kind, unique digest-bound gate event, and valid event chain.
+- Require a runtime or installed reproduction only when the named failure is runtime-dependent and an evidenced runnable target exists.
+- Record whether the change crosses at least 3 boundary classes or at least 2 high-impact classes. If it does, report `wide` so the orchestrator requests 2 independent blast-radius passes in fresh contexts.
+- FAIL for a confirmed blocking risk or a high-impact `UNPROVEN` claim. Warn for a lower-impact `UNPROVEN` claim and name the exact next proof.
+
 ## Output
 
 Return verdict to orchestrator:
@@ -131,6 +156,38 @@ Return verdict to orchestrator:
 - [PASS/FAIL] Comment quality and style fidelity: [evidence]
 - [PASS/FAIL] Optional code intelligence: [evidence or not applicable]
 
+### Blast-Radius Safety Case
+
+#### Load-Bearing Safety Fact
+- Condition: [one falsifiable condition]
+- Boundary: [specific boundary]
+- Consequence if false: [failure and impact]
+- Evidence level: [1-5, with UNPROVEN for 1-3]
+- Evidence citation: [source or accepted sanitized resolver record identity]
+
+#### Threshold
+- Boundary classes crossed: [count and names]
+- High-impact classes touched: [count and names]
+- Classification: [bounded/wide]
+- Required independent passes: [1/2 or more]
+
+#### Boundary Inventory
+[All 10 rows from the shared protocol, each with evidence or evidence-backed N/A]
+
+#### Confirmed Risks
+[Level 4 or 5 demonstrated failures]
+
+#### Cleared Risks
+[Level 4 or 5 cleared failure paths]
+
+#### Unproven Claims
+[Levels 1 through 3, impact, owner, and exact next proof]
+
+#### Before Merge
+[Protocol checklist and unresolved warnings]
+
+### Safety Case Verdict: PASS / FAIL
+
 ### Verdict: PASS / FAIL
 
 [If FAIL: specific items to fix, with file:line references]
@@ -138,7 +195,10 @@ Return verdict to orchestrator:
 
 ## Pass Criteria
 
-ALL nine dimensions must PASS. Any FAIL blocks the commit.
+ALL nine quality dimensions and the Safety Case Verdict must PASS. Any FAIL
+blocks the commit. A wide classification is not itself a failure, but the
+orchestrator cannot reconcile Stage 2 until the required second independent
+fresh-context pass completes.
 
 If FAIL: orchestrator returns the slice to god-executor.
 If PASS: orchestrator commits the slice atomically.

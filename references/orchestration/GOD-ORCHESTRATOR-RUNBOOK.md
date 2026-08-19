@@ -709,8 +709,15 @@ For all single-agent sub-steps:
 
 ## Build Phase Orchestration (multi-agent)
 
-The Build sub-step is special. It requires 4 distinct agents per slice with
-strict ordering. DO NOT skip stages.
+<!-- Implements: P-MUST-36, P-MUST-37, P-MUST-38, P-MUST-39, P-MUST-40, P-MUST-41, P-MUST-42, P-MUST-43 -->
+
+The Build sub-step is special. It requires at least 4 distinct agent contexts
+per slice with strict ordering. Wide changes require an additional independent
+Stage 2 context. DO NOT skip stages.
+
+Load `references/building/BLAST-RADIUS.md` for the executor and every Stage 2
+quality reviewer. This shared protocol governs the safety fact, evidence level,
+boundary inventory, proof citation, impact policy, and verdict.
 
 ### Phase 1: Plan
 1. Spawn **god-planner** in fresh context with ROADMAP.md, ARCH.md, DECISION.md,
@@ -730,14 +737,32 @@ LOOP for this slice:
      - The slice plan only (NOT the whole PLAN.md)
      - Relevant ARCH excerpts for this slice
      - Stack DECISION
+     - references/building/BLAST-RADIUS.md
      - --yolo if active
   2. Wait for god-executor to complete (TDD enforced strictly)
   3. Spawn god-spec-reviewer in fresh context (independent of executor)
      - If FAIL: return slice to god-executor with findings, GOTO step 1
      - If PASS: proceed to step 4
-  4. Spawn god-quality-reviewer in fresh context (independent)
-     - If FAIL: return slice to god-executor with findings, GOTO step 1
-     - If PASS: atomic commit
+  4. Resolve each cited verification record ID locally with
+     `lib/evidence.resolveReviewEvidence`, the expected claim, exact command,
+     canonical substep, review-window start, and latest behavior-change
+     timestamp. Spawn god-quality-reviewer in fresh context (independent) with
+     the shared protocol and sanitized projections only. Do not pass raw ledger
+     records, gate-event attributes, commands, claims, output tails, or
+     secret-bearing arguments.
+     - Preserve the first quality and safety-case verdicts as provisional, plus
+       evidence or an evidence-backed N/A for all 10 boundary classes
+     - Classify bounded or wide before acting on the provisional first-pass verdict.
+     - Classify the change as wide when it crosses at least 3 boundary classes
+       or at least 2 high-impact classes; otherwise classify it as bounded
+     - Require one safety case for bounded changes and at least 2 independent
+       safety cases for wide changes
+     - If bounded: one pass is sufficient and its provisional verdict proceeds
+       to the final Stage 2 gate
+     - If wide, always run a second independent safety case in a fresh context, even when the provisional first-pass verdict is FAIL. Do not give it the first pass's conclusions.
+     - After all required passes finish, reconcile the safety cases and issue the final Stage 2 verdict. Preserve each provisional verdict; agreement never raises an evidence level.
+     - If the final Stage 2 verdict FAILS: return findings to god-executor, GOTO step 1
+     - If the final Stage 2 verdict PASSES: atomic commit
   5. Update .godpowers/build/STATE.mdx with slice completion
   6. Refresh deliverable progress: run
      `lib/requirements.writeLedger(projectRoot)` to update
@@ -766,6 +791,10 @@ After all waves complete:
 CRITICAL RULES (build phase):
 - Never skip god-spec-reviewer
 - Never skip god-quality-reviewer
+- Never merge a wide slice without 2 independent blast-radius passes in fresh contexts
+- Never treat levels 1 through 3, static impact, or reviewer agreement as executed proof
+- Never pass Stage 2 with a confirmed blocking risk or high-impact UNPROVEN claim
+- Never cite level 4 or 5 without an accepted sanitized `resolveReviewEvidence` projection for a fresh successful matching `npx godpowers verify` record
 - Never commit without BOTH stages passing
 - Each slice gets its own atomic commit
 - Each agent gets a fresh context (defeats context rot)

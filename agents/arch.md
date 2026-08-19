@@ -32,6 +32,12 @@ see_also: [quality, deploy]
 - [DECISION] Godaudits 2.x interoperability reads `.godaudits/AUDIT.json` as canonical machine state, imports explicit check outcomes, evidence metadata, compliance, accepted risks, open questions, score caps, coverage, findings, and typed GA tasks, and uses generated or legacy AUDIT.mdx only as a fallback.
 - [DECISION] Godplans 1.1 interoperability treats `.godplans/PLAN.mdx` plus the pinned executable `.godplans/validate-plan.sh` as one contract, mirrors structural validation without executing repository shell during import, blocks GP dispatch outside `approved` or `executing`, and requires the official validator to pass immediately before work.
 - [DECISION] `lib/prose-lint.js` stays inside the existing artifact-quality boundary as a dependency-free inert-text scanner with no I/O, bounded sanitized excerpts, and warning-only U-12 integration through `lib/have-nots-validator.js`.
+- [DECISION] `references/building/BLAST-RADIUS.md` is the single Stage 2 safety-case protocol consumed by `/god-review`, `/god-build`, `god-executor`, `god-quality-reviewer`, and the orchestrator runbook.
+- [DECISION] `god-executor` proposes a candidate safety fact and focused proof but does not grade its own work; `god-quality-reviewer` independently verifies or replaces the candidate and owns the Stage 2 verdict.
+- [DECISION] `lib/impact.js` remains a static candidate generator with unproven maximum-level-2 metadata, while the existing evidence ledger remains the executed-proof authority.
+- [DECISION] `lib/evidence.resolveReviewEvidence` adds a read-only sanitized projection over unchanged verification records and additive record-ID and record-digest gate-event bindings.
+- [DECISION] Bounded changes receive 1 Stage 2 safety case; changes crossing at least 3 boundary classes or at least 2 high-impact classes receive at least 2 independent fresh-context safety cases before reconciliation.
+- [DECISION] The blast-radius design adds no command, route, recipe, workflow, specialist type, production dependency, evidence store, or state writer.
 - [DECISION] The current executable audit status is fresh for repo surface, route quality, recipe coverage, and workflow planning.
 
 ## Rules

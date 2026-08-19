@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-6.1.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-6.2.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 ### Your AI writes code fast. Godpowers makes it accountable.
@@ -219,6 +219,22 @@ change never grades it. The reviewer is spawned separately, with no memory of
 writing the thing it is reviewing, so it cannot rubber-stamp its own work.
 Building, checking against the spec, and checking code quality are three
 independent jobs done by three independent workers.
+
+Every Stage 2 pass also writes one blast-radius safety case around the fact that
+must stay true for the change to be safe. Source citations and traced callers
+narrow the search, but evidence levels 1 through 3 remain `UNPROVEN`. A focused
+executed probe is level 4, and an applicable installed, process, browser,
+service, host, or faithful-consumer reproduction is level 5. High-impact
+uncertainty blocks; lower-impact uncertainty stays visible with one exact next
+proof.
+
+Every safety case checks dependency implementation, pinned versions, local
+patches, lifecycle timing, public or serialized contracts, disk state,
+configuration, generated or installed copies, npm package contents, and
+cross-language consumers. A change is wide at 3 crossed boundary classes or 2
+high-impact classes. Wide changes receive at least 2 independent fresh-context
+safety cases, even when the first pass fails; bounded changes keep the normal
+single Stage 2 pass.
 
 ### The harness protects the agent's attention
 

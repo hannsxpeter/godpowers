@@ -197,6 +197,22 @@ Static catches sloppiness. Linkage catches documents that have quietly become
 fiction. Runtime catches the thing that passes every test and still does not
 work. The complete picture is in [validation.md](./validation.md).
 
+### Review evidence is not a vote
+
+Stage 2 review names one load-bearing safety fact: the condition that must stay
+true for the change to be safe. Citations, traced branches, static impact, and
+agreeing reviewers help find the right boundary, but they remain `UNPROVEN`.
+Only a focused executed probe, or an applicable reproduction through the real
+delivery boundary, can clear the named path.
+
+High-impact uncertainty blocks the change. Lower-impact uncertainty remains a
+warning with one exact next proof. A change that crosses at least 3 review
+boundaries or at least 2 high-impact classes receives a second independent
+fresh-context safety case, even if the first one fails. Agreement between the
+reviewers cannot make weak evidence stronger. See
+[Validation](validation.md#blast-radius-safety-case) for the five evidence
+levels and 10 boundary classes.
+
 ---
 
 ## What Godpowers keeps on disk

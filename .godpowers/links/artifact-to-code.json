@@ -272,12 +272,126 @@
     "scripts/test-prose-lint.js"
   ],
   "P-MUST-35": [
+    "lib/repo-doc-sync.js",
     "scripts/check-package-contents.js",
-    "scripts/test-prose-lint.js"
+    "scripts/test-prose-lint.js",
+    "scripts/test-repo-doc-sync.js",
+    "scripts/version-sync.js"
   ],
   "P-MUST-34": [
     "scripts/test-prose-lint.js",
     "specialists/god-docs-writer.md",
     "specialists/god-launch-strategist.md"
+  ],
+  "P-MUST-40": [
+    "lib/evidence.js",
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "scripts/test-evidence.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-executor.md",
+    "specialists/god-quality-reviewer.md"
+  ],
+  "P-MUST-36": [
+    "lib/feature-awareness.js",
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/check-package-contents.js",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "scripts/test-feature-awareness.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-executor.md",
+    "specialists/god-quality-reviewer.md"
+  ],
+  "P-MUST-42": [
+    "lib/feature-awareness.js",
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "scripts/test-feature-awareness.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-quality-reviewer.md"
+  ],
+  "P-MUST-43": [
+    "lib/impact.js",
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/check-package-contents.js",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "scripts/test-impact.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-executor.md",
+    "specialists/god-quality-reviewer.md"
+  ],
+  "P-MUST-37": [
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-executor.md",
+    "specialists/god-quality-reviewer.md"
+  ],
+  "P-MUST-38": [
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-quality-reviewer.md"
+  ],
+  "P-MUST-39": [
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-executor.md",
+    "specialists/god-quality-reviewer.md"
+  ],
+  "P-MUST-41": [
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-executor.md",
+    "specialists/god-quality-reviewer.md"
+  ],
+  "ADR-010": [
+    "lib/evidence.js",
+    "references/building/BLAST-RADIUS.md",
+    "scripts/test-blast-radius.js",
+    "scripts/test-evidence.js"
+  ],
+  "M-blast-radius-safety-case": [
+    "lib/evidence.js",
+    "lib/feature-awareness.js",
+    "lib/impact.js",
+    "references/building/BLAST-RADIUS.md",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/check-package-contents.js",
+    "scripts/run-tests.js",
+    "scripts/test-blast-radius.js",
+    "scripts/test-evidence.js",
+    "scripts/test-feature-awareness.js",
+    "scripts/test-impact.js",
+    "skills/god-build.md",
+    "skills/god-review.md",
+    "specialists/god-executor.md",
+    "specialists/god-quality-reviewer.md"
   ]
 }

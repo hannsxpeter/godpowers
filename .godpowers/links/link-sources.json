@@ -427,5 +427,287 @@
   ],
   "P-MUST-34\u0000specialists/god-launch-strategist.md": [
     "code-scanner"
+  ],
+  "P-MUST-40\u0000lib/evidence.js": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000lib/feature-awareness.js": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000lib/feature-awareness.js": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000lib/impact.js": [
+    "code-scanner"
+  ],
+  "P-MUST-35\u0000lib/repo-doc-sync.js": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000references/building/BLAST-RADIUS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-37\u0000references/building/BLAST-RADIUS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-38\u0000references/building/BLAST-RADIUS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-39\u0000references/building/BLAST-RADIUS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000references/building/BLAST-RADIUS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-41\u0000references/building/BLAST-RADIUS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000references/building/BLAST-RADIUS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000references/building/BLAST-RADIUS.md": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-37\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-38\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-39\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-41\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000scripts/check-package-contents.js": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000scripts/check-package-contents.js": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-37\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-38\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-39\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-41\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000scripts/run-tests.js": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000scripts/test-blast-radius.js": [
+    "code-scanner"
+  ],
+  "P-MUST-37\u0000scripts/test-blast-radius.js": [
+    "code-scanner"
+  ],
+  "P-MUST-38\u0000scripts/test-blast-radius.js": [
+    "code-scanner"
+  ],
+  "P-MUST-39\u0000scripts/test-blast-radius.js": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000scripts/test-blast-radius.js": [
+    "code-scanner"
+  ],
+  "P-MUST-41\u0000scripts/test-blast-radius.js": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000scripts/test-blast-radius.js": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000scripts/test-blast-radius.js": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000scripts/test-evidence.js": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000scripts/test-feature-awareness.js": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000scripts/test-feature-awareness.js": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000scripts/test-impact.js": [
+    "code-scanner"
+  ],
+  "P-MUST-35\u0000scripts/test-repo-doc-sync.js": [
+    "code-scanner"
+  ],
+  "P-MUST-35\u0000scripts/version-sync.js": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000skills/god-build.md": [
+    "code-scanner"
+  ],
+  "P-MUST-37\u0000skills/god-build.md": [
+    "code-scanner"
+  ],
+  "P-MUST-38\u0000skills/god-build.md": [
+    "code-scanner"
+  ],
+  "P-MUST-39\u0000skills/god-build.md": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000skills/god-build.md": [
+    "code-scanner"
+  ],
+  "P-MUST-41\u0000skills/god-build.md": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000skills/god-build.md": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000skills/god-build.md": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000skills/god-review.md": [
+    "code-scanner"
+  ],
+  "P-MUST-37\u0000skills/god-review.md": [
+    "code-scanner"
+  ],
+  "P-MUST-38\u0000skills/god-review.md": [
+    "code-scanner"
+  ],
+  "P-MUST-39\u0000skills/god-review.md": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000skills/god-review.md": [
+    "code-scanner"
+  ],
+  "P-MUST-41\u0000skills/god-review.md": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000skills/god-review.md": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000skills/god-review.md": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-37\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-39\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-41\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000specialists/god-executor.md": [
+    "code-scanner"
+  ],
+  "P-MUST-36\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-37\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-38\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-39\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-40\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-41\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-42\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-43\u0000specialists/god-quality-reviewer.md": [
+    "code-scanner"
+  ],
+  "ADR-010\u0000lib/evidence.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "ADR-010\u0000references/building/BLAST-RADIUS.md": [
+    "canonical-blast-radius-closeout"
+  ],
+  "ADR-010\u0000scripts/test-evidence.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "ADR-010\u0000scripts/test-blast-radius.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000references/building/BLAST-RADIUS.md": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000lib/evidence.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000lib/impact.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000lib/feature-awareness.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000skills/god-review.md": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000skills/god-build.md": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000specialists/god-executor.md": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000specialists/god-quality-reviewer.md": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000scripts/test-blast-radius.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000scripts/test-evidence.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000scripts/test-impact.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000scripts/test-feature-awareness.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000scripts/run-tests.js": [
+    "canonical-blast-radius-closeout"
+  ],
+  "M-blast-radius-safety-case\u0000scripts/check-package-contents.js": [
+    "canonical-blast-radius-closeout"
   ]
 }

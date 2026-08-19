@@ -18,11 +18,13 @@ required-context:
   - "inline:architecture-excerpts"
   - "file:.godpowers/stack/DECISION.mdx"
   - "file:references/building/BUILD-ANTIPATTERNS.md"
+  - "file:references/building/BLAST-RADIUS.md"
 optional-context: []
 outputs:
   - "source code changes"
   - "tests and regression coverage"
   - "request-trace closeout"
+  - "candidate blast-radius safety fact, boundary classes, and proof command"
 gates:
   - "RED-GREEN-REFACTOR sequence"
   - "full test suite and lint for the slice"
@@ -32,6 +34,8 @@ handoff:
 ---
 
 # God Executor
+
+<!-- Implements: P-MUST-36, P-MUST-37, P-MUST-39, P-MUST-40, P-MUST-41, P-MUST-43 -->
 
 Implement ONE slice. Fresh context. Strict TDD. No exceptions.
 
@@ -46,6 +50,7 @@ You receive:
   and files implicated by a previous verification run
 - Optional source-grounding report: pass/fail status for existing files and
   symbols cited by the slice plan
+- `references/building/BLAST-RADIUS.md`
 
 Before editing, read `references/building/BUILD-ANTIPATTERNS.md`; the
 have-nots below name the same failure patterns it explains with samples and
@@ -128,6 +133,12 @@ Before editing, convert the slice into a short execution contract:
 - The smallest files you expect to touch
 - The verification command that proves success
 
+Use the shared blast-radius protocol to propose one candidate safety fact, the
+boundary classes implicated by the planned diff, and the smallest focused proof
+command. The executor must not grade the candidate, clear a risk, or assign the
+final evidence level. Stage 2 independently verifies or replaces it after the
+implementation and tests exist.
+
 Capture `lib/maintainability-trajectory.captureSnapshot` before production
 edits and again after slice verification, then attach the report-only
 `compareSnapshots` result to closeout evidence. The measurements never replace
@@ -190,6 +201,10 @@ and any conflict must retain the state value plus the emitted warning.
    - Typecheck/check results
    - Files changed
    - Any unrelated improvement you noticed but intentionally left untouched
+   - One candidate safety fact, implicated boundary classes, and focused proof
+     command for the independent reviewer
+   - Runtime or installed reproduction target when applicable, or the observed
+     reason level 5 appears inapplicable
    - Ready for two-stage review
 
 DO NOT commit yet. The orchestrator will spawn god-spec-reviewer and

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Implements: P-MUST-36, P-MUST-42
 /**
  * Behavioral tests for lib/feature-awareness.js.
  */
@@ -21,6 +22,16 @@ function mkProject() {
 
 
 console.log('\n  Feature-awareness behavioral tests\n');
+
+test('P-MUST-36 and P-MUST-42: awareness exposes blast-radius review on existing commands', () => {
+  const feature = awareness.FEATURES.find((entry) => entry.id === 'blast-radius-safety-case');
+  assert(feature, 'blast-radius-safety-case feature missing');
+  assert(feature.since === '6.2.0', `unexpected since version ${feature.since}`);
+  assert(feature.commands.includes('/god-review'), '/god-review awareness missing');
+  assert(feature.commands.includes('/god-build'), '/god-build awareness missing');
+  assert(feature.description.includes('ledger-backed'), 'executed-evidence behavior missing');
+  assert(feature.description.includes('wide changes'), 'conditional multi-review behavior missing');
+});
 
 test('detect reports uninitialized projects without writing files', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-feature-awareness-empty-'));

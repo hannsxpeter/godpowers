@@ -118,6 +118,20 @@ Beyond what was inherited, godpowers added:
   zero-warning self-dogfood gate. No upstream prose, rule catalog, code,
   fixture, or result is vendored, and there is no runtime dependency.
 
+- **Blast-radius safety cases for code review**
+  (`references/building/BLAST-RADIUS.md`, `skills/god-review.md`,
+  `specialists/god-quality-reviewer.md`, `lib/impact.js`, and
+  `lib/evidence.js`). The idea of naming a load-bearing safety condition,
+  looking beyond direct callers, grading evidence strength, and separating
+  risks from cleared paths was influenced by pstack's blast-radius skill
+  ([source](https://github.com/cursor/plugins/blob/main/pstack/skills/blast-radius/SKILL.md),
+  [MIT license](https://github.com/cursor/plugins/blob/main/pstack/LICENSE)).
+  Godpowers authored its protocol, prose, implementation, fixtures, probes,
+  and results independently. No upstream prose, code, fixture, or result is
+  copied or vendored, the pstack plugin is not an npm dependency, and the npm
+  package contains no pstack runtime. A future copy or substantial portion
+  would require the upstream copyright and MIT permission notice.
+
 ## Why this is the only mention
 
 Acknowledging influences once, in a single dedicated file, keeps the

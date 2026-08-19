@@ -207,11 +207,19 @@ Each command has:
 **Execution** (composite, multi-agent):
 - Phase 1: `god-planner` writes `.godpowers/build/PLAN.mdx` with vertical slices grouped into waves
 - Phase 2: For each wave, for each slice in parallel:
-  - Spawn `god-executor` (TDD enforced strictly)
+  - Spawn `god-executor` (TDD enforced strictly); it may return one candidate
+    safety fact and focused proof, but it cannot grade them
   - Spawn `god-spec-reviewer` (independent of executor)
-  - Spawn `god-quality-reviewer` (independent of spec-reviewer)
-  - On both pass: atomic commit
-  - On either fail: return to executor with feedback
+  - Spawn `god-quality-reviewer` (independent of spec-reviewer) for the nine
+    quality dimensions and the `references/building/BLAST-RADIUS.md` safety case
+  - Record all 10 boundary classes and classify the change as bounded or wide
+    at 3 crossed boundary classes or 2 high-impact classes
+  - If wide, always run a second independent safety case in a fresh context,
+    even after a provisional first-pass FAIL, then reconcile without treating
+    reviewer agreement as proof
+  - After Stage 1 and every required Stage 2 safety case pass: atomic commit
+  - On a final Stage 1 or reconciled Stage 2 failure: return to executor with
+    feedback
 - Writes: source code, tests, `.godpowers/state.json`, and `.godpowers/build/PLAN.mdx`
 
 **Standards**: have-nots B-01 through B-12
@@ -676,7 +684,25 @@ Add tests to legacy code.
 4-phase systematic debug.
 
 ### /god-review
-Two-stage code review.
+Two-stage code review. Stage 1 checks specification compliance. Stage 2 states
+exactly one load-bearing safety fact, inventories dependency implementation,
+pinned versions, local patches, lifecycle timing, public or serialized
+contracts, disk state, configuration, installed surfaces, npm package surfaces,
+and cross-language consumers, then separates Confirmed Risks, Cleared Risks,
+and Unproven Claims.
+
+Evidence levels 1 through 3 remain `UNPROVEN`. Level 4 is a focused probe and
+level 5 is an applicable delivery-boundary reproduction, both executed through
+the existing `godpowers verify` operation. Stage 2 receives only the sanitized
+`lib/evidence.resolveReviewEvidence` projection for each cited record. A
+high-impact `UNPROVEN` claim blocks; a lower-impact one warns with one exact
+next proof.
+
+Bounded changes finish after one Stage 2 safety case. Wide changes cross at
+least 3 boundary classes or at least 2 high-impact classes and receive at least
+2 independent fresh-context safety cases. The second pass runs even when the
+first pass provisionally fails; reconciliation cannot raise evidence based on
+agreement.
 
 ### /god-fast
 Trivial inline edit.

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Implements: P-MUST-43
 /**
  * Behavioral tests for Phase 5 forward propagation:
  *   lib/impact.js
@@ -133,6 +134,18 @@ test('forArtifactDiff reports info severity when only additions and no impact', 
   if (r.severity !== 'info') throw new Error(`expected info, got ${r.severity}`);
 });
 
+test('P-MUST-43: forArtifactDiff labels static impact as an unproven candidate', () => {
+  const tmp = mkTmp();
+  const r = impact.forArtifactDiff(tmp, 'prd', 'P-MUST-01', 'P-MUST-01\nP-MUST-02');
+  if (!r.evidence) throw new Error('evidence metadata missing');
+  if (r.evidence.kind !== 'static-candidate') throw new Error(`unexpected kind ${r.evidence.kind}`);
+  if (r.evidence.status !== 'unproven') throw new Error(`unexpected status ${r.evidence.status}`);
+  if (r.evidence.maximumLevel !== 2) throw new Error(`unexpected maximum ${r.evidence.maximumLevel}`);
+  if (!r.evidence.limitation.includes('does not prove behavioral safety')) {
+    throw new Error('candidate limitation missing');
+  }
+});
+
 // ============================================================================
 // forDesign
 // ============================================================================
@@ -188,6 +201,18 @@ components:
   const r = impact.forDesign(tmp, old, next);
   const change = r.componentChanges.find(c => c.name === 'button');
   if (!change || change.kind !== 'modified') throw new Error('component modification not detected');
+});
+
+test('P-MUST-43: forDesign labels static impact as an unproven candidate', () => {
+  const tmp = mkTmp();
+  const r = impact.forDesign(tmp, '---\ncolors:\n  primary: "#000"\n---', '---\ncolors:\n  primary: "#111"\n---');
+  if (!r.evidence) throw new Error('evidence metadata missing');
+  if (r.evidence.kind !== 'static-candidate') throw new Error(`unexpected kind ${r.evidence.kind}`);
+  if (r.evidence.status !== 'unproven') throw new Error(`unexpected status ${r.evidence.status}`);
+  if (r.evidence.maximumLevel !== 2) throw new Error(`unexpected maximum ${r.evidence.maximumLevel}`);
+  if (!r.evidence.limitation.includes('does not prove behavioral safety')) {
+    throw new Error('candidate limitation missing');
+  }
 });
 
 // ============================================================================

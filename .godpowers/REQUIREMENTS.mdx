@@ -5,19 +5,19 @@
 > `/god-progress`, `/god-status`, or `/god-sync`. Do not hand-edit statuses;
 > they are recomputed from disk.
 
-Updated: 2026-08-19T06:21:23.536Z
+Updated: 2026-08-19T09:52:41.912Z
 Source: PRD + ROADMAP + linkage forward map + build state
-Progress: [####################] 47/47 done (100%) | 0 in progress | 0 not started
+Progress: [####################] 55/55 done (100%) | 0 in progress | 0 not started
 
 ## By priority
 
 | Priority | Done | In progress | Not started | Total |
 |----------|------|-------------|-------------|-------|
-| MUST | 35 | 0 | 0 | 35 |
+| MUST | 43 | 0 | 0 | 43 |
 | SHOULD | 8 | 0 | 0 | 8 |
 | COULD | 4 | 0 | 0 | 4 |
 
-## Done (47)
+## Done (55)
 
 - [x] **P-MUST-01** Run a full idea-to-production project autonomously through tiered specialist agents _(increment: M-orchestration)_ - agents/god-orchestrator.md, docs/change-propagation.md, docs/linkage.md, lib/code-scanner.js, +9 more
 - [x] **P-MUST-02** Hold project state on disk and re-derive it every turn, never from agent memory _(increment: M-orchestration)_ - lib/state.js, scripts/test-linkage.js, specialists/god-executor.md
@@ -53,7 +53,15 @@ Progress: [####################] 47/47 done (100%) | 0 in progress | 0 not start
 - [x] **P-MUST-32** Integrate prose findings into universal artifact validation as U-12 warnings _(increment: M-prose-quality-hardening)_ - lib/have-nots-validator.js, references/HAVE-NOTS.md, scripts/test-artifact-linter.js, scripts/test-prose-lint.js
 - [x] **P-MUST-33** Verify prose lint behavior, precision, performance, integration, and shipped-framework self-dogfood _(increment: M-prose-quality-hardening)_ - lib/prose-lint.js, scripts/run-tests.js, scripts/static-check.js, scripts/test-prose-lint.js
 - [x] **P-MUST-34** Apply the shared prose contract through the documentation and launch specialists according to output type _(increment: M-prose-quality-hardening)_ - scripts/test-prose-lint.js, specialists/god-docs-writer.md, specialists/god-launch-strategist.md
-- [x] **P-MUST-35** Preserve independent authorship and release discipline for the pstack `unslop`-inspired prose-quality feature _(increment: M-prose-quality-hardening)_ - scripts/check-package-contents.js, scripts/test-prose-lint.js
+- [x] **P-MUST-35** Preserve independent authorship and release discipline for the pstack `unslop`-inspired prose-quality feature _(increment: M-prose-quality-hardening)_ - lib/repo-doc-sync.js, scripts/check-package-contents.js, scripts/test-prose-lint.js, scripts/test-repo-doc-sync.js, +1 more
+- [x] **P-MUST-36** Define one shared blast-radius safety-case protocol and make the existing `/god-review`, `/god-build`, executor, quality reviewer, and orchestrator flow consume it _(increment: M-blast-radius-safety-case)_ - lib/feature-awareness.js, references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/check-package-contents.js, +7 more
+- [x] **P-MUST-37** Require every blast-radius safety case to name exactly one load-bearing safety fact and grade its strongest evidence on a five-level ladder _(increment: M-blast-radius-safety-case)_ - references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, scripts/test-blast-radius.js, +4 more
+- [x] **P-MUST-38** Separate Confirmed Risks, Cleared Risks, and Unproven Claims and bind impact to verdict behavior _(increment: M-blast-radius-safety-case)_ - references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, scripts/test-blast-radius.js, +3 more
+- [x] **P-MUST-39** Scan dependency implementation, pinned version, local patches, lifecycle timing, public or serialized contracts, database or disk state, configuration or flags, generated or installed surfaces, npm package surfaces, and cross-language consumers before grading the safety fact _(increment: M-blast-radius-safety-case)_ - references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, scripts/test-blast-radius.js, +4 more
+- [x] **P-MUST-40** Bind level 4 and level 5 conclusions to the existing verification ledger through a read-only sanitized resolver _(increment: M-blast-radius-safety-case)_ - lib/evidence.js, references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, +6 more
+- [x] **P-MUST-41** Require runtime reproduction only when lifecycle, installation, packaging, process, browser, service, host, or faithful consumer behavior can change the conclusion and an evidenced runnable target exists _(increment: M-blast-radius-safety-case)_ - references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, scripts/test-blast-radius.js, +4 more
+- [x] **P-MUST-42** Add a second independent fresh-context blast-radius pass only for wide changes _(increment: M-blast-radius-safety-case)_ - lib/feature-awareness.js, references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, +5 more
+- [x] **P-MUST-43** Keep static impact output as a candidate generator and preserve the existing package and public surface _(increment: M-blast-radius-safety-case)_ - lib/impact.js, references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/check-package-contents.js, +7 more
 - [x] **P-SHOULD-01** Set up a deploy pipeline that promotes the same artifact with tested rollback _(increment: M-shipping)_ - agents/god-deploy-engineer.md
 - [x] **P-SHOULD-02** Wire observability with SLOs tied to product success metrics _(increment: M-shipping)_ - agents/god-observability-engineer.md
 - [x] **P-SHOULD-03** Produce launch readiness: landing copy, Open Graph cards, and a launch runbook _(increment: M-shipping)_ - agents/god-launch-strategist.md
@@ -92,4 +100,5 @@ Progress: [####################] 47/47 done (100%) | 0 in progress | 0 not start
 - [x] **M-authorized-ai-provenance-cleaning**: Authorized AI provenance cleaning _[next]_ - done - 2/2 requirements done
 - [x] **M-harness-quality-hardening**: Harness quality hardening _[next]_ - done - 6/6 requirements done
 - [x] **M-prose-quality-hardening**: Prose quality hardening _[next]_ - done - 6/6 requirements done
+- [x] **M-blast-radius-safety-case**: Blast-radius safety case _[next]_ - done - 8/8 requirements done
 - [ ] **M-deeper-traceability-and-ecosystem**: Deeper traceability and ecosystem _[later]_ - pending - 0/0 requirements done

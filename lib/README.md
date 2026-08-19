@@ -41,7 +41,7 @@ package-level integrations.
 | `runtime-audit.js` | Audit runtime health and expected project state. |
 | `blind-compare.js` | Prepare unlabeled A/B screenshot pairs with a sealed role assignment; enforce verdict-before-unseal ordering and verdict immutability. |
 | `runtime-test.js` | Provide runtime checks used by package tests. |
-| `evidence.js` | Enforced producer of executed/attested verification records, the state.json rollup, gate events, reflections, memory, lessons, and outcome loops. |
+| `evidence.js` | Enforced producer of executed or attested verification records, the state.json rollup, gate events, reflections, memory, lessons, and outcome loops; `resolveReviewEvidence` checks one exact executed record against expected claim, command, canonical substep, freshness, digest-bound gate event, and event chain, then returns a sanitized projection. |
 | `evidence-import.js` | Import an existing `.mythify/` ledger into `.godpowers/ledger/`. |
 | `work-report.js` | Render the verification play-by-play from the evidence ledger. |
 | `adoption-metrics.js` | Derive adoption and outcome metrics from event streams. |
@@ -132,13 +132,24 @@ may preserve an approved founder or product voice.
 | `cross-artifact-impact.js` | Detect relationships between changed artifacts. |
 | `cross-repo-linkage.js` | Track suite-level repository relationships. |
 | `drift-detector.js` | Detect context drift between artifacts and implementation. |
-| `impact.js` | Summarize expected impact of proposed changes. |
+| `impact.js` | Summarize expected impact of proposed changes and label its affected files as unproven static candidates with maximum evidence level 2. |
 | `linkage.js` | Connect artifacts, stories, and implementation files. |
 | `requirements.js` | Track which PRD requirements are done, in progress, or untouched from disk evidence. |
 | `multi-repo-detector.js` | Detect multi-repository workspaces. |
 | `reverse-sync.js` | Reflect implementation changes back into artifacts. |
 | `review-required.js` | Decide when review gates should block progress. |
 | `suite-state.js` | Manage state across registered project suites. |
+
+`lib/impact.js` discovers candidates only. Its linkage and source-search output
+does not establish behavioral safety. Reviewers raise evidence to level 4 or 5
+only with an accepted executed record from the existing verification ledger.
+
+`lib/evidence.resolveReviewEvidence` is read-only. It omits raw claims,
+commands, stdout tails, and stderr tails from its return value, exposing only
+bounded identity, result, match, freshness, event-binding, and chain-integrity
+fields. This detects inconsistent mutation inside a trusted workspace; it does
+not authenticate evidence against an actor that can rewrite every trusted file
+and recompute the event chain.
 
 ## Installer, dashboard, and CLI helpers
 

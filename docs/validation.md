@@ -202,6 +202,92 @@ two-stage code review (`god-spec-reviewer` + `god-quality-reviewer`).
 This split is deliberate: mechanical checks should never be done by
 hand. Interpretive checks should never be claimed to be mechanical.
 
+### Blast-radius safety case
+
+Stage 2 review adds a behavioral safety case from
+`references/building/BLAST-RADIUS.md` without adding another command or review
+stage. Every pass states exactly one load-bearing safety fact with a falsifiable
+condition, affected boundary, consequence if false, strongest evidence level,
+and evidence citation.
+
+| Level | Evidence | Review state |
+|---|---|---|
+| 1 | Reviewer assertion without a source | `UNPROVEN` |
+| 2 | Specific source, dependency, schema, manifest, or `file:line` citation | `UNPROVEN` |
+| 3 | Traced branch or consumer path that refutes one named failure path | `UNPROVEN` |
+| 4 | Successful focused probe executed through `npx godpowers verify` | Proven only for the exercised path and inputs |
+| 5 | Successful running, installed, process, browser, service, host, or faithful-consumer reproduction through `npx godpowers verify` | Proven only for the exercised delivery boundary |
+
+Evidence levels are ordinal, not additive. Several citations, traces, or
+agreeing reviewers cannot turn levels 1 through 3 into level 4 or 5.
+`lib/impact.js`, grep, AST search, LSP references, and import graphs are
+candidate generators only. `lib/impact.js` labels its output
+`static-candidate`, `unproven`, with maximum level 2.
+
+Before grading the safety fact, the reviewer records evidence or an observed
+not-applicable reason for all 10 boundary classes:
+
+1. dependency implementation
+2. pinned dependency version
+3. local dependency patches
+4. lifecycle or ordering timing
+5. serialized or public API contracts
+6. database or disk-state fields
+7. configuration or feature flags
+8. generated or installed surfaces
+9. npm package surfaces
+10. cross-language consumers
+
+Review output separates Confirmed Risks, Cleared Risks, and Unproven Claims.
+Confirmed Risks and Cleared Risks require level 4 or 5 evidence. A high-impact
+`UNPROVEN` claim blocks Stage 2 when failure could affect authentication or
+authorization, secrets, state integrity, destructive actions, installer or
+published package behavior, public or serialized contracts, or verification
+ledger integrity. A lower-impact `UNPROVEN` claim remains a warning and names
+one exact command, fixture, dependency trace, or runtime reproduction needed
+next.
+
+Runtime reproduction is conditional. Level 5 is required when real lifecycle,
+installation, packaging, process, browser, service, host, or faithful-consumer
+behavior can change the answer and an evidenced runnable target exists. When
+runtime state cannot alter a deterministic local conclusion, the reviewer
+records level 5 as not applicable with the observed reason. When runtime proof
+matters but no runnable target exists, the gap remains an Unproven Claim with
+an owner, impact, and exact evidence needed.
+
+Level 4 and 5 citations resolve locally through
+`lib/evidence.resolveReviewEvidence`. The caller supplies one exact record ID,
+expected claim, exact command, canonical substep, review-window start, and
+latest behavior-change timestamp. Acceptance requires one executed record with
+exit 0 and `verified: true`, plus one matching SHA-256 digest-bound gate event
+on a valid event chain. Failed, timed-out, attested-only, mismatched,
+pre-change, stale, duplicate, unbound, or altered evidence cannot clear a risk.
+
+The executed verification record shape is unchanged. Gate events add only the
+record ID and record digest needed for the local binding check; the existing
+ledger, state rollup, and hash-chained event stream remain authoritative.
+
+The resolver returns a sanitized projection. It omits raw ledger claims,
+commands, stdout tails, and stderr tails, and exposes only bounded identity,
+result, comparison, freshness, event-binding, and chain-integrity fields. This
+checks consistency inside a trusted workspace. It cannot authenticate against
+an actor that can rewrite all trusted files and recompute the chain.
+
+A change is wide when it crosses at least 3 boundary classes or at least 2
+high-impact classes. Bounded changes use 1 Stage 2 safety case. Wide changes
+always use at least 2 independent fresh-context safety cases, even after a
+provisional first-pass failure. Reconciliation compares the safety fact,
+boundary inventory, evidence grade, and risk classification; reviewer
+agreement never raises evidence.
+
+The focused adversarial suite creates temporary repositories for six hidden
+failures: pinned dependency implementation, lifecycle ordering, a serialized
+field consumer, installed-copy drift, a missing package file, and a
+cross-language invocation. Each direct-caller probe appears safe, while the
+required boundary probe exposes the failure. Fixture subprocesses use fixed
+argument arrays, a 10-second timeout, and a 1 MiB output cap; timeout and output
+overflow fail closed.
+
 ### How to run
 
 ```bash
@@ -209,6 +295,16 @@ hand. Interpretive checks should never be claimed to be mechanical.
 /god-lint .godpowers/prd/PRD.mdx             # One file
 /god-lint --json                            # Structured output
 /god-lint --errors-only                     # Skip warnings
+```
+
+Maintainers can run the focused blast-radius contracts directly:
+
+```bash
+node scripts/test-blast-radius.js
+node scripts/test-impact.js
+node scripts/test-evidence.js
+node scripts/test-feature-awareness.js
+node scripts/check-package-contents.js
 ```
 
 Returns structured findings:
