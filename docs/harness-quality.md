@@ -59,6 +59,11 @@ changes must define these sections before Build can close:
 - Module Boundaries
 - Public Contracts
 - Call And Data Flow
+- Callers And Dependents
+- Design Pressures
+- Alternative Shapes
+- Selected Shape
+- Deviation Return Rule
 - Reused Patterns
 - Non-Goals
 - Verification Points
@@ -68,6 +73,20 @@ event bound to the exact project-relative plan path and SHA-256 content hash.
 Plan frontmatter and prose cannot authorize themselves. YOLO runs record
 affirmative auto-approval and its rationale. Missing, negative, unreadable, or
 project-external plan evidence blocks the Build gate.
+
+Alternative Shapes must contain at least two distinct designs and Selected
+Shape must choose one. When the same material deviation from the approved shape
+appears twice, execution stops and returns the plan for revision instead of
+continuing to edit around it.
+
+## Debug feedback loop
+
+`/god-debug` requires an executed deterministic reproduction before it forms a
+hypothesis. Each test records the prediction, observed result, and information
+gained. A repeated test, unchanged prediction, unsafe record, or result that
+adds no information returns the workflow to observation. This gate prevents a
+sequence of edits from being treated as investigation merely because each edit
+was followed by a command.
 
 ## Structured slice handoffs
 

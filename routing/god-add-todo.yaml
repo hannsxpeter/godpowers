@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-add-todo
+  invocation-policy: suggestible
   description: Capture a todo from current context
   tier: 0
   family: capture

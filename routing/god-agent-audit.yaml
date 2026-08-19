@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-agent-audit
+  invocation-policy: suggestible
   description: Validate agents/*.md against agent contract
   tier: 0
   family: verify

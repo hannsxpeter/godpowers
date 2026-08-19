@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-version
+  invocation-policy: suggestible
   description: Print installed version + capability summary
   tier: 0
   family: configure

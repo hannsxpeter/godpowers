@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-preflight
+  invocation-policy: auto-bounded
   description: Read-only intake audit before project-run readiness and pillars
   tier: 0
   family: start

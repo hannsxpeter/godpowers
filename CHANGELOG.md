@@ -7,6 +7,82 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.3.0] - 2026-08-19
+
+Engineering evidence and authority release. Godpowers now chooses runtime
+verification by product form, requires learning-bearing debug loops, deepens
+larger program designs, records cited why evidence and durable decisions, and
+makes command invocation authority machine-readable.
+
+### Added
+
+- Dependency-free verification profiles for CLI, SDK, API, UI, service, and
+  library products. Each profile requires material user paths, failure paths,
+  and completion evidence before `/god-test-runtime` can report completion.
+- A bounded debug feedback-loop gate that requires an executed deterministic
+  reproduction before hypothesis work and rejects repeated tests or
+  predictions that produce no new information.
+- Optional `/god-archaeology --why <target>` evidence validation with exact
+  targets, independent cited source categories, calibrated confidence, bounded
+  output, and fail-closed secret handling.
+- `decision.recorded` events and `/god-trace --decisions`, using the existing
+  hash-chained event store and a stable `{ items, integrityFailures }`
+  projection.
+- One closed invocation-policy value on every canonical core route, with
+  filename-bound command identity and duplicate or spoofed route rejection.
+- Optional `@godpowers/operations-pack` 0.1.0 with approval-gated issue triage
+  and a human-only setup wizard whose generated shell helpers are statically
+  checked rather than executed end to end.
+
+### Changed
+
+- Medium and large program designs now name callers and dependents, design
+  pressures, at least two distinct alternative shapes, one selected shape,
+  and a return-to-planning rule after the same design deviation occurs twice.
+- External, destructive, dependency, recovery, and release routes remain
+  approval-required. Existing command names, specialists, workflows, recipes,
+  runtime modes, state authority, and event authority remain unchanged.
+- The core package now contains 117 runtime modules and 117 focused test
+  scripts while retaining zero root production dependencies.
+- `INSPIRATION.md` records the MIT-licensed pstack and Matt Pocock engineering
+  sources that informed the work. Every Godpowers validator, contract,
+  template, fixture, test, and result was authored independently, with no
+  upstream runtime dependency or vendored upstream material.
+
+### Security
+
+- Durable decision validation rejects secret-bearing field variants, common
+  provider tokens, userinfo, all URL query strings, and unsafe fragments before
+  append or projection, without echoing rejected values.
+- Route discovery derives command authority from canonical filenames and
+  rejects duplicate, spoofed, and noncanonical route YAML before routing.
+- Event access now rejects traversal and linked run paths, caps each run at 8
+  MiB and 50,000 lines, and reports unsafe or oversized snapshots as integrity
+  failures without projecting their contents.
+- Unknown route prerequisite predicates now fail closed. Every non-prefixed
+  predicate shipped by the canonical routes has explicit bounded behavior.
+- SkillUI validates remote targets but does not pass URLs or remote repository
+  locations to the external CLI. Remote forms fail closed and require an
+  already reviewed local directory because the subprocess cannot pin redirects
+  or DNS answers.
+- Setup helpers reject tracked environment destinations, control or multiline
+  values, unverified repository authority, unsafe URLs, and command-argument
+  secret transport. File replacement uses temporary output, explicit cleanup,
+  quoting, and error propagation.
+- Manual pack publication passes workflow inputs through environment variables,
+  allowlists the selected pack, and validates strict SemVer before shell use.
+  Root and MCP recovery publication compares registry integrity and shasum to
+  the exact locally packed candidates before promotion.
+- Runtime verification profiles, debug reproductions, recursive validation,
+  and event snapshots have explicit collection, depth, node, byte, and line
+  limits so adversarial inputs fail with bounded output.
+
+### Upgrade
+
+- No state migration, artifact migration, command rename, or production
+  dependency change is required. Root CLI users continue to need Node.js 18 or
+  newer, and MCP users continue to need Node.js 20 or newer.
+
 ## [6.2.0] - 2026-08-19
 
 Blast-radius review hardening release. Godpowers now requires Stage 2 to prove

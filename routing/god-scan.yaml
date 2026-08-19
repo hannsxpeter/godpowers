@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-scan
+  invocation-policy: auto-bounded
   description: Full reverse-sync of the codebase
   tier: 0
   family: maintain

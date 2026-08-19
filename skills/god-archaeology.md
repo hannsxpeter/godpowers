@@ -11,6 +11,8 @@ description: |
 
 # /god-archaeology
 
+<!-- Implements: P-MUST-47 -->
+
 Deep brownfield code analysis.
 
 ## When to use
@@ -25,12 +27,42 @@ Deep brownfield code analysis.
 1. Verify there's existing code to analyze (not an empty dir)
 2. Spawn god-archaeologist in fresh context
 
+## Optional `--why <target>`
+
+Use `/god-archaeology --why <target>` when the request is about why one
+specific file, symbol, route, or decision has its current shape.
+
+1. Keep the target exact and bounded. Do not silently substitute a related
+   target.
+2. Collect cited evidence across at least two independent categories:
+   `git-history`, `code-structure`, `tests`, `docs-artifacts`, or `runtime`
+   when runtime evidence is available.
+3. Classify every statement as `fact`, `inference`, `contradiction`, or
+   `unknown`, and assign `low`, `medium`, or `high` confidence to the
+   conclusion.
+4. Pass the structured record to `validateWhyEvidence` from
+   `lib/why-evidence.js` before presenting a conclusion.
+5. Write `.godpowers/archaeology/WHY.mdx` only when validation passes. Include
+   the exact target, conclusion, confidence, classifications, and source
+   identifiers.
+
+Fail closed when evidence is null, missing, contradictory, uncited, limited to
+one category or source, mismatched to the requested target, or too weak for the
+stated confidence. Redact any raw secret from source identifiers and evidence
+statements. A failed record reports the contradiction or unknown and does not
+claim an explanation.
+
+When `--why` is absent, preserve the existing whole-codebase archaeology flow
+and `.godpowers/archaeology/REPORT.mdx` output unchanged.
+
 ## Verification
 
 - `.godpowers/archaeology/REPORT.mdx` exists
 - Report covers: history, decisions, conventions, risks, tribal knowledge
 - High-risk files explicitly listed
 - Recommendations are specific (not "be careful")
+- With `--why`, `.godpowers/archaeology/WHY.mdx` exists only after
+  `validateWhyEvidence` returns `verdict: pass`
 
 ## On Completion
 

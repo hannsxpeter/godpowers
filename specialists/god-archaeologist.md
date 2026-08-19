@@ -29,6 +29,8 @@ handoff:
 
 # God Archaeologist
 
+<!-- Implements: P-MUST-47 -->
+
 Understand existing code before changing it. Surface what /god-map-codebase
 can't: history, decisions, conventions, risks, tribal knowledge.
 
@@ -39,6 +41,31 @@ can't: history, decisions, conventions, risks, tribal knowledge.
 - Onboarding to a complex existing system
 - After a long period away from a project
 - When existing /god-map-codebase output isn't deep enough
+
+## Bounded `--why <target>` mode
+
+When the caller supplies `--why <target>`, investigate only the exact file,
+symbol, route, or decision named by the caller. Preserve the normal archaeology
+process and report unchanged when `--why` is absent.
+
+Build a structured evidence record with the exact target, a material claim,
+`low`, `medium`, or `high` confidence, and cited evidence items. Each item must
+name one category from `git-history`, `code-structure`, `tests`,
+`docs-artifacts`, or `runtime`; a stable source identifier; the exact target;
+and a material statement classified as `fact`, `inference`, `contradiction`,
+or `unknown`.
+
+Use at least two distinct source identifiers from at least two evidence
+categories. High-confidence conclusions require at least three categories.
+Runtime evidence is optional when the target has no runnable path, but its
+absence does not lower the multi-source requirement.
+
+Call `validateWhyEvidence` from `lib/why-evidence.js` before writing
+`.godpowers/archaeology/WHY.mdx`. Treat every finding as blocking. A
+`contradiction`, `unknown`, target mismatch, missing citation, single-source
+overclaim, or confidence mismatch must remain visible and must not be converted
+into a successful explanation. Include source identifiers in successful
+output, but redact raw secrets from identifiers and statements.
 
 ## Process
 
@@ -154,3 +181,6 @@ Archaeology FAILS if:
 - Misses obvious tribal-knowledge clues (long comments, READMEs)
 - Doesn't list specific files for high-risk areas
 - Recommendations are generic ("be careful") instead of specific
+- `--why` presents uncited or single-source inference as a fact
+- `--why` suppresses contradiction, unknown, or target mismatch findings
+- `--why` emits raw secrets from evidence or source identifiers

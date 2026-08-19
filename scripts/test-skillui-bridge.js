@@ -112,6 +112,52 @@ test('extract creates cache dir even when failing', async () => {
   if (typeof r !== 'object') throw new Error('not an object');
 });
 
+test('remote extraction rejects HTTP, metadata, private, and mixed DNS targets before spawn', async () => {
+  const publicAddress = { address: '93.184.216.34', family: 4 };
+  const cases = [
+    { target: 'http://example.com', resolver: async () => [publicAddress] },
+    { target: 'https://169.254.169.254/latest/meta-data', resolver: async () => [
+      { address: '169.254.169.254', family: 4 }
+    ] },
+    { target: 'https://internal.example', resolver: async () => [
+      { address: '10.1.2.3', family: 4 }
+    ] },
+    { target: 'https://mixed.example', resolver: async () => [
+      publicAddress,
+      { address: '127.0.0.1', family: 4 }
+    ] }
+  ];
+  for (const item of cases) {
+    const result = await bridge.extract(item.target, mkTmp(), {
+      forceRun: true,
+      resolver: item.resolver
+    });
+    if (result.error !== 'unsafe-target' || result.outputDir !== null) {
+      throw new Error(`unsafe target reached SkillUI: ${JSON.stringify(result)}`);
+    }
+  }
+});
+
+test('public HTTPS targets pass the remote target preflight', async () => {
+  const target = await bridge.resolvePublicTarget('https://example.com/design', {
+    resolver: async () => [{ address: '93.184.216.34', family: 4 }]
+  });
+  if (target.url.origin !== 'https://example.com') throw new Error('public target changed origin');
+  if (target.addresses[0].address !== '93.184.216.34') throw new Error('public address missing');
+});
+
+test('public URL and repository targets never reach the external SkillUI process', async () => {
+  for (const target of ['https://example.com/design', 'https://github.com/example/project']) {
+    const result = await bridge.extract(target, mkTmp(), {
+      forceRun: true,
+      resolver: async () => [{ address: '93.184.216.34', family: 4 }]
+    });
+    if (result.error !== 'remote-target-disabled' || result.outputDir !== null) {
+      throw new Error(`remote target reached SkillUI: ${JSON.stringify(result)}`);
+    }
+  }
+});
+
 // ============================================================================
 // findFirstDesignMd
 // ============================================================================
@@ -185,6 +231,9 @@ test('planFallback includes install command when not installed', () => {
   const plan = bridge.planFallback('https://example.com', tmp);
   if (typeof plan.requiresInstall !== 'boolean') throw new Error('requiresInstall missing');
   if (!plan.installCommand.includes('skillui')) throw new Error('install command wrong');
+  if (plan.remoteExtraction !== false || plan.requiresLocalSnapshot !== true) {
+    throw new Error('remote fallback must require a reviewed local snapshot');
+  }
 });
 
 // ============================================================================

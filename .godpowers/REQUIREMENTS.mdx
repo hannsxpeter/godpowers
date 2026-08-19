@@ -5,30 +5,30 @@
 > `/god-progress`, `/god-status`, or `/god-sync`. Do not hand-edit statuses;
 > they are recomputed from disk.
 
-Updated: 2026-08-19T09:52:41.912Z
+Updated: 2026-08-19T15:01:03.929Z
 Source: PRD + ROADMAP + linkage forward map + build state
-Progress: [####################] 55/55 done (100%) | 0 in progress | 0 not started
+Progress: [####################] 63/63 done (100%) | 0 in progress | 0 not started
 
 ## By priority
 
 | Priority | Done | In progress | Not started | Total |
 |----------|------|-------------|-------------|-------|
-| MUST | 43 | 0 | 0 | 43 |
+| MUST | 49 | 0 | 0 | 49 |
 | SHOULD | 8 | 0 | 0 | 8 |
-| COULD | 4 | 0 | 0 | 4 |
+| COULD | 6 | 0 | 0 | 6 |
 
-## Done (55)
+## Done (63)
 
-- [x] **P-MUST-01** Run a full idea-to-production project autonomously through tiered specialist agents _(increment: M-orchestration)_ - agents/god-orchestrator.md, docs/change-propagation.md, docs/linkage.md, lib/code-scanner.js, +9 more
+- [x] **P-MUST-01** Run a full idea-to-production project autonomously through tiered specialist agents _(increment: M-orchestration)_ - agents/god-orchestrator.md, docs/change-propagation.md, docs/linkage.md, lib/code-scanner.js, +10 more
 - [x] **P-MUST-02** Hold project state on disk and re-derive it every turn, never from agent memory _(increment: M-orchestration)_ - lib/state.js, scripts/test-linkage.js, specialists/god-executor.md
 - [x] **P-MUST-03** Detect project mode (greenfield, brownfield, audit, suite) and scale automatically _(increment: M-orchestration)_ - lib/multi-repo-detector.js
-- [x] **P-MUST-04** Author a Product Requirements Document that passes substitution and three-label tests _(increment: M-planning)_ - agents/god-pm.md
-- [x] **P-MUST-05** Design system architecture with C4 structure and Architecture Decision Records _(increment: M-planning)_ - agents/god-architect.md
-- [x] **P-MUST-06** Sequence work into ordered delivery increments with observable completion gates _(increment: M-planning)_ - agents/god-roadmapper.md
-- [x] **P-MUST-07** Select a technology stack with scored candidates and flip points _(increment: M-planning)_ - agents/god-stack-selector.md
-- [x] **P-MUST-08** Scaffold a production-grade repository with CI, linting, and required docs _(increment: M-build-review)_ - agents/god-repo-scaffolder.md
-- [x] **P-MUST-09** Build features test-first in parallel waves of vertical slices _(increment: M-build-review)_ - agents/god-executor.md, agents/god-planner.md
-- [x] **P-MUST-10** Review every slice in two independent stages before commit _(increment: M-build-review)_ - agents/god-quality-reviewer.md, agents/god-spec-reviewer.md
+- [x] **P-MUST-04** Author a Product Requirements Document that passes substitution and three-label tests _(increment: M-planning)_ - agents/god-pm.md, specialists/god-pm.md
+- [x] **P-MUST-05** Design system architecture with C4 structure and Architecture Decision Records _(increment: M-planning)_ - agents/god-architect.md, specialists/god-architect.md
+- [x] **P-MUST-06** Sequence work into ordered delivery increments with observable completion gates _(increment: M-planning)_ - agents/god-roadmapper.md, specialists/god-roadmapper.md
+- [x] **P-MUST-07** Select a technology stack with scored candidates and flip points _(increment: M-planning)_ - agents/god-stack-selector.md, specialists/god-stack-selector.md
+- [x] **P-MUST-08** Scaffold a production-grade repository with CI, linting, and required docs _(increment: M-build-review)_ - agents/god-repo-scaffolder.md, specialists/god-repo-scaffolder.md
+- [x] **P-MUST-09** Build features test-first in parallel waves of vertical slices _(increment: M-build-review)_ - agents/god-executor.md, agents/god-planner.md, specialists/god-executor.md, specialists/god-planner.md
+- [x] **P-MUST-10** Review every slice in two independent stages before commit _(increment: M-build-review)_ - agents/god-quality-reviewer.md, agents/god-spec-reviewer.md, specialists/god-quality-reviewer.md, specialists/god-spec-reviewer.md
 - [x] **P-MUST-11** Gate every artifact against a catalog of named failure modes (have-nots) _(increment: M-quality-gates)_ - lib/have-nots-validator.js
 - [x] **P-MUST-12** Lint planning artifacts mechanically for unlabeled prose, empty no-gos, and missing owners _(increment: M-quality-gates)_ - lib/artifact-linter.js
 - [x] **P-MUST-13** Maintain a bidirectional map between requirement ids and the code files that implement them _(increment: M-traceability)_ - lib/linkage.js
@@ -40,11 +40,11 @@ Progress: [####################] 55/55 done (100%) | 0 in progress | 0 not start
 - [x] **P-MUST-19** Report deliverable progress: which requirements and increments are done, in progress, or not started _(increment: M-deliverable-progress)_ - lib/requirements.js, skills/god-progress.md
 - [x] **P-MUST-20** Pause and resume work across sessions without losing context _(increment: M-orchestration)_ - lib/checkpoint.js
 - [x] **P-MUST-21** Install across Claude Code, Codex, Cursor, Windsurf, Gemini, and other agent tools _(increment: M-multi-tool)_ - bin/install.js, lib/installer-core.js
-- [x] **P-MUST-22** Run an adversarial security review against the OWASP Top 10 before launch _(increment: M-hardening)_ - agents/god-harden-auditor.md
+- [x] **P-MUST-22** Run an adversarial security review against the OWASP Top 10 before launch _(increment: M-hardening)_ - agents/god-harden-auditor.md, specialists/god-harden-auditor.md
 - [x] **P-MUST-23** Inspect and clean AI provenance signals only from content the user owns or is authorized to process _(increment: M-authorized-ai-provenance-cleaning)_ - extensions/provenance-pack/agents/god-ai-provenance-cleaner.md, extensions/provenance-pack/references/provenance-client.js, extensions/provenance-pack/skills/god-remove-ai-marks.md, scripts/test-provenance-pack.js
 - [x] **P-MUST-24** Provide opt-in agent-oriented verification that keeps complete test evidence while presenting compact success and focused first-failure output _(increment: M-harness-quality-hardening)_ - scripts/run-tests.js, scripts/test-test-runner.js
 - [x] **P-MUST-25** Enforce explicit bounded context contracts before every workflow specialist spawn _(increment: M-harness-quality-hardening)_ - lib/context-budget.js, lib/events.js
-- [x] **P-MUST-26** Require approved program design before medium or large implementation while permitting a small-change skip with a recorded rationale _(increment: M-harness-quality-hardening)_ - lib/gate.js, lib/program-design.js
+- [x] **P-MUST-26** Require approved program design before medium or large implementation while permitting a small-change skip with a recorded rationale _(increment: M-harness-quality-hardening)_ - lib/gate.js, lib/program-design.js, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, specialists/god-planner.md, +1 more
 - [x] **P-MUST-27** Derive a compact structured slice handoff from authoritative disk evidence on completion, pause, or ownership change _(increment: M-harness-quality-hardening)_ - lib/slice-handoff.js
 - [x] **P-MUST-28** Capture deterministic before-and-after maintainability evidence with signed deltas and sample counts for independent quality review _(increment: M-harness-quality-hardening)_ - lib/maintainability-trajectory.js, lib/style-stats.js
 - [x] **P-MUST-29** Run a deterministic six-checkpoint evolution benchmark that reveals requirements one at a time and measures continued correctness and changeability _(increment: M-harness-quality-hardening)_ - lib/evolution-benchmark.js
@@ -53,7 +53,7 @@ Progress: [####################] 55/55 done (100%) | 0 in progress | 0 not start
 - [x] **P-MUST-32** Integrate prose findings into universal artifact validation as U-12 warnings _(increment: M-prose-quality-hardening)_ - lib/have-nots-validator.js, references/HAVE-NOTS.md, scripts/test-artifact-linter.js, scripts/test-prose-lint.js
 - [x] **P-MUST-33** Verify prose lint behavior, precision, performance, integration, and shipped-framework self-dogfood _(increment: M-prose-quality-hardening)_ - lib/prose-lint.js, scripts/run-tests.js, scripts/static-check.js, scripts/test-prose-lint.js
 - [x] **P-MUST-34** Apply the shared prose contract through the documentation and launch specialists according to output type _(increment: M-prose-quality-hardening)_ - scripts/test-prose-lint.js, specialists/god-docs-writer.md, specialists/god-launch-strategist.md
-- [x] **P-MUST-35** Preserve independent authorship and release discipline for the pstack `unslop`-inspired prose-quality feature _(increment: M-prose-quality-hardening)_ - lib/repo-doc-sync.js, scripts/check-package-contents.js, scripts/test-prose-lint.js, scripts/test-repo-doc-sync.js, +1 more
+- [x] **P-MUST-35** Preserve independent authorship and release discipline for the pstack `unslop`-inspired prose-quality feature _(increment: M-prose-quality-hardening)_ - INSPIRATION.md, lib/repo-doc-sync.js, scripts/check-package-contents.js, scripts/test-prose-lint.js, +2 more
 - [x] **P-MUST-36** Define one shared blast-radius safety-case protocol and make the existing `/god-review`, `/god-build`, executor, quality reviewer, and orchestrator flow consume it _(increment: M-blast-radius-safety-case)_ - lib/feature-awareness.js, references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/check-package-contents.js, +7 more
 - [x] **P-MUST-37** Require every blast-radius safety case to name exactly one load-bearing safety fact and grade its strongest evidence on a five-level ladder _(increment: M-blast-radius-safety-case)_ - references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, scripts/test-blast-radius.js, +4 more
 - [x] **P-MUST-38** Separate Confirmed Risks, Cleared Risks, and Unproven Claims and bind impact to verdict behavior _(increment: M-blast-radius-safety-case)_ - references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, scripts/test-blast-radius.js, +3 more
@@ -62,18 +62,26 @@ Progress: [####################] 55/55 done (100%) | 0 in progress | 0 not start
 - [x] **P-MUST-41** Require runtime reproduction only when lifecycle, installation, packaging, process, browser, service, host, or faithful consumer behavior can change the conclusion and an evidenced runnable target exists _(increment: M-blast-radius-safety-case)_ - references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, scripts/test-blast-radius.js, +4 more
 - [x] **P-MUST-42** Add a second independent fresh-context blast-radius pass only for wide changes _(increment: M-blast-radius-safety-case)_ - lib/feature-awareness.js, references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/run-tests.js, +5 more
 - [x] **P-MUST-43** Keep static impact output as a candidate generator and preserve the existing package and public surface _(increment: M-blast-radius-safety-case)_ - lib/impact.js, references/building/BLAST-RADIUS.md, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/check-package-contents.js, +7 more
-- [x] **P-SHOULD-01** Set up a deploy pipeline that promotes the same artifact with tested rollback _(increment: M-shipping)_ - agents/god-deploy-engineer.md
-- [x] **P-SHOULD-02** Wire observability with SLOs tied to product success metrics _(increment: M-shipping)_ - agents/god-observability-engineer.md
-- [x] **P-SHOULD-03** Produce launch readiness: landing copy, Open Graph cards, and a launch runbook _(increment: M-shipping)_ - agents/god-launch-strategist.md
-- [x] **P-SHOULD-04** Run steady-state feature, hotfix, and refactor workflows after launch _(increment: M-steady-state)_ - agents/god-updater.md
+- [x] **P-MUST-44** Select one of six product-form verification profiles before runtime testing and require the material user paths, failure paths, and completion evidence for that form _(increment: M-engineering-leverage-contracts)_ - lib/verification-profile.js, scripts/test-verification-profile.js
+- [x] **P-MUST-45** Gate debugging on an executed deterministic reproduction before hypothesis formation, require a changed prediction after each failed hypothesis, and stop repeated no-learning loops _(increment: M-engineering-leverage-contracts)_ - lib/debug-feedback-loop.js, scripts/test-debug-feedback-loop.js, skills/god-debug.md, specialists/god-debugger.md
+- [x] **P-MUST-46** Deepen medium and large program design with caller mapping, design pressures, two distinct alternative shapes, one selected shape, and a repeated-deviation return rule _(increment: M-engineering-leverage-contracts)_ - lib/program-design.js, references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md, scripts/test-program-design.js, specialists/god-executor.md, +3 more
+- [x] **P-MUST-47** Add optional evidence-backed archaeology for exact why questions without changing the default repository report _(increment: M-engineering-leverage-contracts)_ - lib/why-evidence.js, skills/god-archaeology.md, specialists/god-archaeologist.md
+- [x] **P-MUST-48** Record bounded durable engineering decisions in the existing hash-chained event stream and expose a read-only filtered decision trace _(increment: M-engineering-leverage-contracts)_ - lib/event-reader.js, lib/events.js, skills/god-trace.md
+- [x] **P-MUST-49** Declare one deterministic invocation policy for every canonical core route and reject route identity spoofing or duplicate command authority _(increment: M-engineering-leverage-contracts)_ - lib/invocation-policy.js, lib/route-quality-sync.js, lib/router.js, scripts/check-package-contents.js, +1 more
+- [x] **P-SHOULD-01** Set up a deploy pipeline that promotes the same artifact with tested rollback _(increment: M-shipping)_ - agents/god-deploy-engineer.md, specialists/god-deploy-engineer.md
+- [x] **P-SHOULD-02** Wire observability with SLOs tied to product success metrics _(increment: M-shipping)_ - agents/god-observability-engineer.md, specialists/god-observability-engineer.md
+- [x] **P-SHOULD-03** Produce launch readiness: landing copy, Open Graph cards, and a launch runbook _(increment: M-shipping)_ - agents/god-launch-strategist.md, specialists/god-launch-strategist.md
+- [x] **P-SHOULD-04** Run steady-state feature, hotfix, and refactor workflows after launch _(increment: M-steady-state)_ - agents/god-updater.md, specialists/god-updater.md
 - [x] **P-SHOULD-05** Detect host capability and report full, degraded, or unknown runtime guarantees _(increment: M-steady-state)_ - lib/host-capabilities.js
 - [x] **P-SHOULD-06** Verify a running app against acceptance criteria with a headless browser _(increment: M-steady-state)_ - lib/runtime-test.js
 - [x] **P-SHOULD-07** Import context from GSD, BMAD, and Superpowers and sync progress back _(increment: M-steady-state)_ - lib/source-sync.js
-- [x] **P-SHOULD-08** Preserve upstream provenance-cleaning compatibility without coupling the core runtime to the external service _(increment: M-authorized-ai-provenance-cleaning)_ - .github/workflows/publish-pack.yml, extensions/provenance-pack/agents/god-ai-provenance-cleaner.md, extensions/provenance-pack/references/provenance-client.js, extensions/provenance-pack/skills/god-remove-ai-marks.md, +1 more
-- [x] **P-COULD-01** Coordinate a multi-repository suite with byte-identical file sync (Mode D) _(increment: M-advanced)_ - agents/god-coordinator.md
-- [x] **P-COULD-02** Configure host-native scheduled automation after explicit user consent _(increment: M-advanced)_ - agents/god-automation-engineer.md
+- [x] **P-SHOULD-08** Preserve upstream provenance-cleaning compatibility without coupling the core runtime to the external service _(increment: M-authorized-ai-provenance-cleaning)_ - .github/workflows/publish-pack.yml, extensions/provenance-pack/agents/god-ai-provenance-cleaner.md, extensions/provenance-pack/manifest.yaml, extensions/provenance-pack/references/provenance-client.js, +2 more
+- [x] **P-COULD-01** Coordinate a multi-repository suite with byte-identical file sync (Mode D) _(increment: M-advanced)_ - agents/god-coordinator.md, specialists/god-coordinator.md
+- [x] **P-COULD-02** Configure host-native scheduled automation after explicit user consent _(increment: M-advanced)_ - agents/god-automation-engineer.md, specialists/god-automation-engineer.md
 - [x] **P-COULD-03** Export traces and metrics through an OpenTelemetry-compatible pipeline _(increment: M-advanced)_ - lib/otel-exporter.js
-- [x] **P-COULD-04** Run time-boxed research spikes that build a minimal proof and then stop _(increment: M-advanced)_ - agents/god-spike-runner.md
+- [x] **P-COULD-04** Run time-boxed research spikes that build a minimal proof and then stop _(increment: M-advanced)_ - agents/god-spike-runner.md, specialists/god-spike-runner.md
+- [x] **P-COULD-05** Offer optional issue triage that verifies the complete item context and recommends exactly one category and one state before any tracker mutation _(increment: M-engineering-leverage-contracts)_ - extensions/operations-pack/agents/god-issue-triager.md, extensions/operations-pack/skills/god-issue-triage.md, scripts/test-operations-pack.js
+- [x] **P-COULD-06** Offer a human-only setup wizard that inspects the repository, emits statically validated bounded shell helpers, and never runs the generated script end to end _(increment: M-engineering-leverage-contracts)_ - extensions/operations-pack/agents/god-setup-wizard.md, extensions/operations-pack/skills/god-setup-wizard.md, scripts/test-operations-pack.js
 
 ## In progress (0)
 
@@ -101,4 +109,5 @@ Progress: [####################] 55/55 done (100%) | 0 in progress | 0 not start
 - [x] **M-harness-quality-hardening**: Harness quality hardening _[next]_ - done - 6/6 requirements done
 - [x] **M-prose-quality-hardening**: Prose quality hardening _[next]_ - done - 6/6 requirements done
 - [x] **M-blast-radius-safety-case**: Blast-radius safety case _[next]_ - done - 8/8 requirements done
+- [x] **M-engineering-leverage-contracts**: Engineering leverage contracts _[next]_ - done - 8/8 requirements done
 - [ ] **M-deeper-traceability-and-ecosystem**: Deeper traceability and ecosystem _[later]_ - pending - 0/0 requirements done

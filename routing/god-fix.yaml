@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-fix
+  invocation-policy: suggestible
   description: Fix verb dispatcher
   tier: 0
   family: build

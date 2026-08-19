@@ -11,6 +11,7 @@
     "scripts/test-reverse-sync.js",
     "skills/god-link.md",
     "specialists/god-executor.md",
+    "specialists/god-orchestrator.md",
     "specialists/god-pm.md",
     "templates/PRD.mdx"
   ],
@@ -23,27 +24,36 @@
     "lib/multi-repo-detector.js"
   ],
   "P-MUST-04": [
-    "agents/god-pm.md"
+    "agents/god-pm.md",
+    "specialists/god-pm.md"
   ],
   "P-MUST-05": [
-    "agents/god-architect.md"
+    "agents/god-architect.md",
+    "specialists/god-architect.md"
   ],
   "P-MUST-06": [
-    "agents/god-roadmapper.md"
+    "agents/god-roadmapper.md",
+    "specialists/god-roadmapper.md"
   ],
   "P-MUST-07": [
-    "agents/god-stack-selector.md"
+    "agents/god-stack-selector.md",
+    "specialists/god-stack-selector.md"
   ],
   "P-MUST-08": [
-    "agents/god-repo-scaffolder.md"
+    "agents/god-repo-scaffolder.md",
+    "specialists/god-repo-scaffolder.md"
   ],
   "P-MUST-09": [
     "agents/god-executor.md",
-    "agents/god-planner.md"
+    "agents/god-planner.md",
+    "specialists/god-executor.md",
+    "specialists/god-planner.md"
   ],
   "P-MUST-10": [
     "agents/god-quality-reviewer.md",
-    "agents/god-spec-reviewer.md"
+    "agents/god-spec-reviewer.md",
+    "specialists/god-quality-reviewer.md",
+    "specialists/god-spec-reviewer.md"
   ],
   "P-MUST-11": [
     "lib/have-nots-validator.js"
@@ -82,19 +92,24 @@
     "lib/installer-core.js"
   ],
   "P-MUST-22": [
-    "agents/god-harden-auditor.md"
+    "agents/god-harden-auditor.md",
+    "specialists/god-harden-auditor.md"
   ],
   "P-SHOULD-01": [
-    "agents/god-deploy-engineer.md"
+    "agents/god-deploy-engineer.md",
+    "specialists/god-deploy-engineer.md"
   ],
   "P-SHOULD-02": [
-    "agents/god-observability-engineer.md"
+    "agents/god-observability-engineer.md",
+    "specialists/god-observability-engineer.md"
   ],
   "P-SHOULD-03": [
-    "agents/god-launch-strategist.md"
+    "agents/god-launch-strategist.md",
+    "specialists/god-launch-strategist.md"
   ],
   "P-SHOULD-04": [
-    "agents/god-updater.md"
+    "agents/god-updater.md",
+    "specialists/god-updater.md"
   ],
   "P-SHOULD-05": [
     "lib/host-capabilities.js"
@@ -106,20 +121,24 @@
     "lib/source-sync.js"
   ],
   "P-COULD-01": [
-    "agents/god-coordinator.md"
+    "agents/god-coordinator.md",
+    "specialists/god-coordinator.md"
   ],
   "P-COULD-02": [
-    "agents/god-automation-engineer.md"
+    "agents/god-automation-engineer.md",
+    "specialists/god-automation-engineer.md"
   ],
   "P-COULD-03": [
     "lib/otel-exporter.js"
   ],
   "P-COULD-04": [
-    "agents/god-spike-runner.md"
+    "agents/god-spike-runner.md",
+    "specialists/god-spike-runner.md"
   ],
   "P-SHOULD-08": [
     ".github/workflows/publish-pack.yml",
     "extensions/provenance-pack/agents/god-ai-provenance-cleaner.md",
+    "extensions/provenance-pack/manifest.yaml",
     "extensions/provenance-pack/references/provenance-client.js",
     "extensions/provenance-pack/skills/god-remove-ai-marks.md",
     "scripts/test-provenance-pack.js"
@@ -237,7 +256,10 @@
   ],
   "P-MUST-26": [
     "lib/gate.js",
-    "lib/program-design.js"
+    "lib/program-design.js",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "specialists/god-planner.md",
+    "specialists/god-spec-reviewer.md"
   ],
   "P-MUST-28": [
     "lib/maintainability-trajectory.js",
@@ -272,6 +294,7 @@
     "scripts/test-prose-lint.js"
   ],
   "P-MUST-35": [
+    "INSPIRATION.md",
     "lib/repo-doc-sync.js",
     "scripts/check-package-contents.js",
     "scripts/test-prose-lint.js",
@@ -393,5 +416,54 @@
     "skills/god-review.md",
     "specialists/god-executor.md",
     "specialists/god-quality-reviewer.md"
+  ],
+  "P-MUST-44": [
+    "lib/verification-profile.js",
+    "scripts/test-verification-profile.js"
+  ],
+  "P-MUST-45": [
+    "lib/debug-feedback-loop.js",
+    "scripts/test-debug-feedback-loop.js",
+    "skills/god-debug.md",
+    "specialists/god-debugger.md"
+  ],
+  "P-MUST-46": [
+    "lib/program-design.js",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/test-program-design.js",
+    "specialists/god-executor.md",
+    "specialists/god-planner.md",
+    "specialists/god-quality-reviewer.md",
+    "specialists/god-spec-reviewer.md"
+  ],
+  "P-MUST-47": [
+    "lib/why-evidence.js",
+    "skills/god-archaeology.md",
+    "specialists/god-archaeologist.md"
+  ],
+  "P-MUST-48": [
+    "lib/event-reader.js",
+    "lib/events.js",
+    "skills/god-trace.md"
+  ],
+  "P-MUST-49": [
+    "lib/invocation-policy.js",
+    "lib/route-quality-sync.js",
+    "lib/router.js",
+    "scripts/check-package-contents.js",
+    "scripts/test-invocation-policy.js"
+  ],
+  "P-COULD-05": [
+    "extensions/operations-pack/agents/god-issue-triager.md",
+    "extensions/operations-pack/skills/god-issue-triage.md",
+    "scripts/test-operations-pack.js"
+  ],
+  "P-COULD-06": [
+    "extensions/operations-pack/agents/god-setup-wizard.md",
+    "extensions/operations-pack/skills/god-setup-wizard.md",
+    "scripts/test-operations-pack.js"
+  ],
+  "C-debug-feedback-loop": [
+    "lib/debug-feedback-loop.js"
   ]
 }

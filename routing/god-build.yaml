@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-build
+  invocation-policy: suggestible
   description: Build slices with TDD enforcement and two-stage review
   tier: 2
   family: build

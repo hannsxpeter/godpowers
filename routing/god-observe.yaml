@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-observe
+  invocation-policy: approval-required
   description: Wire observability
   tier: 3
   family: operate

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-plan
+  invocation-policy: suggestible
   description: Planning verb dispatcher
   tier: 0
   family: start

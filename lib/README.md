@@ -35,8 +35,8 @@ package-level integrations.
 
 | Module | Purpose |
 |--------|---------|
-| `events.js` | Append structured runtime events. |
-| `event-reader.js` | Read and aggregate event streams. |
+| `events.js` | Append structured runtime events, including bounded secret-safe `decision.recorded` entries. |
+| `event-reader.js` | Read and aggregate event streams, including verified bounded decision projections. |
 | `otel-exporter.js` | Export Godpowers events in an OpenTelemetry-shaped format. |
 | `runtime-audit.js` | Audit runtime health and expected project state. |
 | `blind-compare.js` | Prepare unlabeled A/B screenshot pairs with a sealed role assignment; enforce verdict-before-unseal ordering and verdict immutability. |
@@ -58,6 +58,7 @@ package-level integrations.
 | Module | Purpose |
 |--------|---------|
 | `router.js` | Resolve user intent to skills, agents, recipes, and workflows. |
+| `invocation-policy.js` | Derive and validate the closed invocation policy for each canonical core route. |
 | `quarterback.js` | Entry router that classifies a prompt into a play and refuses new work when the project is on red. |
 | `command-families.js` | Define UX command families, status views, decision ladders, and trigger precedence helpers. |
 | `recipes.js` | Load and validate routing recipes. |
@@ -68,6 +69,7 @@ package-level integrations.
 | `agent-validator.js` | Validate agent frontmatter and contracts. |
 | `agent-refs.js` | Validate workflow agent references and scan skill/agent prose for phantom references. |
 | `executor-repair.js` | Classify executor repair decisions as retry, decompose, prune, or escalate. |
+| `debug-feedback-loop.js` | Validate executed reproductions, changed predictions, and bounded learning before debug hypotheses continue. |
 | `skill-surface.js` | Derive slash-command metadata from the individual `skills/` files. |
 
 ## Artifact quality
@@ -79,7 +81,9 @@ package-level integrations.
 | `artifact-diff.js` | Compare artifact changes for review and release workflows. |
 | `cadence-guard.js` | Slow-artifact re-bless guard: classify a stale roadmap hash as a managed version stamp or content drift, so mechanical loops escalate drift for review instead of re-stamping it. |
 | `gate.js` | Run executable artifact gates for Phase 1 tier completion checks, including claimed-vs-executed attestation pairing and conditional program-design validation for Build. |
-| `program-design.js` | Validate small-change skip rationales and approved medium or large program-design records before Build closes. |
+| `program-design.js` | Validate small-change skip rationales and approved medium or large designs, including callers, pressures, alternatives, selection, and repeated-deviation return rules. |
+| `verification-profile.js` | Validate material runtime verification paths and completion evidence for CLI, SDK, API, UI, service, and library products. |
+| `why-evidence.js` | Validate bounded cited multi-source evidence for optional exact-target archaeology explanations. |
 | `slice-handoff.js` | Project authoritative plan, state, event, linkage, and verification evidence into a bounded resume record. |
 | `maintainability-trajectory.js` | Capture deterministic report-only source, function, duplication, dependency, and cycle deltas around a slice. |
 | `evolution-benchmark.js` | Run the offline six-checkpoint changeability fixture and retain deterministic machine and human evidence. |

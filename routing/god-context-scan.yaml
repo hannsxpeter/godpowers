@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-context-scan
+  invocation-policy: auto-local
   description: 
   tier: 0
   family: maintain

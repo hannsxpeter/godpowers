@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-budget
+  invocation-policy: suggestible
   description: 
   tier: 0
   family: configure

@@ -213,6 +213,18 @@ reviewers cannot make weak evidence stronger. See
 [Validation](validation.md#blast-radius-safety-case) for the five evidence
 levels and 10 boundary classes.
 
+### Evidence and authority are explicit
+
+Runtime verification selects one of six product forms before completion is
+possible. Debugging requires an executed deterministic reproduction before
+hypothesis work. Optional why archaeology requires independent cited evidence,
+and durable decisions are projected only from validated event records.
+
+Every canonical core route also declares one invocation policy. Ordinary
+commands can be suggested, bounded local helpers may use their declared narrow
+automation class, and external, destructive, dependency, recovery, and release
+actions remain approval-required.
+
 ---
 
 ## What Godpowers keeps on disk
@@ -310,6 +322,7 @@ First-party examples:
 - `@godpowers/launch-pack` - Show HN, Product Hunt, Indie Hackers, open source
 - `@godpowers/data-pack` - ETL, machine learning features, dashboards
 - `@godpowers/provenance-pack` - authorized AI provenance inspection and cleaning
+- `@godpowers/operations-pack` - approval-gated issue triage and human-only setup
 
 To build your own:
 

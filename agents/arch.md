@@ -38,6 +38,9 @@ see_also: [quality, deploy]
 - [DECISION] `lib/evidence.resolveReviewEvidence` adds a read-only sanitized projection over unchanged verification records and additive record-ID and record-digest gate-event bindings.
 - [DECISION] Bounded changes receive 1 Stage 2 safety case; changes crossing at least 3 boundary classes or at least 2 high-impact classes receive at least 2 independent fresh-context safety cases before reconciliation.
 - [DECISION] The blast-radius design adds no command, route, recipe, workflow, specialist type, production dependency, evidence store, or state writer.
+- [DECISION] `lib/verification-profile.js`, `lib/debug-feedback-loop.js`, `lib/program-design.js`, `lib/why-evidence.js`, `lib/events.js`, and `lib/invocation-policy.js` add bounded evidence and authority contracts inside existing runtime boundaries.
+- [DECISION] Canonical route filenames own command identity, and route loading rejects duplicate, spoofed, or noncanonical YAML before invocation policy can be consumed.
+- [DECISION] `@godpowers/operations-pack` remains a lazy extension with no core route and no automatic external mutation authority.
 - [DECISION] The current executable audit status is fresh for repo surface, route quality, recipe coverage, and workflow planning.
 
 ## Rules

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-settings
+  invocation-policy: suggestible
   description: View/modify intent.yaml settings
   tier: 0
   family: configure

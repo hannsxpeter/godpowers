@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-skip
+  invocation-policy: approval-required
   description: Explicit skip with audit
   tier: 0
   family: recover

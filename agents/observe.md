@@ -25,6 +25,7 @@ see_also: [quality]
 - [DECISION] `context.loadout` events preserve complete loaded and omitted counts plus bounded source identifiers without recording file or inline contents.
 - [DECISION] `lib/slice-handoff.js` derives an at-most-8-KiB resume projection from authoritative plan, state, event, linkage, and verification evidence.
 - [DECISION] Evolution benchmark evidence records behavior, attempts, rework, changed lines, acceptance, handoff completeness, and maintainability deltas for each of six ordered checkpoints.
+- [DECISION] `decision.recorded` events use the existing hash chain, and `/god-trace --decisions` returns a bounded read-only `{ items, integrityFailures }` projection from one verified snapshot per selected run.
 
 ## Decisions
 

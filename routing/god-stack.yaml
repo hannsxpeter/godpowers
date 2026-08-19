@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-stack
+  invocation-policy: suggestible
   description: Pick technology stack
   tier: 1
   family: start

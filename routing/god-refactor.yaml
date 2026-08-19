@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-refactor
+  invocation-policy: suggestible
   description: Safe refactor with TDD
   tier: 0
   family: build

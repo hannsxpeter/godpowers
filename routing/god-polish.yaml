@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-polish
+  invocation-policy: suggestible
   description: Bounded post-green visual polish loop
   tier: 3
   family: build

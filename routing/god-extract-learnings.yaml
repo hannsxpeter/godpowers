@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-extract-learnings
+  invocation-policy: suggestible
   description: Capture decisions/lessons/patterns from completed work
   tier: 0
   family: capture

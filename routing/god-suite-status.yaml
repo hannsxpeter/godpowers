@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-suite-status
+  invocation-policy: suggestible
   description: Side-by-side status of all suite repos
   tier: 0
   family: collaborate

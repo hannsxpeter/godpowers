@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-suite-patch
+  invocation-policy: suggestible
   description: Coordinated change across multiple repos
   tier: 0
   family: collaborate

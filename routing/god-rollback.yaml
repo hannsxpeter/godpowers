@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-rollback
+  invocation-policy: approval-required
   description: Walk back tier and downstream
   tier: 0
   family: recover

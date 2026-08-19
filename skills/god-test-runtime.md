@@ -1,166 +1,154 @@
 ---
 name: god-test-runtime
 description: |
-  Run headless browser verification of the running app: design audit
-  (rendered styles vs DESIGN.md tokens, real-DOM WCAG contrast) and
-  functional tests (PRD acceptance criteria as user flows). Uses
-  Playwright (local) or Vercel Browser API (cloud).
+  Verify a running product through its real user surface for web, API,
+  CLI or SDK, mobile or desktop, data or ML, and infrastructure or IaC
+  forms. Builds and validates a launch, doctor, drive, evidence, cleanup,
+  isolation, feature-map, and completion-evidence profile before execution.
 
-  Triggers on: "god test runtime", "/god-test-runtime", "browser test",
-  "design audit", "verify rendering", "run e2e", "run tests"
+  Triggers on: "god test runtime", "/god-test-runtime", "runtime test",
+  "browser test", "verify user path", "run e2e", "run tests"
 ---
 
 # /god-test-runtime
 
-Drive a headless browser to verify the app actually matches what
-artifacts say it should be. The third axis of verification (after
-static lint and linkage drift).
+Verify the selected product form through the same public surface a user or
+consumer controls. The command name remains `/god-test-runtime` for
+compatibility. Browser automation is one form-specific harness, not the
+definition of runtime verification.
 
 ## Forms
 
 | Form | Action |
 |---|---|
-| `/god-test-runtime` | Full pipeline: audit + functional tests |
-| `/god-test-runtime audit [url]` | Design audit only |
-| `/god-test-runtime test [url]` | Functional tests only |
-| `/god-test-runtime --backend agent-browser` | Force vercel-labs/agent-browser CLI (preferred) |
-| `/god-test-runtime --backend playwright` | Force Playwright (local fallback) |
-| `/god-test-runtime --backend auto` | Default cascade: agent-browser -> Playwright |
+| `/god-test-runtime` | Verify the primary mapped feature with the selected product-form profile |
+| `/god-test-runtime --form <id>` | Use an explicit canonical product form |
+| `/god-test-runtime audit [target]` | Run the form-specific audit or doctor checks only |
+| `/god-test-runtime test [target]` | Drive mapped user paths only |
 | `/god-test-runtime --strict` | Promote warnings to errors |
-| `/god-test-runtime --no-runtime` | Skip; surface as warning (use sparingly) |
+| `/god-test-runtime --no-runtime` | Skip and record the missing runtime proof as a warning |
+| `/god-test-runtime --backend agent-browser` | Force agent-browser for web-application only |
+| `/god-test-runtime --backend playwright` | Force Playwright for web-application only |
+| `/god-test-runtime --backend auto` | Use agent-browser, then Playwright, for web-application only |
 
-## Default URL resolution
+## Canonical product forms
 
-If `[url]` not given:
-1. Read `state.json.deploy.url` if present (production / preview)
-2. Else read `state.json.dev-server.url` if dev server is running
-3. Else default to `http://localhost:3000`
+| Product form | Primary drive surface |
+|---|---|
+| `web-application` | Headless browser against an evidenced URL |
+| `api-or-service` | Real consumer fixture through HTTP, RPC, events, or worker input |
+| `cli-or-sdk` | Clean consumer installation through the public command or API |
+| `mobile-or-desktop` | Declared platform build through a device, emulator, or desktop harness |
+| `data-or-ml` | Clean-environment pipeline or model reproduction |
+| `infrastructure-or-iac` | Static validation, isolated plan, policy check, simulation or sandbox apply |
+
+Select the form with `lib/product-routing.js` before choosing a harness. Do not
+infer a browser from generic product language.
+
+## Verification profile gate
+
+Before spawning the specialist, construct one plain object and call
+`lib/verification-profile.js` function `validateProfile(profile)`. Do not drive
+the product unless the result verdict is `pass`.
+
+The profile must record:
+
+- `launch`: exact start, build, install, or provisioning command plus readiness evidence.
+- `doctor`: one read-only check that proves the exact instance is worth driving.
+- `drive`: the production-equivalent harness and public interface under test.
+- `evidence`: action, resulting user-visible state, and material side effects to retain.
+- `cleanup`: teardown scoped to resources created by this run. Cleanup retains the evidence.
+- `isolation`: ports, data directories, consumer workspace, profile, device, or sandbox boundaries.
+- `features`: a feature map with at least one entry. Each entry records `id`, `userPath`, `drive`, and `observableEndState`.
+- `completionEvidence`: every form-specific completion evidence item from `formDefinition(form)`.
+
+A generic test pass cannot replace the selected form's completion evidence.
+At least one mapped feature must be driven end to end for a successful run.
 
 ## Process
 
-1. Verify `.godpowers/` exists.
-2. Spawn `god-browser-tester` agent in fresh context with the requested
-   mode (audit / test / both) and resolved URL.
-3. god-browser-tester:
-   - Detects backend (Playwright or Vercel Browser)
-   - Launches headless browser (NEVER `headless: false`)
-   - Navigates, extracts computed styles, runs flows, captures screenshots
-   - Aggregates findings
-   - Writes reports to `.godpowers/runtime/<run-id>/`
-   - Critical findings -> critical-finding gate (pauses default + --yolo)
-   - Other findings -> REVIEW-REQUIRED.md batch
-4. Report results to user.
+1. Verify `.godpowers/` and `.godpowers/prd/PRD.mdx` exist.
+2. Resolve the selected product form and its completion evidence from
+   `lib/product-routing.js`.
+3. Ground launch, doctor, drive, evidence, cleanup, isolation, and the feature
+   map in repository commands, routes, manifests, and acceptance criteria.
+4. Run `validateProfile(profile)`. Report every finding and stop before launch
+   when the verdict fails.
+5. Spawn `god-browser-tester` in fresh context with the validated profile. The
+   specialist name remains for compatibility and covers all six forms.
+6. Launch the isolated target, run doctor, drive at least one mapped feature,
+   capture evidence, and clean up the exact resources created by the run.
+7. Confirm cleanup succeeded and evidence survived, then report the result.
 
-## Headless contract
+## Web application compatibility
 
-Non-negotiable. The bridge layer (`lib/browser-bridge.js`) refuses to
-pass `headless: false`. There is no opt-out flag for that. If you want
-a visual session, use a separate Playwright instance outside Godpowers.
+For `web-application`, preserve the existing headless browser behavior:
 
-`--no-runtime` skips the entire runtime step (e.g., for backend-only
-projects with no UI to verify). It does NOT mean "show me the browser."
+- Resolve a user-provided URL, `state.json.deploy.url`, or
+  `state.json.dev-server.url`. Do not guess an unrecorded URL.
+- Prefer agent-browser, fall back to Playwright, and always use
+  `lib/browser-bridge.js`.
+- Never pass `headless: false`.
+- Run design audit when DESIGN.mdx exists, including real-DOM contrast and
+  token comparison.
+- Run PRD acceptance flows through the browser and capture screenshots.
 
-## Output
+The bridge refuses non-headless launches. A visual session belongs outside
+Godpowers runtime verification.
 
-Per run, in `.godpowers/runtime/<run-id>/`:
-- `audit-report.json` - design verification findings with severity
-- `test-report.json` - functional verification with pass/fail per requirement
-- `screenshots/<name>.png` - reference screenshots
-- `summary.md` - human-readable summary
+## Evidence and outputs
 
-State updates:
-- `state.json.runtime.last-run-id` <- runId
-- `state.json.runtime.backend` <- 'playwright' | 'vercel-browser'
-- `state.json.runtime.audit.summary` <- { errors, warnings, infos }
-- `state.json.runtime.test.summary` <- { passed, failed, total }
+Write each run under `.godpowers/runtime/<run-id>/`:
 
-Events to events.jsonl:
-- `runtime.start`, `runtime.audit-complete`, `runtime.test-complete`,
-  `runtime.critical`, `runtime.end`
+- `profile.json`: validated product form, lifecycle contract, and feature map.
+- `test-report.json`: pass or fail per mapped feature and requirement.
+- `evidence/`: form-appropriate transcripts, responses, logs, screenshots,
+  package details, plans, policy results, or reproduced artifact metadata.
+- `audit-report.json`: web design findings when a design audit applies.
+- `summary.mdx`: human-readable outcome, cleanup result, and deferred coverage.
 
-## Critical findings (gate triggers)
+Executed commands and captured outputs are evidence. The validation result is a
+contract check and must not be presented as proof that the user path ran.
 
-- Any P-MUST-* requirement fails its acceptance flow
-- WCAG AA fail on text-on-background components
-- Component drift > 10% (more than 1 in 10 selectors mismatch DESIGN.md)
+## Critical findings
 
-These pause both default mode AND --yolo. Lint errors and runtime
-critical findings have the same gate semantics.
+- Any P-MUST requirement fails its mapped user or consumer path.
+- Launch or doctor cannot identify a safe instance after a bounded retry.
+- The observable end state or required material side effect is absent.
+- Isolation fails or cleanup would target resources the run did not create.
+- For web applications, WCAG AA contrast fails or component drift exceeds 10 percent.
 
-## When this runs automatically
+Critical findings pause default mode and `--yolo`. Other findings flow to
+REVIEW-REQUIRED.md as one runtime-verification batch.
 
-| Workflow | Mode | Gate semantics |
+## Automatic runs
+
+| Workflow | Scope | Gate semantics |
 |---|---|---|
-| `/god-build` (post-wave, opt-in) | audit | warning |
-| `/god-launch` | full pipeline | hard gate; criticals block |
-| `/god-harden` | a11y portion | warning |
-| `/god-design` (post-change) | audit | warning |
+| `/god-build` post-wave | Primary mapped feature | Warning unless the slice requires runtime proof |
+| `/god-launch` | Selected form's release path | Hard gate, criticals block |
+| `/god-harden` | Form-specific runtime security and accessibility boundary | Warning |
+| `/god-design` post-change | Web application design audit only | Warning |
 
-Automatic runtime verification requires evidenced URL input:
+Automatic execution requires an evidenced target and a safe isolation plan. If
+either is missing, report what source is needed and do not guess.
 
-- A local dev server URL from `state.json.dev-server.url`
-- A deploy URL from `state.json.deploy.url`
-- A user-provided URL in the current session
-- A checked-in config or Godpowers artifact that explicitly identifies the URL
-  as current
+## Have-Nots
 
-If frontend-visible files changed but no URL is evidenced, do not guess. Add a
-proactive suggestion for `/god-test-runtime` and explain what URL source is
-missing. If only a local URL is evidenced, run local verification and defer
-deployed staging verification until the user provides
-`STAGING_APP_URL=<deployed staging origin>` or reaches final sign-off.
-
-When auto-invoked, show a concise default note:
-
-```text
-Verified the evidenced runtime target. Details were written to .godpowers/runtime/<run-id>/summary.mdx.
-```
-
-Use a detailed `Auto-invoked:` card only with `--verbose` or debugging.
-
-## Output to events.jsonl
-
-```json
-{ "name": "runtime.start", "url": "https://...", "backend": "playwright" }
-{ "name": "runtime.audit-complete", "errors": 0, "warnings": 2, "infos": 1 }
-{ "name": "runtime.test-complete", "passed": 5, "failed": 1, "total": 6 }
-{ "name": "runtime.critical", "trigger": "P-MUST-01-failed" }
-{ "name": "runtime.end", "runId": "..." }
-```
-
-## Backend choice in detail
-
-Three native backends supported, with a preference cascade:
-
-### 1. agent-browser (preferred) - vercel-labs/agent-browser
-
-[github.com/vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser).
-Native Rust CLI built specifically for AI agents. Features:
-
-- Accessibility-tree-first interface with stable refs (`@e1`, `@e2`)
-- Semantic locators (`find role button --name "Submit"`)
-- No Node.js daemon required (single binary)
-- Headless by default; optimized for AI workflows
-- Built-in `chat` mode for natural-language control
-
-Install:
-```bash
-npm install -g agent-browser
-agent-browser install   # Downloads Chrome from Chrome for Testing
-```
-
-This is our preferred backend. Maps better to PRD acceptance phrasing
-("user clicks Submit" -> `find role button click --name "Submit"`).
-
-### 2. Playwright - microsoft/playwright
-
-Full programmatic browser automation. Used when agent-browser absent.
-Headless launch only (`headless: true` enforced by bridge).
+- Do not select a browser harness for a non-web product by default.
+- Do not launch before `validateProfile(profile)` passes.
+- Do not count internal setters, test-only endpoints, or repository internals as a user path.
+- Do not accept an empty feature map or generic completion evidence.
+- Do not drive a shared instance when isolation cannot be established.
+- Do not kill by process name or clean resources that this run did not create.
+- Do not delete evidence during cleanup.
+- Do not mark a P-MUST user-path failure as a warning.
 
 ## See also
 
-- `lib/browser-bridge.js` - cascade detection + launch (agent-browser, Playwright)
-- `lib/agent-browser-driver.js` - vercel-labs/agent-browser CLI wrapper
-- `lib/runtime-audit.js` - design verification on rendered DOM (backend-aware)
-- `lib/runtime-test.js` - PRD acceptance to user-flow assertions (backend-aware)
-- `specialists/god-browser-tester.md` - lifecycle owner of runtime checks
+- `lib/verification-profile.js`: cross-form profile validator.
+- `lib/product-routing.js`: canonical product forms and completion evidence.
+- `specialists/god-browser-tester.md`: compatibility-named lifecycle owner.
+- `lib/browser-bridge.js`: web-only headless browser cascade.
+- `lib/runtime-audit.js`: web-only rendered design verification.
+- `lib/runtime-test.js`: web-only PRD browser-flow runner.

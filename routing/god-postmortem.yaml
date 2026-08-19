@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-postmortem
+  invocation-policy: suggestible
   description: Post-incident investigation
   tier: 0
   family: operate

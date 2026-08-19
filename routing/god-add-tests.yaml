@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-add-tests
+  invocation-policy: suggestible
   description: Add tests to legacy code
   tier: 0
   family: build

@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v6.2.0.
+Complete command, agent, and artifact reference for v6.3.0.
 
 **This page is a dictionary, not a tutorial.** It lists everything, which makes
 it useful for looking things up and a poor place to start. If you are new, read
@@ -243,7 +243,10 @@ diff churn that cannot be traced to the request or slice plan.
   with one load-bearing safety fact, the five-level evidence ladder, and all 10
   boundary classes. A high-impact `UNPROVEN` claim fails Stage 2; a
   lower-impact one warns with one exact next proof.
-- `/god-test-runtime` - Headless browser verification (design audit + flow assertions).
+- `/god-test-runtime` - Runtime verification for one declared product form:
+  CLI, SDK, API, UI, service, or library. Each form must name its material user
+  paths, failure paths, and completion evidence. Existing `test-only`,
+  `audit-only`, and `a11y-only` modes remain available.
 - `/god-dogfood` - Run messy-repo dogfood scenarios for migration, host, extension, and suite readiness.
 - `/god-preflight` - Read-only intake audit before arc-ready and pillars.
 - `/god-audit` - Score existing artifacts against all have-nots. When an earlier audit report is on disk (`.godaudits/AUDIT.json`), cross-reference its score, coverage, findings, and remediation state instead of starting fresh.
@@ -271,7 +274,9 @@ cannot raise an evidence level.
 ### Observability
 - `/god-logs` - View `events.jsonl` as a readable timeline.
 - `/god-metrics` - Per-tier durations, pause and error counts.
-- `/god-trace` - Filter one run by tier for a deep dive.
+- `/god-trace` - Filter one run by tier for a deep dive, or use
+  `/god-trace --decisions` for a bounded secret-safe decision projection with
+  explicit integrity failures.
 - `/god-cost` - Token + dollar spend report; live vs estimated split.
 - `/god-budget` - View / set context budgets per agent and tier.
 - `/god-cache-clear` - Invalidate the agent-output cache.
@@ -281,7 +286,9 @@ cannot raise an evidence level.
 ### Knowledge + intelligence
 - `/god-map-codebase` - Parallel codebase analysis.
 - `/god-intel` - Query / refresh codebase intel.
-- `/god-archaeology` - Deep code archaeology for brownfield projects.
+- `/god-archaeology` - Deep code archaeology for brownfield projects. Add
+  `--why <target>` to require bounded cited evidence from independent source
+  categories for one exact explanation.
 - `/god-graph` - Build, query, and inspect the project knowledge graph.
 - `/god-thread` - Persistent context threads.
 - `/god-extract-learnings` - Capture decisions / lessons / patterns.
@@ -334,6 +341,7 @@ First-party packs on npm:
 - `@godpowers/launch-pack` - Show HN, Product Hunt, Indie Hackers, OSS strategists
 - `@godpowers/data-pack` - ETL, ML feature, dashboard specialists
 - `@godpowers/provenance-pack` - authorized AI provenance inspection and cleaning
+- `@godpowers/operations-pack` - approval-gated issue triage and human-only setup guidance
 
 ## Specialist agents (41 total)
 

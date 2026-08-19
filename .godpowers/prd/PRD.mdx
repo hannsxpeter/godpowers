@@ -1,6 +1,6 @@
 # Product Requirements Document
 
-> Reconciled against the published Godpowers 5.3.0 release via `/god-mode`.
+> Reconciled against the Godpowers 6.3.0 release candidate via `/god-mode`.
 > Every sentence is labeled `[DECISION]`, `[HYPOTHESIS]`, or `[OPEN QUESTION]`.
 > Functional requirements carry stable ids (P-MUST-NN / P-SHOULD-NN / P-COULD-NN)
 > that map to the code that implements them.
@@ -94,6 +94,12 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - P-MUST-41 [DECISION] Require runtime reproduction only when lifecycle, installation, packaging, process, browser, service, host, or faithful consumer behavior can change the conclusion and an evidenced runnable target exists -- Acceptance: static-only conclusions record level 5 as not applicable with a repository-backed reason, while an applicable runnable boundary must execute through `godpowers verify` before it is cleared.
 - P-MUST-42 [DECISION] Add a second independent fresh-context blast-radius pass only for wide changes -- Acceptance: crossing at least 3 boundary classes or at least 2 high-impact classes triggers 2 independent Stage 2 safety cases and reconciliation, while bounded changes retain one Stage 2 pass and record the threshold calculation.
 - P-MUST-43 [DECISION] Keep static impact output as a candidate generator and preserve the existing package and public surface -- Acceptance: static results remain unproven with maximum evidence level 2, the implementation adds no production dependency, command, route, recipe, workflow, specialist type, evidence store, or state writer, and upstream inspiration is acknowledged without copying code or prose.
+- P-MUST-44 [DECISION] Select one of six product-form verification profiles before runtime testing and require the material user paths, failure paths, and completion evidence for that form -- Acceptance: `/god-test-runtime` rejects missing or generic CLI, SDK, API, UI, service, and library profiles while preserving its existing `test-only`, `audit-only`, and `a11y-only` modes.
+- P-MUST-45 [DECISION] Gate debugging on an executed deterministic reproduction before hypothesis formation, require a changed prediction after each failed hypothesis, and stop repeated no-learning loops -- Acceptance: `/god-debug` rejects absent, unsafe, or repeated feedback-loop records and returns to observation when a test produces no new information.
+- P-MUST-46 [DECISION] Deepen medium and large program design with caller mapping, design pressures, two distinct alternative shapes, one selected shape, and a repeated-deviation return rule -- Acceptance: Build stops editing and returns to planning after the same design deviation appears twice, while small-change behavior and existing approval semantics remain intact.
+- P-MUST-47 [DECISION] Add optional evidence-backed archaeology for exact why questions without changing the default repository report -- Acceptance: `/god-archaeology --why <target>` requires bounded cited evidence from independent source categories, calibrates confidence, rejects contradictions and secrets, and produces no evidence projection for unsafe or oversized input.
+- P-MUST-48 [DECISION] Record bounded durable engineering decisions in the existing hash-chained event stream and expose a read-only filtered decision trace -- Acceptance: `decision.recorded` rejects raw secrets and malformed citations, `/god-trace --decisions` verifies one immutable run snapshot, reports integrity failures, and retains the newest bounded result and run windows.
+- P-MUST-49 [DECISION] Declare one deterministic invocation policy for every canonical core route and reject route identity spoofing or duplicate command authority -- Acceptance: all 124 routes declare one closed-enum policy, router and route-quality checks agree on canonical filename identity, and external, destructive, dependency, recovery, and release actions require approval.
 
 ### SHOULD (V1 if time permits)
 - P-SHOULD-01 [DECISION] Set up a deploy pipeline that promotes the same artifact with tested rollback -- Acceptance: staging and production deploy the identical build. -- Validation: a rollback drill restores the prior version.
@@ -110,6 +116,8 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - P-COULD-02 [HYPOTHESIS] Configure host-native scheduled automation after explicit user consent -- Acceptance: setup remains a preview until the user approves the named provider action. -- Validation: automation tests reject an apply without explicit consent.
 - P-COULD-03 [HYPOTHESIS] Export traces and metrics through an OpenTelemetry-compatible pipeline -- Acceptance: the exporter preserves trace, span, tier, duration, pause, and error fields. -- Validation: the OTel fixture round-trips the event schema.
 - P-COULD-04 [HYPOTHESIS] Run time-boxed research spikes that build a minimal proof and then stop -- Acceptance: the spike records its budget, evidence, verdict, and stop condition. -- Validation: the spike runner refuses work after the recorded budget is exhausted.
+- P-COULD-05 [HYPOTHESIS] Offer optional issue triage that verifies the complete item context and recommends exactly one category and one state before any tracker mutation -- Acceptance: `@godpowers/operations-pack` waits for explicit maintainer approval, keeps already-implemented work out of the out-of-scope ledger, and requires separate approval before creating a linked story. -- Validation: the operations-pack suite proves the fixed category and state vocabularies plus both approval gates.
+- P-COULD-06 [HYPOTHESIS] Offer a human-only setup wizard that inspects the repository, emits statically validated bounded shell helpers, and never runs the generated script end to end -- Acceptance: the optional operations pack verifies exact URLs and repository authority, keeps secrets off command arguments, rejects tracked environment destinations, and requires exact `YES` for irreversible steps. -- Validation: Bash parsing and adversarial helper tests prove quoting, atomic replacement, cleanup, and failure propagation.
 
 ## Non-Functional Requirements
 
@@ -130,6 +138,8 @@ by `scripts/run-tests.js` and `npm run release:check`.
 | Review evidence integrity | [DECISION] Blast-radius proof resolves through the existing verification ledger and a digest-bound gate event, with unchanged executed-record shape and fail-closed local comparison. | [DECISION] |
 | Review privacy | [DECISION] Stage 2 receives match booleans and bounded redacted metadata without raw records, event attributes, command arguments, claims, or output tails. | [DECISION] |
 | Review trust | [DECISION] Digest and chain checks detect accidental or inconsistent mutation inside the trusted workspace but do not authenticate an actor that can rewrite all trusted project files and recompute the chain. | [DECISION] |
+| Decision history privacy | [DECISION] Durable decision records use bounded allowlisted fields and reject secret-bearing metadata, provider tokens, URL authority credentials, query strings, and unsafe fragments before append or projection. | [DECISION] |
+| Invocation authority | [DECISION] Every canonical route declares one closed invocation policy, and commands that can mutate external state, publish, recover, delete, or change dependencies remain approval-required. | [DECISION] |
 
 ## Scope and No-Gos
 
@@ -148,7 +158,7 @@ by `scripts/run-tests.js` and `npm run release:check`.
 ## Appetite
 
 [DECISION] Time budget: Godpowers is a continuously released project; the current
-5.x line ships on a rolling cadence rather than a single fixed deadline.
+6.x line ships on a rolling cadence rather than a single fixed deadline.
 
 [DECISION] Technical constraints: the user-facing surface stays slash-command
 based across every supported host, and runtime logic stays in plain Node.js with
@@ -177,6 +187,7 @@ Before declaring done, verify:
 
 ## PRD Changelog
 
+- [DECISION] 2026-08-19: Added P-MUST-44 through P-MUST-49 and P-COULD-05 through P-COULD-06 because cross-surface verification, feedback-loop debugging, deeper program design, cited why evidence, durable decision history, invocation authority, optional issue triage, and a human-only setup wizard now form one reviewed engineering-leverage increment.
 - [DECISION] 2026-08-19: Added P-MUST-36 through P-MUST-43 because the completed blast-radius source increment now requires one load-bearing safety fact, 10 boundary classes, ledger-backed executed proof, conditional independent review, sanitized evidence resolution, and high-impact fail-closed verdicts without a new command, dependency, store, or state writer.
 - [DECISION] 2026-08-19: Added P-MUST-30 through P-MUST-35 because shared plain-language guidance, a dependency-free advisory U-12 scanner, output-specific specialist audits, focused self-dogfood evidence, and release provenance now form one verified prose-quality increment.
 - [DECISION] 2026-08-17: Added P-MUST-24 through P-MUST-29 because compact verification, explicit specialist context, conditional program design, structured handoffs, maintainability trajectories, and sequential evolution evidence now form one verified harness-quality increment.
@@ -189,16 +200,16 @@ Before declaring done, verify:
 
 ### P-MUST requirements
 
-- **P-MUST-01** -> `agents/god-orchestrator.md`, `docs/change-propagation.md`, `docs/linkage.md`, `lib/code-scanner.js`, `references/building/BUILD-ANTIPATTERNS.md`, `references/planning/WAYFINDING.md`, `scripts/test-integration.js`, `scripts/test-linkage.js`, `scripts/test-reverse-sync.js`, `skills/god-link.md`, `specialists/god-executor.md`, `specialists/god-pm.md`, `templates/PRD.mdx`
+- **P-MUST-01** -> `agents/god-orchestrator.md`, `docs/change-propagation.md`, `docs/linkage.md`, `lib/code-scanner.js`, `references/building/BUILD-ANTIPATTERNS.md`, `references/planning/WAYFINDING.md`, `scripts/test-integration.js`, `scripts/test-linkage.js`, `scripts/test-reverse-sync.js`, `skills/god-link.md`, `specialists/god-executor.md`, `specialists/god-orchestrator.md`, `specialists/god-pm.md`, `templates/PRD.mdx`
 - **P-MUST-02** -> `lib/state.js`, `scripts/test-linkage.js`, `specialists/god-executor.md`
 - **P-MUST-03** -> `lib/multi-repo-detector.js`
-- **P-MUST-04** -> `agents/god-pm.md`
-- **P-MUST-05** -> `agents/god-architect.md`
-- **P-MUST-06** -> `agents/god-roadmapper.md`
-- **P-MUST-07** -> `agents/god-stack-selector.md`
-- **P-MUST-08** -> `agents/god-repo-scaffolder.md`
-- **P-MUST-09** -> `agents/god-executor.md`, `agents/god-planner.md`
-- **P-MUST-10** -> `agents/god-quality-reviewer.md`, `agents/god-spec-reviewer.md`
+- **P-MUST-04** -> `agents/god-pm.md`, `specialists/god-pm.md`
+- **P-MUST-05** -> `agents/god-architect.md`, `specialists/god-architect.md`
+- **P-MUST-06** -> `agents/god-roadmapper.md`, `specialists/god-roadmapper.md`
+- **P-MUST-07** -> `agents/god-stack-selector.md`, `specialists/god-stack-selector.md`
+- **P-MUST-08** -> `agents/god-repo-scaffolder.md`, `specialists/god-repo-scaffolder.md`
+- **P-MUST-09** -> `agents/god-executor.md`, `agents/god-planner.md`, `specialists/god-executor.md`, `specialists/god-planner.md`
+- **P-MUST-10** -> `agents/god-quality-reviewer.md`, `agents/god-spec-reviewer.md`, `specialists/god-quality-reviewer.md`, `specialists/god-spec-reviewer.md`
 - **P-MUST-11** -> `lib/have-nots-validator.js`
 - **P-MUST-12** -> `lib/artifact-linter.js`
 - **P-MUST-13** -> `lib/linkage.js`
@@ -210,11 +221,11 @@ Before declaring done, verify:
 - **P-MUST-19** -> `lib/requirements.js`, `skills/god-progress.md`
 - **P-MUST-20** -> `lib/checkpoint.js`
 - **P-MUST-21** -> `bin/install.js`, `lib/installer-core.js`
-- **P-MUST-22** -> `agents/god-harden-auditor.md`
+- **P-MUST-22** -> `agents/god-harden-auditor.md`, `specialists/god-harden-auditor.md`
 - **P-MUST-23** -> `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`, `extensions/provenance-pack/skills/god-remove-ai-marks.md`, `scripts/test-provenance-pack.js`
 - **P-MUST-24** -> `scripts/run-tests.js`, `scripts/test-test-runner.js`
 - **P-MUST-25** -> `lib/context-budget.js`, `lib/events.js`
-- **P-MUST-26** -> `lib/gate.js`, `lib/program-design.js`
+- **P-MUST-26** -> `lib/gate.js`, `lib/program-design.js`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `specialists/god-planner.md`, `specialists/god-spec-reviewer.md`
 - **P-MUST-27** -> `lib/slice-handoff.js`
 - **P-MUST-28** -> `lib/maintainability-trajectory.js`, `lib/style-stats.js`
 - **P-MUST-29** -> `lib/evolution-benchmark.js`
@@ -223,7 +234,7 @@ Before declaring done, verify:
 - **P-MUST-32** -> `lib/have-nots-validator.js`, `references/HAVE-NOTS.md`, `scripts/test-artifact-linter.js`, `scripts/test-prose-lint.js`
 - **P-MUST-33** -> `lib/prose-lint.js`, `scripts/run-tests.js`, `scripts/static-check.js`, `scripts/test-prose-lint.js`
 - **P-MUST-34** -> `scripts/test-prose-lint.js`, `specialists/god-docs-writer.md`, `specialists/god-launch-strategist.md`
-- **P-MUST-35** -> `lib/repo-doc-sync.js`, `scripts/check-package-contents.js`, `scripts/test-prose-lint.js`, `scripts/test-repo-doc-sync.js`, `scripts/version-sync.js`
+- **P-MUST-35** -> `INSPIRATION.md`, `lib/repo-doc-sync.js`, `scripts/check-package-contents.js`, `scripts/test-prose-lint.js`, `scripts/test-repo-doc-sync.js`, `scripts/version-sync.js`
 - **P-MUST-36** -> `lib/feature-awareness.js`, `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/check-package-contents.js`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `scripts/test-feature-awareness.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
 - **P-MUST-37** -> `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
 - **P-MUST-38** -> `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-quality-reviewer.md`
@@ -232,24 +243,32 @@ Before declaring done, verify:
 - **P-MUST-41** -> `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
 - **P-MUST-42** -> `lib/feature-awareness.js`, `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `scripts/test-feature-awareness.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-quality-reviewer.md`
 - **P-MUST-43** -> `lib/impact.js`, `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/check-package-contents.js`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `scripts/test-impact.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
+- **P-MUST-44** -> `lib/verification-profile.js`, `scripts/test-verification-profile.js`
+- **P-MUST-45** -> `lib/debug-feedback-loop.js`, `scripts/test-debug-feedback-loop.js`, `skills/god-debug.md`, `specialists/god-debugger.md`
+- **P-MUST-46** -> `lib/program-design.js`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/test-program-design.js`, `specialists/god-executor.md`, `specialists/god-planner.md`, `specialists/god-quality-reviewer.md`, `specialists/god-spec-reviewer.md`
+- **P-MUST-47** -> `lib/why-evidence.js`, `skills/god-archaeology.md`, `specialists/god-archaeologist.md`
+- **P-MUST-48** -> `lib/event-reader.js`, `lib/events.js`, `skills/god-trace.md`
+- **P-MUST-49** -> `lib/invocation-policy.js`, `lib/route-quality-sync.js`, `lib/router.js`, `scripts/check-package-contents.js`, `scripts/test-invocation-policy.js`
 - **P-MUST-99** -> `scripts/test-linkage.js`
 
 ### P-SHOULD requirements
 
-- **P-SHOULD-01** -> `agents/god-deploy-engineer.md`
-- **P-SHOULD-02** -> `agents/god-observability-engineer.md`
-- **P-SHOULD-03** -> `agents/god-launch-strategist.md`
-- **P-SHOULD-04** -> `agents/god-updater.md`
+- **P-SHOULD-01** -> `agents/god-deploy-engineer.md`, `specialists/god-deploy-engineer.md`
+- **P-SHOULD-02** -> `agents/god-observability-engineer.md`, `specialists/god-observability-engineer.md`
+- **P-SHOULD-03** -> `agents/god-launch-strategist.md`, `specialists/god-launch-strategist.md`
+- **P-SHOULD-04** -> `agents/god-updater.md`, `specialists/god-updater.md`
 - **P-SHOULD-05** -> `lib/host-capabilities.js`
 - **P-SHOULD-06** -> `lib/runtime-test.js`
 - **P-SHOULD-07** -> `lib/source-sync.js`
-- **P-SHOULD-08** -> `.github/workflows/publish-pack.yml`, `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`, `extensions/provenance-pack/skills/god-remove-ai-marks.md`, `scripts/test-provenance-pack.js`
+- **P-SHOULD-08** -> `.github/workflows/publish-pack.yml`, `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/manifest.yaml`, `extensions/provenance-pack/references/provenance-client.js`, `extensions/provenance-pack/skills/god-remove-ai-marks.md`, `scripts/test-provenance-pack.js`
 
 ### P-COULD requirements
 
-- **P-COULD-01** -> `agents/god-coordinator.md`
-- **P-COULD-02** -> `agents/god-automation-engineer.md`
+- **P-COULD-01** -> `agents/god-coordinator.md`, `specialists/god-coordinator.md`
+- **P-COULD-02** -> `agents/god-automation-engineer.md`, `specialists/god-automation-engineer.md`
 - **P-COULD-03** -> `lib/otel-exporter.js`
-- **P-COULD-04** -> `agents/god-spike-runner.md`
+- **P-COULD-04** -> `agents/god-spike-runner.md`, `specialists/god-spike-runner.md`
+- **P-COULD-05** -> `extensions/operations-pack/agents/god-issue-triager.md`, `extensions/operations-pack/skills/god-issue-triage.md`, `scripts/test-operations-pack.js`
+- **P-COULD-06** -> `extensions/operations-pack/agents/god-setup-wizard.md`, `extensions/operations-pack/skills/god-setup-wizard.md`, `scripts/test-operations-pack.js`
 
 <!-- godpowers:linkage:end -->

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-prd
+  invocation-policy: suggestible
   description: Write a Product Requirements Document
   tier: 1
   family: start

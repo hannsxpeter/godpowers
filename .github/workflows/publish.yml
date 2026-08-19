@@ -59,20 +59,48 @@ jobs:
       - name: Verify fresh pre-publication gate
         run: npm run release:prepublication:check
 
+      - name: Pack exact release candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidate_dir="$RUNNER_TEMP/godpowers-release-candidates"
+          mkdir -p "$candidate_dir"
+          npm pack --json --pack-destination "$candidate_dir" > "$candidate_dir/root.json"
+          npm pack --workspace @godpowers/mcp --json --pack-destination "$candidate_dir" > "$candidate_dir/mcp.json"
+          node -e '
+            const fs = require("fs");
+            for (const name of ["root", "mcp"]) {
+              const records = JSON.parse(fs.readFileSync(`${process.argv[1]}/${name}.json`, "utf8"));
+              const record = records[0];
+              if (!record || !record.filename || !record.integrity || !record.shasum) process.exit(1);
+            }
+          ' "$candidate_dir"
+          echo "RELEASE_CANDIDATE_DIR=$candidate_dir" >> "$GITHUB_ENV"
+
       - name: Publish godpowers to a recoverable staging tag
         shell: bash
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
           staging_tag="release-${version//./-}"
+          candidate_json="$RELEASE_CANDIDATE_DIR/root.json"
+          tarball="$RELEASE_CANDIDATE_DIR/$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.filename)' "$candidate_json")"
+          expected_integrity="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.integrity)' "$candidate_json")"
+          expected_shasum="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.shasum)' "$candidate_json")"
           set +e
           lookup="$(npm view "godpowers@$version" version 2>&1)"
           lookup_status=$?
           set -e
           if [[ $lookup_status -eq 0 ]]; then
-            echo "godpowers@$version already exists; preserving it for an idempotent recovery run."
+            actual_integrity="$(npm view "godpowers@$version" dist.integrity)"
+            actual_shasum="$(npm view "godpowers@$version" dist.shasum)"
+            if [[ "$actual_integrity" != "$expected_integrity" || "$actual_shasum" != "$expected_shasum" ]]; then
+              echo "godpowers@$version exists but does not match the packed release candidate."
+              exit 1
+            fi
+            echo "godpowers@$version matches the packed candidate; preserving it for recovery."
           elif grep -q 'E404' <<<"$lookup"; then
-            npm publish --provenance --access public --tag "$staging_tag"
+            npm publish "$tarball" --provenance --access public --tag "$staging_tag"
           else
             echo "$lookup"
             echo "Registry state is uncertain; refusing to publish."
@@ -87,14 +115,24 @@ jobs:
           set -euo pipefail
           version="$(node -p "require('./packages/mcp/package.json').version")"
           staging_tag="release-${version//./-}"
+          candidate_json="$RELEASE_CANDIDATE_DIR/mcp.json"
+          tarball="$RELEASE_CANDIDATE_DIR/$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.filename)' "$candidate_json")"
+          expected_integrity="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.integrity)' "$candidate_json")"
+          expected_shasum="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.shasum)' "$candidate_json")"
           set +e
           lookup="$(npm view "@godpowers/mcp@$version" version 2>&1)"
           lookup_status=$?
           set -e
           if [[ $lookup_status -eq 0 ]]; then
-            echo "@godpowers/mcp@$version already exists; preserving it for an idempotent recovery run."
+            actual_integrity="$(npm view "@godpowers/mcp@$version" dist.integrity)"
+            actual_shasum="$(npm view "@godpowers/mcp@$version" dist.shasum)"
+            if [[ "$actual_integrity" != "$expected_integrity" || "$actual_shasum" != "$expected_shasum" ]]; then
+              echo "@godpowers/mcp@$version exists but does not match the packed release candidate."
+              exit 1
+            fi
+            echo "@godpowers/mcp@$version matches the packed candidate; preserving it for recovery."
           elif grep -q 'E404' <<<"$lookup"; then
-            npm publish --workspace @godpowers/mcp --provenance --access public --tag "$staging_tag"
+            npm publish "$tarball" --provenance --access public --tag "$staging_tag"
           else
             echo "$lookup"
             echo "Registry state is uncertain; refusing to publish."
@@ -108,21 +146,27 @@ jobs:
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
-          verify_exact_version() {
+          verify_exact_candidate() {
             package_spec="$1"
+            candidate_json="$2"
+            expected_integrity="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.integrity)' "$candidate_json")"
+            expected_shasum="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.shasum)' "$candidate_json")"
             for attempt in {1..12}; do
-              if actual="$(npm view "$package_spec@$version" version 2>/dev/null)" && [[ "$actual" == "$version" ]]; then
+              actual_version="$(npm view "$package_spec@$version" version 2>/dev/null || true)"
+              actual_integrity="$(npm view "$package_spec@$version" dist.integrity 2>/dev/null || true)"
+              actual_shasum="$(npm view "$package_spec@$version" dist.shasum 2>/dev/null || true)"
+              if [[ "$actual_version" == "$version" && "$actual_integrity" == "$expected_integrity" && "$actual_shasum" == "$expected_shasum" ]]; then
                 return 0
               fi
               if [[ "$attempt" -lt 12 ]]; then
                 sleep 10
               fi
             done
-            echo "Registry propagation did not expose $package_spec@$version after 12 attempts."
+            echo "Registry did not expose the exact packed candidate for $package_spec@$version after 12 attempts."
             return 1
           }
-          verify_exact_version "godpowers"
-          verify_exact_version "@godpowers/mcp"
+          verify_exact_candidate "godpowers" "$RELEASE_CANDIDATE_DIR/root.json"
+          verify_exact_candidate "@godpowers/mcp" "$RELEASE_CANDIDATE_DIR/mcp.json"
 
       - name: Promote the verified pair to latest
         shell: bash

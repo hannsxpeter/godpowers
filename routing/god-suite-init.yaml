@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-suite-init
+  invocation-policy: suggestible
   description: Register a multi-repo suite (Mode D)
   tier: 0
   family: collaborate

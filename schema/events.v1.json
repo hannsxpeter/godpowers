@@ -3,6 +3,51 @@
   "$id": "https://godpowers.dev/schema/events.v1.json",
   "title": "Godpowers Event (v1)",
   "description": "OpenTelemetry-shape event. One per line in events.jsonl. Append-only.",
+  "$defs": {
+    "decisionAttrs": {
+      "type": "object",
+      "required": ["decision", "reason", "evidence", "result"],
+      "properties": {
+        "decision": { "type": "string", "minLength": 8, "maxLength": 240 },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "pattern": "^(https://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9._~!$&'()*+,;=:@%/\\-]*)?(#[A-Za-z0-9._:\\-]+)?|(event|command|artifact|git):[A-Za-z0-9_./:@#=+\\-]+|(\\.?\\.?/)?([A-Za-z0-9_.@\\-]+/)*[A-Za-z0-9_.@\\-]+\\.[A-Za-z0-9]+(:[A-Za-z0-9_.\\-]+)?(#[A-Za-z0-9_.:\\-]+)?)$"
+          }
+        },
+        "result": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "tier": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "agent": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "artifact": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "requirement": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "scope": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "category": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "status": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "note": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "attempts": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "approved": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "name": { "const": "decision.recorded" } },
+        "required": ["name"]
+      },
+      "then": {
+        "properties": { "attrs": { "$ref": "#/$defs/decisionAttrs" } },
+        "required": ["attrs"]
+      }
+    }
+  ],
   "type": "object",
   "required": ["trace_id", "span_id", "ts", "name"],
   "properties": {
@@ -39,6 +84,7 @@
         "tool.result",
         "model.call",
         "decision.route",
+        "decision.recorded",
         "artifact.created",
         "artifact.updated",
         "artifact.hash",

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-capture
+  invocation-policy: suggestible
   description: Capture verb dispatcher
   tier: 0
   family: capture

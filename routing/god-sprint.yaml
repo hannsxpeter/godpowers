@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-sprint
+  invocation-policy: suggestible
   description: Sprint plan / status / retro
   tier: 0
   family: collaborate

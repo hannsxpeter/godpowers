@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-story
+  invocation-policy: suggestible
   description: Write new STORY.md (fine-grained slice)
   tier: 1
   family: build

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-design
+  invocation-policy: auto-bounded
   description: Design lifecycle (DESIGN.md + PRODUCT.md) bridged to impeccable
   tier: 1
   family: start

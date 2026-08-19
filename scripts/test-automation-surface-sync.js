@@ -52,6 +52,7 @@ function fixture() {
     'kind: CommandRouting',
     'metadata:',
     '  command: /god-story-build',
+    '  invocation-policy: suggestible',
     'execution:',
     '  spawns: [god-planner+god-executor+reviewers]',
     'success-path:',
@@ -62,6 +63,7 @@ function fixture() {
     'kind: CommandRouting',
     'metadata:',
     '  command: /god-docs',
+    '  invocation-policy: auto-bounded',
     'execution:',
     '  spawns: [built-in]',
     'success-path:',
@@ -72,6 +74,7 @@ function fixture() {
     'kind: CommandRouting',
     'metadata:',
     '  command: /god-write',
+    '  invocation-policy: suggestible',
     'execution:',
     '  spawns: [god-writer]',
     '  writes:',
@@ -110,6 +113,121 @@ test('route quality sync requires trace events for agent-spawning routes', () =>
   assert(report.stale.some((check) => check.id === 'agent-trace-policy'));
 });
 
+test('P-MUST-49: route quality sync rejects missing invocation policy', () => {
+  const tmp = fixture();
+  writeRel(tmp, 'routing/god-write.yaml', [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    '  command: /god-write',
+    'execution:',
+    '  spawns: [built-in]',
+    'success-path:',
+    '  next-recommended: /god-status'
+  ].join('\n'));
+  const report = routeQualitySync.detect(tmp);
+  assert(report.stale.some((check) => check.id === 'missing-invocation-policy--god-write'));
+  assert(report.stale.some((check) => check.id === 'invocation-policy-contract'));
+});
+
+test('P-MUST-49: route quality sync rejects invalid and mismatched invocation policies', () => {
+  const tmp = fixture();
+  writeRel(tmp, 'routing/god-write.yaml', [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    '  command: /god-write',
+    '  invocation-policy: auto',
+    'execution:',
+    '  spawns: [built-in]',
+    'success-path:',
+    '  next-recommended: /god-status'
+  ].join('\n'));
+  writeRel(tmp, 'routing/god-docs.yaml', [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    '  command: /god-docs',
+    '  invocation-policy: suggestible',
+    'execution:',
+    '  spawns: [built-in]',
+    'success-path:',
+    '  next-recommended: /god-status'
+  ].join('\n'));
+  const report = routeQualitySync.detect(tmp);
+  assert(report.stale.some((check) => check.id === 'invalid-invocation-policy--god-write'));
+  assert(report.stale.some((check) => check.id === 'mismatched-invocation-policy--god-docs'));
+});
+
+test('P-MUST-49: auto-local routes can use only built-in execution', () => {
+  const tmp = fixture();
+  writeRel(tmp, 'routing/god-next.yaml', [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    '  command: /god-next',
+    '  invocation-policy: auto-local',
+    'execution:',
+    '  spawns: [built-in, god-writer]',
+    'success-path:',
+    '  next-recommended: /god-status',
+    'endoff:',
+    '  events: [agent.start, agent.end]'
+  ].join('\n'));
+  const report = routeQualitySync.detect(tmp);
+  assert(report.stale.some((check) => check.id === 'unsafe-auto-local--god-next'));
+});
+
+test('P-MUST-49: route quality derives policy from canonical filename before metadata', () => {
+  const tmp = fixture();
+  writeRel(tmp, 'routing/god-launch.yaml', [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    '  command: /god-feature',
+    '  invocation-policy: suggestible',
+    'execution:',
+    '  spawns: [built-in]',
+    'success-path:',
+    '  next-recommended: /god-status'
+  ].join('\n'));
+  const report = routeQualitySync.detect(tmp);
+  assert(report.stale.some((check) => check.id === 'spoofed-route-command-god-launch-yaml'));
+  assert(report.stale.some((check) => check.id === 'mismatched-invocation-policy--god-launch'));
+});
+
+test('P-MUST-49: route quality rejects duplicate command keys', () => {
+  const tmp = fixture();
+  writeRel(tmp, 'routing/god-alias.yaml', [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    '  command: /god-docs',
+    '  invocation-policy: suggestible',
+    'execution:',
+    '  spawns: [built-in]',
+    'success-path:',
+    '  next-recommended: /god-status'
+  ].join('\n'));
+  const report = routeQualitySync.detect(tmp);
+  assert(report.stale.some((check) => check.id === 'duplicate-route-command--god-docs'));
+});
+
+test('P-MUST-49: route quality rejects noncanonical route YAML files', () => {
+  const tmp = fixture();
+  writeRel(tmp, 'routing/custom.yaml', [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    '  command: /god-docs',
+    '  invocation-policy: auto-bounded',
+    'execution:',
+    '  spawns: [built-in]'
+  ].join('\n'));
+  const report = routeQualitySync.detect(tmp);
+  assert(report.stale.some((check) => check.id === 'noncanonical-route-file-custom-yaml'));
+});
+
 test('route quality sync requires typed outcomes for contextual exits', () => {
   const tmp = fixture();
   writeRel(tmp, 'routing/god-next.yaml', [
@@ -117,6 +235,7 @@ test('route quality sync requires typed outcomes for contextual exits', () => {
     'kind: CommandRouting',
     'metadata:',
     '  command: /god-next',
+    '  invocation-policy: auto-local',
     'execution:',
     '  spawns: [built-in]',
     'success-path:',
@@ -135,6 +254,7 @@ test('route quality sync requires gate commands for executable tier routes', () 
     'kind: CommandRouting',
     'metadata:',
     '  command: /god-prd',
+    '  invocation-policy: suggestible',
     'execution:',
     '  spawns: [built-in]',
     '  writes:',

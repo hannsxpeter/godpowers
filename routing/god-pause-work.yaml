@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-pause-work
+  invocation-policy: suggestible
   description: Save context handoff
   tier: 0
   family: continue

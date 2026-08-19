@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-roadmap-update
+  invocation-policy: suggestible
   description: Update ROADMAP.mdx after feature work or priority changes
   tier: 1
   family: maintain

@@ -67,7 +67,8 @@
     "P-MUST-17"
   ],
   "lib/router.js": [
-    "P-MUST-18"
+    "P-MUST-18",
+    "P-MUST-49"
   ],
   "lib/requirements.js": [
     "P-MUST-19"
@@ -246,19 +247,23 @@
     "P-...",
     "P-MUST-01",
     "P-MUST-02",
+    "P-MUST-09",
     "P-MUST-36",
     "P-MUST-37",
     "P-MUST-39",
     "P-MUST-40",
     "P-MUST-41",
-    "P-MUST-43"
+    "P-MUST-43",
+    "P-MUST-46"
   ],
   "specialists/god-pm.md": [
-    "P-MUST-01"
+    "P-MUST-01",
+    "P-MUST-04"
   ],
   "specialists/god-quality-reviewer.md": [
     "M-blast-radius-safety-case",
     "P-...",
+    "P-MUST-10",
     "P-MUST-36",
     "P-MUST-37",
     "P-MUST-38",
@@ -266,13 +271,17 @@
     "P-MUST-40",
     "P-MUST-41",
     "P-MUST-42",
-    "P-MUST-43"
+    "P-MUST-43",
+    "P-MUST-46"
   ],
   "specialists/god-reconstructor.md": [
     "P-..."
   ],
   "specialists/god-spec-reviewer.md": [
-    "P-..."
+    "P-...",
+    "P-MUST-10",
+    "P-MUST-26",
+    "P-MUST-46"
   ],
   "specialists/god-storyteller.md": [
     "STORY-auth-001"
@@ -288,7 +297,8 @@
     "P-MUST-25"
   ],
   "lib/events.js": [
-    "P-MUST-25"
+    "P-MUST-25",
+    "P-MUST-48"
   ],
   "lib/evolution-benchmark.js": [
     "P-MUST-29"
@@ -300,7 +310,8 @@
     "P-MUST-28"
   ],
   "lib/program-design.js": [
-    "P-MUST-26"
+    "P-MUST-26",
+    "P-MUST-46"
   ],
   "lib/slice-handoff.js": [
     "P-MUST-27"
@@ -341,7 +352,8 @@
     "M-blast-radius-safety-case",
     "P-MUST-35",
     "P-MUST-36",
-    "P-MUST-43"
+    "P-MUST-43",
+    "P-MUST-49"
   ],
   "scripts/test-artifact-linter.js": [
     "P-MUST-32"
@@ -358,7 +370,8 @@
     "P-MUST-34"
   ],
   "specialists/god-launch-strategist.md": [
-    "P-MUST-34"
+    "P-MUST-34",
+    "P-SHOULD-03"
   ],
   "lib/evidence.js": [
     "ADR-010",
@@ -391,6 +404,7 @@
   ],
   "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
     "M-blast-radius-safety-case",
+    "P-MUST-26",
     "P-MUST-36",
     "P-MUST-37",
     "P-MUST-38",
@@ -398,7 +412,8 @@
     "P-MUST-40",
     "P-MUST-41",
     "P-MUST-42",
-    "P-MUST-43"
+    "P-MUST-43",
+    "P-MUST-46"
   ],
   "scripts/test-blast-radius.js": [
     "ADR-010",
@@ -453,5 +468,114 @@
     "P-MUST-41",
     "P-MUST-42",
     "P-MUST-43"
+  ],
+  "specialists/god-orchestrator.md": [
+    "P-MUST-01"
+  ],
+  "specialists/god-architect.md": [
+    "P-MUST-05"
+  ],
+  "specialists/god-roadmapper.md": [
+    "P-MUST-06"
+  ],
+  "specialists/god-stack-selector.md": [
+    "P-MUST-07"
+  ],
+  "specialists/god-repo-scaffolder.md": [
+    "P-MUST-08"
+  ],
+  "specialists/god-planner.md": [
+    "P-MUST-09",
+    "P-MUST-26",
+    "P-MUST-46"
+  ],
+  "specialists/god-harden-auditor.md": [
+    "P-MUST-22"
+  ],
+  "INSPIRATION.md": [
+    "P-MUST-35"
+  ],
+  "lib/verification-profile.js": [
+    "P-MUST-44"
+  ],
+  "scripts/test-verification-profile.js": [
+    "P-MUST-44"
+  ],
+  "lib/debug-feedback-loop.js": [
+    "C-debug-feedback-loop",
+    "P-MUST-45"
+  ],
+  "scripts/test-debug-feedback-loop.js": [
+    "P-MUST-45"
+  ],
+  "scripts/test-program-design.js": [
+    "P-MUST-46"
+  ],
+  "lib/why-evidence.js": [
+    "P-MUST-47"
+  ],
+  "skills/god-archaeology.md": [
+    "P-MUST-47"
+  ],
+  "lib/event-reader.js": [
+    "P-MUST-48"
+  ],
+  "lib/invocation-policy.js": [
+    "P-MUST-49"
+  ],
+  "specialists/god-deploy-engineer.md": [
+    "P-SHOULD-01"
+  ],
+  "specialists/god-observability-engineer.md": [
+    "P-SHOULD-02"
+  ],
+  "specialists/god-updater.md": [
+    "P-SHOULD-04"
+  ],
+  "extensions/provenance-pack/manifest.yaml": [
+    "P-SHOULD-08"
+  ],
+  "specialists/god-coordinator.md": [
+    "P-COULD-01"
+  ],
+  "specialists/god-automation-engineer.md": [
+    "P-COULD-02"
+  ],
+  "specialists/god-spike-runner.md": [
+    "P-COULD-04"
+  ],
+  "extensions/operations-pack/skills/god-issue-triage.md": [
+    "P-COULD-05"
+  ],
+  "extensions/operations-pack/skills/god-setup-wizard.md": [
+    "P-COULD-06"
+  ],
+  "extensions/operations-pack/agents/god-issue-triager.md": [
+    "P-COULD-05"
+  ],
+  "extensions/operations-pack/agents/god-setup-wizard.md": [
+    "P-COULD-06"
+  ],
+  "lib/route-quality-sync.js": [
+    "P-MUST-49"
+  ],
+  "scripts/test-invocation-policy.js": [
+    "P-MUST-49"
+  ],
+  "scripts/test-operations-pack.js": [
+    "P-COULD-05",
+    "P-COULD-06"
+  ],
+  "skills/god-debug.md": [
+    "P-MUST-45"
+  ],
+  "skills/god-trace.md": [
+    "P-MUST-48"
+  ],
+  "specialists/god-archaeologist.md": [
+    "P-MUST-47"
+  ],
+  "specialists/god-debugger.md": [
+    "P-MUST-45"
   ]
 }

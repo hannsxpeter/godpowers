@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-note
+  invocation-policy: suggestible
   description: Zero-friction idea capture
   tier: 0
   family: capture

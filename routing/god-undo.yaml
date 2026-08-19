@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-undo
+  invocation-policy: approval-required
   description: Revert last operation
   tier: 0
   family: recover

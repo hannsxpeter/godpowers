@@ -107,6 +107,36 @@ Beyond what was inherited, godpowers added:
   disk-authoritative substrate with dependency-free CommonJS helpers,
   bounded projections, independent reviews, and release evidence.
 
+- **Engineering evidence and authority contracts**
+  (`lib/verification-profile.js`, `lib/debug-feedback-loop.js`,
+  `lib/program-design.js`, `lib/why-evidence.js`, `lib/events.js`, and
+  `lib/invocation-policy.js`). Product-form verification was influenced by
+  pstack's
+  [`create-verification-skill`](https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md)
+  and
+  [`show-me-your-work`](https://github.com/cursor/plugins/blob/main/pstack/skills/show-me-your-work/SKILL.md)
+  skills. Exact-target evidence and architecture pressure were influenced by
+  pstack's
+  [`why`](https://github.com/cursor/plugins/blob/main/pstack/skills/why/SKILL.md)
+  and
+  [`architect`](https://github.com/cursor/plugins/blob/main/pstack/skills/architect/SKILL.md)
+  skills. Feedback-loop debugging, caller-aware design, alternative shapes,
+  issue triage, and human setup guidance were influenced by Matt Pocock's
+  [`diagnosing-bugs`](https://github.com/mattpocock/skills/blob/main/skills/engineering/diagnosing-bugs/SKILL.md),
+  [`codebase-design`](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/SKILL.md),
+  [`DEEPENING`](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/DEEPENING.md),
+  [`DESIGN-IT-TWICE`](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/DESIGN-IT-TWICE.md),
+  [`triage`](https://github.com/mattpocock/skills/blob/main/skills/engineering/triage/SKILL.md),
+  and
+  [`wizard`](https://github.com/mattpocock/skills/blob/main/skills/engineering/wizard/SKILL.md)
+  materials. Both source repositories use MIT licensing
+  ([pstack license](https://github.com/cursor/plugins/blob/main/pstack/LICENSE),
+  [Matt Pocock skills license](https://github.com/mattpocock/skills/blob/main/LICENSE)).
+  Godpowers independently authored every validator, contract, template,
+  fixture, test, and result on its existing CommonJS, route, event, and
+  extension substrates. No upstream prose, code, template, fixture, or result
+  is copied or vendored, and neither source is a runtime dependency.
+
 - **Meaning-preserving post-draft prose review**
   (`references/shared/VOICE.md`, `lib/prose-lint.js`, and the U-12 integration
   in `lib/have-nots-validator.js`). The scan, targeted rewrite, preservation of

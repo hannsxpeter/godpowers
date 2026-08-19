@@ -62,6 +62,31 @@ requirements:
 6. [DECISION] The independent reviewer consumes the code diff, verification evidence, and maintainability trajectory.
 7. [DECISION] The evolution benchmark repeats the same evidence shape across six isolated checkpoint reveals.
 
+### Caller Usage
+
+- [DECISION] The build gate and specialist contracts call one focused CommonJS helper per validation or evidence boundary and consume stable plain-object results.
+- [DECISION] Cold-context specialists receive exact helper names, artifact paths, and verdict fields in the approved plan instead of inferring integration behavior.
+
+### Interface Burden
+
+- [DECISION] Each helper accepts only the project-local text, paths, or normalized records its direct callers already possess.
+- [DECISION] No helper adds provider configuration, model selection, network credentials, or another authoritative state shape.
+
+### Seam Justification
+
+- [DECISION] Dependency-free runtime validators are the seam because prose specialists need deterministic release gates without introducing a service or parser dependency.
+- [DECISION] Structured handoffs are the process seam because sessions can end between slices while current state remains authoritative.
+
+### Alternative Shapes
+
+- [DECISION] Alternative A: keep every contract in specialist prose, which cannot provide deterministic gate evidence or fresh-process resume proof.
+- [DECISION] Alternative B: introduce a workflow service and database, which breaks the local, offline, inspectable Godpowers runtime model.
+- [DECISION] Selected shape: add bounded CommonJS validators and projections beside the existing gate, event, and specialist contracts.
+
+### Deviation Return Rule
+
+- [DECISION] If the same plan deviation occurs twice, stop production edits and return to planning before changing the approved code shape.
+
 ### Reused Patterns
 
 - [DECISION] Reuse `lib/frontmatter.js` for specialist and plan metadata, `lib/events.js` for bounded evidence vocabulary, `lib/atomic-write.js` for durable writes, and `scripts/test-harness.js` for behavioral tests.

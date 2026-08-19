@@ -79,3 +79,79 @@
 - [DECISION] Focused verification evidence: MCP modern and legacy protocol checks pass; program-design plus Build gate suites pass 38 checks; context loadout passes 63 checks; evolution passes 18 checks; style plus maintainability scans pass 22 checks; provenance client and pack suites pass 20 and 14 checks.
 - [DECISION] Dependency evidence: the reviewed production dependency audit reports zero vulnerabilities.
 - [DECISION] Release hardening gate: PASSED with zero unresolved Critical, High, Medium, or Low findings and no remaining security launch blocker.
+
+## Release Review: Engineering Evidence And Authority
+
+- [DECISION] Date: 2026-08-19.
+- [DECISION] Scope: Godpowers 6.3.0 runtime verification, debug feedback, decision history, route prerequisites, SkillUI extraction, root and MCP recovery publication, and first-party pack publication.
+- [DECISION] Reviewer: fresh-context `god-harden-auditor`, with repairs re-verified through focused regression suites before the orchestrator recorded this artifact.
+
+| Severity | Found | Resolved | Unresolved |
+|---|---:|---:|---:|
+| Critical | 1 | 1 | 0 |
+| High | 2 | 2 | 0 |
+| Medium | 3 | 3 | 0 |
+| Low | 0 | 0 | 0 |
+
+- [DECISION] Launch gate: PASSED.
+
+### [CRITICAL-630-001] Manual pack workflow input boundary
+
+- [DECISION] Status: Resolved.
+- [DECISION] The workflow now transfers dispatch values through step environment variables, validates the pack against a closed allowlist, and validates strict SemVer before identity checks or publication credentials are reachable.
+- [DECISION] Focused pack and static workflow suites pass after the repair.
+
+### [HIGH-630-001] Event run project-root isolation
+
+- [DECISION] Status: Resolved.
+- [DECISION] Event access now rejects traversal, invalid run identifiers, linked path components, oversized files, and oversized line sets before parsing or projection.
+- [DECISION] Decision projection returns named integrity failures and no items for unsafe or oversized snapshots.
+
+### [HIGH-630-002] SkillUI remote target isolation
+
+- [DECISION] Status: Resolved.
+- [DECISION] The bridge validates remote targets but never passes a URL or remote repository location to the external CLI because subprocess redirects and DNS answers cannot be pinned.
+- [DECISION] Focused validation covers rejected HTTP, internal, metadata, mixed-address, public-URL, and public-repository targets, while local directory mode remains available.
+
+### [MEDIUM-630-001] Unknown route predicates
+
+- [DECISION] Status: Resolved.
+- [DECISION] Unknown, empty, permission-like, and authentication-like prerequisite predicates now fail closed.
+- [DECISION] Every named non-prefixed predicate used by the canonical route set has explicit bounded behavior.
+
+### [MEDIUM-630-002] Registry recovery identity
+
+- [DECISION] Status: Resolved.
+- [DECISION] The root and MCP release workflow packs exact candidates once, publishes those tarballs, and compares registry integrity plus shasum before accepting an existing version or promoting either package.
+- [DECISION] Registry uncertainty or any candidate mismatch stops promotion.
+
+### [MEDIUM-630-003] Resource exhaustion bounds
+
+- [DECISION] Status: Resolved.
+- [DECISION] Verification profiles cap feature and completion-evidence collections before item access.
+- [DECISION] Debug feedback validation caps reproductions, collection width, recursion depth, and scanned nodes before producing bounded findings.
+- [DECISION] Event snapshots cap file bytes and line counts before content parsing.
+
+## OWASP Web Top 10:2025 Coverage For 6.3.0
+
+| Category | Manual procedure | Result | Evidence or finding |
+|---|---|---|---|
+| A01:2025 Broken Access Control | Review project-root file access and remote target authority across event history and SkillUI extraction | pass after two High repairs | `node scripts/test-events.js && node scripts/test-event-reader.js && node scripts/test-skillui-bridge.js && node scripts/test-router.js`; HIGH-630-001; HIGH-630-002 |
+| A02:2025 Security Misconfiguration | Probe missing, unknown, permission-like, and authentication-like route prerequisites | pass after fail-closed repair | `node scripts/test-events.js && node scripts/test-event-reader.js && node scripts/test-skillui-bridge.js && node scripts/test-router.js`; MEDIUM-630-001 |
+| A03:2025 Software Supply Chain Failures | Review workflow inputs, merged-tag identity, candidate packing, registry recovery, dependencies, signatures, and attestations | pass after one Critical and one Medium repair | `node scripts/test-provenance-pack.js && node scripts/test-operations-pack.js && npm run lint`; `npm audit --omit=dev`; `npm audit signatures`; CRITICAL-630-001; MEDIUM-630-002 |
+| A04:2025 Cryptographic Failures | Verify event hash-chain behavior, state artifact hashes, package integrity, and shasum comparison | pass | `npm run release:check`; `node scripts/test-events.js && node scripts/test-event-reader.js && node scripts/test-skillui-bridge.js && node scripts/test-router.js` |
+| A05:2025 Injection | Review shell boundaries, argument-array subprocess use, and workflow expression handling | pass after Critical repair | `node scripts/test-provenance-pack.js && node scripts/test-operations-pack.js && npm run lint`; CRITICAL-630-001 |
+| A06:2025 Insecure Design | Trace invocation authority, human approval, optional pack isolation, and fail-closed recovery decisions | pass | `npm run release:check`; MEDIUM-630-001; MEDIUM-630-002 |
+| A07:2025 Authentication Failures | Confirm local runtime has no credential store and publication authentication remains GitHub and npm owned | Not Applicable to local authentication; delegated boundaries pass review | `npm audit signatures`; `.github/workflows/publish.yml`; `.github/workflows/publish-pack.yml` |
+| A08:2025 Software or Data Integrity Failures | Exercise event-chain verification, candidate integrity comparison, artifact hashing, and package allowlists | pass | `npm run release:check`; MEDIUM-630-002 |
+| A09:2025 Security Logging and Alerting Failures | Confirm unsafe event snapshots, blocked routes, and publication mismatches return named failures and non-zero gates | pass | `node scripts/test-events.js && node scripts/test-event-reader.js && node scripts/test-skillui-bridge.js && node scripts/test-router.js`; `npm run release:check` |
+| A10:2025 Mishandling of Exceptional Conditions | Probe oversized collections, deep records, large event files, malformed predicates, and registry uncertainty | pass after bounded-resource repair | `node scripts/test-verification-profile.js && node scripts/test-debug-feedback-loop.js`; MEDIUM-630-003 |
+
+## 6.3.0 Hardening Evidence
+
+- [DECISION] `npm audit --omit=dev` reports zero production vulnerabilities.
+- [DECISION] `npm audit signatures` verifies 145 registry signatures and 15 attestations.
+- [DECISION] Focused repaired boundaries pass their event, decision-reader, verification-profile, debug-feedback, router, SkillUI, operations-pack, provenance-pack, automation-surface, invocation-policy, and static suites.
+- [DECISION] Root package contents remain allowlisted at 659 files, MCP contents remain allowlisted at 8 files, and extension publication readiness covers 81 checks.
+- [DECISION] No unresolved or accepted security finding remains in the 6.3.0 release scope.
+- [DECISION] Release hardening gate: PASSED.

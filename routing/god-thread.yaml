@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-thread
+  invocation-policy: suggestible
   description: Persistent context threads
   tier: 0
   family: capture

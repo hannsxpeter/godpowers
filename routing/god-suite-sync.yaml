@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-suite-sync
+  invocation-policy: suggestible
   description: Propagate byte-identical files across suite
   tier: 0
   family: collaborate

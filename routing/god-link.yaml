@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-link
+  invocation-policy: suggestible
   description: Manually add/remove a code-artifact link
   tier: 0
   family: maintain

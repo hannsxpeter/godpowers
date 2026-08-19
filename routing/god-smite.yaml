@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-smite
+  invocation-policy: approval-required
   description: Hard-reset dependency cache; reinstall
   tier: 0
   family: recover

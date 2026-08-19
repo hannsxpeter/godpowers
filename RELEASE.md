@@ -1,247 +1,80 @@
-# Godpowers 6.2.0 Release
+# Godpowers 6.3.0 Release
 
-> Status: Published and verified
+> Status: Release candidate
 > Date: 2026-08-19
 
-- [DECISION] Godpowers 6.2.0 adds a blast-radius safety case to the existing
-  Stage 2 review so a PASS depends on one explicit, evidence-graded safety fact
-  rather than direct-caller inspection, static search, or reviewer agreement.
-- [DECISION] The release retains 124 slash commands and 41 specialist agents.
-- [DECISION] It also retains 13 workflows and 45 recipes.
-- [DECISION] The core package contains 113 runtime library modules and keeps
-  zero root production, optional, or peer dependencies.
-- [DECISION] The repository contains 112 focused test scripts and 54 reference
-  documents.
-- [DECISION] The current root package-content check reports 647 files and
-  requires `references/building/BLAST-RADIUS.md` in the npm payload.
-- [DECISION] The root `godpowers` package supports Node.js 18 or newer, while
-  the read-only `@godpowers/mcp` companion requires Node.js 20 or newer; both
-  manifests declare version 6.2.0.
+- [DECISION] Godpowers 6.3.0 adds explicit evidence and authority contracts to runtime verification, debugging, program design, archaeology, durable decision history, and command routing.
+- [DECISION] The release retains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
+- [DECISION] The core package contains 117 runtime library modules and keeps zero root production, optional, or peer dependencies.
+- [DECISION] The repository contains 117 focused test scripts and 54 core reference documents.
+- [DECISION] The root package-content check reports 659 files, including the new dependency-free validators and the optional operations pack publication surface.
+- [DECISION] The root `godpowers` package supports Node.js 18 or newer, while the read-only `@godpowers/mcp` companion requires Node.js 20 or newer; both manifests declare version 6.3.0.
 
-## Shared Blast-Radius Protocol
+## Engineering Evidence Contracts
 
-- [DECISION] `references/building/BLAST-RADIUS.md` is the shared protocol used
-  by the existing `/god-review`, `/god-build`, `god-executor`,
-  `god-quality-reviewer`, and orchestrator contracts.
-- [DECISION] Every Stage 2 safety-case pass states exactly one load-bearing
-  safety fact with a falsifiable condition, affected boundary, consequence if
-  false, strongest evidence level, and evidence citation.
-- [DECISION] The review output keeps Confirmed Risks, Cleared Risks, and
-  Unproven Claims separate so demonstrated failure, demonstrated safety, and
-  unresolved assumptions cannot collapse into one confidence statement.
-- [DECISION] `god-executor` may propose the candidate fact and smallest focused
-  proof, but it cannot grade its own work; `god-quality-reviewer` independently
-  verifies or replaces the candidate and owns the Stage 2 verdict.
+- [DECISION] `/god-test-runtime` now selects one material verification profile for CLI, SDK, API, UI, service, or library products and rejects incomplete or generic completion evidence.
+- [DECISION] Existing `test-only`, `audit-only`, and `a11y-only` runtime modes remain available and keep their previous identifiers.
+- [DECISION] `/god-debug` requires an executed deterministic reproduction before hypothesis formation, requires a changed prediction after each failed hypothesis, and stops repeated tests that produce no new information.
+- [DECISION] Medium and large program designs now name callers and dependents, design pressures, at least two distinct alternative shapes, one selected shape, and a rule that returns the work to planning after the same design deviation occurs twice.
+- [DECISION] `/god-archaeology --why <target>` validates bounded cited evidence from independent source categories, calibrates confidence, rejects contradictions and unknowns, and leaves default archaeology unchanged when `--why` is absent.
 
-## Evidence Ladder And Verdict Policy
+## Durable Decisions And Invocation Authority
 
-1. [DECISION] Level 1 is a reviewer assertion without a source citation and is
-   `UNPROVEN`.
-2. [DECISION] Level 2 is a specific source, dependency, schema, manifest, or
-   `file:line` citation and is `UNPROVEN`.
-3. [DECISION] Level 3 is a traced branch or consumer path that refutes one
-   named failure path and remains `UNPROVEN`.
-4. [DECISION] Level 4 is a successful focused probe executed through the
-   existing `npx godpowers verify` operation and proves only the exercised path
-   and inputs.
-5. [DECISION] Level 5 is a successful runtime, installed-package, process,
-   browser, service, host, or faithful-consumer reproduction executed through
-   `npx godpowers verify` and proves only the exercised delivery boundary.
+- [DECISION] `decision.recorded` extends the existing event vocabulary with a bounded allowlisted record for the decision, reason, cited evidence, result, and constrained metadata.
+- [DECISION] The writer, generic emitter, and reader share one validator, reject secret-bearing fields and provider tokens, and reject HTTPS authority credentials, every query string, and unsafe fragments without echoing rejected values.
+- [DECISION] `/god-trace --decisions` verifies and parses one immutable snapshot per selected run, returns `{ items, integrityFailures }`, retains the newest bounded decision and run windows, and does not claim authentication, full recomputation detection, or tail-truncation detection from the local hash chain.
+- [DECISION] Every one of the 124 canonical route files declares one policy from `explicit-only`, `suggestible`, `auto-local`, `auto-bounded`, or `approval-required`.
+- [DECISION] Router loading and route-quality checks derive command identity from canonical filenames and reject route metadata spoofing, duplicate commands, and noncanonical route YAML.
+- [DECISION] External, destructive, dependency, recovery, and release actions remain approval-required.
 
-- [DECISION] Evidence levels are ordinal; several assertions, citations,
-  traces, or agreeing reviewers cannot combine into level 4 or level 5.
-- [DECISION] Confirmed Risks require level 4 or level 5 evidence that a failure
-  exists, and Cleared Risks require level 4 or level 5 evidence that the named
-  failure path is safe.
-- [DECISION] Every conclusion supported only by levels 1 through 3 remains
-  under Unproven Claims.
-- [DECISION] A high-impact `UNPROVEN` claim fails Stage 2 when failure could
-  affect authentication or authorization, disclose secrets, corrupt or lose
-  state, execute a destructive action, break the installer or published
-  package, violate a public or serialized contract, or invalidate
-  verification-ledger integrity.
-- [DECISION] A lower-impact `UNPROVEN` claim remains a warning and names one
-  exact command, fixture, dependency trace, or runtime reproduction needed to
-  clear or confirm it.
-- [DECISION] Level 5 is required only when real lifecycle, installation,
-  packaging, process, browser, service, host, or faithful-consumer behavior can
-  change the answer and an evidenced runnable target exists.
-- [DECISION] A deterministic local conclusion records level 5 as not applicable
-  with an observed reason; a runtime-dependent claim with no runnable target
-  stays unproven with an owner, impact, and exact evidence needed.
+## Optional Operations Pack
 
-## Ten Required Boundaries
-
-- [DECISION] Every safety case records evidence or an observed not-applicable
-  reason for dependency implementation, pinned dependency version, local
-  dependency patches, lifecycle or ordering timing, serialized or public API
-  contracts, database or disk-state fields, configuration or feature flags,
-  generated or installed surfaces, npm package surfaces, and cross-language
-  consumers.
-- [DECISION] Six temporary-repository fixtures prove why direct callers are not
-  enough: each direct-caller probe appears safe while the required boundary
-  probe exposes pinned-dependency behavior, lifecycle ordering, a serialized
-  consumer, installed-copy drift, a missing package file, or a cross-language
-  invocation.
-
-## Bounded And Wide Review
-
-- [DECISION] A change is wide when it crosses at least 3 of the 10 boundary
-  classes or at least 2 high-impact classes; all other changes are bounded.
-- [DECISION] A bounded change records its threshold calculation and uses 1
-  normal Stage 2 safety-case pass.
-- [DECISION] A wide change always receives at least 2 independent blast-radius
-  safety cases in fresh contexts, including when the first pass provisionally
-  fails.
-- [DECISION] The second reviewer receives the diff, requirements, protocol, and
-  verification evidence without the first reviewer's conclusions.
-- [DECISION] Reconciliation compares the safety fact, boundary inventory,
-  evidence grade, and risk classification; disagreement lowers confidence or
-  requests proof, and agreement never raises evidence.
-
-## Static Candidates And Executed Evidence
-
-- [DECISION] `lib/impact.js` remains a candidate generator and adds
-  backward-compatible evidence metadata with `kind: static-candidate`,
-  `status: unproven`, and `maximumLevel: 2`.
-- [DECISION] Results from `lib/impact.js`, grep, AST search, LSP references, or
-  import graphs remain boundary candidates until source tracing, an executed
-  focused probe, or an applicable runtime reproduction tests the named safety
-  condition.
-- [DECISION] The existing `.godpowers/ledger/verifications.jsonl`, state
-  rollup, and hash-chained gate events remain the only executed-proof path.
-- [DECISION] Executed verification records keep their existing shape; gate
-  events add only `verificationRecordId` and `verificationRecordDigest` for the
-  new binding check.
-- [DECISION] `lib/evidence.resolveReviewEvidence` is read-only and resolves one
-  exact record ID against executed kind, exit 0, `verified: true`, expected
-  claim, exact command, canonical substep, review-window start, and latest
-  behavior-change timestamp.
-- [DECISION] Acceptance also requires exactly one matching gate event, the
-  expected pass or fail event name, a matching SHA-256 record digest, and a
-  valid event hash chain.
-- [DECISION] Failed, timed-out, attested-only, mismatched, pre-change, stale,
-  duplicate, missing-event, unbound, digest-mismatched, or invalid-chain
-  evidence cannot clear a risk.
-- [DECISION] The resolver returns a sanitized projection with bounded record
-  identity, result, comparison, freshness, event-binding, and chain-integrity
-  fields; it omits raw ledger records, event attributes, claims, commands,
-  stdout tails, and stderr tails from reviewer context.
-- [DECISION] The resolver checks consistency inside a trusted workspace and
-  does not authenticate evidence against an actor able to rewrite every
-  trusted file and recompute the event chain.
-
-## Security And Process Bounds
-
-- [DECISION] Blast-radius adversarial fixtures launch fixed Node.js or shell
-  executables with argument arrays, a 10-second timeout, and a 1 MiB output cap.
-- [DECISION] A timeout or output overflow makes the fixture probe fail closed
-  instead of accepting a truncated or indeterminate result.
-- [DECISION] The shipped feature adds no subprocess path beyond the existing
-  verification operation, no slash command, CLI operation, route, recipe,
-  workflow, specialist type, production dependency, evidence store, state
-  writer, hosted service, or execution authority.
-- [DECISION] The npm package ships the protocol through its existing
-  `references/` entry, and installation copies that tree into both
-  `godpowers-references/` and the installed runtime bundle through existing
-  installer behavior.
+- [DECISION] `@godpowers/operations-pack` version 0.1.0 adds issue-triage and human-only setup skills without adding a core command or root runtime dependency.
+- [DECISION] Issue triage verifies the complete item, recommends exactly one category and one state, and waits for explicit maintainer approval before any tracker mutation or separately approved story creation.
+- [DECISION] The setup wizard inspects the repository first, verifies exact URLs and repository authority, statically checks generated Bash, keeps secrets off command arguments, rejects tracked environment destinations, and requires exact `YES` for irreversible steps.
+- [DECISION] The shell helpers validate keys and values, quote environment values, preserve existing files, publish through temporary replacement, clean up on failure, and propagate filtering, write, permission, and rename errors.
 
 ## Independent Authorship And License Boundary
 
-- [DECISION] The load-bearing safety condition, beyond-direct-caller search,
-  evidence-grading, and separated-risk concepts were influenced by pstack's
-  [`blast-radius` skill](https://github.com/cursor/plugins/blob/main/pstack/skills/blast-radius/SKILL.md),
-  which is distributed under its
-  [MIT license](https://github.com/cursor/plugins/blob/main/pstack/LICENSE).
-- [DECISION] Godpowers authored its protocol, prose, implementation, fixtures,
-  probes, and results independently; no upstream prose, code, fixture, result,
-  or pstack runtime is copied, vendored, or included as an npm dependency.
-- [DECISION] Any future distribution of an upstream copy or substantial
-  portion must retain the upstream copyright and MIT permission notice.
+- [DECISION] Product-form verification, bounded why evidence, and architecture-pressure ideas were informed by the MIT-licensed pstack skills linked from `INSPIRATION.md`.
+- [DECISION] Feedback-loop debugging, deeper program design, alternative shapes, issue triage, and setup guidance were informed by the MIT-licensed Matt Pocock engineering skills linked from `INSPIRATION.md`.
+- [DECISION] Godpowers independently authored every validator, contract, template, fixture, test, and result; no upstream prose, code, template, fixture, or result is copied or vendored, and neither source is a runtime dependency.
+
+## Release Hardening
+
+- [DECISION] The OWASP Web Top 10:2025 walkthrough found one Critical workflow-input boundary, two High filesystem and remote-target boundaries, and three Medium fail-closed, recovery-integrity, and resource-bound groups; every finding was repaired before publication.
+- [DECISION] Manual extension-pack inputs now cross into Bash only through environment variables, then pass an explicit pack allowlist and strict SemVer validation before identity checks or npm credentials are available.
+- [DECISION] Event history stays under the selected project root, rejects linked run paths, and caps snapshots at 8 MiB and 50,000 lines.
+- [DECISION] SkillUI validates remote targets but never passes a URL or remote repository location to the external CLI; remote forms fail closed and require an already reviewed local directory because subprocess redirects and DNS answers cannot be pinned.
+- [DECISION] Unknown route prerequisite predicates fail closed, and the four named non-prefixed predicates used by core routes now have explicit behavior.
+- [DECISION] Verification profiles, debug feedback records, recursive scans, and event snapshots enforce bounded collection, depth, node, byte, and line limits.
+- [DECISION] Root and MCP recovery publication compares registry `dist.integrity` and `dist.shasum` to the exact packed candidates before either package can be promoted to `latest`.
+- [DECISION] The repaired release has zero unresolved Critical, High, Medium, or Low findings; publication remains gated on a fresh hardening artifact hash, executed evidence, and the full release suite.
 
 ## Observed Validation
 
-- [DECISION] `node scripts/test-evidence.js` passed 33 of 33 tests.
-- [DECISION] `node scripts/test-blast-radius.js` passed 18 of 18 tests.
-- [DECISION] `node scripts/test-impact.js` passed 22 of 22 tests.
-- [DECISION] `node scripts/test-feature-awareness.js` passed 7 of 7 tests.
-- [DECISION] `node scripts/static-check.js` passed 35 of 35 checks with zero
-  prose warnings across 234 scanned files.
-- [DECISION] `node scripts/check-package-contents.js` passed and reported 647
-  root package files.
-- [DECISION] The observed full release gate passed 116 commands and 3,173
-  tests with 94.7 percent line coverage, 79.98 percent branch coverage, and
-  97.2 percent function coverage.
-- [DECISION] Independent Stage 1 specification review returned PASS.
-- [DECISION] Two independent fresh-context Stage 2 safety-case reviews returned
-  PASS, and their reconciliation returned PASS without treating agreement as
-  evidence.
-- [DECISION] The final scoped hardening review returned PASS with zero
-  remaining Critical, High, Medium, or Low findings and zero high-impact
-  unproven claims.
-- [DECISION] `npm run release:prepublication:check` passed against the fresh
-  `2026-08-19T10:07:48.020Z` gate record and hardening revision
-  `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268`.
-- [DECISION] Pull-request CI, merged-main CI, tag identity, provenance
-  publication, registry metadata, GitHub Release, isolated installs, both
-  published CLIs, dependency audit, registry signatures, and attestations all
-  passed for the published 6.2.0 release.
+- [DECISION] Product-form verification passed 10 of 10 focused tests.
+- [DECISION] Debug feedback-loop validation passed 18 of 18 focused tests.
+- [DECISION] Program-design validation passed 14 of 14 focused tests, with the integrated gate suite also passing 28 of 28.
+- [DECISION] Why-evidence validation passed 11 of 11 focused tests.
+- [DECISION] Event writing and decision projection passed 25 of 25 tests each.
+- [DECISION] Invocation-policy, router, and automation-surface suites passed 7 of 7, 47 of 47, and 17 of 17 tests.
+- [DECISION] SkillUI remote-target validation passed 27 of 27 focused tests, including HTTP, internal, metadata, mixed-address, public-URL, and public-repository rejection before dispatch.
+- [DECISION] Operations-pack tests passed 7 of 7, extension publication readiness passed 81 of 81, static checks passed 35 of 35, and package contents passed at 659 files.
+- [DECISION] Every implementation slice passed an independent Stage 1 specification review and Stage 2 quality review after adversarial repairs.
+- [DECISION] `npm run release:check` passed 121 commands and 3,290 tests with 94.70 percent line coverage, 80.75 percent branch coverage, and 97.32 percent function coverage.
+- [DECISION] The release gate also passed official skill validation, Pillars conformance, per-file coverage, zero-vulnerability production audit, live advisory checks, the 140-check self-project truth gate, evidence drift, the 659-file root package check, and the 8-file MCP package check.
+- [DECISION] The final harden gate passed with one executed-backed release command, all ten OWASP rows cited to ledger evidence, and no warning or error finding.
+- [DECISION] The fresh pre-publication gate passed against hardening revision `sha256:69bd088dc44e405b144536bd51701088bb0da7d5e2200685e9b3e13be7403f5f` with zero unresolved or accepted Critical findings.
+- [HYPOTHESIS] Pull-request and merged-main CI identities, annotated tags, registry integrity, GitHub Release, and isolated install evidence will be recorded after publication gates complete.
 
 ## Upgrade
 
-- [DECISION] Root CLI users need no state migration, artifact migration,
-  command rename, or production dependency change for 6.2.0.
-- [DECISION] Install the published root CLI with
-  `npm install -g godpowers@6.2.0` or run it with
-  `npx godpowers@6.2.0`.
-- [DECISION] Root CLI users continue to need Node.js 18 or newer; MCP users
-  continue to need Node.js 20 or newer before upgrading
-  `@godpowers/mcp` to 6.2.0.
-- [DECISION] Verification records created before 6.2.0 do not have
-  digest-bound gate events and cannot support new level 4 or level 5 review
-  conclusions.
-- [DECISION] Generate fresh proof after the latest relevant behavior change
-  with the command below, then resolve that new record locally before citing it
-  in Stage 2.
-
-  ```bash
-  npx godpowers verify "<focused probe>" --substep=<canonical-id> --claim="<load-bearing safety fact>" --project=.
-  ```
+- [DECISION] Root CLI and MCP users need no state migration, artifact migration, command rename, or production dependency change for 6.3.0.
+- [DECISION] Install the release with `npm install -g godpowers@6.3.0` or run it with `npx godpowers@6.3.0` after registry publication completes.
+- [DECISION] Root CLI users continue to need Node.js 18 or newer, and MCP users continue to need Node.js 20 or newer.
+- [DECISION] Existing extension packs remain compatible with the Godpowers 6.x peer range; the optional operations pack requires explicit installation.
 
 ## Publication Evidence
 
-- [DECISION] `npm run release:check` passed with all 116 commands, 3,173 tests,
-  94.7 percent line coverage, 79.98 percent branch coverage, 97.2 percent
-  function coverage, audits, self-truth checks, evidence-drift checks, and
-  package checks green.
-- [DECISION] `npm run release:prepublication:check` passed against the fresh
-  2026-08-19T10:07:48.020Z gate record and hardening revision
-  `sha256:5f65a4de4bb0ab7dcce5e7fb11c182a77345f23b2e6f75077c549ccef4ce9268`.
-- [DECISION] [Pull request 95](https://github.com/hannsxpeter/godpowers/pull/95)
-  passed CI run 32241228965 on Node.js 18, 20, and 22 plus the package job.
-- [DECISION] Pull request 95 merged to `main` as commit
-  `010f02dbccb17fce42107ce39d681adaa4879251` at
-  `2026-08-19T10:13:14Z`, and merged-main CI run 32241605432 passed against
-  that exact commit.
-- [DECISION] Annotated tag `v6.2.0` resolves to
-  `010f02dbccb17fce42107ce39d681adaa4879251`.
-- [DECISION] [Provenance workflow 32242093455](https://github.com/hannsxpeter/godpowers/actions/runs/32242093455)
-  passed in 4 minutes 37 seconds, published `godpowers@6.2.0` and
-  `@godpowers/mcp@6.2.0`, and promoted both exact packages to `latest`.
-- [DECISION] Root registry integrity is
-  `sha512-h4yAnVeG/aT5Njqt4ib3C/qyaJiy8UN5VXL3ozv4DRJ726uRJzxhDwTuU4c0wnvBN1QwxNPgh0naWCktxfm9eg==`
-  with shasum `de0cd6c8ee9703c34b6b3a4de68dfc0252e19421`.
-- [DECISION] MCP registry integrity is
-  `sha512-FV6slw62sYCkpbr3yhxg+cjnP4+F3w70rYZ5EQIjZrnLwziV6AICBOkDtuLdK7N4ZtCtjU2WJ2YhURoh+v0jQg==`
-  with shasum `08ecd923d85cec31d2c13f1b47dae6e4cf3d84d8`.
-- [DECISION] [GitHub Release v6.2.0](https://github.com/hannsxpeter/godpowers/releases/tag/v6.2.0)
-  was published at `2026-08-19T10:25:32Z`.
-- [DECISION] `node scripts/verify-published-install.js godpowers@6.2.0`
-  passed exact isolated root installation, Quick Proof, project inspection,
-  status, next route, Claude installation, and Codex installation.
-- [DECISION] An isolated exact registry pair install passed, and the published
-  MCP executable passed `--help` plus read-only setup JSON verification.
-- [DECISION] The isolated published dependency tree reported zero
-  vulnerabilities, and `npm audit signatures` verified registry signatures
-  and attestations for all 5 installed packages.
-- [DECISION] Package checks reported 647 root files and 8 MCP files.
+- [OPEN QUESTION] Record the pull request, merged-main commit, CI runs, annotated tags, provenance workflows, registry integrity values, GitHub Release, isolated install results, and final clean-main status after publication; owner: Godpowers maintainer.

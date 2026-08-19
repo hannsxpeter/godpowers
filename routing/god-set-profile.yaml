@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-set-profile
+  invocation-policy: suggestible
   description: Switch model profile
   tier: 0
   family: configure

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god
+  invocation-policy: suggestible
   description: Front door: free-text intent matcher
   tier: 0
   family: start

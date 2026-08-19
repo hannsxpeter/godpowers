@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-progress
+  invocation-policy: auto-local
   description: Deliverable progress at the requirement and increment level
   tier: 0
   family: continue
