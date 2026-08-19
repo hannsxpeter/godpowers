@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-intel
+  invocation-policy: suggestible
   description: Query/refresh codebase intel
   tier: 0
   family: maintain

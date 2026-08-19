@@ -15,12 +15,90 @@ console.log('\n  Router tests\n');
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-router-test-'));
 
+function routeSource(command, policy = 'suggestible') {
+  return [
+    'apiVersion: godpowers/v1',
+    'kind: CommandRouting',
+    'metadata:',
+    `  command: ${command}`,
+    `  invocation-policy: ${policy}`,
+    'execution:',
+    '  spawns: [built-in]',
+    'endoff:',
+    '  state-update: unchanged'
+  ].join('\n');
+}
+
+function routeDirectory(files) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'godpowers-router-directory-'));
+  for (const [file, source] of Object.entries(files)) {
+    fs.writeFileSync(path.join(directory, file), source);
+  }
+  return directory;
+}
+
 test('loadAll returns at least 30 routing definitions', () => {
   router.clearCache();
   const all = router.loadAll();
   const count = Object.keys(all).length;
   if (count < 30) throw new Error(`expected 30+, got ${count}`);
 });
+
+test('P-MUST-49: route loader preserves the 124 canonical repository routes', () => {
+  const all = router.loadDirectory(path.resolve(__dirname, '..', 'routing'));
+  if (Object.keys(all).length !== 124) {
+    throw new Error(`expected 124 canonical routes, got ${Object.keys(all).length}`);
+  }
+});
+
+test('P-MUST-49: route loader rejects filename command spoofing', () => {
+  const directory = routeDirectory({
+    'god-launch.yaml': routeSource('/god-feature', 'suggestible')
+  });
+  try {
+    if (!assertThrows(() => router.loadDirectory(directory), /god-launch\.yaml.*\/god-launch.*\/god-feature/)) {
+      throw new Error('spoofed god-launch route was accepted');
+    }
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('P-MUST-49: route loader rejects duplicate command keys', () => {
+  const directory = routeDirectory({
+    'god-alpha.yaml': routeSource('/god-alpha'),
+    'god-beta.yaml': routeSource('/god-alpha')
+  });
+  try {
+    if (!assertThrows(() => router.loadDirectory(directory), /duplicate.*\/god-alpha/)) {
+      throw new Error('duplicate route command was accepted');
+    }
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('P-MUST-49: route loader rejects noncanonical route YAML files', () => {
+  const directory = routeDirectory({
+    'custom.yaml': routeSource('/god-custom')
+  });
+  try {
+    if (!assertThrows(() => router.loadDirectory(directory), /noncanonical.*custom\.yaml/)) {
+      throw new Error('noncanonical YAML route was accepted');
+    }
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+function assertThrows(fn, pattern) {
+  try {
+    fn();
+  } catch (error) {
+    return pattern.test(error.message);
+  }
+  return false;
+}
 
 test('getRouting finds /god-prd', () => {
   router.clearCache();
@@ -39,6 +117,19 @@ test('getRouting returns null for unknown command', () => {
   router.clearCache();
   const r = router.getRouting('/god-nonexistent');
   if (r !== null) throw new Error('should be null');
+});
+
+test('P-MUST-49: getInvocationPolicy exposes declared policy and rejects unknown routes', () => {
+  router.clearCache();
+  if (router.getInvocationPolicy('/god-next') !== 'auto-local') {
+    throw new Error('/god-next should expose auto-local');
+  }
+  if (router.getInvocationPolicy('/god-launch') !== 'approval-required') {
+    throw new Error('/god-launch should expose approval-required');
+  }
+  if (router.getInvocationPolicy('/god-nonexistent') !== null) {
+    throw new Error('unknown routes should return null');
+  }
 });
 
 test('Tier 3 route writes use state.json instead of generated state views', () => {

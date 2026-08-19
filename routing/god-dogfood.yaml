@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-dogfood
+  invocation-policy: suggestible
   description: Run messy-repo dogfood scenarios for release and autonomy readiness.
   tier: 0
   family: verify

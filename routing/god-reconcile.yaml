@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-reconcile
+  invocation-policy: auto-bounded
   description: Multi-artifact reconciliation across PRD/ARCH/ROADMAP/STACK/etc.
   tier: 0
   family: maintain

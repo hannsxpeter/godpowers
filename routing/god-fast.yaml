@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-fast
+  invocation-policy: suggestible
   description: Trivial inline edit
   tier: 0
   family: build

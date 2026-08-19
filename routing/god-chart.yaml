@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-chart
+  invocation-policy: suggestible
   description: Chart a decision map for work too big for one session
   tier: 0
   family: start

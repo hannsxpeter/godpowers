@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-next
+  invocation-policy: auto-local
   description: Suggest next command
   tier: 0
   family: continue

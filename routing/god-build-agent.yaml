@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-build-agent
+  invocation-policy: suggestible
   description: Generate custom specialist agent
   tier: 0
   family: extend

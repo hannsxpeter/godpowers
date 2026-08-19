@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-review-changes
+  invocation-policy: approval-required
   description: Walk REVIEW-REQUIRED.md interactively
   tier: 0
   family: verify

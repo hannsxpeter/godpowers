@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-roadmap
+  invocation-policy: suggestible
   description: Sequence work into milestones
   tier: 1
   family: start

@@ -2,7 +2,8 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-trace
-  description: 
+  invocation-policy: suggestible
+  description: Trace tier events or project internally hash-linked decision records
   tier: 0
   family: operate
 

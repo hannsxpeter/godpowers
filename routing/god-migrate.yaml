@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-migrate
+  invocation-policy: suggestible
   description: Detect and migrate legacy planning, BMAD, Superpowers, Arc-Ready, godplans, and godaudits planning context
   tier: 0
   family: start

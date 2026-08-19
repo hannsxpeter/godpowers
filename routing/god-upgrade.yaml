@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-upgrade
+  invocation-policy: approval-required
   description: Framework migration
   tier: 0
   family: maintain

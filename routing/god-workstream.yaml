@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-workstream
+  invocation-policy: suggestible
   description: Parallel workspace management
   tier: 0
   family: collaborate

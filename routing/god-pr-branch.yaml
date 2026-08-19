@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-pr-branch
+  invocation-policy: approval-required
   description: Create clean PR branch filtering .godpowers commits
   tier: 0
   family: collaborate

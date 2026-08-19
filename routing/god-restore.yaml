@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-restore
+  invocation-policy: approval-required
   description: Recover from .trash/
   tier: 0
   family: recover

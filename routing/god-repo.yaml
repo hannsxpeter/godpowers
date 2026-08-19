@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-repo
+  invocation-policy: suggestible
   description: Scaffold the repository
   tier: 2
   family: start

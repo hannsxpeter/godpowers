@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-hygiene
+  invocation-policy: suggestible
   description: Composite health check
   tier: 0
   family: verify

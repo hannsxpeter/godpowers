@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-ship
+  invocation-policy: approval-required
   description: Ship verb dispatcher
   tier: 0
   family: operate

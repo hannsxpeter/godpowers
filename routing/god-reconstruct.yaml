@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-reconstruct
+  invocation-policy: suggestible
   description: Reverse-engineer planning artifacts from existing code
   tier: 1
   family: maintain

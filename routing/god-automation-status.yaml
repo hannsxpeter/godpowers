@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-automation-status
+  invocation-policy: auto-local
   description: Show host automation provider support
   tier: 0
   family: configure

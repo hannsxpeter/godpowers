@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-extension-remove
+  invocation-policy: approval-required
   description: 
   tier: 0
   family: extend

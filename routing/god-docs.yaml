@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-docs
+  invocation-policy: auto-bounded
   description: Documentation work
   tier: 0
   family: maintain

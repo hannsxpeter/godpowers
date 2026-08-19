@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Implements: P-MUST-35, P-MUST-36, P-MUST-43
+// Implements: P-MUST-35, P-MUST-36, P-MUST-43, P-MUST-49
 /**
  * Assert that the npm package contains the load-bearing Godpowers runtime
  * surface and excludes local-only development files.
@@ -33,8 +33,10 @@ const REQUIRED_FILES = [
   'references/shipping/HARDEN-OWASP-2025-ROUTER.md',
   'lib/adoption-metrics.js',
   'lib/command-families.js',
+  'lib/invocation-policy.js',
   'lib/product-routing.js',
   'lib/verification-profile.js',
+  'lib/why-evidence.js',
   'lib/prepublication-gate.js',
   'lib/frontmatter.js',
   'lib/workflow-runner.js',
@@ -89,7 +91,8 @@ const REQUIRED_FILES = [
   'routing/recipes/greenfield-with-ideation.yaml',
   'workflows/full-arc.yaml',
   'workflows/brownfield-arc.yaml',
-  'extensions/security-pack/manifest.yaml'
+  'extensions/security-pack/manifest.yaml',
+  'extensions/operations-pack/manifest.yaml'
 ];
 
 const FORBIDDEN_PREFIXES = [

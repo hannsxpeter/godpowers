@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-deploy
+  invocation-policy: approval-required
   description: Set up deploy pipeline
   tier: 3
   family: operate

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-tech-debt
+  invocation-policy: suggestible
   description: Assess and prioritize technical debt
   tier: 0
   family: maintain

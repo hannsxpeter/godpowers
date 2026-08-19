@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-arch
+  invocation-policy: suggestible
   description: Design system architecture
   tier: 1
   family: start

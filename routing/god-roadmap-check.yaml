@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-roadmap-check
+  invocation-policy: suggestible
   description: Legacy roadmap-only alias for /god-reconcile
   tier: 1
   family: compatibility

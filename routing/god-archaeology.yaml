@@ -2,7 +2,8 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-archaeology
-  description: Deep brownfield code archaeology
+  invocation-policy: suggestible
+  description: Deep brownfield code archaeology with optional --why evidence
   tier: 0
   family: start
 
@@ -14,6 +15,7 @@ execution:
   context: fresh
   writes:
     - .godpowers/archaeology/REPORT.mdx
+    - .godpowers/archaeology/WHY.mdx
 
 success-path:
   next-recommended: /god-reconstruct

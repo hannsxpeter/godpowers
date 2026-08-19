@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-plant-seed
+  invocation-policy: suggestible
   description: Forward-looking idea with trigger condition
   tier: 0
   family: capture

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-export-otel
+  invocation-policy: approval-required
   description: Export Godpowers events to OpenTelemetry OTLP JSON traces
   tier: 0
   family: operate

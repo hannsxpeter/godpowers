@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-audit
+  invocation-policy: suggestible
   description: Score artifacts against have-nots
   tier: 0
   family: verify

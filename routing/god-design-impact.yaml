@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-design-impact
+  invocation-policy: suggestible
   description: What-if analysis on DESIGN.md change
   tier: 1
   family: start

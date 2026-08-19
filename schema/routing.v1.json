@@ -16,11 +16,21 @@
     },
     "metadata": {
       "type": "object",
-      "required": ["command"],
+      "required": ["command", "invocation-policy"],
       "properties": {
         "command": {
           "type": "string",
           "pattern": "^/god(?:-[a-z-]+)?$"
+        },
+        "invocation-policy": {
+          "type": "string",
+          "enum": [
+            "explicit-only",
+            "suggestible",
+            "auto-local",
+            "auto-bounded",
+            "approval-required"
+          ]
         },
         "description": { "type": "string" },
         "family": {

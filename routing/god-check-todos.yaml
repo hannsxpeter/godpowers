@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-check-todos
+  invocation-policy: suggestible
   description: List pending todos; optionally route to one
   tier: 0
   family: capture

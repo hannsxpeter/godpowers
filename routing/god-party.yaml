@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-party
+  invocation-policy: explicit-only
   description: Multi-persona collaboration session
   tier: 0
   family: collaborate

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-surface
+  invocation-policy: suggestible
   description: Runtime command surface profile switcher
   tier: 0
   family: configure

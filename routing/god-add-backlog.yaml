@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-add-backlog
+  invocation-policy: suggestible
   description: Add idea to backlog (less urgent than todo)
   tier: 0
   family: capture

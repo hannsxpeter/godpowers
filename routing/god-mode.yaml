@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-mode
+  invocation-policy: explicit-only
   description: Full autonomous project run
   tier: 0
   family: start

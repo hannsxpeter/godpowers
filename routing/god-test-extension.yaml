@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-test-extension
+  invocation-policy: suggestible
   description: 
   tier: 0
   family: extend

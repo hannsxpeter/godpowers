@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-story-close
+  invocation-policy: suggestible
   description: Mark a story done after build+verify
   tier: 2
   family: build

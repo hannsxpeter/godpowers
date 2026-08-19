@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-sync
+  invocation-policy: auto-bounded
   description: Sync all affected artifacts after feature work
   tier: 0
   family: maintain

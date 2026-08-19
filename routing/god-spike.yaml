@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-spike
+  invocation-policy: suggestible
   description: Time-boxed research
   tier: 0
   family: build

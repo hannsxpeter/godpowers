@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-first-run
+  invocation-policy: suggestible
   description: Guided first 10 minute onboarding
   tier: 0
   family: start

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-test-runtime
+  invocation-policy: auto-bounded
   description: Cross-form runtime verification
   tier: 3
   family: verify

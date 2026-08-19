@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-lint
+  invocation-policy: suggestible
   description: Mechanical have-nots validation
   tier: 0
   family: verify

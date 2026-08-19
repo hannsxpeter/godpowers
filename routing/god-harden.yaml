@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-harden
+  invocation-policy: auto-bounded
   description: Adversarial security review
   tier: 3
   family: operate

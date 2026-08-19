@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-hotfix
+  invocation-policy: suggestible
   description: Urgent production bug fix
   tier: 0
   family: operate

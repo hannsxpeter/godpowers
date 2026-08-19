@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-story-verify
+  invocation-policy: suggestible
   description: Run story's acceptance criteria as headless browser tests
   tier: 2
   family: build

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-resume-work
+  invocation-policy: suggestible
   description: Restore from handoff
   tier: 0
   family: continue

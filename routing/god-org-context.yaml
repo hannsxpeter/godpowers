@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-org-context
+  invocation-policy: suggestible
   description: Set up or read org-level standards (bluefield)
   tier: 0
   family: start

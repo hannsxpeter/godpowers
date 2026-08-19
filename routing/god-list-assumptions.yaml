@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-list-assumptions
+  invocation-policy: suggestible
   description: Surface assumptions
   tier: 0
   family: start

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-init
+  invocation-policy: suggestible
   description: Initialize a Godpowers project. Detects mode and scale.
   tier: 0
   family: start

@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-story-build
+  invocation-policy: suggestible
   description: Implement a single story
   tier: 2
   family: build

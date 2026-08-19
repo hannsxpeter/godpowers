@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-review
+  invocation-policy: suggestible
   description: Two-stage code review
   tier: 0
   family: verify

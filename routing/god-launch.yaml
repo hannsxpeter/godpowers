@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-launch
+  invocation-policy: approval-required
   description: Launch the product
   tier: 3
   family: operate

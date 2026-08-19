@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-extension-scaffold
+  invocation-policy: suggestible
   description: Create a publishable extension pack skeleton
   tier: 0
   family: extend

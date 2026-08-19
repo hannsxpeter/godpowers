@@ -2,6 +2,7 @@ apiVersion: godpowers/v1
 kind: CommandRouting
 metadata:
   command: /god-help
+  invocation-policy: suggestible
   description: Discoverable contextual help
   tier: 0
   family: configure
