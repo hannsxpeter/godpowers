@@ -29,8 +29,9 @@ see_also: [quality]
 
 ## Decisions
 
-- [DECISION] Pull-request CI run 32241228965 and merged-main CI run 32241605432 passed for the exact 6.2.0 release tree.
-- [DECISION] Provenance workflow 32242093455 passed in 4 minutes 37 seconds and published the exact 6.2.0 root and MCP pair.
+- [DECISION] Pull-request CI run 32271677551 and merged-main CI run 32272127234 passed for the exact 6.3.0 release tree.
+- [DECISION] Provenance workflow 32272150358 passed in 2 minutes 38 seconds and published the exact 6.3.0 root and MCP pair.
+- [DECISION] Provenance workflow 32272475321 passed in 2 minutes 17 seconds and published the exact operations pack.
 - [DECISION] Publication verification records observed release evidence without claiming unavailable production-user outcomes.
 
 ## Rules

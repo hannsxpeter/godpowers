@@ -1,6 +1,6 @@
 # Godpowers 6.3.0 Release
 
-> Status: Release candidate
+> Status: Published and verified
 > Date: 2026-08-19
 
 - [DECISION] Godpowers 6.3.0 adds explicit evidence and authority contracts to runtime verification, debugging, program design, archaeology, durable decision history, and command routing.
@@ -49,7 +49,7 @@
 - [DECISION] Unknown route prerequisite predicates fail closed, and the four named non-prefixed predicates used by core routes now have explicit behavior.
 - [DECISION] Verification profiles, debug feedback records, recursive scans, and event snapshots enforce bounded collection, depth, node, byte, and line limits.
 - [DECISION] Root and MCP recovery publication compares registry `dist.integrity` and `dist.shasum` to the exact packed candidates before either package can be promoted to `latest`.
-- [DECISION] The repaired release has zero unresolved Critical, High, Medium, or Low findings; publication remains gated on a fresh hardening artifact hash, executed evidence, and the full release suite.
+- [DECISION] The repaired release has zero unresolved Critical, High, Medium, or Low findings; the fresh hardening artifact hash, executed evidence, and full release suite all passed before publication.
 
 ## Observed Validation
 
@@ -66,15 +66,32 @@
 - [DECISION] The release gate also passed official skill validation, Pillars conformance, per-file coverage, zero-vulnerability production audit, live advisory checks, the 140-check self-project truth gate, evidence drift, the 659-file root package check, and the 8-file MCP package check.
 - [DECISION] The final harden gate passed with one executed-backed release command, all ten OWASP rows cited to ledger evidence, and no warning or error finding.
 - [DECISION] The fresh pre-publication gate passed against hardening revision `sha256:69bd088dc44e405b144536bd51701088bb0da7d5e2200685e9b3e13be7403f5f` with zero unresolved or accepted Critical findings.
-- [HYPOTHESIS] Pull-request and merged-main CI identities, annotated tags, registry integrity, GitHub Release, and isolated install evidence will be recorded after publication gates complete.
+- [DECISION] Pull request 97, pull-request CI run 32271677551, and merged-main CI run 32272127234 passed against release commit `c45d0473ad946fcd7c02a5706b02f51a40ed0d25`.
+- [DECISION] Annotated tags `v6.3.0` and `operations-pack-v0.1.0` both resolve to the exact merged release commit.
+- [DECISION] Provenance workflow 32272150358 published and promoted the exact `godpowers@6.3.0` and `@godpowers/mcp@6.3.0` pair after release, prepublication, integrity, and shasum checks passed.
+- [DECISION] Provenance workflow 32272475321 published `@godpowers/operations-pack@0.1.0` after merged-tag identity, pack-readiness, and fresh prepublication checks passed.
+- [DECISION] GitHub Release `v6.3.0` was published at `2026-08-19T15:50:34Z` from the annotated release tag.
 
 ## Upgrade
 
 - [DECISION] Root CLI and MCP users need no state migration, artifact migration, command rename, or production dependency change for 6.3.0.
-- [DECISION] Install the release with `npm install -g godpowers@6.3.0` or run it with `npx godpowers@6.3.0` after registry publication completes.
+- [DECISION] Install the release with `npm install -g godpowers@6.3.0` or run it with `npx godpowers@6.3.0`.
 - [DECISION] Root CLI users continue to need Node.js 18 or newer, and MCP users continue to need Node.js 20 or newer.
 - [DECISION] Existing extension packs remain compatible with the Godpowers 6.x peer range; the optional operations pack requires explicit installation.
 
 ## Publication Evidence
 
-- [OPEN QUESTION] Record the pull request, merged-main commit, CI runs, annotated tags, provenance workflows, registry integrity values, GitHub Release, isolated install results, and final clean-main status after publication; owner: Godpowers maintainer.
+- [DECISION] Pull request: `https://github.com/hannsxpeter/godpowers/pull/97`.
+- [DECISION] Release commit: `c45d0473ad946fcd7c02a5706b02f51a40ed0d25`, merged at `2026-08-19T15:47:11Z`.
+- [DECISION] Pull-request CI: `https://github.com/hannsxpeter/godpowers/actions/runs/32271677551`.
+- [DECISION] Merged-main CI: `https://github.com/hannsxpeter/godpowers/actions/runs/32272127234`.
+- [DECISION] Root and MCP provenance workflow: `https://github.com/hannsxpeter/godpowers/actions/runs/32272150358`.
+- [DECISION] Operations-pack provenance workflow: `https://github.com/hannsxpeter/godpowers/actions/runs/32272475321`.
+- [DECISION] GitHub Release: `https://github.com/hannsxpeter/godpowers/releases/tag/v6.3.0`.
+- [DECISION] npm `godpowers@6.3.0` is `latest` with integrity `sha512-pI+MKHwI17yFBc8KhS2AOa1Ny80eGnFZs3yec3071JrI8j7giP+EyP/a9Q5cyYSUwix5DjNgP/pZUukxz7SZYA==` and shasum `c6c04c6093a0cca595eb476c71f4814b8897ccd3`.
+- [DECISION] npm `@godpowers/mcp@6.3.0` is `latest` with integrity `sha512-o6jz/g032LsvO5n2jH+aIW9dOejd+PwGCxe0dizY7g4qUtoUVhqkgjUo3NltNIlrjVeSVMsvyuWMoYshmS5nLg==` and shasum `cad46e61bb53b2684f95c3c07ca6a842b99fd110`.
+- [DECISION] npm `@godpowers/operations-pack@0.1.0` is `latest` with integrity `sha512-2nUBwKwrBNGzEn1bCd8+BYIMix2xLHfP/zqImVHzVVj0in0JVdR+16zkyQbTA3W1sQfCLf8gIyGaNp0GpJTSfg==` and shasum `c6dcd340dfad1025366b5cbbce072acac39c53fe`.
+- [DECISION] `node scripts/verify-published-install.js godpowers@6.3.0` passed Quick Proof, project inspection, status, next route, Claude installation, and Codex installation from an isolated exact-version install.
+- [DECISION] The exact MCP package passed its published `--help` command, and a combined isolated install verified the root CLI, MCP executable, and operations-pack manifest.
+- [DECISION] The combined exact-version install reported zero vulnerabilities; all 6 installed packages have verified registry signatures and attestations.
+- [DECISION] The release tags were created from a clean `main` worktree, and every publication target resolves to the merged release commit or its exact registry artifact.
