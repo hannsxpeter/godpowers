@@ -10,6 +10,8 @@ description: |
 
 # /god-build
 
+<!-- Implements: P-MUST-36, P-MUST-37, P-MUST-38, P-MUST-39, P-MUST-40, P-MUST-41, P-MUST-42, P-MUST-43 -->
+
 Orchestrate the build via specialist agents.
 
 ## Setup
@@ -27,6 +29,8 @@ Orchestrate the build via specialist agents.
    route from PRD or Architecture. Select one primary form before domain
    overlays and pass its vertical-slice definition plus completion evidence to
    the planner, executors, and both reviewers.
+5. Load `references/building/BLAST-RADIUS.md` and pass it to every executor and
+   Stage 2 quality reviewer as the single safety-case protocol.
 
 ## Orchestration
 
@@ -57,16 +61,38 @@ For each slice in the wave (parallel):
    - The slice plan only (not the whole PLAN.md)
    - Relevant ARCH context for this slice
    - Stack DECISION
+   - `references/building/BLAST-RADIUS.md`
 2. Wait for executor to complete (TDD and request-trace discipline enforced)
 3. Spawn **god-spec-reviewer** in fresh context (independent of executor)
    - If FAIL: return slice to god-executor with findings, including any
      scope creep or request-trace failures
    - If PASS: proceed to stage 2
-4. Spawn **god-quality-reviewer** in fresh context (independent)
-   - If FAIL: return slice to god-executor with findings, including any
-     overcomplication, speculative abstraction, or unrelated cleanup
-   - If PASS: commit the slice atomically
-5. Record build status and slice evidence in `.godpowers/state.json` so
+4. Resolve every cited record ID locally with
+   `lib/evidence.resolveReviewEvidence`, the expected claim, exact command,
+   canonical substep, review-window start, and latest relevant behavior-change
+   timestamp. Spawn **god-quality-reviewer** in fresh context (independent) with
+   the shared protocol and sanitized projections only. Do not pass raw ledger
+   records, gate-event attributes, commands, claims, output tails, or
+   secret-bearing arguments.
+   - Preserve the first quality and safety-case verdicts as provisional, plus
+     the completed 10-row boundary inventory
+   - Classify bounded or wide before acting on the provisional first-pass verdict.
+   - Classify the change as wide when it crosses at least 3 boundary classes or
+     at least 2 high-impact classes; otherwise classify it as bounded
+   - Require one safety case for bounded changes and at least 2 independent
+     safety cases for wide changes
+   - If bounded, one pass is sufficient and the provisional verdict proceeds
+     to the final Stage 2 gate
+   - If wide, always run a second independent safety case in a fresh context, even when the provisional first-pass verdict is FAIL. Do not give the second reviewer the first pass's conclusions.
+   - After all required passes finish, reconcile the safety cases and issue the final Stage 2 verdict. Preserve each provisional verdict and do not treat agreement as proof.
+   - If the final Stage 2 verdict FAILS: return the slice to god-executor with
+     quality, overcomplication, scope, and safety-case findings
+   - If the final Stage 2 verdict PASSES: commit the slice atomically
+5. Require every level 4 or level 5 conclusion to cite an accepted sanitized
+   resolver projection for a fresh successful matching `npx godpowers verify`
+   record. A high-impact `UNPROVEN` claim blocks the commit; a lower-impact
+   claim remains a warning with the exact next proof.
+6. Record build status and slice evidence in `.godpowers/state.json` so
    `.godpowers/build/STATE.mdx` regenerates as a managed view.
 
 Move to next wave only when current wave is fully committed.

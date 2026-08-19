@@ -242,15 +242,31 @@
     "STORY-"
   ],
   "specialists/god-executor.md": [
+    "M-blast-radius-safety-case",
     "P-...",
     "P-MUST-01",
-    "P-MUST-02"
+    "P-MUST-02",
+    "P-MUST-36",
+    "P-MUST-37",
+    "P-MUST-39",
+    "P-MUST-40",
+    "P-MUST-41",
+    "P-MUST-43"
   ],
   "specialists/god-pm.md": [
     "P-MUST-01"
   ],
   "specialists/god-quality-reviewer.md": [
-    "P-..."
+    "M-blast-radius-safety-case",
+    "P-...",
+    "P-MUST-36",
+    "P-MUST-37",
+    "P-MUST-38",
+    "P-MUST-39",
+    "P-MUST-40",
+    "P-MUST-41",
+    "P-MUST-42",
+    "P-MUST-43"
   ],
   "specialists/god-reconstructor.md": [
     "P-..."
@@ -293,8 +309,17 @@
     "P-MUST-28"
   ],
   "scripts/run-tests.js": [
+    "M-blast-radius-safety-case",
     "P-MUST-24",
-    "P-MUST-33"
+    "P-MUST-33",
+    "P-MUST-36",
+    "P-MUST-37",
+    "P-MUST-38",
+    "P-MUST-39",
+    "P-MUST-40",
+    "P-MUST-41",
+    "P-MUST-42",
+    "P-MUST-43"
   ],
   "scripts/test-test-runner.js": [
     "P-MUST-24"
@@ -313,7 +338,10 @@
     "P-MUST-30"
   ],
   "scripts/check-package-contents.js": [
-    "P-MUST-35"
+    "M-blast-radius-safety-case",
+    "P-MUST-35",
+    "P-MUST-36",
+    "P-MUST-43"
   ],
   "scripts/test-artifact-linter.js": [
     "P-MUST-32"
@@ -331,5 +359,99 @@
   ],
   "specialists/god-launch-strategist.md": [
     "P-MUST-34"
+  ],
+  "lib/evidence.js": [
+    "ADR-010",
+    "M-blast-radius-safety-case",
+    "P-MUST-40"
+  ],
+  "lib/feature-awareness.js": [
+    "M-blast-radius-safety-case",
+    "P-MUST-36",
+    "P-MUST-42"
+  ],
+  "lib/impact.js": [
+    "M-blast-radius-safety-case",
+    "P-MUST-43"
+  ],
+  "lib/repo-doc-sync.js": [
+    "P-MUST-35"
+  ],
+  "references/building/BLAST-RADIUS.md": [
+    "ADR-010",
+    "M-blast-radius-safety-case",
+    "P-MUST-36",
+    "P-MUST-37",
+    "P-MUST-38",
+    "P-MUST-39",
+    "P-MUST-40",
+    "P-MUST-41",
+    "P-MUST-42",
+    "P-MUST-43"
+  ],
+  "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "M-blast-radius-safety-case",
+    "P-MUST-36",
+    "P-MUST-37",
+    "P-MUST-38",
+    "P-MUST-39",
+    "P-MUST-40",
+    "P-MUST-41",
+    "P-MUST-42",
+    "P-MUST-43"
+  ],
+  "scripts/test-blast-radius.js": [
+    "ADR-010",
+    "M-blast-radius-safety-case",
+    "P-MUST-36",
+    "P-MUST-37",
+    "P-MUST-38",
+    "P-MUST-39",
+    "P-MUST-40",
+    "P-MUST-41",
+    "P-MUST-42",
+    "P-MUST-43"
+  ],
+  "scripts/test-evidence.js": [
+    "ADR-010",
+    "M-blast-radius-safety-case",
+    "P-MUST-40"
+  ],
+  "scripts/test-feature-awareness.js": [
+    "M-blast-radius-safety-case",
+    "P-MUST-36",
+    "P-MUST-42"
+  ],
+  "scripts/test-impact.js": [
+    "M-blast-radius-safety-case",
+    "P-MUST-43"
+  ],
+  "scripts/test-repo-doc-sync.js": [
+    "P-MUST-35"
+  ],
+  "scripts/version-sync.js": [
+    "P-MUST-35"
+  ],
+  "skills/god-build.md": [
+    "M-blast-radius-safety-case",
+    "P-MUST-36",
+    "P-MUST-37",
+    "P-MUST-38",
+    "P-MUST-39",
+    "P-MUST-40",
+    "P-MUST-41",
+    "P-MUST-42",
+    "P-MUST-43"
+  ],
+  "skills/god-review.md": [
+    "M-blast-radius-safety-case",
+    "P-MUST-36",
+    "P-MUST-37",
+    "P-MUST-38",
+    "P-MUST-39",
+    "P-MUST-40",
+    "P-MUST-41",
+    "P-MUST-42",
+    "P-MUST-43"
   ]
 }

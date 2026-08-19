@@ -7,6 +7,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.2.0] - 2026-08-19
+
+Blast-radius review hardening release. Godpowers now requires Stage 2 to prove
+one load-bearing safety fact across repository and delivery boundaries instead
+of treating direct callers, static search, or reviewer agreement as behavioral
+proof.
+
+### Added
+
+- Shared `references/building/BLAST-RADIUS.md` protocol with one load-bearing
+  safety fact, evidence levels 1 through 5, Confirmed Risks, Cleared Risks,
+  Unproven Claims, runtime applicability, and a 10-class boundary inventory.
+- Read-only `lib/evidence.resolveReviewEvidence` projection. It matches one
+  executed record by claim, exact command, canonical substep, verdict, and
+  freshness, then verifies its SHA-256 digest-bound gate event and event chain
+  without returning raw claims, commands, or output tails.
+- Six adversarial temporary-repository fixtures for pinned dependency behavior,
+  lifecycle ordering, serialized consumers, installed-copy drift, package
+  omission, and cross-language invocation. Fixture subprocesses fail closed at
+  a 10-second timeout or 1 MiB output cap.
+
+### Changed
+
+- Evidence levels 1 through 3 remain `UNPROVEN`; level 4 requires a focused
+  `godpowers verify` probe, and level 5 requires an applicable reproduction
+  through the running or installed delivery boundary.
+- High-impact `UNPROVEN` claims now fail Stage 2. Lower-impact uncertainty
+  remains a warning with one exact next proof.
+- Changes crossing at least 3 boundary classes or at least 2 high-impact
+  classes now receive at least 2 independent fresh-context safety cases, even
+  after a provisional first-pass failure. Bounded changes keep 1 Stage 2 pass.
+- `lib/impact.js` now labels its results as unproven static candidates with
+  maximum evidence level 2. The existing `/god-review`, `/god-build`,
+  verification ledger, state rollup, and public command surface remain in
+  place.
+- The package now ships the shared protocol through the existing `references/`
+  tree. This release adds no slash command, CLI operation, route, workflow,
+  specialist, production dependency, evidence store, state writer, or
+  execution authority.
+- The protocol and fixtures were authored independently after reviewing
+  pstack's MIT-licensed blast-radius skill. No upstream prose, code, fixture,
+  result, or runtime dependency is copied or shipped.
+
+### Security
+
+- Executed verification records retain their existing shape. Gate events add
+  record ID and record digest bindings so altered, missing, duplicate, stale,
+  mismatched, failed, timed-out, or attested-only evidence cannot clear a risk.
+- Reviewer context receives only the sanitized resolver projection. The local
+  hash-chain check detects inconsistency inside a trusted workspace but does
+  not authenticate against an actor able to rewrite every trusted file and
+  recompute the chain.
+- High-impact review classes cover authentication or authorization, secret
+  disclosure, state loss or corruption, destructive actions, installer or
+  published-package failure, public or serialized contract violations, and
+  verification-ledger integrity.
+
+### Upgrade
+
+- No state or artifact migration is required. The root package continues to
+  support Node.js 18 or newer; `@godpowers/mcp` continues to require Node.js 20
+  or newer.
+- Verification records created before 6.2.0 lack digest-bound gate events and
+  cannot support new level 4 or level 5 review conclusions. Generate a fresh
+  `godpowers verify` record for each load-bearing safety claim.
+
 ## [6.1.0] - 2026-08-19
 
 Prose-quality hardening release. Godpowers now separates meaning-preserving

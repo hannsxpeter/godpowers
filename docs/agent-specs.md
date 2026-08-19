@@ -150,11 +150,11 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | god-orchestrator (per slice during /god-build), `/god-feature`, `/god-refactor`, `/god-hotfix`, `/god-upgrade`, `/god-add-tests`, `/god-update-deps` |
-| **Inputs** | One slice plan from `.godpowers/build/PLAN.mdx`, relevant ARCH excerpts, stack DECISION |
-| **Outputs** | Source code, test files, regression tests (in repo, not .godpowers/) |
+| **Inputs** | One slice plan from `.godpowers/build/PLAN.mdx`, relevant ARCH excerpts, stack DECISION, and `references/building/BLAST-RADIUS.md` |
+| **Outputs** | Source code, test files, regression tests, one candidate safety fact, implicated boundary classes, and a smallest focused proof command (in repo, not a self-authored verdict) |
 | **Downstream consumers** | god-spec-reviewer, god-quality-reviewer |
 | **Artifact awareness** | Just the slice plan and immediate context (FRESH context per slice; doesn't see other slices) |
-| **Handoff** | Returns to orchestrator with tests, checks, changed files, request-trace evidence, and follow-up cleanup noticed but not touched. DOES NOT commit. Reviewers must pass first. Have-nots B-01..B-12. |
+| **Handoff** | Returns to orchestrator with tests, checks, changed files, request-trace evidence, candidate safety fact, implicated boundaries, smallest focused proof, and follow-up cleanup noticed but not touched. DOES NOT grade its safety candidate or commit. Reviewers must pass first. Have-nots B-01..B-12. |
 | **Standards check** | NO (reviewers serve this purpose) |
 
 ### god-spec-reviewer
@@ -174,11 +174,11 @@ Each agent has these fields:
 | Field | Value |
 |---|---|
 | **Triggers** | god-orchestrator after god-spec-reviewer passes; `/god-review` |
-| **Inputs** | The code god-executor wrote (independent of god-spec-reviewer's reasoning) |
-| **Outputs** | PASS or FAIL verdict (returned to orchestrator), findings if FAIL |
+| **Inputs** | The code god-executor wrote, relevant Pillars, `references/building/BLAST-RADIUS.md`, static boundary candidates, and sanitized `lib/evidence.resolveReviewEvidence` projections (independent of god-spec-reviewer's reasoning) |
+| **Outputs** | PASS or FAIL verdict, nine quality-dimension results, exactly one load-bearing safety fact, a 10-row boundary inventory, threshold calculation, Confirmed Risks, Cleared Risks, and Unproven Claims |
 | **Downstream consumers** | god-orchestrator (commits if both PASS) |
-| **Artifact awareness** | Just the code. Does NOT see other slices. |
-| **Handoff** | If FAIL: orchestrator returns to god-executor, including any overcomplication, speculative abstraction, or surgicality failure. If PASS: orchestrator commits the slice atomically. |
+| **Artifact awareness** | The reviewed diff, immediate request or slice contract, relevant Pillars, protocol, boundary sources, and sanitized review evidence. Does NOT see other slices or raw ledger records, gate events, commands, claims, or output tails. |
+| **Handoff** | High-impact `UNPROVEN` claims and confirmed blocking risks FAIL Stage 2. Lower-impact `UNPROVEN` claims warn with one exact next proof. If bounded, the first safety case supplies the final Stage 2 verdict. If wide, the orchestrator always completes at least 2 independent fresh-context safety cases, even after a provisional first-pass FAIL, then reconciles differences without raising evidence through agreement. |
 | **Standards check** | This IS the standards check (stage 2) |
 
 ---
@@ -616,6 +616,11 @@ Examples: god-pm, god-architect, god-roadmapper, god-stack-selector.
 ### Shape 2: Verdict-only, no artifact
 Agent returns PASS/FAIL or routing recommendation.
 Examples: god-spec-reviewer, god-quality-reviewer, god-router, god-standards-check.
+
+The quality-reviewer verdict includes a blast-radius safety case. Bounded
+changes use one pass. Changes crossing at least 3 boundary classes or at least
+2 high-impact classes use at least 2 independent fresh-context passes before
+the final Stage 2 verdict.
 
 ### Shape 3: Composite (planner + workers)
 Lead agent spawns workers, coordinates returns, atomic-commits on success.

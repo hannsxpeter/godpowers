@@ -27,6 +27,7 @@
 | C-maintainability-trajectory | [DECISION] Capture stable code-shape snapshots and signed deltas without executing repository imports. | [DECISION] Dependency-free Node.js CommonJS. |
 | C-evolution-benchmark | [DECISION] Reveal six ordered requirements to a temporary repository and retain deterministic correctness and changeability evidence. | [DECISION] Dependency-free Node.js CommonJS plus packaged fixtures. |
 | C-prose-lint within the Artifact layer | [DECISION] Scan caller-supplied Markdown as inert text and return ordered advisory U-12 prose findings. | [DECISION] Dependency-free Node.js CommonJS. |
+| C-evidence-review-resolver within the Decision runtime | [DECISION] Resolve one cited executed record against the existing verification ledger and hash-chained gate event, compare expected values, and return a sanitized fail-closed projection without writing state or evidence. | [DECISION] Dependency-free Node.js CommonJS in `lib/evidence.js`. |
 
 ## Architecture Decision Records
 
@@ -102,6 +103,16 @@
 - [DECISION] Flip point: reconsider a rule's advisory severity only after two release candidates provide reviewed precision evidence and a maintainer-approved override design.
 - [DECISION] Consequence: existing artifact errors keep their severity, while maintainers receive deterministic prose findings that cannot block a gate by themselves.
 
+### ADR-010: Bind blast-radius conclusions to existing executed evidence
+
+- [DECISION] Context: a Stage 2 reviewer can trace source and static impact candidates without proving the single condition that makes a cross-boundary change safe.
+- [DECISION] Decision: Stage 2 names exactly one load-bearing safety fact, scans 10 boundary classes, grades evidence from level 1 through level 5, and resolves every level 4 or level 5 conclusion to one fresh successful record in the existing verification ledger.
+- [DECISION] Decision: C-evidence-review-resolver binds the unchanged executed record to a digest-bearing `gate.pass`, validates the event chain and expected claim, exact command, canonical substep, result, and freshness, then returns only match booleans and bounded redacted metadata.
+- [DECISION] Decision: levels 1 through 3 remain `UNPROVEN`; high-impact uncertainty fails Stage 2, lower-impact uncertainty warns with one exact next proof, and a change crossing at least 3 boundary classes or 2 high-impact classes receives 2 independent fresh-context passes.
+- [DECISION] Rationale: reusing the ledger, event chain, and state rollup preserves one evidence authority and avoids a competing store, command, dependency, or state writer.
+- [DECISION] Flip point: reconsider the wide-change threshold after two release candidates record trigger frequency and unique high-impact findings; reconsider resolver indexing only after a deterministic corpus benchmark demonstrates that linear local reads exceed the review latency envelope.
+- [DECISION] Consequence: static impact, source tracing, and reviewer agreement remain candidate evidence, the resolver remains read-only and fail closed, and the trusted-workspace chain is integrity evidence rather than authentication against an actor who controls every local trusted file.
+
 ## Critical Flows
 
 ### Authorized provenance inspection and cleaning
@@ -128,6 +139,15 @@
 3. [DECISION] C-prose-lint returns ordered findings with bounded excerpts after terminal control bytes are removed.
 4. [DECISION] The universal have-nots wrapper maps each finding to a U-12 warning, while the existing artifact linter preserves every blocking error and aggregate warning count.
 
+### Blast-radius Stage 2 flow
+
+1. [DECISION] The executor proposes one candidate safety fact, implicated boundary classes, and the smallest focused proof without grading its own work.
+2. [DECISION] Stage 1 verifies specification, acceptance, traceability, and scope without deciding the blast-radius safety case.
+3. [DECISION] Stage 2 independently verifies or replaces the candidate, records all 10 boundary classes, and calculates whether the change is bounded or wide.
+4. [DECISION] A bounded change receives one fresh-context safety-case pass, while a wide change receives a second independent pass and a reconciliation that cannot convert agreement into proof.
+5. [DECISION] C-evidence-review-resolver checks each level 4 or level 5 citation against one unique fresh successful ledger record and its digest-bound gate event, then returns a sanitized projection to the reviewer.
+6. [DECISION] A confirmed blocking risk or high-impact Unproven Claim fails Stage 2; a lower-impact Unproven Claim remains visible with one exact next proof.
+
 ## Capacity Envelope
 
 | Input | Supported envelope | Source |
@@ -142,6 +162,8 @@
 | Evolution checkpoints | [DECISION] Exactly six sequential checkpoints with no parallel project mutation or future-checkpoint reads. | [DECISION] P-MUST-29 packaged scenario and isolation fixtures. |
 | Evolution input and output | [DECISION] Manifests and checkpoints are each capped at 16 KiB, scalar fields at 4 KiB, baselines at 64 MiB, 5,000 entries, and depth 48, machine evidence at 256 KiB, and human summaries at 128 KiB. | [DECISION] P-MUST-29 adversarial boundary fixtures. |
 | Prose scan | [DECISION] At least 1 MiB or 10,000 lines per invocation, excerpts capped at 160 characters, and a 1 MiB fixture completing within 250 milliseconds at p95 across 20 runs. | [DECISION] P-MUST-31 focused performance and boundary fixtures. |
+| Blast-radius review | [DECISION] Preserve exactly 1 load-bearing safety fact, all high-impact Unproven Claims, 10 boundary rows, at least 500 changed-file entries, and at least 1,000 static candidates through deterministic compaction. | [DECISION] P-MUST-37 through P-MUST-39 and the shared blast-radius protocol. |
+| Evidence-review corpus | [HYPOTHESIS] Linear local resolution remains sufficient for the current trusted-workspace ledger and run corpus. | [OPEN QUESTION] Add a deterministic 500-file and 1,000-candidate end-to-end capacity fixture before the second release candidate containing ADR-010; owner: Godpowers maintainer. |
 
 ## Failure and Degradation
 
@@ -155,6 +177,7 @@
 | Context or plan validation | [DECISION] Complete each local validation within a 30 second harness deadline, reject missing, escaped, contradictory, oversized, or negatively approved evidence, and never retry; the read-only validation is idempotent by input-byte digest. | [DECISION] Return bounded findings and leave authoritative state unchanged. |
 | Trajectory or benchmark input | [DECISION] Complete each fixture checkpoint within a 30 second behavior deadline, reject incompatible snapshots, malformed manifests, future-checkpoint access, or incomplete evidence, and never retry a mutation; snapshot reads are idempotent by repository-byte digest. | [DECISION] Stop at the first invalid checkpoint, retain partial evidence, and remove the temporary repository. |
 | Advisory prose scan | [DECISION] Complete one local pass without retry, execute no input content, make no I/O request, and leave caller bytes unchanged; identical input and options are idempotent by returned finding bytes. | [DECISION] Return bounded sanitized U-12 warnings, or a scanner error that leaves existing artifact state and severity unchanged. |
+| Evidence review resolution | [DECISION] Read the existing ledger and event chain once per cited record, execute no stored command or output, and reject absent, duplicate, failed, mismatched, stale, unbound, digest-mismatched, or invalid-chain evidence without retry. | [DECISION] Return a bounded sanitized rejection projection, preserve the record and event files unchanged, and keep the safety claim `UNPROVEN`. |
 
 ## NFR-to-Architecture Map
 
@@ -175,6 +198,9 @@
 | Harness isolation | Dependency-free local helpers, inert source parsing, and an offline temporary-repository benchmark | ADR-007 and ADR-008 |
 | Advisory prose quality | Local inert-text scanning, bounded sanitized findings, and warning-only U-12 integration | ADR-002 and ADR-009 |
 | Prose scan isolation | No filesystem, network, model, persistence, or mutation authority for caller-owned text | ADR-002 and ADR-009 |
+| Review evidence integrity | Read-only digest-bound resolution through the existing ledger and event authority | ADR-001 and ADR-010 |
+| Review privacy | Sanitized reviewer projection with no raw record, event attributes, command arguments, claims, or output tails | ADR-010 |
+| Review trust | Trusted-workspace integrity validation without an authentication claim against a fully controlling local actor | ADR-010 |
 
 ## Trust Boundaries
 
@@ -188,6 +214,8 @@
 - [DECISION] Harness path boundary: context files reject symlinks and retain pinned bytes, program-design approval binds to an exact path and digest, and handoff plus benchmark paths resolve within their declared roots before reads or writes.
 - [DECISION] Harness content boundary: repository source and imports are inert measurement input, loadout events omit contents, and compact logs never add environment dumps or credentials.
 - [DECISION] Artifact-quality boundary: prose input remains inert caller-owned text, C-prose-lint performs no I/O, terminal control bytes are removed from excerpts, findings are capped at 160 characters, and U-12 remains advisory; this local path adds no external trust boundary.
+- [DECISION] Blast-radius evidence boundary: `lib/evidence.js` reads the existing local ledger and hash-chained events, compares caller-supplied expectations, and returns a sanitized projection without executing stored content or acquiring write authority.
+- [DECISION] Trusted-workspace boundary: digest and chain validation detects accidental or inconsistent local mutation but does not authenticate against an actor who can rewrite every trusted project file and recompute the complete chain; repository access controls, signed commits, CI identity, and publish provenance cover that stronger threat model.
 
 ## Data Ownership
 
@@ -210,6 +238,8 @@
 | Maintainability snapshots and deltas | `lib/maintainability-trajectory.js` plus the independent quality reviewer |
 | Evolution checkpoint evidence | `lib/evolution-benchmark.js` and `fixtures/evolution/maintainability-sequence/` |
 | Advisory prose findings | `lib/prose-lint.js`, with universal warning integration owned by `lib/have-nots-validator.js` |
+| Executed verification records and gate-event bindings | `lib/evidence.js`, `.godpowers/ledger/verifications.jsonl`, and `lib/events.js` under the existing evidence authority |
+| Sanitized evidence-review projection | C-evidence-review-resolver in `lib/evidence.js`, read-only and non-authoritative |
 
 ## Have-Nots Checklist
 
@@ -221,6 +251,7 @@
 
 ## Architecture Changelog
 
+- [DECISION] 2026-08-19: Added ADR-010 and C-evidence-review-resolver inside the existing Decision runtime because blast-radius Stage 2 now binds one safety fact to fresh executed evidence, preserves the existing record and state authority, and exposes only a sanitized read-only projection.
 - [DECISION] 2026-08-19: Added ADR-009 and C-prose-lint inside the existing Artifact layer because deterministic inert-text scanning, bounded sanitized findings, and warning-only U-12 integration now participate in artifact validation without a new service or production dependency.
 - [DECISION] 2026-08-17: Added ADR-007, ADR-008, and six harness-quality containers because verified pre-spawn context, program design, compact verification, handoffs, trajectory measures, and evolution evidence now participate in the Build and release paths.
 - [DECISION] 2026-08-17: Added ADR-004 through ADR-006 and the five provenance containers because the completed extension introduced a lazy package boundary, a deterministic upstream client, a visible external transfer gate, and guarded local publication.
@@ -247,5 +278,6 @@
 - **ADR-005** Pattern: `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`
 - **ADR-006** Pattern: `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`
 - **ADR-007** Pattern: `docs/linkage.md`, `lib/code-scanner.js`, `scripts/test-linkage.js`
+- **ADR-010** Pattern: `lib/evidence.js`, `references/building/BLAST-RADIUS.md`, `scripts/test-blast-radius.js`, `scripts/test-evidence.js`
 
 <!-- godpowers:linkage:end -->

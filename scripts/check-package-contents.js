@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Implements: P-MUST-35
+// Implements: P-MUST-35, P-MUST-36, P-MUST-43
 /**
  * Assert that the npm package contains the load-bearing Godpowers runtime
  * surface and excludes local-only development files.
@@ -28,6 +28,7 @@ const REQUIRED_FILES = [
   'references/HAVE-NOTS.md',
   'references/planning/PRD-ANATOMY.md',
   'references/building/PRODUCT-FORM-ROUTER.md',
+  'references/building/BLAST-RADIUS.md',
   'references/building/DOMAIN-COMPOSITION-REGISTRY.md',
   'references/shipping/HARDEN-OWASP-2025-ROUTER.md',
   'lib/adoption-metrics.js',

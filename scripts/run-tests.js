@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Implements: P-MUST-24, P-MUST-33
+// Implements: P-MUST-24, P-MUST-33, P-MUST-36, P-MUST-37, P-MUST-38, P-MUST-39, P-MUST-40, P-MUST-41, P-MUST-42, P-MUST-43
 /**
  * Full test runner for the Godpowers release gate.
  */
@@ -51,6 +51,7 @@ const TEST_COMMANDS = [
   [node, ['scripts/test-design-foundation.js']],
   [node, ['scripts/test-linkage.js']],
   [node, ['scripts/test-impact.js']],
+  [node, ['scripts/test-blast-radius.js']],
   [node, ['scripts/test-reverse-sync.js']],
   [node, ['scripts/test-planning-systems.js']],
   [node, ['scripts/test-sibling-artifacts.js']],

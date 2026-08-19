@@ -86,6 +86,14 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - P-MUST-33 [DECISION] Verify prose lint behavior, precision, performance, integration, and shipped-framework self-dogfood -- Acceptance: the focused 31-test suite passes, positive fixture recall is at least 90 percent, negative fixture false positives are at most 5 percent, and the full static path scans the fixed `skills/`, `specialists/`, `agents/`, and `references/` scope deterministically.
 - P-MUST-34 [DECISION] Apply the shared prose contract through the documentation and launch specialists according to output type -- Acceptance: engineering documentation stays direct and evidence-based, launch copy preserves approved product voice and positioning, and both specialists run a separate post-draft audit without presenting warnings as proof of authorship or objective quality.
 - P-MUST-35 [DECISION] Preserve independent authorship and release discipline for the pstack `unslop`-inspired prose-quality feature -- Acceptance: Godpowers records the limited upstream inspiration without vendoring prose, rules, code, fixtures, or results, adds no production dependency or command, packages the scanner, documents advisory behavior, and passes the full release gate before publication.
+- P-MUST-36 [DECISION] Define one shared blast-radius safety-case protocol and make the existing `/god-review`, `/god-build`, executor, quality reviewer, and orchestrator flow consume it -- Acceptance: the current two-stage public review contract remains intact, no new command or specialist is added, and Stage 2 cannot PASS without satisfying `references/building/BLAST-RADIUS.md`.
+- P-MUST-37 [DECISION] Require every blast-radius safety case to name exactly one load-bearing safety fact and grade its strongest evidence on a five-level ladder -- Acceptance: levels 1 through 3 remain `UNPROVEN`, level 4 requires a focused executed probe, level 5 requires an applicable runtime or installed-boundary reproduction, and lower-level items cannot be combined into proof.
+- P-MUST-38 [DECISION] Separate Confirmed Risks, Cleared Risks, and Unproven Claims and bind impact to verdict behavior -- Acceptance: a confirmed blocking risk or high-impact `UNPROVEN` claim fails Stage 2, while a lower-impact `UNPROVEN` claim remains a visible warning with one exact next proof.
+- P-MUST-39 [DECISION] Scan dependency implementation, pinned version, local patches, lifecycle timing, public or serialized contracts, database or disk state, configuration or flags, generated or installed surfaces, npm package surfaces, and cross-language consumers before grading the safety fact -- Acceptance: all 10 boundary classes carry cited evidence or an evidence-backed not-applicable reason, and fixed adversarial fixture subprocesses fail closed after 10 seconds or 1 MiB of output.
+- P-MUST-40 [DECISION] Bind level 4 and level 5 conclusions to the existing verification ledger through a read-only sanitized resolver -- Acceptance: the resolver requires one fresh successful record with the same claim, exact command, canonical substep, digest-bound `gate.pass`, matching record digest, and valid event chain while preserving the executed record shape, ledger authority, and existing state writers.
+- P-MUST-41 [DECISION] Require runtime reproduction only when lifecycle, installation, packaging, process, browser, service, host, or faithful consumer behavior can change the conclusion and an evidenced runnable target exists -- Acceptance: static-only conclusions record level 5 as not applicable with a repository-backed reason, while an applicable runnable boundary must execute through `godpowers verify` before it is cleared.
+- P-MUST-42 [DECISION] Add a second independent fresh-context blast-radius pass only for wide changes -- Acceptance: crossing at least 3 boundary classes or at least 2 high-impact classes triggers 2 independent Stage 2 safety cases and reconciliation, while bounded changes retain one Stage 2 pass and record the threshold calculation.
+- P-MUST-43 [DECISION] Keep static impact output as a candidate generator and preserve the existing package and public surface -- Acceptance: static results remain unproven with maximum evidence level 2, the implementation adds no production dependency, command, route, recipe, workflow, specialist type, evidence store, or state writer, and upstream inspiration is acknowledged without copying code or prose.
 
 ### SHOULD (V1 if time permits)
 - P-SHOULD-01 [DECISION] Set up a deploy pipeline that promotes the same artifact with tested rollback -- Acceptance: staging and production deploy the identical build. -- Validation: a rollback drill restores the prior version.
@@ -119,6 +127,9 @@ by `scripts/run-tests.js` and `npm run release:check`.
 | Harness isolation | Compact verification, context planning, handoff generation, maintainability scanning, and the evolution benchmark run locally without network or model credentials | [DECISION] |
 | Advisory prose quality | [DECISION] U-12 reports high-confidence sentence patterns as warnings without rewriting prose or weakening existing blocking artifact errors. | [DECISION] |
 | Prose scan isolation | [DECISION] The dependency-free scanner treats caller input as inert text, performs no I/O, sanitizes control bytes, bounds excerpts to 160 characters, and remains deterministic for identical input. | [DECISION] |
+| Review evidence integrity | [DECISION] Blast-radius proof resolves through the existing verification ledger and a digest-bound gate event, with unchanged executed-record shape and fail-closed local comparison. | [DECISION] |
+| Review privacy | [DECISION] Stage 2 receives match booleans and bounded redacted metadata without raw records, event attributes, command arguments, claims, or output tails. | [DECISION] |
+| Review trust | [DECISION] Digest and chain checks detect accidental or inconsistent mutation inside the trusted workspace but do not authenticate an actor that can rewrite all trusted project files and recompute the chain. | [DECISION] |
 
 ## Scope and No-Gos
 
@@ -132,6 +143,7 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - [DECISION] Godpowers does not replace the underlying agent runtime; it orchestrates Claude Code and compatible tools rather than reimplementing them.
 - [DECISION] Godpowers does not auto-execute irreversible Level-4 actions (deploying to production, moving money, broad dependency upgrades) without explicit user approval.
 - [DECISION] Godpowers does not help misrepresent authorship, bypass a required AI-content disclosure, or claim that provenance cleaning proves a file was human-authored.
+- [DECISION] Godpowers does not treat static impact, grep, source citations, dependency traces, reviewer agreement, or a hash chain inside a fully attacker-controlled workspace as authenticated behavioral proof.
 
 ## Appetite
 
@@ -165,6 +177,7 @@ Before declaring done, verify:
 
 ## PRD Changelog
 
+- [DECISION] 2026-08-19: Added P-MUST-36 through P-MUST-43 because the completed blast-radius source increment now requires one load-bearing safety fact, 10 boundary classes, ledger-backed executed proof, conditional independent review, sanitized evidence resolution, and high-impact fail-closed verdicts without a new command, dependency, store, or state writer.
 - [DECISION] 2026-08-19: Added P-MUST-30 through P-MUST-35 because shared plain-language guidance, a dependency-free advisory U-12 scanner, output-specific specialist audits, focused self-dogfood evidence, and release provenance now form one verified prose-quality increment.
 - [DECISION] 2026-08-17: Added P-MUST-24 through P-MUST-29 because compact verification, explicit specialist context, conditional program design, structured handoffs, maintainability trajectories, and sequential evolution evidence now form one verified harness-quality increment.
 - [DECISION] 2026-08-17: Added P-MUST-23 and P-SHOULD-08 because the completed first-party provenance extension introduced an authorized external file-processing path, guarded output publication, and a separately operated upstream compatibility boundary.
@@ -210,7 +223,15 @@ Before declaring done, verify:
 - **P-MUST-32** -> `lib/have-nots-validator.js`, `references/HAVE-NOTS.md`, `scripts/test-artifact-linter.js`, `scripts/test-prose-lint.js`
 - **P-MUST-33** -> `lib/prose-lint.js`, `scripts/run-tests.js`, `scripts/static-check.js`, `scripts/test-prose-lint.js`
 - **P-MUST-34** -> `scripts/test-prose-lint.js`, `specialists/god-docs-writer.md`, `specialists/god-launch-strategist.md`
-- **P-MUST-35** -> `scripts/check-package-contents.js`, `scripts/test-prose-lint.js`
+- **P-MUST-35** -> `lib/repo-doc-sync.js`, `scripts/check-package-contents.js`, `scripts/test-prose-lint.js`, `scripts/test-repo-doc-sync.js`, `scripts/version-sync.js`
+- **P-MUST-36** -> `lib/feature-awareness.js`, `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/check-package-contents.js`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `scripts/test-feature-awareness.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
+- **P-MUST-37** -> `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
+- **P-MUST-38** -> `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-quality-reviewer.md`
+- **P-MUST-39** -> `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
+- **P-MUST-40** -> `lib/evidence.js`, `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `scripts/test-evidence.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
+- **P-MUST-41** -> `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
+- **P-MUST-42** -> `lib/feature-awareness.js`, `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `scripts/test-feature-awareness.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-quality-reviewer.md`
+- **P-MUST-43** -> `lib/impact.js`, `references/building/BLAST-RADIUS.md`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/check-package-contents.js`, `scripts/run-tests.js`, `scripts/test-blast-radius.js`, `scripts/test-impact.js`, `skills/god-build.md`, `skills/god-review.md`, `specialists/god-executor.md`, `specialists/god-quality-reviewer.md`
 - **P-MUST-99** -> `scripts/test-linkage.js`
 
 ### P-SHOULD requirements

@@ -69,18 +69,18 @@
       "sync": {
         "status": "done",
         "artifact": "SYNC-LOG.mdx",
-        "artifact-hash": "sha256:437b1daeffc12f9f2b9dc216f2812f0a143bbd88fc68c58dc95cb021390af482",
-        "updated": "2026-08-19T07:29:02.463Z",
-        "notes": "The 6.1.0 prose-quality release is synchronized with merged PR and main CI, annotated tag, provenance publication, npm latest tags, exact registry integrity and shasums, GitHub Release, isolated package installation, CLI execution, and zero-vulnerability audit evidence."
+        "artifact-hash": "sha256:001a90827a2b6ce5045c462e063d5d8c06e7ca0559f740de1e79fae6c198c8c1",
+        "updated": "2026-08-19T09:52:41.909Z",
+        "notes": "The blast-radius safety-case source closeout canonicalizes 55 linked requirements, ADR-010, M-blast-radius-safety-case, dual Stage 2 and hardening outcomes, and keeps feature publication evidence pending."
       }
     },
     "tier-1": {
       "prd": {
         "status": "done",
         "artifact": "prd/PRD.mdx",
-        "artifact-hash": "sha256:a9c6cc8ac62076152046d4885998527bfd77f1274b47dec1d1bc88a30f7ee475",
-        "updated": "2026-08-19T07:29:02.463Z",
-        "notes": "P-MUST-30 through P-MUST-35 define the completed prose-quality release published as 6.1.0 with registry and isolated-install verification."
+        "artifact-hash": "sha256:9dea40aead7efc6bbd0d4e43beac0ca462fcaa2c74068da756651743e9ff8a82",
+        "updated": "2026-08-19T09:52:41.909Z",
+        "notes": "P-MUST-36 through P-MUST-43 define the completed blast-radius safety-case source increment without adding a command, dependency, evidence store, or state writer."
       },
       "design": {
         "status": "not-required",
@@ -95,16 +95,16 @@
       "arch": {
         "status": "done",
         "artifact": "arch/ARCH.mdx",
-        "artifact-hash": "sha256:ea1a27cfdcf250b7fd990d08cf7a0c9dc4b125f333f1490f3605b1f7a6834189",
-        "updated": "2026-08-19T06:24:23.963Z",
-        "notes": "C-prose-lint and ADR-009 define dependency-free inert scanning, warning-only U-12 integration, output-specific review, and promotion evidence."
+        "artifact-hash": "sha256:aeb0948014460064dfad465c88c34f7617861df21622d8921524e1730b2b14d5",
+        "updated": "2026-08-19T09:54:34.533Z",
+        "notes": "ADR-010 and C-evidence-review-resolver preserve the existing ledger authority and record shape while adding fail-closed digest-bound sanitized review resolution inside the trusted workspace."
       },
       "roadmap": {
         "status": "done",
         "artifact": "roadmap/ROADMAP.mdx",
-        "artifact-hash": "sha256:2ab406007e0f4185aade4b7943b0a94f98f7c08200981be614cb30c217981d34",
-        "updated": "2026-08-19T07:29:02.463Z",
-        "notes": "M-prose-quality-hardening is complete for P-MUST-30 through P-MUST-35, and the 6.1.0 release, CI, tag, registry, GitHub Release, and install gates are verified."
+        "artifact-hash": "sha256:25a3a7a8c32b075ece41278c2695752a17ca276026e85359ec80ebc9f0fc46b3",
+        "updated": "2026-08-19T09:54:34.533Z",
+        "notes": "M-blast-radius-safety-case is complete in source for P-MUST-36 through P-MUST-43; version synchronization, release gates, merge, tag, registry, and installed-package evidence remain pending."
       },
       "stack": {
         "status": "done",
@@ -126,8 +126,8 @@
         "status": "done",
         "artifact": "build/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-08-19T07:29:02.463Z",
-        "notes": "The 6.1.0 release tree passed the complete release gate on the release branch, pull request, merged main, and tag publication workflow.",
+        "updated": "2026-08-19T09:52:41.909Z",
+        "notes": "The blast-radius source increment passed focused executed proof, two independent fresh-context Stage 2 passes, reconciliation, and final scoped hardening; the published baseline remains 6.1.0 and feature publication is pending.",
         "verification": {
           "commands": [
             {
@@ -143,10 +143,31 @@
               "exitCode": 0,
               "ranAt": "2026-08-19T07:29:02.463Z",
               "diagnostics": "Pull-request CI, merged-main CI, and the tag publication workflow passed for the exact 6.1.0 release tree."
+            },
+            {
+              "command": "node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-19T08:55:57.418Z",
+              "durationMs": 968,
+              "diagnostics": ""
+            },
+            {
+              "command": "node scripts/test-evidence.js && node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-19T09:29:49.093Z",
+              "durationMs": 1578,
+              "diagnostics": ""
             }
           ]
         },
-        "release-version": "6.1.0"
+        "release-version": "6.1.0",
+        "source-increment": "M-blast-radius-safety-case",
+        "source-increment-status": "done",
+        "review-evidence": "features/blast-radius-safety-case/REVIEW.mdx",
+        "executed-proof-record": "v-20260819092949093-f8e074d4fd48",
+        "publication-status": "pending version synchronization, full release gates, merge identity, tag, registry, and isolated installed-package verification"
       }
     },
     "tier-3": {
@@ -438,11 +459,11 @@
   ],
   "lock": null,
   "deliverables": {
-    "updated": "2026-08-19T06:21:23.536Z",
+    "updated": "2026-08-19T09:52:41.912Z",
     "source": "PRD + ROADMAP + linkage + build state",
     "requirements": {
-      "total": 47,
-      "done": 47,
+      "total": 55,
+      "done": 55,
       "in-progress": 0,
       "untouched": 0,
       "percent": 100
@@ -567,6 +588,14 @@
         "status": "done",
         "done": 6,
         "total": 6
+      },
+      {
+        "id": "M-blast-radius-safety-case",
+        "name": "Blast-radius safety case",
+        "horizon": "next",
+        "status": "done",
+        "done": 8,
+        "total": 8
       },
       {
         "id": "M-deeper-traceability-and-ecosystem",

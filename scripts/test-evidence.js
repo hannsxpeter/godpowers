@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Implements: P-MUST-40
 
 const fs = require('fs');
 const path = require('path');
@@ -32,6 +33,51 @@ function latestRunEvents(project) {
   if (runs.length === 0) return { runId: null, events: [] };
   const runId = runs[runs.length - 1];
   return { runId, events: events.readRun(project, runId) };
+}
+
+function boundEvidence(prefix, opts = {}) {
+  const project = mkProject(prefix);
+  state.init(project, prefix);
+  const command = opts.command || 'true';
+  const claim = opts.claim || 'review claim';
+  const substep = opts.substep || 'tier-2.build';
+  const result = evidence.verify(command, {
+    substep,
+    claim,
+    now: opts.now || '2026-08-19T10:06:00.000Z',
+    projectRoot: project
+  });
+  const run = latestRunEvents(project);
+  return {
+    project,
+    command,
+    claim,
+    substep,
+    result,
+    runId: run.runId,
+    eventFile: events.eventsPath(project, run.runId)
+  };
+}
+
+function reviewOptions(fixture, overrides = {}) {
+  return {
+    projectRoot: fixture.project,
+    expectedClaim: fixture.claim,
+    expectedCommand: fixture.command,
+    expectedSubstep: fixture.substep,
+    reviewWindowStartedAt: '2026-08-19T10:00:00.000Z',
+    lastBehaviorChangeAt: '2026-08-19T10:05:00.000Z',
+    ...overrides
+  };
+}
+
+function rewriteEvents(file, mutate) {
+  const parsed = fs.readFileSync(file, 'utf8')
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => JSON.parse(line));
+  const next = mutate(parsed);
+  fs.writeFileSync(file, next.map((event) => JSON.stringify(event)).join('\n') + '\n');
 }
 
 // ---------------------------------------------------------------------------
@@ -83,6 +129,145 @@ test('verify records an executed pass: ledger + rollup + gate.pass event', () =>
   const log = path.join(project, '.godpowers', 'ledger', 'LEDGER-LOG.mdx');
   assert(fs.existsSync(log), 'LEDGER-LOG.mdx missing');
   assert(fs.readFileSync(log, 'utf8').includes('verify PASS'), 'log missing PASS line');
+});
+
+test('P-MUST-40: gate event binds record ID and deterministic digest without changing record shape', () => {
+  const fixture = boundEvidence('godpowers-evidence-digest-');
+  const record = fixture.result.record;
+  const expectedKeys = [
+    'arc', 'claim', 'command', 'duration_seconds', 'exit_code', 'id', 'kind',
+    'stderr_tail', 'stdout_tail', 'substep', 'substep_status', 'timestamp', 'verified'
+  ];
+  assert(JSON.stringify(Object.keys(record).sort()) === JSON.stringify(expectedKeys),
+    `executed record shape changed: ${Object.keys(record).sort().join(', ')}`);
+
+  const reordered = Object.fromEntries(Object.entries(record).reverse());
+  const digest = evidence.digestRecord(record);
+  assert(/^sha256:[0-9a-f]{64}$/.test(digest), `record digest: ${digest}`);
+  assert(evidence.digestRecord(reordered) === digest, 'record digest depends on key insertion order');
+
+  const gate = latestRunEvents(fixture.project).events.find((event) => event.name === 'gate.pass');
+  assert(gate.attrs.verificationRecordId === record.id, 'gate event record ID binding missing');
+  assert(gate.attrs.verificationRecordDigest === digest, 'gate event record digest binding missing');
+});
+
+test('P-MUST-40: review resolver accepts one fresh bound record and returns no secret-bearing values', () => {
+  const fixture = boundEvidence('godpowers-evidence-review-pass-', {
+    command: 'printf resolver-secret-output',
+    claim: 'resolver-secret-claim'
+  });
+  const ledgerFile = evidence.verificationsPath(fixture.project);
+  const before = {
+    ledger: fs.readFileSync(ledgerFile, 'utf8'),
+    events: fs.readFileSync(fixture.eventFile, 'utf8'),
+    state: JSON.stringify(state.read(fixture.project))
+  };
+
+  const resolution = evidence.resolveReviewEvidence(
+    fixture.result.record.id,
+    reviewOptions(fixture)
+  );
+
+  assert(resolution.accepted === true, `resolution reasons: ${resolution.reasons.join(', ')}`);
+  assert(resolution.record.id === fixture.result.record.id, 'sanitized record identity missing');
+  assert(resolution.record.kind === 'executed', 'safe record kind missing');
+  assert(resolution.record.exitCode === 0 && resolution.record.verified === true, 'safe verdict metadata missing');
+  assert(resolution.checks.claimMatches === true, 'claim match boolean missing');
+  assert(resolution.checks.commandMatches === true, 'command match boolean missing');
+  assert(resolution.checks.substepMatches === true, 'substep match boolean missing');
+  assert(resolution.event.bound === true && resolution.event.chainValid === true, 'event binding metadata missing');
+  const serialized = JSON.stringify(resolution);
+  for (const secret of ['resolver-secret-output', 'resolver-secret-claim']) {
+    assert(!serialized.includes(secret), `sanitized projection leaked ${secret}`);
+  }
+  for (const forbidden of ['stdout_tail', 'stderr_tail', 'rawCommand', 'rawClaim', 'arguments']) {
+    assert(!serialized.includes(forbidden), `sanitized projection includes ${forbidden}`);
+  }
+  assert(fs.readFileSync(ledgerFile, 'utf8') === before.ledger, 'resolver mutated ledger');
+  assert(fs.readFileSync(fixture.eventFile, 'utf8') === before.events, 'resolver mutated events');
+  assert(JSON.stringify(state.read(fixture.project)) === before.state, 'resolver mutated state');
+});
+
+test('P-MUST-40: review resolver rejects record and event integrity failures', () => {
+  const absent = boundEvidence('godpowers-evidence-review-absent-');
+  let resolution = evidence.resolveReviewEvidence('v-missing', reviewOptions(absent));
+  assert(!resolution.accepted && resolution.reasons.includes('absent-record'), 'absent record was accepted');
+
+  const duplicate = boundEvidence('godpowers-evidence-review-duplicate-');
+  fs.appendFileSync(evidence.verificationsPath(duplicate.project), JSON.stringify(duplicate.result.record) + '\n');
+  resolution = evidence.resolveReviewEvidence(duplicate.result.record.id, reviewOptions(duplicate));
+  assert(!resolution.accepted && resolution.reasons.includes('duplicate-record'), 'duplicate record was accepted');
+
+  const altered = boundEvidence('godpowers-evidence-review-altered-');
+  const alteredRecord = { ...altered.result.record, stdout_tail: 'altered after verification' };
+  fs.writeFileSync(evidence.verificationsPath(altered.project), JSON.stringify(alteredRecord) + '\n');
+  resolution = evidence.resolveReviewEvidence(alteredRecord.id, reviewOptions(altered));
+  assert(!resolution.accepted && resolution.reasons.includes('digest-mismatch'), 'altered record was accepted');
+
+  const failed = boundEvidence('godpowers-evidence-review-failed-', { command: 'false' });
+  resolution = evidence.resolveReviewEvidence(failed.result.record.id, reviewOptions(failed));
+  assert(!resolution.accepted && resolution.reasons.includes('failed-record'), 'failed record was accepted');
+
+  const mismatched = boundEvidence('godpowers-evidence-review-mismatch-');
+  resolution = evidence.resolveReviewEvidence(mismatched.result.record.id,
+    reviewOptions(mismatched, { expectedClaim: 'different' }));
+  assert(!resolution.accepted && resolution.reasons.includes('claim-mismatch'), 'claim mismatch was accepted');
+  resolution = evidence.resolveReviewEvidence(mismatched.result.record.id,
+    reviewOptions(mismatched, { expectedCommand: 'different' }));
+  assert(!resolution.accepted && resolution.reasons.includes('command-mismatch'), 'command mismatch was accepted');
+  resolution = evidence.resolveReviewEvidence(mismatched.result.record.id,
+    reviewOptions(mismatched, { expectedSubstep: 'tier-3.harden' }));
+  assert(!resolution.accepted && resolution.reasons.includes('substep-mismatch'), 'substep mismatch was accepted');
+
+  const stale = boundEvidence('godpowers-evidence-review-stale-', { now: '2026-08-19T10:02:00.000Z' });
+  resolution = evidence.resolveReviewEvidence(stale.result.record.id, reviewOptions(stale));
+  assert(!resolution.accepted && resolution.reasons.includes('stale-record'), 'stale record was accepted');
+
+  const preChange = boundEvidence('godpowers-evidence-review-prechange-', { now: '2026-08-19T09:59:00.000Z' });
+  resolution = evidence.resolveReviewEvidence(preChange.result.record.id, reviewOptions(preChange));
+  assert(!resolution.accepted && resolution.reasons.includes('pre-change-record'), 'pre-change record was accepted');
+
+  const missingEvent = boundEvidence('godpowers-evidence-review-noevent-');
+  rewriteEvents(missingEvent.eventFile, (all) => all.filter((event) => !/^gate\./.test(event.name)));
+  resolution = evidence.resolveReviewEvidence(missingEvent.result.record.id, reviewOptions(missingEvent));
+  assert(!resolution.accepted && resolution.reasons.includes('missing-event'), 'missing event was accepted');
+
+  const unbound = boundEvidence('godpowers-evidence-review-unbound-');
+  rewriteEvents(unbound.eventFile, (all) => all.map((event) => {
+    if (!/^gate\./.test(event.name)) return event;
+    const copy = { ...event, attrs: { ...event.attrs } };
+    delete copy.attrs.verificationRecordDigest;
+    return copy;
+  }));
+  resolution = evidence.resolveReviewEvidence(unbound.result.record.id, reviewOptions(unbound));
+  assert(!resolution.accepted && resolution.reasons.includes('unbound-event'), 'unbound event was accepted');
+
+  const badDigest = boundEvidence('godpowers-evidence-review-baddigest-');
+  rewriteEvents(badDigest.eventFile, (all) => all.map((event) => (
+    /^gate\./.test(event.name)
+      ? { ...event, attrs: { ...event.attrs, verificationRecordDigest: `sha256:${'0'.repeat(64)}` } }
+      : event
+  )));
+  resolution = evidence.resolveReviewEvidence(badDigest.result.record.id, reviewOptions(badDigest));
+  assert(!resolution.accepted && resolution.reasons.includes('digest-mismatch'), 'digest mismatch was accepted');
+
+  const duplicateEvent = boundEvidence('godpowers-evidence-review-dupevent-');
+  const originalEvent = latestRunEvents(duplicateEvent.project).events.find((event) => /^gate\./.test(event.name));
+  events.emit(duplicateEvent.eventFile, {
+    trace_id: originalEvent.trace_id,
+    span_id: events.generateSpanId(),
+    name: originalEvent.name,
+    attrs: { ...originalEvent.attrs }
+  });
+  resolution = evidence.resolveReviewEvidence(duplicateEvent.result.record.id, reviewOptions(duplicateEvent));
+  assert(!resolution.accepted && resolution.reasons.includes('duplicate-event'), 'duplicate event was accepted');
+
+  const invalidChain = boundEvidence('godpowers-evidence-review-chain-');
+  rewriteEvents(invalidChain.eventFile, (all) => all.map((event, index) => (
+    index === 0 ? { ...event, attrs: { ...event.attrs, altered: true } } : event
+  )));
+  resolution = evidence.resolveReviewEvidence(invalidChain.result.record.id, reviewOptions(invalidChain));
+  assert(!resolution.accepted && resolution.reasons.includes('invalid-event-chain'), 'invalid chain was accepted');
 });
 
 // ---------------------------------------------------------------------------

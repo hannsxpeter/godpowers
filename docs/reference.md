@@ -1,6 +1,6 @@
 # Godpowers Reference
 
-Complete command, agent, and artifact reference for v6.1.0.
+Complete command, agent, and artifact reference for v6.2.0.
 
 **This page is a dictionary, not a tutorial.** It lists everything, which makes
 it useful for looking things up and a poor place to start. If you are new, read
@@ -188,7 +188,9 @@ diff churn that cannot be traced to the request or slice plan.
 
 ### Building tier (Tier 2)
 - `/god-repo` - Scaffold a production-grade repository.
-- `/god-build` - Build the milestone (TDD, waves, two-stage review).
+- `/god-build` - Build the milestone with TDD, waves, two-stage review, and a
+  Stage 2 blast-radius safety case. Wide changes receive at least 2 independent
+  fresh-context safety cases.
 - `/god-add-tests` - Generate tests for existing code based on UAT criteria.
 - `/god-polish` - Bounded post-green polish loop (blind-judged against the
   DESIGN.md reference anchor; rounds cap + human are the two brakes).
@@ -237,11 +239,21 @@ diff churn that cannot be traced to the request or slice plan.
 ### Verification
 - `/god-lint` - Mechanical validation against have-nots catalog.
 - `/god-standards` - Artifact standards check (substitution + three-label + have-nots).
+- `/god-review` - Run Stage 1 specification review, then Stage 2 quality review
+  with one load-bearing safety fact, the five-level evidence ladder, and all 10
+  boundary classes. A high-impact `UNPROVEN` claim fails Stage 2; a
+  lower-impact one warns with one exact next proof.
 - `/god-test-runtime` - Headless browser verification (design audit + flow assertions).
 - `/god-dogfood` - Run messy-repo dogfood scenarios for migration, host, extension, and suite readiness.
 - `/god-preflight` - Read-only intake audit before arc-ready and pillars.
 - `/god-audit` - Score existing artifacts against all have-nots. When an earlier audit report is on disk (`.godaudits/AUDIT.json`), cross-reference its score, coverage, findings, and remediation state instead of starting fresh.
 - `/god-agent-audit` - Validate every agents/*.md against the agent contract.
+
+The blast-radius protocol strengthens the existing commands; it adds no slash
+command, CLI operation, route, workflow, or specialist. A change is wide at 3
+crossed boundary classes or 2 high-impact classes. The second independent pass
+runs even when the first pass provisionally fails, and reviewer agreement
+cannot raise an evidence level.
 
 ### Recovery
 - `/god-undo` - Revert last operation via reflog.
@@ -343,9 +355,11 @@ First-party packs on npm:
 ### Tier 2 - Building agents
 - `god-repo-scaffolder` - Repo bootstrap.
 - `god-planner` - Build slice planner.
-- `god-executor` - TDD-enforced implementer with request-trace discipline.
+- `god-executor` - TDD-enforced implementer with request-trace discipline; may
+  propose one candidate safety fact and focused proof but cannot grade it.
 - `god-spec-reviewer` - Stage 1 code review for spec compliance and scope.
-- `god-quality-reviewer` - Stage 2 code review for quality, simplicity, and surgicality.
+- `god-quality-reviewer` - Stage 2 code review for nine quality dimensions plus
+  an independently graded blast-radius safety case.
 - `god-storyteller` - STORY.md writer.
 
 ### Tier 3 - Shipping agents
@@ -498,6 +512,18 @@ npx godpowers --uninstall          Remove
 npx godpowers --migrate            One-shot upgrade
 npx godpowers --help               Help
 ```
+
+`godpowers verify` remains the only executed-proof operation for blast-radius
+levels 4 and 5. The local `lib/evidence.resolveReviewEvidence` helper checks an
+exact record's claim, command, canonical substep, freshness, digest-bound gate
+event, and event chain, then gives Stage 2 a sanitized projection without raw
+claims, commands, or output tails. It is a trusted-workspace consistency check,
+not authentication against an actor that can rewrite all trusted local files.
+
+The npm package includes `references/building/BLAST-RADIUS.md` through the
+existing `references/` package entry. Installation copies it into
+`godpowers-references/` and the installed runtime bundle. The feature adds no
+production dependency, evidence store, state writer, or execution authority.
 
 Supported runtimes (15): Claude, Codex, Cursor, Windsurf, Gemini, OpenCode,
 Copilot, Augment, Trae, Cline, Kilo, Antigravity, Qwen, CodeBuddy, Pi.

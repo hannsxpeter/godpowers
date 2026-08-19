@@ -97,3 +97,134 @@ Owner: `god-docs-writer`
 - [DECISION] The post-draft prose audit preserved code terms, verified facts,
   the U-12 severity boundary, and the upstream attribution boundary.
 - [DECISION] No runbook or unexecuted example was added.
+
+## Blast-Radius Safety-Case Documentation
+
+### Inventory
+
+- [DECISION] Reviewed `references/building/BLAST-RADIUS.md`, `lib/impact.js`,
+  `lib/evidence.js`, `lib/installer-core.js`, `lib/installer-files.js`,
+  `package.json`, `scripts/test-blast-radius.js`, `scripts/test-impact.js`,
+  `scripts/test-evidence.js`, `scripts/check-package-contents.js`,
+  `skills/god-review.md`, `skills/god-build.md`, `specialists/god-executor.md`,
+  and `specialists/god-quality-reviewer.md` as the implementation and test
+  sources for this documentation pass.
+- [DECISION] Reviewed the upstream pstack blast-radius source at
+  `https://github.com/cursor/plugins/blob/main/pstack/skills/blast-radius/SKILL.md`
+  and its MIT license at
+  `https://github.com/cursor/plugins/blob/main/pstack/LICENSE` for exact
+  attribution and license links.
+- [DECISION] The approved narrative manifest covered `README.md`,
+  `ARCHITECTURE.md`, `ARCHITECTURE-MAP.md`, `SECURITY.md`, `lib/README.md`,
+  `references/building/README.md`, `docs/reference.md`, `docs/validation.md`,
+  `docs/agent-specs.md`, `docs/command-flows.md`, `docs/concepts.md`,
+  `INSPIRATION.md`, `agents/context.md`, `agents/quality.md`,
+  `agents/security.md`, and `agents/arch.md`.
+
+### Verified Claims
+
+- [DECISION] Every Stage 2 safety case names exactly one load-bearing safety
+  fact, grades evidence on levels 1 through 5, and keeps levels 1 through 3
+  `UNPROVEN`.
+- [DECISION] High-impact `UNPROVEN` claims block Stage 2, while lower-impact
+  `UNPROVEN` claims warn with one exact next command, fixture, dependency trace,
+  or runtime reproduction.
+- [DECISION] The boundary inventory covers dependency implementation, pinned
+  dependency version, local dependency patches, lifecycle or ordering timing,
+  serialized or public API contracts, database or disk-state fields,
+  configuration or feature flags, generated or installed surfaces, npm package
+  surfaces, and cross-language consumers.
+- [DECISION] Bounded changes require 1 safety case; changes crossing at least 3
+  boundary classes or at least 2 high-impact classes require at least 2
+  independent fresh-context safety cases, including a second pass after a
+  provisional first-pass failure.
+- [DECISION] `lib/impact.js` marks its output as an unproven static candidate
+  with maximum evidence level 2 and does not claim behavioral proof.
+- [DECISION] `lib/evidence.resolveReviewEvidence` checks one exact record's
+  claim, command, canonical substep, freshness, digest-bound gate event, and
+  event chain, then omits raw claims, commands, stdout tails, and stderr tails
+  from its sanitized projection.
+- [DECISION] The evidence resolver checks consistency in a trusted workspace
+  and does not authenticate against an actor able to rewrite every trusted file
+  and recompute the chain.
+- [DECISION] Executed verification records retain their existing shape; record
+  ID and SHA-256 digest bindings are additive gate-event attributes.
+- [DECISION] The implementation adds no command, route, recipe, workflow,
+  specialist type, production dependency, evidence store, state writer, or
+  execution authority.
+- [DECISION] The npm package includes
+  `references/building/BLAST-RADIUS.md`, while installation copies the
+  `references/` tree into `godpowers-references/` and the installed runtime
+  bundle through existing installer behavior.
+- [DECISION] The pstack blast-radius skill influenced the load-bearing fact,
+  beyond-direct-caller scan, evidence-grading, and separated-risk concepts;
+  Godpowers authored its protocol, prose, implementation, fixtures, probes, and
+  results independently, copies or vendors none of those upstream materials,
+  and has no pstack runtime dependency.
+
+### Updated
+
+- [DECISION] `README.md` and `docs/concepts.md` now explain the review model for
+  users without duplicating the full protocol.
+- [DECISION] `ARCHITECTURE.md`, `ARCHITECTURE-MAP.md`, `lib/README.md`, and the
+  architecture Pillar now document candidate discovery, evidence resolution,
+  trust boundaries, reviewer ownership, and installed reference flow.
+- [DECISION] `docs/validation.md` now documents the complete five-level ladder,
+  10 boundary classes, risk-state and verdict policy, runtime applicability,
+  local evidence resolution, wide threshold, and adversarial fixture limits.
+- [DECISION] `docs/reference.md`, `docs/agent-specs.md`, and
+  `docs/command-flows.md` now document the existing command and agent behavior
+  without introducing a new public surface.
+- [DECISION] `SECURITY.md` and the security Pillar now state the sanitized
+  projection, trusted-workspace limitation, and fail-closed fixture bounds.
+- [DECISION] `references/building/README.md` now indexes the shared protocol.
+- [DECISION] `INSPIRATION.md` now credits the exact pstack source and MIT
+  license while stating independent authorship and the no-runtime-dependency
+  boundary.
+- [DECISION] The context and quality Pillars now carry the durable feature,
+  threshold, proof, and focused-test signals.
+
+### Verified Commands
+
+- [DECISION] `node scripts/test-blast-radius.js` passed 18 tests with zero
+  failures on 2026-08-19.
+- [DECISION] `node scripts/test-impact.js` passed 22 tests with zero failures on
+  2026-08-19.
+- [DECISION] `node scripts/test-evidence.js` passed 33 tests with zero failures
+  on 2026-08-19.
+- [DECISION] `node scripts/test-feature-awareness.js` passed 7 tests with zero
+  failures on 2026-08-19.
+- [DECISION] `node scripts/static-check.js` passed 35 checks with zero failures
+  and zero prose warnings across 234 scanned files on 2026-08-19.
+- [DECISION] `node scripts/check-package-contents.js` passed with 647 package
+  files on 2026-08-19.
+- [DECISION] `node scripts/test-doc-surface-counts.js` passed both checks and
+  confirmed 54 reference documents and 112 test scripts on 2026-08-19.
+- [DECISION] An inline Node scan using `lib/prose-lint.scan` reported zero
+  findings across all 17 reviewed narrative, Pillar, and update-log files on
+  2026-08-19.
+- [DECISION] `git diff --check` passed after the final documentation edits on
+  2026-08-19.
+
+### Remaining Release-Only Gaps
+
+- [DECISION] This documentation pass did not update canonical PRD,
+  architecture, roadmap, state, linkage, version, changelog, release notes,
+  package manifests, or publication evidence because those surfaces remain
+  owned by release closeout.
+- [DECISION] This documentation pass did not run `npm test`,
+  `npm run test:audit`, `npm run release:check`, prepublication verification,
+  registry verification, installation from a published tarball, or
+  publication, so it makes no release-ready or published claim.
+
+### Have-Nots Checklist
+
+- [DECISION] Every new claim traces to current implementation, focused tests,
+  package metadata, installer code, or the linked upstream source and license.
+- [DECISION] Every new Pillar and update-log sentence carries exactly one of
+  the required three labels.
+- [DECISION] The documentation preserves the exact distinction between static
+  candidates, executed proof, runtime proof, internal consistency, and external
+  authentication.
+- [DECISION] No release result, public command, runtime authority, or copied
+  upstream material was invented.

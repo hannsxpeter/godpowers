@@ -1,6 +1,6 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v6.1.0 published release (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
+> Status: STABLE v6.2.0 release candidate (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
 > Authors: Godpowers Team
 > Last updated: 2026-08-06
 
@@ -982,6 +982,55 @@ intercept model calls and return recorded responses. Re-record:
 
 (This is the one place we use the CLI beyond install. Test infrastructure is
 not user-facing.)
+
+### Stage 2 blast-radius safety case
+
+The existing `/god-review` and `/god-build` flows keep the two-stage public
+contract. Stage 1 checks specification compliance. Stage 2 applies
+`references/building/BLAST-RADIUS.md` in addition to its nine quality
+dimensions and owns the final safety-case verdict. The executor may propose a
+candidate safety fact and focused probe, but it cannot grade either one.
+
+Every Stage 2 pass states exactly one load-bearing safety fact, then inventories
+10 boundaries: dependency implementation, pinned dependency version, local
+dependency patches, lifecycle or ordering timing, serialized or public API
+contracts, database or disk-state fields, configuration or feature flags,
+generated or installed surfaces, npm package surfaces, and cross-language
+consumers. `lib/impact.js`, grep, AST search, LSP references, and import graphs
+only generate candidates. Their output is unproven and cannot exceed evidence
+level 2.
+
+The evidence ladder keeps levels 1 through 3 `UNPROVEN`. Level 4 requires a
+focused probe executed through the existing `godpowers verify` operation.
+Level 5 requires an applicable reproduction through the running, installed,
+process, browser, service, host, or faithful-consumer boundary. Confirmed Risks
+and Cleared Risks require level 4 or 5. Any high-impact `UNPROVEN` claim blocks
+Stage 2; lower-impact uncertainty produces a warning with one exact next proof.
+
+`lib/evidence.resolveReviewEvidence` resolves one record ID locally against the
+expected claim, exact command, canonical substep, review start, and latest
+behavior change. It also requires a unique SHA-256 digest-bound gate event and
+a valid event hash chain. The return value is a sanitized projection that omits
+raw claims, commands, stdout tails, and stderr tails. This is an integrity check
+inside a trusted workspace, not authentication against an actor that can
+rewrite every trusted file and recompute the chain.
+
+The executed verification record shape does not change. Record ID and digest
+bindings are additive gate-event attributes, so the existing ledger, state
+rollup, and event stream retain their authority and compatibility.
+
+A change is wide when it crosses at least 3 boundary classes or at least 2
+high-impact classes. Wide changes always receive at least 2 independent safety
+cases in fresh contexts, including when the first pass provisionally fails.
+Bounded changes receive 1 Stage 2 safety case. Reconciliation can lower
+confidence or request proof, but reviewer agreement cannot raise an evidence
+level.
+
+This design adds no slash command, CLI operation, route, recipe, workflow,
+specialist type, production dependency, evidence store, or state writer. The
+protocol ships within `references/`; package checks require it, and installer
+data-copy logic places it in both `godpowers-references/` and the installed
+runtime bundle.
 
 ---
 

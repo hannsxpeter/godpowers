@@ -74,11 +74,26 @@ describe things that look like security boundaries and are not.
    (they need it to write artifacts). Combined with untrusted instructions in
    project files, an agent could write anywhere in the workspace; narrow the
    Codex sandbox per agent if that is a concern.
+8. **Treat review evidence as trusted-workspace consistency, not
+   authentication**: `lib/evidence.resolveReviewEvidence` checks one exact
+   executed record against the expected claim, command, canonical substep,
+   freshness window, SHA-256 digest-bound gate event, and event hash chain. Its
+   projection omits raw claims, commands, and output tails before Stage 2 sees
+   them. An actor able to rewrite the ledger, events, and chain can still
+   recompute internally consistent evidence; signed commits, CI provenance,
+   repository access controls, and publication provenance cover that stronger
+   threat model.
+9. **Fail closed around adversarial review subprocesses**: blast-radius fixture
+   probes use argument-array process execution and treat a 10-second timeout or
+   1 MiB output overflow as a failed detection result. The safety-case feature
+   reuses the existing `godpowers verify` execution authority and ledger; it
+   adds no command, store, dependency, or state writer.
 
 ## Supported Versions
 
 | Version | Supported |
 |---------|-----------|
+| 6.2.x   | Release candidate |
 | 6.1.x   | Yes |
 | 6.0.x   | Security fixes only |
 | 5.17.x   | Security fixes only |

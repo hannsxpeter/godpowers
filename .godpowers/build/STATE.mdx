@@ -1,5 +1,5 @@
 <!-- godpowers:state-view:begin -->
-<!-- godpowers:checksum sha256:84adc722e0251c02a21256dbfe656c24d4bed37ebe0bf3cd9e1210e85cab25a4 -->
+<!-- godpowers:checksum sha256:9814c12fbc5c1263bc6790940c6637c6f0e43d6ca2b26ce9a9ef3ecf8ac0de6c -->
 # Godpowers Build State
 
 - [DECISION] This file is a generated human-readable view of `.godpowers/state.json` for `tier-2.build`.
@@ -9,8 +9,8 @@
 - [DECISION] Step: Building: Build.
 - [DECISION] Status: `done`.
 - [DECISION] Artifact: `.godpowers/build/STATE.mdx`.
-- [DECISION] Updated: 2026-08-19T07:29:02.463Z.
-- [DECISION] Notes: The 6.1.0 release tree passed the complete release gate on the release branch, pull request, merged main, and tag publication workflow..
+- [DECISION] Updated: 2026-08-19T09:52:41.909Z.
+- [DECISION] Notes: The blast-radius source increment passed focused executed proof, two independent fresh-context Stage 2 passes, reconciliation, and final scoped hardening; the published baseline remains 6.1.0 and feature publication is pending..
 
 ## Verification Commands
 
@@ -18,11 +18,18 @@
 |---|---|---|---|---|---|
 | npm run release:check | pass | 0 | 2026-08-19T07:29:02.463Z | - | The complete 6.1.0 release gate passed before merge and again in the tag publication workflow. |
 | gh run view 32226287260 && gh run view 32226644093 && gh run view 32227120049 | pass | 0 | 2026-08-19T07:29:02.463Z | - | Pull-request CI, merged-main CI, and the tag publication workflow passed for the exact 6.1.0 release tree. |
+| node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js | pass | 0 | 2026-08-19T08:55:57.418Z | 968 | - |
+| node scripts/test-evidence.js && node scripts/test-blast-radius.js && node scripts/test-impact.js && node scripts/test-feature-awareness.js && node scripts/check-package-contents.js | pass | 0 | 2026-08-19T09:29:49.093Z | 1578 | - |
 
 ## Evidence Fields
 
 | Field | Value |
 |---|---|
+| executed-proof-record | v-20260819092949093-f8e074d4fd48 |
+| publication-status | pending version synchronization, full release gates, merge identity, tag, registry, and isolated installed-package verification |
 | release-version | 6.1.0 |
+| review-evidence | features/blast-radius-safety-case/REVIEW.mdx |
+| source-increment | M-blast-radius-safety-case |
+| source-increment-status | done |
 
 <!-- godpowers:state-view:end -->

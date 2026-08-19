@@ -634,6 +634,34 @@ Workflows don't just exist; they hand off to each other.
 
 ## File Layout (the complete map)
 
+The Stage 2 proof path stays inside existing review and evidence boundaries:
+
+```
+god-executor candidate
+        |
+        v
+god-spec-reviewer (Stage 1)
+        |
+        v
+god-quality-reviewer (Stage 2)
+        |
+        +--> references/building/BLAST-RADIUS.md
+        +--> lib/impact.js (static candidates, maximum level 2)
+        +--> lib/evidence.resolveReviewEvidence
+                  |
+                  +--> .godpowers/ledger/verifications.jsonl
+                  +--> digest-bound gate event + event hash chain
+                  +--> sanitized projection only
+        |
+        +--> bounded: 1 safety case
+        +--> wide: at least 2 fresh-context safety cases
+```
+
+Wide means at least 3 crossed boundary classes or at least 2 high-impact
+classes. The second wide pass runs even after a provisional first-pass failure.
+The path reuses `godpowers verify`; it adds no command, route, workflow,
+specialist, evidence store, dependency, or state authority.
+
 ```
 godpowers/
 │
@@ -642,7 +670,7 @@ godpowers/
 ├── README.md, CHANGELOG.md, LICENSE, CONTRIBUTING.md, SECURITY.md, USERS.md
 ├── ARCHITECTURE.md                <- Design doc
 ├── ARCHITECTURE-MAP.md            <- This file
-├── package.json (v6.1.0)
+├── package.json (v6.2.0)
 ├── .github/workflows/              <- CI, npm publish, daily security audit
 │
 ├── bin/install.js                 <- CLI installer (15 runtimes)
@@ -666,6 +694,7 @@ godpowers/
 │   ├── orchestration/             <- Mode/scale detection patterns
 │   ├── planning/                  <- PRD/ARCH/ROADMAP/STACK anatomies + antipatterns
 │   ├── building/                  <- Vertical slices, waves
+│   │   └── BLAST-RADIUS.md        <- Stage 2 safety-case protocol
 │   ├── shipping/                  <- Deploy patterns, SLOs, OWASP worksheets
 │   └── shared/                    <- Glossary, orchestrator composition
 │
@@ -692,6 +721,8 @@ godpowers/
 │   ├── slice-handoff.js           <- state-authoritative resume projection
 │   ├── maintainability-trajectory.js <- report-only code-shape deltas
 │   ├── evolution-benchmark.js     <- six-checkpoint changeability evidence
+│   ├── evidence.js                <- ledger records + sanitized review resolver
+│   ├── impact.js                  <- unproven static boundary candidates
 │   ├── prose-lint.js              <- dependency-free advisory prose scanner
 │   ├── dogfood-runner.js          <- messy-repo dogfood gate
 │   ├── host-capabilities.js       <- host guarantee detection
@@ -724,6 +755,7 @@ godpowers/
 │   ├── test-host-capabilities.js  <- host guarantee gate
 │   ├── test-extension-authoring.js <- extension scaffold gate
 │   ├── test-prose-lint.js         <- advisory prose scanner regression gate
+│   ├── test-blast-radius.js        <- safety-case and adversarial boundary gate
 │   ├── test-runtime.js            <- 13 unit tests for lib/
 │   └── check-package-contents.js  <- npm payload gate
 │
@@ -748,7 +780,7 @@ godpowers/
 
 ---
 
-## Numbers (as of v6.1.0)
+## Numbers (as of v6.2.0)
 
 | Component | Count |
 |-----------|-------|
@@ -761,14 +793,14 @@ godpowers/
 | Intent recipes | 45 |
 | Have-nots | 183 documented + 26 mechanically validated by linter |
 | Templates | 15 |
-| Reference documents | 53 |
+| Reference documents | 54 |
 | JSON Schemas | 7 |
 | **JS runtime modules** | **113** |
 | **External integrations** | **5** (all detect-and-delegate; none vendored): Google Labs design.md, Impeccable, awesome-design-md, SkillUI, vercel-labs/agent-browser + Playwright |
 | Hooks | 2 |
 | Dogfood scenarios | 5 |
 | Documentation pages | 36 under docs/ plus reference material |
-| **Test suites** | **111 script files plus integration tests** |
+| **Test suites** | **112 script files plus integration tests** |
 | **Tests** | **Full behavioral suite gated by npm test** |
 | Supported AI runtimes | 15+ |
 | Verification axes | **3**: static (lint, design-spec, have-nots), linkage (drift, reverse-sync), runtime (headless browser audit + functional test) |

@@ -18,7 +18,9 @@ see_also: [deploy]
 
 ## Decisions
 
-(none)
+- [DECISION] `lib/evidence.resolveReviewEvidence` is a read-only local resolver that checks one exact record against expected claim, command, canonical substep, freshness, digest-bound gate event, and event hash chain.
+- [DECISION] Stage 2 receives the resolver's sanitized projection without raw ledger records, event attributes, commands, claims, stdout tails, or stderr tails.
+- [DECISION] The resolver proves internal consistency only inside a trusted workspace; it does not authenticate against an actor able to rewrite every trusted file and recompute the chain.
 
 ## Rules
 
@@ -27,6 +29,8 @@ see_also: [deploy]
 - [DECISION] Run `npm audit --omit=dev` through `npm run test:audit` before release work completes.
 - [DECISION] Treat unresolved Critical harden findings as launch blockers.
 - [DECISION] `hooks/pre-tool-use.sh` blocks destructive state deletion, hard reset, force push, npm publish, and GitHub release creation until the user confirms the release gate context.
+- [DECISION] Blast-radius fixture subprocesses use fixed argument arrays and fail closed after a 10-second timeout or 1 MiB output cap.
+- [DECISION] Blast-radius proof reuses the existing `godpowers verify` command, verification ledger, state rollup, and gate-event chain without adding a command, evidence store, dependency, state writer, or authority.
 
 ## Workflows
 
