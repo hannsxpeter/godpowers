@@ -124,6 +124,17 @@
 - [DECISION] Flip point: promote an operations-pack capability into core only after measured use shows it is required by most project runs and a core route can preserve the same human approval boundary without adding external mutation authority.
 - [DECISION] Consequence: existing commands become stricter where evidence or authority is required, optional operations stay lazy, and the root package keeps zero production dependencies.
 
+### ADR-012: Keep adaptive run selection advisory within existing commands
+
+- [DECISION] Context: the Godpowers front door can mistake a large-repository assessment for a whole-project objective or load a full workflow for a bounded edit before inspecting the requested outcome.
+- [DECISION] Decision: the current host model classifies task, scope, risk, and uncertainty from the user request and bounded repository evidence, then calls `lib/command-families.selectRunApproach` within the existing Decision runtime to recommend direct, focused, or full work.
+- [DECISION] Decision: ordinary questions and assessments finish in chat, `/god-fast` requires `mechanical: true` plus bounded scope, low risk, and low uncertainty, and a full recommendation retains `/god-mode`'s explicit-only invocation policy.
+- [DECISION] Decision: named commands retain mandatory stages and execution authority; `/god-debug` returns an uncommitted fix to fresh Stage 1 specification review followed by fresh Stage 2 quality review before the authorized caller commits.
+- [DECISION] Rationale: the existing command-family helper can validate categorical inputs and expose the existing invocation policy without another command, module, dependency, selector agent, selection artifact, or state writer.
+- [DECISION] Flip point: revise the classification fields or mapping when one reproducible ordinary request selects an unsafe or unnecessarily broad command from correctly supplied categories; any replacement must retain named-command prerequisites, required review, and invocation authority.
+- [DECISION] Consequence: the helper cannot prove that the host model assessed the repository correctly, so observed sensitive boundaries require high-risk treatment, absent scope or risk evidence remains unknown, and changed evidence triggers reassessment without repeating still-valid work.
+- [DECISION] Consequence: model identity and repository size grant no gate bypass, conditional steps may be omitted only when their documented conditions are absent, and no total token-spend reduction is guaranteed.
+
 ## Critical Flows
 
 ### Authorized provenance inspection and cleaning
@@ -168,6 +179,14 @@
 5. [DECISION] Decision writers append validated `decision.recorded` events, and `/god-trace --decisions` projects only validated records from verified run snapshots.
 6. [DECISION] Router and route-quality checks derive invocation authority from canonical route identity, while the optional operations pack waits for explicit human approval before tracker or setup actions.
 
+### Adaptive run selection flow
+
+1. [DECISION] The current host model preserves explicit commands, reads required Pillars and bounded evidence, and records the ordinary assessment in the current chat without a new persistent artifact.
+2. [DECISION] The existing Decision runtime validates the task, scope, risk, and uncertainty categories and returns an approach, command or null, reason, useful components, recommendation-only authority, and the existing invocation policy.
+3. [DECISION] A direct answer stops routing; a selected command keeps its prerequisites, verification, review, and authority while the model reuses valid evidence and omits only inapplicable conditional work.
+4. [DECISION] Focused debugging returns the uncommitted fix through the existing two-stage review sequence before the caller commits under the user's existing authority.
+5. [DECISION] New evidence can change the assessment and expand the selected work, but only the existing orchestrator and command contracts may write workflow state or accept completion evidence.
+
 ## Capacity Envelope
 
 | Input | Supported envelope | Source |
@@ -179,6 +198,7 @@
 | Verification commands | [DECISION] At least 250 ordered child commands, with one complete private log per compact invocation. | [DECISION] P-MUST-24 focused runner fixtures. |
 | Context contracts | [DECISION] At least 60 specialists, 150 workflow references, and 500 context paths, with each source capped at 4 MiB, project enumeration capped at 5,000 entries and depth 48, and event evidence capped at 12 KiB. | [DECISION] P-MUST-25 loadout and hostile-payload fixtures. |
 | Slice handoff | [DECISION] One canonical JSON record at or below 8 KiB, with mandatory recovery fields protected from trimming. | [DECISION] P-MUST-27 serialization fixtures. |
+| Adaptive assessment | [DECISION] One object with six task values, three scope values, three risk values, and two uncertainty values; mechanical eligibility requires the exact boolean `true`. | [DECISION] `lib/command-families.selectRunApproach` and `scripts/test-command-families.js`. |
 | Evolution checkpoints | [DECISION] Exactly six sequential checkpoints with no parallel project mutation or future-checkpoint reads. | [DECISION] P-MUST-29 packaged scenario and isolation fixtures. |
 | Evolution input and output | [DECISION] Manifests and checkpoints are each capped at 16 KiB, scalar fields at 4 KiB, baselines at 64 MiB, 5,000 entries, and depth 48, machine evidence at 256 KiB, and human summaries at 128 KiB. | [DECISION] P-MUST-29 adversarial boundary fixtures. |
 | Prose scan | [DECISION] At least 1 MiB or 10,000 lines per invocation, excerpts capped at 160 characters, and a 1 MiB fixture completing within 250 milliseconds at p95 across 20 runs. | [DECISION] P-MUST-31 focused performance and boundary fixtures. |
@@ -198,6 +218,8 @@
 | Trajectory or benchmark input | [DECISION] Complete each fixture checkpoint within a 30 second behavior deadline, reject incompatible snapshots, malformed manifests, future-checkpoint access, or incomplete evidence, and never retry a mutation; snapshot reads are idempotent by repository-byte digest. | [DECISION] Stop at the first invalid checkpoint, retain partial evidence, and remove the temporary repository. |
 | Advisory prose scan | [DECISION] Complete one local pass without retry, execute no input content, make no I/O request, and leave caller bytes unchanged; identical input and options are idempotent by returned finding bytes. | [DECISION] Return bounded sanitized U-12 warnings, or a scanner error that leaves existing artifact state and severity unchanged. |
 | Evidence review resolution | [DECISION] Read the existing ledger and event chain once per cited record, execute no stored command or output, and reject absent, duplicate, failed, mismatched, stale, unbound, digest-mismatched, or invalid-chain evidence without retry. | [DECISION] Return a bounded sanitized rejection projection, preserve the record and event files unchanged, and keep the safety claim `UNPROVEN`. |
+
+| Adaptive assessment validation | [DECISION] Perform one synchronous local classification without I/O or automatic retry; missing or invalid required categories raise `TypeError`, and unknown scope or risk prevents the mechanical fast path. | [DECISION] Return no recommendation for invalid input and obtain the missing assessment evidence before routing; valid categories still require host judgment about their factual accuracy. |
 
 ## NFR-to-Architecture Map
 
@@ -222,7 +244,8 @@
 | Review privacy | Sanitized reviewer projection with no raw record, event attributes, command arguments, claims, or output tails | ADR-010 |
 | Review trust | Trusted-workspace integrity validation without an authentication claim against a fully controlling local actor | ADR-010 |
 | Decision history privacy | Bounded allowlisted decision records plus fail-closed citation and secret validation | ADR-011 |
-| Invocation authority | Canonical route identity plus one closed invocation-policy enum | ADR-011 |
+| Invocation authority | Canonical route identity plus one closed invocation-policy enum; adaptive recommendations preserve every selected-command authority gate | ADR-011 and ADR-012 |
+| Workflow proportionality | Existing command-family selection over current-chat assessments, with no additional module, dependency, selector agent, or persistence | ADR-012 |
 | Optional operations safety | Lazy extension activation plus explicit human approval and static shell validation | ADR-011 |
 
 ## Trust Boundaries
@@ -241,6 +264,8 @@
 - [DECISION] Trusted-workspace boundary: digest and chain validation detects accidental or inconsistent local mutation but does not authenticate against an actor who can rewrite every trusted project file and recompute the complete chain; repository access controls, signed commits, CI identity, and publish provenance cover that stronger threat model.
 - [DECISION] Invocation boundary: canonical route filenames own command identity, duplicate or spoofed route metadata fails closed, and approval-required commands never inherit weaker authority from self-declared metadata.
 - [DECISION] Operations extension boundary: issue triage is advisory until separate maintainer approvals, generated setup scripts are statically checked rather than executed end to end, secrets use hidden input or stdin, and exact repository authority is verified before GitHub mutation.
+
+- [DECISION] Adaptive selection boundary: host-supplied categories are an assessment rather than proof, and the returned recommendation cannot grant execution authority, bypass required stages, or mark skipped work complete.
 
 ## Data Ownership
 
@@ -269,6 +294,8 @@
 | Durable decision history and filtered projection | `lib/events.js` and `lib/event-reader.js` under the existing event authority |
 | Optional issue-triage and setup contracts | C-operations-pack, with every external mutation retained by the active human and host tool |
 
+| Ordinary run assessment and recommendation | [DECISION] The current host model owns the in-chat assessment; `lib/command-families.selectRunApproach` returns a non-authoritative recommendation without persistence. |
+
 ## Have-Nots Checklist
 
 - [x] [DECISION] Every container has one responsibility.
@@ -279,6 +306,7 @@
 
 ## Architecture Changelog
 
+- [DECISION] 2026-09-07: Added ADR-012, the adaptive flow, categorical input envelope, invalid-input behavior, authority boundary, and Workflow proportionality mapping for P-MUST-50; the existing Decision runtime and two-stage debugger review retain their state and execution ownership.
 - [DECISION] 2026-08-19: Added ADR-011, C-engineering-contracts, and C-operations-pack because verification form, debugging feedback, program shape, why evidence, decision history, route authority, triage, and setup now have explicit bounded contracts while the core command, state, event, and dependency boundaries remain stable.
 - [DECISION] 2026-08-19: Added ADR-010 and C-evidence-review-resolver inside the existing Decision runtime because blast-radius Stage 2 now binds one safety fact to fresh executed evidence, preserves the existing record and state authority, and exposes only a sanitized read-only projection.
 - [DECISION] 2026-08-19: Added ADR-009 and C-prose-lint inside the existing Artifact layer because deterministic inert-text scanning, bounded sanitized findings, and warning-only U-12 integration now participate in artifact validation without a new service or production dependency.

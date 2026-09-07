@@ -1,6 +1,5 @@
 {
   "P-MUST-01": [
-    "agents/god-orchestrator.md",
     "docs/change-propagation.md",
     "docs/linkage.md",
     "lib/code-scanner.js",
@@ -24,34 +23,25 @@
     "lib/multi-repo-detector.js"
   ],
   "P-MUST-04": [
-    "agents/god-pm.md",
     "specialists/god-pm.md"
   ],
   "P-MUST-05": [
-    "agents/god-architect.md",
     "specialists/god-architect.md"
   ],
   "P-MUST-06": [
-    "agents/god-roadmapper.md",
     "specialists/god-roadmapper.md"
   ],
   "P-MUST-07": [
-    "agents/god-stack-selector.md",
     "specialists/god-stack-selector.md"
   ],
   "P-MUST-08": [
-    "agents/god-repo-scaffolder.md",
     "specialists/god-repo-scaffolder.md"
   ],
   "P-MUST-09": [
-    "agents/god-executor.md",
-    "agents/god-planner.md",
     "specialists/god-executor.md",
     "specialists/god-planner.md"
   ],
   "P-MUST-10": [
-    "agents/god-quality-reviewer.md",
-    "agents/god-spec-reviewer.md",
     "specialists/god-quality-reviewer.md",
     "specialists/god-spec-reviewer.md"
   ],
@@ -92,23 +82,18 @@
     "lib/installer-core.js"
   ],
   "P-MUST-22": [
-    "agents/god-harden-auditor.md",
     "specialists/god-harden-auditor.md"
   ],
   "P-SHOULD-01": [
-    "agents/god-deploy-engineer.md",
     "specialists/god-deploy-engineer.md"
   ],
   "P-SHOULD-02": [
-    "agents/god-observability-engineer.md",
     "specialists/god-observability-engineer.md"
   ],
   "P-SHOULD-03": [
-    "agents/god-launch-strategist.md",
     "specialists/god-launch-strategist.md"
   ],
   "P-SHOULD-04": [
-    "agents/god-updater.md",
     "specialists/god-updater.md"
   ],
   "P-SHOULD-05": [
@@ -121,18 +106,15 @@
     "lib/source-sync.js"
   ],
   "P-COULD-01": [
-    "agents/god-coordinator.md",
     "specialists/god-coordinator.md"
   ],
   "P-COULD-02": [
-    "agents/god-automation-engineer.md",
     "specialists/god-automation-engineer.md"
   ],
   "P-COULD-03": [
     "lib/otel-exporter.js"
   ],
   "P-COULD-04": [
-    "agents/god-spike-runner.md",
     "specialists/god-spike-runner.md"
   ],
   "P-SHOULD-08": [
@@ -465,5 +447,15 @@
   ],
   "C-debug-feedback-loop": [
     "lib/debug-feedback-loop.js"
+  ],
+  "P-MUST-50": [
+    "SKILL.md",
+    "lib/command-families.js",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md",
+    "scripts/test-command-families.js",
+    "skills/god-debug.md",
+    "skills/god-mode.md",
+    "skills/god.md",
+    "specialists/god-debugger.md"
   ]
 }

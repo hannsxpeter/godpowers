@@ -2,17 +2,30 @@
 
 > Status: ACTIVE
 > Model: Pure-skill for durable work. CLI provides install plus read-only status helpers.
-> Last updated: 2026-07-13
-> Current source: v6.3.0. Latest published: v6.3.0.
+> Last updated: 2026-09-07
+> Current source: v6.4.0. Latest published: v6.3.0.
 
-This roadmap tracks releases, what's shipped, and what is frozen during the
-3.x public adoption window. Everything user-facing remains slash-command based.
+This roadmap distinguishes the current source candidate from published
+releases. The canonical requirement-level roadmap lives in
+`.godpowers/roadmap/ROADMAP.mdx`.
+
+## Current source candidate (v6.4.0)
+
+Adaptive run selection lets the current host model choose direct, focused,
+or full workflow from assessed task scope, risk, and uncertainty. Ordinary
+assessments can finish in chat, risky changes retain verification, and explicit
+commands keep their contracts. The selector adds no command or agent and
+does not guarantee token savings. See [harness quality](harness-quality.md).
+
+The candidate also updates the development-only `fast-uri` and `qs` lockfile
+entries to versions that clear the current npm audit. Publication status is
+recorded in [RELEASE.md](../RELEASE.md).
 
 ---
 
 ## Shipped releases
 
-### Current surface (v4.0.0)
+### Historical foundation (v4.0.0)
 
 4.0.0 is a breaking release: the canonical artifact extension changed from
 `.md` to `.mdx` (reads keep a legacy `.md` fallback; installed runtimes must
@@ -46,7 +59,9 @@ completed Mythify fusion (the evidence producer, enforced close-on-evidence, the
 quarterback, work report, reflections, memory, lessons, outcome loops, MCP read
 tools, and ledger importer) shipped across 3.1.0-3.11.0.
 
-What works today:
+## Current implemented surface
+
+The current source contains:
 - **Arc-Ready 1.1 leverage**: six product forms, four-axis domain composition,
   OWASP 2025 routing, hash-bound pre-publication checks, read-only tier-artifact
   import, and managed `.arc-ready/GODPOWERS-SYNC.md` sync-back.
@@ -67,13 +82,13 @@ What works today:
   observability, capture, knowledge, process, configuration, utility,
   automation, migration, extension management, release support)
 - **41 specialist agents** in fresh contexts
-- **13 executable workflows** and **44 intent recipes**
+- **13 executable workflows** and **45 intent recipes**
 - Optional `@godpowers/mcp` companion package with nine read-only tools:
   `status`, `next`, `gate_check`, `lint_artifact`, `trace_requirement`,
   `work_report`, `change_metrics`, `route`, and `verification_history`
 - **One-directional state authority**: `.godpowers/state.json` is the
   Godpowers decision source, while `.godpowers/PROGRESS.mdx` and
-  Godpowers-owned per-tier `STATE.md` files are generated human views.
+  Godpowers-owned per-tier `STATE.mdx` files are generated human views.
 - **Locked state mutation helper**: `godpowers state advance --step=<step>
   --status=<status> --project=.` updates tracked steps and regenerates managed
   state views.

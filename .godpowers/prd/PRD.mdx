@@ -1,6 +1,6 @@
 # Product Requirements Document
 
-> Reconciled against the published Godpowers 6.3.0 release via `/god-mode`.
+> [DECISION] Reconciled for the Godpowers 6.4.0 source candidate via `/god-sync`; 6.3.0 remains the latest published release.
 > Every sentence is labeled `[DECISION]`, `[HYPOTHESIS]`, or `[OPEN QUESTION]`.
 > Functional requirements carry stable ids (P-MUST-NN / P-SHOULD-NN / P-COULD-NN)
 > that map to the code that implements them.
@@ -52,7 +52,7 @@ by `scripts/run-tests.js` and `npm run release:check`.
 
 ### MUST (V1 launch blockers)
 - P-MUST-01 [DECISION] Run a full idea-to-production project autonomously through tiered specialist agents -- Acceptance: `/god-mode` advances every tier and pauses only for genuine human decisions.
-- P-MUST-02 [DECISION] Hold project state on disk and re-derive it every turn, never from agent memory -- Acceptance: state.json plus PROGRESS.md are authoritative and a stale agent claim cannot override disk.
+- P-MUST-02 [DECISION] Hold project state on disk and re-derive it every turn, never from agent memory -- Acceptance: `.godpowers/state.json` is authoritative, `.godpowers/PROGRESS.mdx` is generated from state, and a stale agent claim cannot override disk.
 - P-MUST-03 [DECISION] Detect project mode (greenfield, brownfield, audit, suite) and scale automatically -- Acceptance: detection runs on init without the user naming a mode.
 - P-MUST-04 [DECISION] Author a Product Requirements Document that passes substitution and three-label tests -- Acceptance: every PRD sentence is labeled and every requirement has acceptance criteria.
 - P-MUST-05 [DECISION] Design system architecture with C4 structure and Architecture Decision Records -- Acceptance: ARCH.md records load-bearing decisions with rationale.
@@ -101,6 +101,12 @@ by `scripts/run-tests.js` and `npm run release:check`.
 - P-MUST-48 [DECISION] Record bounded durable engineering decisions in the existing hash-chained event stream and expose a read-only filtered decision trace -- Acceptance: `decision.recorded` rejects raw secrets and malformed citations, `/god-trace --decisions` verifies one immutable run snapshot, reports integrity failures, and retains the newest bounded result and run windows.
 - P-MUST-49 [DECISION] Declare one deterministic invocation policy for every canonical core route and reject route identity spoofing or duplicate command authority -- Acceptance: all 124 routes declare one closed-enum policy, router and route-quality checks agree on canonical filename identity, and external, destructive, dependency, recovery, and release actions require approval.
 
+- P-MUST-50 [DECISION] Select direct, focused, or full Godpowers work from the ordinary request's task, scope, risk, and uncertainty before loading a workflow or spawning specialists -- Acceptance: `lib/command-families.selectRunApproach` rejects missing or invalid categories, answers questions and assessments in chat, chooses `/god-fast` only for an explicitly mechanical bounded low-risk low-uncertainty change, routes bugs through `/god-debug`, keeps broader changes focused, and recommends `/god-mode` only for a whole-project objective; every result remains recommendation-only and preserves the selected command's prerequisites, required verification, independent review, and invocation authority, including fresh Stage 1 then Stage 2 review of an uncommitted debugger fix before the authorized caller commits.
+
+[DECISION] P-MUST-50 keeps the ordinary assessment in the current chat without a selection artifact or selector agent; explicit commands, model identity, and repository size cannot bypass required stages or authorize external writes, publication, deployment, or scheduling.
+
+[DECISION] P-MUST-50 treats missing scope or risk evidence as unknown, adds discovery or risk review when indicated, permits reuse of valid evidence and omission of inapplicable conditional steps, and requires reassessment when new evidence changes scope, risk, uncertainty, or the requested outcome.
+
 ### SHOULD (V1 if time permits)
 - P-SHOULD-01 [DECISION] Set up a deploy pipeline that promotes the same artifact with tested rollback -- Acceptance: staging and production deploy the identical build. -- Validation: a rollback drill restores the prior version.
 - P-SHOULD-02 [DECISION] Wire observability with SLOs tied to product success metrics -- Acceptance: each alert maps to an SLO and a runbook. -- Validation: a synthetic breach pages with an actionable runbook.
@@ -140,6 +146,7 @@ by `scripts/run-tests.js` and `npm run release:check`.
 | Review trust | [DECISION] Digest and chain checks detect accidental or inconsistent mutation inside the trusted workspace but do not authenticate an actor that can rewrite all trusted project files and recompute the chain. | [DECISION] |
 | Decision history privacy | [DECISION] Durable decision records use bounded allowlisted fields and reject secret-bearing metadata, provider tokens, URL authority credentials, query strings, and unsafe fragments before append or projection. | [DECISION] |
 | Invocation authority | [DECISION] Every canonical route declares one closed invocation policy, and commands that can mutate external state, publish, recover, delete, or change dependencies remain approval-required. | [DECISION] |
+| Workflow proportionality | [DECISION] Ordinary run selection uses the existing command-family helper and current chat, adds no command, module, dependency, agent type, or persistent selection store, and preserves named-command gates without promising total token savings. | [DECISION] |
 
 ## Scope and No-Gos
 
@@ -185,8 +192,11 @@ Before declaring done, verify:
 - [x] No-gos section is non-empty
 - [x] Every open question has owner AND due date
 
+
+
 ## PRD Changelog
 
+- [DECISION] 2026-09-07: Added P-MUST-50 because adaptive run selection now routes ordinary requests through existing commands while preserving mandatory stages, invocation authority, and independent review before debugger commits; corrected P-MUST-02 to distinguish authoritative state from generated progress.
 - [DECISION] 2026-08-19: Added P-MUST-44 through P-MUST-49 and P-COULD-05 through P-COULD-06 because cross-surface verification, feedback-loop debugging, deeper program design, cited why evidence, durable decision history, invocation authority, optional issue triage, and a human-only setup wizard now form one reviewed engineering-leverage increment.
 - [DECISION] 2026-08-19: Added P-MUST-36 through P-MUST-43 because the completed blast-radius source increment now requires one load-bearing safety fact, 10 boundary classes, ledger-backed executed proof, conditional independent review, sanitized evidence resolution, and high-impact fail-closed verdicts without a new command, dependency, store, or state writer.
 - [DECISION] 2026-08-19: Added P-MUST-30 through P-MUST-35 because shared plain-language guidance, a dependency-free advisory U-12 scanner, output-specific specialist audits, focused self-dogfood evidence, and release provenance now form one verified prose-quality increment.
@@ -200,16 +210,16 @@ Before declaring done, verify:
 
 ### P-MUST requirements
 
-- **P-MUST-01** -> `agents/god-orchestrator.md`, `docs/change-propagation.md`, `docs/linkage.md`, `lib/code-scanner.js`, `references/building/BUILD-ANTIPATTERNS.md`, `references/planning/WAYFINDING.md`, `scripts/test-integration.js`, `scripts/test-linkage.js`, `scripts/test-reverse-sync.js`, `skills/god-link.md`, `specialists/god-executor.md`, `specialists/god-orchestrator.md`, `specialists/god-pm.md`, `templates/PRD.mdx`
+- **P-MUST-01** -> `docs/change-propagation.md`, `docs/linkage.md`, `lib/code-scanner.js`, `references/building/BUILD-ANTIPATTERNS.md`, `references/planning/WAYFINDING.md`, `scripts/test-integration.js`, `scripts/test-linkage.js`, `scripts/test-reverse-sync.js`, `skills/god-link.md`, `specialists/god-executor.md`, `specialists/god-orchestrator.md`, `specialists/god-pm.md`, `templates/PRD.mdx`
 - **P-MUST-02** -> `lib/state.js`, `scripts/test-linkage.js`, `specialists/god-executor.md`
 - **P-MUST-03** -> `lib/multi-repo-detector.js`
-- **P-MUST-04** -> `agents/god-pm.md`, `specialists/god-pm.md`
-- **P-MUST-05** -> `agents/god-architect.md`, `specialists/god-architect.md`
-- **P-MUST-06** -> `agents/god-roadmapper.md`, `specialists/god-roadmapper.md`
-- **P-MUST-07** -> `agents/god-stack-selector.md`, `specialists/god-stack-selector.md`
-- **P-MUST-08** -> `agents/god-repo-scaffolder.md`, `specialists/god-repo-scaffolder.md`
-- **P-MUST-09** -> `agents/god-executor.md`, `agents/god-planner.md`, `specialists/god-executor.md`, `specialists/god-planner.md`
-- **P-MUST-10** -> `agents/god-quality-reviewer.md`, `agents/god-spec-reviewer.md`, `specialists/god-quality-reviewer.md`, `specialists/god-spec-reviewer.md`
+- **P-MUST-04** -> `specialists/god-pm.md`
+- **P-MUST-05** -> `specialists/god-architect.md`
+- **P-MUST-06** -> `specialists/god-roadmapper.md`
+- **P-MUST-07** -> `specialists/god-stack-selector.md`
+- **P-MUST-08** -> `specialists/god-repo-scaffolder.md`
+- **P-MUST-09** -> `specialists/god-executor.md`, `specialists/god-planner.md`
+- **P-MUST-10** -> `specialists/god-quality-reviewer.md`, `specialists/god-spec-reviewer.md`
 - **P-MUST-11** -> `lib/have-nots-validator.js`
 - **P-MUST-12** -> `lib/artifact-linter.js`
 - **P-MUST-13** -> `lib/linkage.js`
@@ -221,7 +231,7 @@ Before declaring done, verify:
 - **P-MUST-19** -> `lib/requirements.js`, `skills/god-progress.md`
 - **P-MUST-20** -> `lib/checkpoint.js`
 - **P-MUST-21** -> `bin/install.js`, `lib/installer-core.js`
-- **P-MUST-22** -> `agents/god-harden-auditor.md`, `specialists/god-harden-auditor.md`
+- **P-MUST-22** -> `specialists/god-harden-auditor.md`
 - **P-MUST-23** -> `extensions/provenance-pack/agents/god-ai-provenance-cleaner.md`, `extensions/provenance-pack/references/provenance-client.js`, `extensions/provenance-pack/skills/god-remove-ai-marks.md`, `scripts/test-provenance-pack.js`
 - **P-MUST-24** -> `scripts/run-tests.js`, `scripts/test-test-runner.js`
 - **P-MUST-25** -> `lib/context-budget.js`, `lib/events.js`
@@ -249,14 +259,15 @@ Before declaring done, verify:
 - **P-MUST-47** -> `lib/why-evidence.js`, `skills/god-archaeology.md`, `specialists/god-archaeologist.md`
 - **P-MUST-48** -> `lib/event-reader.js`, `lib/events.js`, `skills/god-trace.md`
 - **P-MUST-49** -> `lib/invocation-policy.js`, `lib/route-quality-sync.js`, `lib/router.js`, `scripts/check-package-contents.js`, `scripts/test-invocation-policy.js`
+- **P-MUST-50** -> `SKILL.md`, `lib/command-families.js`, `references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md`, `scripts/test-command-families.js`, `skills/god-debug.md`, `skills/god-mode.md`, `skills/god.md`, `specialists/god-debugger.md`
 - **P-MUST-99** -> `scripts/test-linkage.js`
 
 ### P-SHOULD requirements
 
-- **P-SHOULD-01** -> `agents/god-deploy-engineer.md`, `specialists/god-deploy-engineer.md`
-- **P-SHOULD-02** -> `agents/god-observability-engineer.md`, `specialists/god-observability-engineer.md`
-- **P-SHOULD-03** -> `agents/god-launch-strategist.md`, `specialists/god-launch-strategist.md`
-- **P-SHOULD-04** -> `agents/god-updater.md`, `specialists/god-updater.md`
+- **P-SHOULD-01** -> `specialists/god-deploy-engineer.md`
+- **P-SHOULD-02** -> `specialists/god-observability-engineer.md`
+- **P-SHOULD-03** -> `specialists/god-launch-strategist.md`
+- **P-SHOULD-04** -> `specialists/god-updater.md`
 - **P-SHOULD-05** -> `lib/host-capabilities.js`
 - **P-SHOULD-06** -> `lib/runtime-test.js`
 - **P-SHOULD-07** -> `lib/source-sync.js`
@@ -264,10 +275,10 @@ Before declaring done, verify:
 
 ### P-COULD requirements
 
-- **P-COULD-01** -> `agents/god-coordinator.md`, `specialists/god-coordinator.md`
-- **P-COULD-02** -> `agents/god-automation-engineer.md`, `specialists/god-automation-engineer.md`
+- **P-COULD-01** -> `specialists/god-coordinator.md`
+- **P-COULD-02** -> `specialists/god-automation-engineer.md`
 - **P-COULD-03** -> `lib/otel-exporter.js`
-- **P-COULD-04** -> `agents/god-spike-runner.md`, `specialists/god-spike-runner.md`
+- **P-COULD-04** -> `specialists/god-spike-runner.md`
 - **P-COULD-05** -> `extensions/operations-pack/agents/god-issue-triager.md`, `extensions/operations-pack/skills/god-issue-triage.md`, `scripts/test-operations-pack.js`
 - **P-COULD-06** -> `extensions/operations-pack/agents/god-setup-wizard.md`, `extensions/operations-pack/skills/god-setup-wizard.md`, `scripts/test-operations-pack.js`
 

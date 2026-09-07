@@ -15,7 +15,7 @@ see_also: [arch, quality, deploy]
 ## Context
 
 - [DECISION] Godpowers is an AI-powered development system delivered as slash commands and specialist agents inside AI coding tools.
-- [DECISION] The package name is `godpowers`, and the current repository version is `6.3.0`.
+- [DECISION] The package name is `godpowers`, and the current repository version is `6.4.0`.
 - [DECISION] The primary audience is solo founders and small engineering teams using AI coding tools who need accountable production workflow discipline without enterprise process.
 - [DECISION] The product promise is one slash-command arc from idea to hardened, observable, launch-ready software with traceable artifacts on disk.
 - [DECISION] Godpowers uses a pure-skill model where `npx godpowers` installs runtime files and in-tool slash commands perform work.
@@ -23,6 +23,9 @@ see_also: [arch, quality, deploy]
 - [DECISION] Workflow state lives in `.godpowers/` and is authoritative for Godpowers command resumes.
 
 ## Decisions
+
+- [DECISION] Godpowers 6.4.0 is the current source candidate for adaptive run selection; 6.3.0 remains the latest verified publication until the authorized release transaction completes.
+- [DECISION] Ordinary task assessment stays in chat and selects direct, focused, or full work from task, scope, risk, uncertainty, and existing evidence while retaining every explicit command requirement.
 
 - [DECISION] Godpowers 6.3.0 adds product-form verification, feedback-loop debugging, deeper program design, cited why evidence, durable decision traces, and one canonical invocation policy per core route.
 - [DECISION] The optional `@godpowers/operations-pack` provides issue triage and a human-only setup wizard without adding a core command or root runtime dependency.
@@ -62,20 +65,11 @@ see_also: [arch, quality, deploy]
 - Related artifact: `.godpowers/prd/PRD.mdx`.
 - Related artifact: `.godpowers/roadmap/ROADMAP.mdx`.
 - Related artifact: `.godpowers/state.json`.
+- Related artifact: `README.md`.
 - Related artifact: `RELEASE.md`.
 - Rule: keep this pillar aligned when these artifacts change durable context truth.
 
 ### Extracted durable signals
-
-From `RELEASE.md`:
-- [DECISION] Godpowers 6.3.0 adds explicit evidence and authority contracts to runtime verification, debugging, program design, archaeology, durable decision history, and command routing.
-- [DECISION] The release retains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
-- [DECISION] The core package contains 117 runtime library modules and keeps zero root production, optional, or peer dependencies.
-- [DECISION] The repository contains 117 focused test scripts and 54 core reference documents.
-- [DECISION] The root package-content check reports 659 files, including the new dependency-free validators and the optional operations pack publication surface.
-- [DECISION] The root `godpowers` package supports Node.js 18 or newer, while the read-only `@godpowers/mcp` companion requires Node.js 20 or newer; both manifests declare version 6.3.0.
-- [DECISION] `/god-test-runtime` now selects one material verification profile for CLI, SDK, API, UI, service, or library products and rejects incomplete or generic completion evidence.
-- [DECISION] Existing `test-only`, `audit-only`, and `a11y-only` runtime modes remain available and keep their previous identifiers.
 
 From `.godpowers/prd/PRD.mdx`:
 - [DECISION] AI coding agents like Claude Code can write code, but a single prompt cannot carry a project from raw idea to hardened production without losing the plan, skipping review, or forgetting what was already decided across sessions.
@@ -88,12 +82,22 @@ From `.godpowers/prd/PRD.mdx`:
 - [DECISION] For every release candidate, all release-gate checks reach zero failures within the 60-minute verification window before publication, measured by `scripts/run-tests.js` and `npm run release:check`.
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-08-19T15:57:12Z`.
-- [DECISION] Source version: `6.3.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:8c44957bf8799f0b0b6796d5b9af8430702045c31997862d504da12d33b064e5`.
-- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:300ada031ed5a0c0ed6dce52b17074f56be14a66552c67a2fe5774cee44f33cc`.
+- [DECISION] Evidence generated at: `2026-09-07T04:21:51.787Z`.
+- [DECISION] Source version: `6.4.0`.
+- [DECISION] Latest published version: `6.3.0`; its recorded release evidence remains historical authority for completed increments 1 through 17.
+- [DECISION] P-MUST-50 and M-adaptive-run-selection have passed source completion with final Stage 1 and two independent Stage 2 reviews; the canonical full release gate passed, while the fresh hash-bound prepublication gate passed and external publication remains pending.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:e70d1115760aff602b49419439fbf5d968d255b4a99eaad6fceabfdf2f32b296`.
+- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:614155b58068df3e6e9a22f5fd5828e0cc46e5cfa0229dc1ae922f5cfaa36d1f`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
-- [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, blast-radius, and engineering-leverage completion are backed by 63 linked requirements, focused executed proof, independent Stage 1 and Stage 2 review, the 6.3.0 full release gate, exact merge and tag identity, provenance publication, registry integrity, and isolated installed-package verification.
-- [OPEN QUESTION] Add a deterministic 500-file and 1,000-candidate blast-radius capacity fixture before the second release candidate containing ADR-010; owner: Godpowers maintainer.
+- [DECISION] Published 6.3.0 planning completion is backed by its PRD, design not-required, architecture, roadmap, and stack gates; the 6.4.0 PRD, architecture, roadmap, and stack gates passed after artifact and linkage sync.
+
+From `RELEASE.md`:
+- [DECISION] Godpowers 6.4.0 adds adaptive run selection so the current host model can choose which existing workflow is useful for an ordinary request.
+- [DECISION] The release retains 124 slash commands, 41 specialist agents, 13 workflows, and 45 recipes.
+- [DECISION] The core package contains 117 runtime library modules and keeps zero root production, optional, or peer dependencies.
+- [DECISION] The repository contains 117 focused test scripts and 54 core reference documents.
+- [DECISION] The root package-content check reports 659 files; this release adds no command, agent, runtime module, or dependency.
+- [DECISION] Root `godpowers` and the read-only `@godpowers/mcp` companion declare version 6.4.0, with minimum Node.js versions 18 and 20 respectively.
+- [DECISION] The current host model assesses intended task, observed scope, risk, and uncertainty before calling `lib/command-families.selectRunApproach`.
+- [DECISION] Ordinary questions and assessments can finish directly in chat without a selector agent, planning artifact, or automatic state initialization.
 <!-- godpowers:pillar-sync:end -->

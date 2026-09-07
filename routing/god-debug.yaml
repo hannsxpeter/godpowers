@@ -3,7 +3,7 @@ kind: CommandRouting
 metadata:
   command: /god-debug
   invocation-policy: suggestible
-  description: 4-phase systematic debug
+  description: 6-phase systematic debug with independent review before commit
   tier: 0
   family: build
 
@@ -12,7 +12,7 @@ prerequisites:
     []
 
 execution:
-  spawns: [god-debugger]
+  spawns: [god-debugger, god-spec-reviewer, god-quality-reviewer]
   context: fresh
   writes:
     - regression test

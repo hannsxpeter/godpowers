@@ -1,39 +1,9 @@
 {
-  "agents/god-orchestrator.md": [
-    "P-MUST-01"
-  ],
   "lib/state.js": [
     "P-MUST-02"
   ],
   "lib/multi-repo-detector.js": [
     "P-MUST-03"
-  ],
-  "agents/god-pm.md": [
-    "P-MUST-04"
-  ],
-  "agents/god-architect.md": [
-    "P-MUST-05"
-  ],
-  "agents/god-roadmapper.md": [
-    "P-MUST-06"
-  ],
-  "agents/god-stack-selector.md": [
-    "P-MUST-07"
-  ],
-  "agents/god-repo-scaffolder.md": [
-    "P-MUST-08"
-  ],
-  "agents/god-executor.md": [
-    "P-MUST-09"
-  ],
-  "agents/god-planner.md": [
-    "P-MUST-09"
-  ],
-  "agents/god-spec-reviewer.md": [
-    "P-MUST-10"
-  ],
-  "agents/god-quality-reviewer.md": [
-    "P-MUST-10"
   ],
   "lib/have-nots-validator.js": [
     "P-MUST-11",
@@ -86,21 +56,6 @@
   "bin/install.js": [
     "P-MUST-21"
   ],
-  "agents/god-harden-auditor.md": [
-    "P-MUST-22"
-  ],
-  "agents/god-deploy-engineer.md": [
-    "P-SHOULD-01"
-  ],
-  "agents/god-observability-engineer.md": [
-    "P-SHOULD-02"
-  ],
-  "agents/god-launch-strategist.md": [
-    "P-SHOULD-03"
-  ],
-  "agents/god-updater.md": [
-    "P-SHOULD-04"
-  ],
   "lib/host-capabilities.js": [
     "P-SHOULD-05"
   ],
@@ -110,17 +65,8 @@
   "lib/source-sync.js": [
     "P-SHOULD-07"
   ],
-  "agents/god-coordinator.md": [
-    "P-COULD-01"
-  ],
-  "agents/god-automation-engineer.md": [
-    "P-COULD-02"
-  ],
   "lib/otel-exporter.js": [
     "P-COULD-03"
-  ],
-  "agents/god-spike-runner.md": [
-    "P-COULD-04"
   ],
   ".github/workflows/publish-pack.yml": [
     "P-SHOULD-08"
@@ -336,7 +282,8 @@
     "P-MUST-24"
   ],
   "SKILL.md": [
-    "P-MUST-30"
+    "P-MUST-30",
+    "P-MUST-50"
   ],
   "lib/prose-lint.js": [
     "P-MUST-31",
@@ -413,7 +360,8 @@
     "P-MUST-41",
     "P-MUST-42",
     "P-MUST-43",
-    "P-MUST-46"
+    "P-MUST-46",
+    "P-MUST-50"
   ],
   "scripts/test-blast-radius.js": [
     "ADR-010",
@@ -567,7 +515,8 @@
     "P-COULD-06"
   ],
   "skills/god-debug.md": [
-    "P-MUST-45"
+    "P-MUST-45",
+    "P-MUST-50"
   ],
   "skills/god-trace.md": [
     "P-MUST-48"
@@ -576,6 +525,19 @@
     "P-MUST-47"
   ],
   "specialists/god-debugger.md": [
-    "P-MUST-45"
+    "P-MUST-45",
+    "P-MUST-50"
+  ],
+  "lib/command-families.js": [
+    "P-MUST-50"
+  ],
+  "scripts/test-command-families.js": [
+    "P-MUST-50"
+  ],
+  "skills/god-mode.md": [
+    "P-MUST-50"
+  ],
+  "skills/god.md": [
+    "P-MUST-50"
   ]
 }

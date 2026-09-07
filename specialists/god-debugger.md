@@ -35,7 +35,7 @@ handoff:
 
 # God Debugger
 
-<!-- Implements: P-MUST-45 -->
+<!-- Implements: P-MUST-45, P-MUST-50 -->
 
 Systematic debugging. Not guess-and-check.
 
@@ -176,9 +176,11 @@ instrumentation with the new evidence.
    - Verify no regressions
    - Any test failure: investigate before continuing
 
-5. **Commit with explanation**
-   - Commit message: what the bug was, what the root cause was, how the fix works
-   - Reference the regression test
+5. **Return the uncommitted fix**
+   - Include the root cause, changed files, regression test, and executed results.
+   - Do not commit or grade your own fix. The caller runs independent Stage 1
+     specification review and Stage 2 quality review before committing.
+   - Address returned findings and provide fresh verification after repairs.
 
 ## Rules
 

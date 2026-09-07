@@ -155,3 +155,24 @@
 - [DECISION] Root package contents remain allowlisted at 659 files, MCP contents remain allowlisted at 8 files, and extension publication readiness covers 81 checks.
 - [DECISION] No unresolved or accepted security finding remains in the 6.3.0 release scope.
 - [DECISION] Release hardening gate: PASSED.
+
+## Release Review: Adaptive Run Selection 6.4.0
+
+- [DECISION] Date: 2026-09-07T04:16:16.124Z.
+- [DECISION] Scope: advisory command-family classification, installed front-door and mode instructions, independent debugger and audit-remediation review order, existing invocation policies, package delivery, and the two dev-only lockfile remediations.
+- [DECISION] Independent Stage 1 passed 91 focused checks and reconfirmed the final caller revision; two independent Stage 2 safety cases passed at evidence level 5 with zero confirmed unresolved security risks.
+- [DECISION] The primary case exercised 756 valid assessments, 38 malformed inputs, npm packing, Claude and Codex installation, JSON and YAML consumers, and equality of 10 selected source/package files; original accepted record `v-20260907040846473-ef4d71f02cf8` is retained under `.godpowers/runs/2026-09-07T03-58-45-030Z-2759fa3b/reviews/stage2-primary/`.
+- [DECISION] The secondary case exercised 6,954 selector checks across source, clean npm installation, installed Codex, stale installed skill replacement, serialized consumers, model/cost override attempts, and final independent-review caller ordering; original accepted record `v-20260907041223469-b568c3c72f0f` is retained under `.godpowers/runs/2026-09-07T03-58-45-030Z-2759fa3b/reviews/stage2-secondary/`.
+- [DECISION] Both review snapshots preserve original temporary-project locations, commands, ledgers, event chains, and accepted projections without manufacturing in-repository executed records.
+- [DECISION] The root updated dev-only fast-uri from 3.1.5 to 3.1.7 and qs from 6.15.3 to 6.16.0; no root production dependency was introduced.
+- [DECISION] Unresolved Critical, High, Medium, and Low findings in this scoped review: zero; scoped authority review gate: PASSED.
+- [OPEN QUESTION] Fresh canonical full release and full dependency audit evidence remain pending until the authorized checks execute.
+- [HYPOTHESIS] Actual host-model assessment accuracy, instruction compliance, and token savings remain unproven by deterministic contract and installation tests.
+
+### Canonical 6.4.0 verification at 2026-09-07T04:21:51.787Z
+
+- [DECISION] The full release gate passed 121 commands and 3,298 reported checks, with 94.71 percent line coverage, 80.81 percent branch coverage, and 97.32 percent function coverage; executed record `v-20260907041649849-3b53f98ce728` is bound to tier-2.build in the canonical verification ledger.
+- [DECISION] The complete dependency audit passed with zero reported vulnerabilities; executed record `v-20260907041908135-a35f7ac1d722` is bound to tier-3.harden in the canonical verification ledger.
+- [DECISION] Both records resolve as accepted with exact command, claim, substep, freshness, event-chain, and digest checks; retained result and projection copies live at `.godpowers/runs/2026-09-07T03-58-45-030Z-2759fa3b/verification/`.
+- [DECISION] Production dependency audit and live advisory checks passed, root package contents verified 659 files, MCP contents verified 8 files, and source truth passed all 140 checks.
+- [DECISION] Scoped 6.4.0 hardening and local release gates: PASSED with zero unresolved or accepted Critical findings; external publication remains pending.

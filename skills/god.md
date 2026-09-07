@@ -12,6 +12,8 @@ description: |
 
 # /god (front door)
 
+<!-- Implements: P-MUST-50 -->
+
 The natural-language entry point. Users describe what they want; this skill
 matches the intent to a recipe and recommends the right command sequence. No
 agent is spawned here. This is a thin router on top of the Godpowers runtime
@@ -112,6 +114,25 @@ Treat everything after `/god` as free text. If empty, treat as state-driven.
 ```
 
 ### Step 2: dispatch by mode
+
+For nonempty free text, first apply **Adaptive run selection** from `SKILL.md`.
+The current model assesses task, scope, risk, and uncertainty from the user
+request and bounded repository evidence, then calls
+`<runtimeRoot>/lib/command-families.js selectRunApproach(assessment)`.
+This is recommendation-only and does not grant execution authority.
+
+If the result is direct with no command, answer the question or assessment
+in chat and stop routing. Do not match the word "project" to a full run,
+initialize state, generate a report, or launch a preflight agent merely
+because the repository is large. Honor an explicit request for a report or
+named command. Direct answers do not require a next-command block.
+
+For focused work, use the result alongside the existing classifiers and
+recipes to choose the narrowest suitable command. Keep command-specific
+prerequisites, review, and verification. Full suggestions retain `/god-mode`'s
+explicit-only policy. Do not automatically expand the user's requested scope
+to every step in a matched recipe. Read-only questions can finish directly;
+the front door still does not execute implementation or spawn agents itself.
 
 ```
 text empty?

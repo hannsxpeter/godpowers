@@ -4,6 +4,17 @@ This reference owns the detailed operating contracts for the god-orchestrator ag
 
 ## Cost-conscious agent dispatch (token cost saver)
 
+<!-- Implements: P-MUST-50 -->
+
+Apply **Adaptive run selection** from `SKILL.md` within the selected command's
+contract. Before each conditional step, identify the unresolved requirement
+or risk it addresses. Reuse valid existing artifacts and evidence, omit
+conditional steps whose conditions are absent, and load only the context
+needed for the selected work. Do not spawn a separate workflow-selection
+agent or create a new selection artifact. Required stages, review gates,
+state ownership, and execution authority remain unchanged. If new evidence
+expands the work, explain the escalation once and update the existing handoff.
+
 Read `.godpowers/intent.yaml` for the `budgets` block before each
 agent spawn:
 
@@ -52,14 +63,18 @@ agent spawn:
      ordering, and verdicts, but never file or inline source content.
 
 3. **Model selection**:
-   - Default model = `claude-3-5-sonnet` (standard tier).
+   - Default to the current host model and reasoning effort. Do not hard-code
+     a provider or historical model identifier.
    - If `budgets.model-profile: cheap` and the agent is read-only
      (god-status / god-doctor / god-locate / god-help / god-context-
-     scan / god-logs / god-metrics / god-trace), use haiku-class.
+     scan / god-logs / god-metrics / god-trace), prefer a cheaper model that
+     the host actually exposes and that the configured profile authorizes.
    - Creative agents (god-pm / god-architect / god-designer /
      god-roadmapper) stay on standard or above regardless of profile.
    - Per-agent overrides under `budgets.agents.<name>.model-profile`
      win over defaults.
+   - If the host cannot honor a profile, report the effective model instead
+     of claiming savings. Model capability never waives required evidence.
 
 4. **Record cost**: after the agent completes, emit `cost.recorded`
    via `lib/cost-tracker.recordCost(handle, { model, tokens_in,
@@ -534,11 +549,12 @@ maker that fixes is never the checker that grades.
    and self-arresting:
    - `npx godpowers outcome start fix-<ID> --verify "<the finding's verify command>" --substep <tier.substep> --project=.`
    - Spawn `god-debugger` (or the owning specialist) in a fresh context with only
-     that finding's evidence and touched files to draft the fix.
-   - Spawn an **independent** reviewer (`god-quality-reviewer`, or
-     `god-harden-auditor` for a SEC finding) in a fresh context to verify the fix
-     against the cited evidence and the project's tests. The maker does not grade
-     its own work.
+     that finding's evidence and touched files to draft the fix uncommitted.
+   - Spawn `god-spec-reviewer` first, then `god-quality-reviewer` only after
+     Stage 1 passes, each in fresh context against the finding and executed
+     tests. Both stages must pass before the caller commits or closes the fix.
+     Add `god-harden-auditor` for a SEC finding; it does not replace either
+     required code review. The maker does not grade its own work.
    - `npx godpowers outcome check fix-<ID> --project=.` runs the finding's verify
      command and records the iteration. Repeat until the outcome succeeds or the
      budget is exhausted.
