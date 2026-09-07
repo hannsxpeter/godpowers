@@ -45,6 +45,9 @@ see_also: [security, deploy]
 
 ## Rules
 
+- [DECISION] `scripts/test-command-families.js` verifies direct, focused, and full selection, narrow mechanical eligibility, uncertainty escalation, and stable explicit command routing.
+- [DECISION] Host model capability can influence an approach judgment but cannot waive Godpowers evidence, gate, approval, or publication requirements.
+
 - [DECISION] Artifact linter checks must catch em or en dashes, emojis, unlabeled paragraphs, phantom references, future-dated body timestamps, and selected PRD or ARCH failures.
 - [DECISION] U-12 prose findings remain advisory warnings, never automatic rewrites or proof of human authorship, and never weaken an existing blocking artifact error.
 - [DECISION] CI tests Node `18`, Node `20`, and Node `22`.
@@ -79,12 +82,12 @@ see_also: [security, deploy]
 ### Extracted durable signals
 
 From `.godpowers/roadmap/ROADMAP.mdx`:
-- [DECISION] Evidence generated at: `2026-08-19T15:57:12Z`.
-- [DECISION] Source version: `6.3.0`.
-- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:8c44957bf8799f0b0b6796d5b9af8430702045c31997862d504da12d33b064e5`.
-- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:300ada031ed5a0c0ed6dce52b17074f56be14a66552c67a2fe5774cee44f33cc`.
+- [DECISION] Evidence generated at: `2026-09-07T04:21:51.787Z`.
+- [DECISION] Source version: `6.4.0`.
+- [DECISION] Latest published version: `6.3.0`; its recorded release evidence remains historical authority for completed increments 1 through 17.
+- [DECISION] P-MUST-50 and M-adaptive-run-selection have passed source completion with final Stage 1 and two independent Stage 2 reviews; the canonical full release gate passed, while the fresh hash-bound prepublication gate passed and external publication remains pending.
+- [DECISION] Source hash `.godpowers/prd/PRD.mdx`: `sha256:e70d1115760aff602b49419439fbf5d968d255b4a99eaad6fceabfdf2f32b296`.
+- [DECISION] Source hash `.godpowers/arch/ARCH.mdx`: `sha256:614155b58068df3e6e9a22f5fd5828e0cc46e5cfa0229dc1ae922f5cfaa36d1f`.
 - [DECISION] Source hash `.godpowers/stack/DECISION.mdx`: `sha256:e235b1b722f545a8907036c811ed52d68d90222978d2f2a37b4da1abb821473d`.
-- [DECISION] Planning completion is backed by passing PRD, design not-required, architecture, roadmap, and stack gates.
-- [DECISION] Build, shipping, steady-state, advanced, provenance-extension, harness-quality, prose-quality, blast-radius, and engineering-leverage completion are backed by 63 linked requirements, focused executed proof, independent Stage 1 and Stage 2 review, the 6.3.0 full release gate, exact merge and tag identity, provenance publication, registry integrity, and isolated installed-package verification.
-- [OPEN QUESTION] Add a deterministic 500-file and 1,000-candidate blast-radius capacity fixture before the second release candidate containing ADR-010; owner: Godpowers maintainer.
+- [DECISION] Published 6.3.0 planning completion is backed by its PRD, design not-required, architecture, roadmap, and stack gates; the 6.4.0 PRD, architecture, roadmap, and stack gates passed after artifact and linkage sync.
 <!-- godpowers:pillar-sync:end -->

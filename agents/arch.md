@@ -18,6 +18,9 @@ see_also: [quality, deploy]
 
 ## Decisions
 
+- [DECISION] `lib/command-families.js` owns the additive `selectRunApproach` classifier inside the existing command family boundary.
+- [DECISION] Adaptive selection chooses a mechanical fast path only for bounded edits with low risk and low uncertainty; required review, state ownership, and external authority remain defined by the selected command.
+
 - [DECISION] Godpowers uses a pure-skill runtime where slash-command skills spawn specialist agents inside the host AI coding tool.
 - [DECISION] The CLI surface stays narrow: installer and uninstall flows, read-only status and next-route helpers, automation status and setup planning, dogfood fixtures, and extension scaffolding.
 - [DECISION] Routing decisions are stored in `routing/*.yaml`.

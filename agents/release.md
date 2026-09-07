@@ -20,20 +20,22 @@ see_also: [security]
 
 ## Decisions
 
+- [DECISION] Godpowers 6.4.0 is an unpublished minor release candidate for adaptive run selection; historical 6.3.0 publication evidence remains the release authority until new registry and installed-package proof is recorded.
+
 - [DECISION] Backward-compatible routing, validation, and workflow capability additions use a minor release.
 - [DECISION] Raising a published workspace package's minimum Node.js version or adopting an incompatible protocol major uses a major release for both version-locked packages.
 - [DECISION] The release containing `@modelcontextprotocol/server` v2 and the `@godpowers/mcp` Node 20-plus engine is the Godpowers 6.0.0 major line.
 - [DECISION] A release is complete only after GitHub, npm, package integrity, and isolated installed behavior agree.
 - [DECISION] Godpowers 6.2.0 is published from merged `main` commit `010f02dbccb17fce42107ce39d681adaa4879251` through annotated tag `v6.2.0` and provenance workflow 32242093455.
-- [DECISION] npm `godpowers@6.2.0` and `@godpowers/mcp@6.2.0` are promoted to `latest`, and their exact integrity values and shasums are recorded in `RELEASE.md`.
+- [DECISION] npm `godpowers@6.2.0` and `@godpowers/mcp@6.2.0` were promoted to `latest` during the historical 6.2.0 release and were superseded by 6.3.0.
 - [DECISION] GitHub Release `v6.2.0` was published at `2026-08-19T10:25:32Z` after PR and merged-main CI passed.
 - [DECISION] Backward-compatible engineering evidence, route authority, and optional operations-pack additions shipped in Godpowers 6.3.0.
 - [DECISION] Godpowers 6.3.0 is published from merged `main` commit `c45d0473ad946fcd7c02a5706b02f51a40ed0d25` through annotated tags, provenance workflows 32272150358 and 32272475321, exact registry verification, GitHub Release creation, and isolated installs.
-- [DECISION] npm `godpowers@6.3.0`, `@godpowers/mcp@6.3.0`, and `@godpowers/operations-pack@0.1.0` are promoted to `latest`, and their exact integrity values and shasums are recorded in `RELEASE.md`.
+- [DECISION] npm `godpowers@6.3.0`, `@godpowers/mcp@6.3.0`, and `@godpowers/operations-pack@0.1.0` are promoted to `latest`, and their exact integrity values and shasums are preserved in the historical 6.3.0 entry of `.godpowers/SYNC-LOG.mdx`.
 
 ## Rules
 
-- [DECISION] `README.md`, `CHANGELOG.md`, `RELEASE.md`, package metadata, lockfile metadata, project Pillars, and generated release evidence must identify the same version.
+- [DECISION] `README.md`, `CHANGELOG.md`, `RELEASE.md`, package metadata, lockfile metadata, project Pillars, and generated release evidence must identify the same source version while preserving a separately labeled latest published version during preparation.
 - [DECISION] Never publish from an unmerged task branch or a commit that has not passed `npm run release:check`.
 
 ## Workflows

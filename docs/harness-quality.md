@@ -5,6 +5,34 @@ repository as one engineering system. The harness quality layer makes failures
 easy to diagnose, larger changes explicit before editing starts, and completed
 slices easy to resume from disk.
 
+## Adaptive run selection
+
+The current host model selects how much Godpowers workflow an ordinary
+request needs before loading a workflow or spawning specialists. It assesses
+the requested task, observed scope, risk, and uncertainty, then calls
+`lib/command-families.selectRunApproach`. Model name and repository size do
+not determine the result.
+
+| Request | Selected approach |
+| --- | --- |
+| Ask a question or assess an existing project | Direct inspection and an answer in chat; a report is optional when requested. |
+| Make a known mechanical edit | Direct work through `/god-fast`, subject to its limits. |
+| Fix a bug or implement a bounded change | A focused command with its required verification and review. |
+| Deliver a complete project | A full `/god-mode` recommendation that still requires explicit invocation. |
+| Ship existing work | The existing `/god-ship` authority and release checks. |
+
+Explicit commands retain their contracts. Selection is recommendation-only:
+it does not authorize writes, remove mandatory checks, or mark skipped stages
+complete. Within a workflow, the model can omit inapplicable conditional
+steps and reuse valid evidence. Missing scope or risk evidence must be marked
+unknown, which prevents a change from taking the mechanical fast path.
+
+This adds no selector agent, command, or state store. Host agents follow the
+protocol in `SKILL.md`; the runtime helper validates the supplied categories
+and chooses a workflow, but cannot prove that a model assessed the repository
+correctly. No token savings are guaranteed. Existing context budgets cap
+supplied context per dispatch rather than the total cost of a run.
+
 ## Compact verification
 
 Human-readable output remains the default. Agents and automation can request a

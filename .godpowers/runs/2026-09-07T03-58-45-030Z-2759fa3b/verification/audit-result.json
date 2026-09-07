@@ -1,0 +1,37 @@
+{
+  "record": {
+    "id": "v-20260907041908135-a35f7ac1d722",
+    "kind": "executed",
+    "claim": "The complete Godpowers 6.4.0 dependency tree has zero reported vulnerabilities after the two authorized dev-transitive updates.",
+    "command": "bash -o pipefail -c 'npm audit 2>&1 | tee /tmp/godpowers-640-full-audit.log'",
+    "exit_code": 0,
+    "duration_seconds": 0.408,
+    "stdout_tail": "found 0 vulnerabilities\n",
+    "stderr_tail": "",
+    "verified": true,
+    "timestamp": "2026-09-07T04:19:08.135Z",
+    "arc": null,
+    "substep": "tier-3.harden",
+    "substep_status": "done"
+  },
+  "rollup": {
+    "applied": true,
+    "tierKey": "tier-3",
+    "subStepKey": "harden",
+    "substep": "tier-3.harden",
+    "command": "bash -o pipefail -c 'npm audit 2>&1 | tee /tmp/godpowers-640-full-audit.log'",
+    "status": "pass",
+    "commands": 5,
+    "warnings": []
+  },
+  "event": {
+    "emitted": true,
+    "name": "gate.pass",
+    "runId": "20260713-product-trust-hardening",
+    "file": "/Users/hannsxpeter/Projects/godpowers/.godpowers/runs/20260713-product-trust-hardening/events.jsonl",
+    "traceId": "9bfe66304bec5cbe2f7598ccbae9d2fe",
+    "spanId": "a1f6a49746477264"
+  },
+  "verified": true,
+  "ledger": "/Users/hannsxpeter/Projects/godpowers/.godpowers/ledger/verifications.jsonl"
+}

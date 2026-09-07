@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Implements: P-MUST-50
 /**
  * Command family UX metadata tests.
  */
@@ -116,6 +117,103 @@ test('routing metadata records typed outcomes for flexible next routes', () => {
     }
   }
   assert(missing.length === 0, `missing route outcomes: ${missing.join(', ')}`);
+});
+
+test('adaptive selection answers a large-project assessment directly', () => {
+  const result = families.selectRunApproach({
+    task: 'assessment', scope: 'cross-cutting', risk: 'high', uncertainty: 'high'
+  });
+  assert(result.approach === 'direct');
+  assert(result.command === null);
+  assert(result.components.includes('inspection'));
+  assert(!result.components.includes('artifact-sync'));
+  assert(!result.components.includes('specialist-review'));
+  assert(result.authority === 'recommendation-only');
+});
+
+test('adaptive selection uses fast only for established mechanical changes', () => {
+  const facts = { task: 'change', scope: 'bounded', risk: 'low', uncertainty: 'low', mechanical: true };
+  assert(families.selectRunApproach(facts).command === '/god-fast');
+  assert(families.selectRunApproach({ ...facts, mechanical: false }).command === '/god-quick');
+  for (const change of [{ risk: 'high' }, { risk: 'unknown' }, { scope: 'unknown' }, { uncertainty: 'high' }]) {
+    const result = families.selectRunApproach({ ...facts, ...change });
+    assert(result.approach === 'focused');
+    assert(result.command !== '/god-fast');
+    assert(result.components.includes('specialist-review'));
+  }
+});
+
+test('adaptive selection keeps a risky local bug focused and includes verification', () => {
+  const result = families.selectRunApproach({ task: 'bug', scope: 'bounded', risk: 'high', uncertainty: 'high' });
+  assert(result.approach === 'focused');
+  assert(result.command === '/god-debug');
+  assert(result.components.includes('verification'));
+  assert(result.components.includes('specialist-review'));
+  assert(result.components.includes('risk-review'));
+  assert(!result.components.includes('shipping'));
+});
+
+test('adaptive selection distinguishes feature scope from a full project objective', () => {
+  const facts = { task: 'change', scope: 'cross-cutting', risk: 'low', uncertainty: 'low' };
+  assert(families.selectRunApproach(facts).command === '/god-feature');
+  const full = families.selectRunApproach({ ...facts, task: 'project' });
+  assert(full.approach === 'full');
+  assert(full.command === '/god-mode');
+  assert(full.invocationPolicy === 'explicit-only');
+  assert(full.authority === 'recommendation-only');
+  const ship = families.selectRunApproach({ ...facts, task: 'release' });
+  assert(ship.command === '/god-ship');
+  assert(ship.invocationPolicy === 'approval-required');
+});
+
+test('adaptive selection requires explicit facts and does not infer safety from a model name', () => {
+  const assertNode = require('assert');
+  for (const input of [undefined, null, [], {}, { task: 'question' }, { task: 'invented', scope: 'bounded', risk: 'low', uncertainty: 'low' }]) {
+    assertNode.throws(() => families.selectRunApproach(input), /run assessment/i);
+  }
+  const facts = { task: 'change', scope: 'bounded', risk: 'unknown', uncertainty: 'high' };
+  const expected = families.selectRunApproach(facts);
+  for (const model of ['gpt-6-astra', 'another-host-model']) {
+    assertNode.deepStrictEqual(families.selectRunApproach({ ...facts, model, tokenBudget: 1 }), expected);
+  }
+  assert(families.selectRunApproach({ task: 'question', scope: 'bounded', risk: 'low', uncertainty: 'low' }).command === null);
+});
+
+test('adaptive fast selection requires a boolean mechanical assessment', () => {
+  const facts = { task: 'change', scope: 'bounded', risk: 'low', uncertainty: 'low' };
+  for (const mechanical of [undefined, 'true', 1, {}, false]) {
+    assert(families.selectRunApproach({ ...facts, mechanical }).command === '/god-quick');
+  }
+});
+
+test('installed skill sources connect adaptive selection without adding a selector agent', () => {
+  const root = path.join(__dirname, '..');
+  const master = fs.readFileSync(path.join(root, 'SKILL.md'), 'utf8');
+  const frontDoor = fs.readFileSync(path.join(root, 'skills/god.md'), 'utf8');
+  const mode = fs.readFileSync(path.join(root, 'skills/god-mode.md'), 'utf8');
+  const runbook = fs.readFileSync(path.join(root, 'references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md'), 'utf8');
+  assert(master.includes('selectRunApproach(assessment)'));
+  assert(frontDoor.includes('selectRunApproach(assessment)'));
+  assert(frontDoor.includes('direct with no command'));
+  assert(mode.includes('explicit `/god-mode` requests the full workflow'));
+  assert(runbook.includes('Adaptive run selection'));
+  assert(!runbook.includes('Default model = `claude-3-5-sonnet`'));
+});
+
+test('focused debugging hands uncommitted fixes to independent review before commit', () => {
+  const root = path.join(__dirname, '..');
+  const skill = fs.readFileSync(path.join(root, 'skills/god-debug.md'), 'utf8');
+  const specialist = fs.readFileSync(path.join(root, 'specialists/god-debugger.md'), 'utf8');
+  const route = parseSimpleYaml(fs.readFileSync(path.join(root, 'routing/god-debug.yaml'), 'utf8'));
+  const runbook = fs.readFileSync(path.join(root, 'references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md'), 'utf8');
+  assert(skill.includes('Run `/god-review` before committing'));
+  assert(skill.includes('Both stages must pass'));
+  assert(specialist.includes('Return the uncommitted fix'));
+  assert(specialist.includes('Do not commit or grade your own fix'));
+  assert(runbook.includes('Both stages must pass before the caller commits or closes the fix'));
+  for (const name of ['god-spec-reviewer', 'god-quality-reviewer']) {
+    assert(route.execution.spawns.includes(name));
+  }
 });
 
 report();

@@ -8,6 +8,22 @@
       "requires-design": false,
       "ui-frameworks": [],
       "ui-signals": []
+    },
+    "source-version": "6.4.0",
+    "release-candidate": {
+      "version": "6.4.0",
+      "status": "ready-to-commit",
+      "latest-published": "6.3.0",
+      "scope": "adaptive-run-selection",
+      "prepared-at": "2026-09-07T04:00:37.684Z",
+      "verification-note": "Final independent reviews, canonical full release gate, full dependency audit, and fresh hash-bound prepublication passed; Git and external publication transaction pending.",
+      "dependency-remediation": "Dev-only fast-uri 3.1.5 to 3.1.7 and qs 6.15.3 to 6.16.0; root reported zero vulnerabilities after npm update fast-uri qs --ignore-scripts.",
+      "review-evidence": ".godpowers/runs/2026-09-07T03-58-45-030Z-2759fa3b/reviews",
+      "local-install-refresh": "pending after publication; Codex 5.9.0 and Claude 5.10.0 observed; preserve GODPOWERS_PROFILE",
+      "release-record": "v-20260907041649849-3b53f98ce728",
+      "audit-record": "v-20260907042336654-aa98a28dc65a",
+      "prepublication-checked-at": "2026-09-07T04:24:06.425Z",
+      "hardening-revision": "sha256:0632acf3a6c99059fd484faf0afe049af7567ba6d5f908c66e407da6a2df83d4"
     }
   },
   "mode": "B",
@@ -69,18 +85,18 @@
       "sync": {
         "status": "done",
         "artifact": "SYNC-LOG.mdx",
-        "artifact-hash": "sha256:8f02a8e1956b8f0d77187f5b7decfedff36d3611f3a5af779da847330d3c0640",
-        "updated": "2026-08-19T15:58:00Z",
-        "notes": "The final 6.3.0 postpublication sync records exact PR, CI, merge, tags, provenance workflows, all three registry artifacts, GitHub Release, isolated installs, audit, signature, and attestation evidence across canonical state and release-facing views."
+        "artifact-hash": "sha256:75f269c69eaf220e1a0ff8d34a348059da59b9ba943c2b4b0298967d8a00b4db",
+        "updated": "2026-09-07T04:24:06.426Z",
+        "notes": "The 6.4.0 source, independent reviews, canonical release/audit evidence, final public documentation, Pillars, 64 requirements, and fresh prepublication gate are synchronized; ready for the authorized Git and publication transaction."
       }
     },
     "tier-1": {
       "prd": {
         "status": "done",
         "artifact": "prd/PRD.mdx",
-        "artifact-hash": "sha256:8c44957bf8799f0b0b6796d5b9af8430702045c31997862d504da12d33b064e5",
-        "updated": "2026-08-19T15:58:00Z",
-        "notes": "P-MUST-44 through P-MUST-49 and P-COULD-05 through P-COULD-06 are published and verified in Godpowers 6.3.0."
+        "artifact-hash": "sha256:e70d1115760aff602b49419439fbf5d968d255b4a99eaad6fceabfdf2f32b296",
+        "updated": "2026-09-07T04:05:39.771Z",
+        "notes": "6.4.0 adaptive-selection planning delta reviewed and synchronized; source execution and release verification remain separately tracked."
       },
       "design": {
         "status": "not-required",
@@ -95,16 +111,16 @@
       "arch": {
         "status": "done",
         "artifact": "arch/ARCH.mdx",
-        "artifact-hash": "sha256:300ada031ed5a0c0ed6dce52b17074f56be14a66552c67a2fe5774cee44f33cc",
-        "updated": "2026-08-19T15:08:58.002Z",
-        "notes": "ADR-011 keeps evidence and invocation contracts inside existing runtime authorities and keeps optional operations in a lazy extension."
+        "artifact-hash": "sha256:614155b58068df3e6e9a22f5fd5828e0cc46e5cfa0229dc1ae922f5cfaa36d1f",
+        "updated": "2026-09-07T04:05:39.771Z",
+        "notes": "6.4.0 adaptive-selection planning delta reviewed and synchronized; source execution and release verification remain separately tracked."
       },
       "roadmap": {
         "status": "done",
         "artifact": "roadmap/ROADMAP.mdx",
-        "artifact-hash": "sha256:58d3243a5cca85dc6d9bf1e952c99d83c05d29dcaeebaf3139e92871b1356d8c",
-        "updated": "2026-08-19T15:58:00Z",
-        "notes": "M-engineering-leverage-contracts is published in Godpowers 6.3.0 after full release gates, exact merge and tag identity, provenance publication, registry integrity, and isolated root, MCP, and operations-pack verification passed."
+        "artifact-hash": "sha256:0e1bbe353dce4a9cbe6b1a57eafd46c99fe50580041f7aec5361c3a6fa6ff865",
+        "updated": "2026-09-07T04:21:51.787Z",
+        "notes": "6.4.0 adaptive-selection planning delta reviewed and synchronized; source execution and release verification remain separately tracked."
       },
       "stack": {
         "status": "done",
@@ -126,8 +142,8 @@
         "status": "done",
         "artifact": "build/STATE.mdx",
         "artifact-hash": null,
-        "updated": "2026-08-19T15:58:00Z",
-        "notes": "The engineering-leverage increment is published in 6.3.0 after focused proof, independent specification and quality reviews, final hardening, the 121-command release gate, exact release identity, provenance publication, and installed-package verification passed.",
+        "updated": "2026-09-07T04:16:16.124Z",
+        "notes": "6.4.0 source completed final Stage 1 and two independent level-5 Stage 2 cases, then passed the canonical full release gate: 121 commands and 3,298 reported checks; publication remains pending.",
         "verification": {
           "commands": [
             {
@@ -150,14 +166,22 @@
               "exitCode": 0,
               "ranAt": "2026-08-19T15:58:00Z",
               "diagnostics": "Merged-main CI passed against exact release commit c45d0473ad946fcd7c02a5706b02f51a40ed0d25."
+            },
+            {
+              "command": "bash -o pipefail -c 'npm run release:check 2>&1 | tee /tmp/godpowers-640-release-check.log'",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-09-07T04:16:49.849Z",
+              "durationMs": 125120,
+              "diagnostics": ""
             }
           ]
         },
-        "release-version": "6.3.0",
-        "source-increment": "M-engineering-leverage-contracts",
+        "release-version": "6.4.0",
+        "source-increment": "M-adaptive-run-selection",
         "source-increment-status": "done",
-        "review-evidence": ".godpowers/build/PLAN.mdx",
-        "publication-status": "published-and-verified"
+        "review-evidence": ".godpowers/runs/2026-09-07T03-58-45-030Z-2759fa3b/reviews",
+        "publication-status": "source-candidate-not-published"
       }
     },
     "tier-3": {
@@ -326,9 +350,9 @@
       "harden": {
         "status": "done",
         "artifact": "harden/FINDINGS.mdx",
-        "artifact-hash": "sha256:69bd088dc44e405b144536bd51701088bb0da7d5e2200685e9b3e13be7403f5f",
-        "updated": "2026-08-19T15:58:00Z",
-        "notes": "The final 6.3.0 review resolved all findings; fresh prepublication gates passed before both provenance workflows, and the exact published set passed zero-vulnerability, signature, and attestation verification.",
+        "artifact-hash": "sha256:0632acf3a6c99059fd484faf0afe049af7567ba6d5f908c66e407da6a2df83d4",
+        "updated": "2026-09-07T04:21:51.787Z",
+        "notes": "6.4.0 scoped authority review, both independent installed-consumer cases, the canonical full release gate, production live advisories, and full dependency audit passed with zero confirmed unresolved findings.",
         "verification": {
           "commands": [
             {
@@ -360,6 +384,14 @@
               "exitCode": 0,
               "ranAt": "2026-08-19T15:58:00Z",
               "diagnostics": "The exact installed set reported zero vulnerabilities; registry signatures and attestations verified for all 6 installed packages."
+            },
+            {
+              "command": "bash -o pipefail -c 'npm audit 2>&1 | tee /tmp/godpowers-640-full-audit.log'",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-09-07T04:23:36.654Z",
+              "durationMs": 522,
+              "diagnostics": ""
             }
           ]
         },
@@ -524,11 +556,11 @@
   ],
   "lock": null,
   "deliverables": {
-    "updated": "2026-08-19T15:01:03.759Z",
+    "updated": "2026-09-07T04:16:16.143Z",
     "source": "PRD + ROADMAP + linkage + build state",
     "requirements": {
-      "total": 63,
-      "done": 63,
+      "total": 64,
+      "done": 64,
       "in-progress": 0,
       "untouched": 0,
       "percent": 100
@@ -671,6 +703,14 @@
         "total": 8
       },
       {
+        "id": "M-adaptive-run-selection",
+        "name": "Adaptive run selection",
+        "horizon": "now",
+        "status": "done",
+        "done": 1,
+        "total": 1
+      },
+      {
         "id": "M-deeper-traceability-and-ecosystem",
         "name": "Deeper traceability and ecosystem",
         "horizon": "later",
@@ -683,7 +723,7 @@
   },
   "godpowers-features": {
     "feature-set-version": 1,
-    "runtime-version": "5.5.0",
+    "runtime-version": "6.4.0",
     "known": [
       "planning-system-migration",
       "source-system-sync-back",
@@ -702,8 +742,9 @@
       "maintenance-hardening",
       "extension-authoring",
       "suite-release-dry-run",
-      "deliverable-progress-tracking"
+      "deliverable-progress-tracking",
+      "blast-radius-safety-case"
     ],
-    "last-awareness-refresh-at": "2026-07-13T16:09:44.000Z"
+    "last-awareness-refresh-at": "2026-09-07T03:58:44.927Z"
   }
 }

@@ -10,6 +10,7 @@ tmp/
 .codex/
 *.tgz
 .planning/
+.godpowers/cache/
 # Auditor-skill reports. These are point-in-time artifacts regenerated on
 # demand, so a committed copy is a report about an old branch presenting itself
 # as current at the repository root. codeaudit.md was listed here while still

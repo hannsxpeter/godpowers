@@ -1,0 +1,44 @@
+{
+  "root": "/var/folders/7s/sfyh12m94v13w49y9fnyywyc0000gn/T/godpowers-adaptive-stage2-anby4nui",
+  "projectRoot": "/var/folders/7s/sfyh12m94v13w49y9fnyywyc0000gn/T/godpowers-adaptive-stage2-anby4nui/evidence",
+  "probe": "/var/folders/7s/sfyh12m94v13w49y9fnyywyc0000gn/T/godpowers-adaptive-stage2-anby4nui/proof.cjs",
+  "exactCommand": "node /var/folders/7s/sfyh12m94v13w49y9fnyywyc0000gn/T/godpowers-adaptive-stage2-anby4nui/proof.cjs",
+  "substep": "tier-2.build",
+  "claim": "Installed adaptive selection remains recommendation-only and permits /god-fast only for an explicitly mechanical bounded low-risk low-uncertainty change.",
+  "tarball": "godpowers-6.4.0.tgz",
+  "integrity": "sha512-PAJSWVA1n870vi/SVxc+D2/iSbibI+lCd7wTT/k8CpcPw6NQqLVHrqmZoQK7IJzzNGCNOB3kL5L07yn72TYodQ==",
+  "projection": {
+    "accepted": true,
+    "record": {
+      "id": "v-20260907040846473-ef4d71f02cf8",
+      "found": true,
+      "unique": true,
+      "kind": "executed",
+      "exitCode": 0,
+      "verified": true,
+      "timestamp": "2026-09-07T04:08:46.473Z",
+      "digest": "sha256:affcc3fb95fc75d0206c6f8692e1601e429b64834c652d9ebf93fd3586697477"
+    },
+    "checks": {
+      "kindExecuted": true,
+      "exitZero": true,
+      "verified": true,
+      "claimMatches": true,
+      "commandMatches": true,
+      "substepMatches": true,
+      "timestampValid": true,
+      "afterReviewWindowStart": true,
+      "afterLatestBehaviorChange": true
+    },
+    "event": {
+      "found": true,
+      "unique": true,
+      "bound": true,
+      "runId": "2026-09-07T04-05-44-728Z-d755bfcc",
+      "name": "gate.pass",
+      "chainValid": true,
+      "digestMatches": true
+    },
+    "reasons": []
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "accepted": true,
+  "record": {
+    "id": "v-20260907041908135-a35f7ac1d722",
+    "found": true,
+    "unique": true,
+    "kind": "executed",
+    "exitCode": 0,
+    "verified": true,
+    "timestamp": "2026-09-07T04:19:08.135Z",
+    "digest": "sha256:d08a87a9ed11d094e76480d24ee09a883c86662aef89709d78b0da796ba8097a"
+  },
+  "checks": {
+    "kindExecuted": true,
+    "exitZero": true,
+    "verified": true,
+    "claimMatches": true,
+    "commandMatches": true,
+    "substepMatches": true,
+    "timestampValid": true,
+    "afterReviewWindowStart": true,
+    "afterLatestBehaviorChange": true
+  },
+  "event": {
+    "found": true,
+    "unique": true,
+    "bound": true,
+    "runId": "20260713-product-trust-hardening",
+    "name": "gate.pass",
+    "chainValid": true,
+    "digestMatches": true
+  },
+  "reasons": []
+}

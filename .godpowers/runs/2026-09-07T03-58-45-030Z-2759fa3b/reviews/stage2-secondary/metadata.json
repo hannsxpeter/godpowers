@@ -1,0 +1,9 @@
+{
+  "project": "/var/folders/7s/sfyh12m94v13w49y9fnyywyc0000gn/T/godpowers-stage2-authority-91m_jrm0",
+  "source": "/Users/hannsxpeter/Projects/godpowers",
+  "reviewWindowStartedAt": "2026-09-07T04:09:25.100144+00:00",
+  "substep": "tier-2.build",
+  "lastBehaviorChangeAt": "2026-09-07T04:08:15.783Z",
+  "claim": "Adaptive routing retains recommendation-only authority and refuses the fast path for every ineligible mutation across source, npm, installed Codex, and serialized consumer boundaries.",
+  "command": "node /private/var/folders/7s/sfyh12m94v13w49y9fnyywyc0000gn/T/godpowers-stage2-authority-91m_jrm0/probe.js"
+}

@@ -18,7 +18,7 @@ see_also: [quality, deploy, security]
 
 - [DECISION] `SKILL.md` is the main installed skill entry point.
 - [DECISION] `skills/` contains one slash-command skill markdown file per command.
-- [DECISION] `agents/` contains specialist agent markdown files and project Pillars files.
+- [DECISION] `agents/` contains Pillars project context files, while `specialists/` contains the specialist source contracts installed into supported host agent registries.
 - [DECISION] `routing/` contains command routing YAML files and `routing/recipes/` contains fuzzy-intent recipes.
 - [DECISION] `workflows/` contains workflow YAML definitions used by `lib/workflow-runner.js`.
 - [DECISION] `schema/` contains JSON schemas for state, events, intent, routing, recipes, workflows, and extension manifests.

@@ -1,38 +1,8 @@
 {
-  "P-MUST-01\u0000agents/god-orchestrator.md": [
-    "reconstruct"
-  ],
   "P-MUST-02\u0000lib/state.js": [
     "reconstruct"
   ],
   "P-MUST-03\u0000lib/multi-repo-detector.js": [
-    "reconstruct"
-  ],
-  "P-MUST-04\u0000agents/god-pm.md": [
-    "reconstruct"
-  ],
-  "P-MUST-05\u0000agents/god-architect.md": [
-    "reconstruct"
-  ],
-  "P-MUST-06\u0000agents/god-roadmapper.md": [
-    "reconstruct"
-  ],
-  "P-MUST-07\u0000agents/god-stack-selector.md": [
-    "reconstruct"
-  ],
-  "P-MUST-08\u0000agents/god-repo-scaffolder.md": [
-    "reconstruct"
-  ],
-  "P-MUST-09\u0000agents/god-executor.md": [
-    "reconstruct"
-  ],
-  "P-MUST-09\u0000agents/god-planner.md": [
-    "reconstruct"
-  ],
-  "P-MUST-10\u0000agents/god-spec-reviewer.md": [
-    "reconstruct"
-  ],
-  "P-MUST-10\u0000agents/god-quality-reviewer.md": [
     "reconstruct"
   ],
   "P-MUST-11\u0000lib/have-nots-validator.js": [
@@ -77,21 +47,6 @@
   "P-MUST-21\u0000bin/install.js": [
     "reconstruct"
   ],
-  "P-MUST-22\u0000agents/god-harden-auditor.md": [
-    "reconstruct"
-  ],
-  "P-SHOULD-01\u0000agents/god-deploy-engineer.md": [
-    "reconstruct"
-  ],
-  "P-SHOULD-02\u0000agents/god-observability-engineer.md": [
-    "reconstruct"
-  ],
-  "P-SHOULD-03\u0000agents/god-launch-strategist.md": [
-    "reconstruct"
-  ],
-  "P-SHOULD-04\u0000agents/god-updater.md": [
-    "reconstruct"
-  ],
   "P-SHOULD-05\u0000lib/host-capabilities.js": [
     "reconstruct"
   ],
@@ -101,16 +56,7 @@
   "P-SHOULD-07\u0000lib/source-sync.js": [
     "reconstruct"
   ],
-  "P-COULD-01\u0000agents/god-coordinator.md": [
-    "reconstruct"
-  ],
-  "P-COULD-02\u0000agents/god-automation-engineer.md": [
-    "reconstruct"
-  ],
   "P-COULD-03\u0000lib/otel-exporter.js": [
-    "reconstruct"
-  ],
-  "P-COULD-04\u0000agents/god-spike-runner.md": [
     "reconstruct"
   ],
   "P-SHOULD-08\u0000.github/workflows/publish-pack.yml": [
@@ -751,36 +697,47 @@
     "canonical-blast-radius-closeout"
   ],
   "P-MUST-01\u0000specialists/god-orchestrator.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-04\u0000specialists/god-pm.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-05\u0000specialists/god-architect.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-06\u0000specialists/god-roadmapper.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-07\u0000specialists/god-stack-selector.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-08\u0000specialists/god-repo-scaffolder.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-09\u0000specialists/god-executor.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-09\u0000specialists/god-planner.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-10\u0000specialists/god-spec-reviewer.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-10\u0000specialists/god-quality-reviewer.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-22\u0000specialists/god-harden-auditor.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-MUST-35\u0000INSPIRATION.md": [
@@ -833,27 +790,34 @@
     "reconstruct"
   ],
   "P-SHOULD-01\u0000specialists/god-deploy-engineer.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-SHOULD-02\u0000specialists/god-observability-engineer.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-SHOULD-03\u0000specialists/god-launch-strategist.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-SHOULD-04\u0000specialists/god-updater.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-SHOULD-08\u0000extensions/provenance-pack/manifest.yaml": [
     "reconstruct"
   ],
   "P-COULD-01\u0000specialists/god-coordinator.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-COULD-02\u0000specialists/god-automation-engineer.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-COULD-04\u0000specialists/god-spike-runner.md": [
+    "canonical-specialist-migration",
     "reconstruct"
   ],
   "P-COULD-05\u0000extensions/operations-pack/skills/god-issue-triage.md": [
@@ -922,6 +886,30 @@
     "code-scanner"
   ],
   "P-MUST-46\u0000specialists/god-spec-reviewer.md": [
+    "code-scanner"
+  ],
+  "P-MUST-50\u0000SKILL.md": [
+    "code-scanner"
+  ],
+  "P-MUST-50\u0000lib/command-families.js": [
+    "code-scanner"
+  ],
+  "P-MUST-50\u0000references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": [
+    "code-scanner"
+  ],
+  "P-MUST-50\u0000scripts/test-command-families.js": [
+    "code-scanner"
+  ],
+  "P-MUST-50\u0000skills/god-debug.md": [
+    "code-scanner"
+  ],
+  "P-MUST-50\u0000skills/god-mode.md": [
+    "code-scanner"
+  ],
+  "P-MUST-50\u0000skills/god.md": [
+    "code-scanner"
+  ],
+  "P-MUST-50\u0000specialists/god-debugger.md": [
     "code-scanner"
   ]
 }

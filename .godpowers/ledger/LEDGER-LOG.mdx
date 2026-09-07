@@ -8,3 +8,6 @@
 2026-08-19T15:30:47.916Z verify PASS substep=tier-3.harden exit=0 cmd=`npm audit signatures`
 2026-08-19T15:36:40.027Z verify PASS substep=tier-3.harden exit=0 cmd=`npm run release:check`
 2026-08-19T15:41:11.695Z verify PASS substep=tier-3.harden exit=0 cmd=`npm run release:check`
+2026-09-07T04:18:54.971Z verify PASS substep=tier-2.build exit=0 cmd=`bash -o pipefail -c 'npm run release:check 2>&1 | tee /tmp/godpowers-640-release-check.log'`
+2026-09-07T04:19:08.545Z verify PASS substep=tier-3.harden exit=0 cmd=`bash -o pipefail -c 'npm audit 2>&1 | tee /tmp/godpowers-640-full-audit.log'`
+2026-09-07T04:23:37.178Z verify PASS substep=tier-3.harden exit=0 cmd=`bash -o pipefail -c 'npm audit 2>&1 | tee /tmp/godpowers-640-full-audit.log'`

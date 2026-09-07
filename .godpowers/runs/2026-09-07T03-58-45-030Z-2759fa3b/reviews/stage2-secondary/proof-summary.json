@@ -1,0 +1,20 @@
+{
+  "cases": 6954,
+  "sourceHashes": {
+    "lib/command-families.js": "58074e84f372dc4437bd008608477f13cd55f796ae09c4e22348bb2372d5bcf2",
+    "lib/invocation-policy.js": "05b1640cc55eda4a926c366a2ce7e7dbd3cbb13264716faf01c523c1c26ca093",
+    "SKILL.md": "2a451a04856aecd844686132f2b396afa609ae5b8659ad87976eb5ac03ce5c24",
+    "skills/god.md": "ad197db87d417f4d638fa393422d6214f904d2bdf51862289b1e74ced5cda561",
+    "skills/god-mode.md": "6e3f8a1f1823587c6b81a55ba41552e1a6ffcf28905cf192cb168811ec7a3b28",
+    "skills/god-debug.md": "a3c55f6051592e18419b34c05854d51ecfc216c3ceca1666f0fa3ea4ce7ff21c",
+    "skills/god-fast.md": "328976b7fa40fdcb5942d1d1b9866288e6382e13a1bfae321ad730d0b90b23c4",
+    "specialists/god-debugger.md": "3be3b741972d5794fc76a08f40bc3735af1d7ece3132a6d30167655ecd10459f",
+    "routing/god-debug.yaml": "064804dd617de07f5e5da40a6d6b328a1754f51a0a56cdf8ce5713d741c04823",
+    "references/orchestration/GOD-ORCHESTRATOR-RUNBOOK.md": "2b24dfe498096cf93c4c08aa08aaa88a742bdc3bf814cbe03b60589eab24e069"
+  },
+  "packageVersion": "6.4.0",
+  "tarballIntegrity": "sha512-PAJSWVA1n870vi/SVxc+D2/iSbibI+lCd7wTT/k8CpcPw6NQqLVHrqmZoQK7IJzzNGCNOB3kL5L07yn72TYodQ==",
+  "consumer": "isolated npm package and Codex full-profile runtime",
+  "crossLanguage": "Python -> Node -> JSON",
+  "lifecycle": "stale policy replaced on local install"
+}

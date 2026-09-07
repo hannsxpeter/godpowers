@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.4.0] - 2026-09-07
+
+### Added
+
+- Model-neutral adaptive run selection in the existing command-family runtime.
+  Ordinary questions and assessments can finish directly; changes use focused
+  workflows, and whole-project objectives retain explicit full-run routing.
+  Unknown risk blocks the mechanical fast path, while selected commands keep
+  their required verification, review, and execution authority.
+
+### Changed
+
+- Orchestrator model selection starts from the host's current model instead of
+  a hard-coded historical model. Cost profiles can use supported alternatives
+  without treating model capability as a reason to waive evidence.
+
+### Fixed
+
+- Connected focused debugging to independent specification and quality review
+  before the caller commits; the debugger returns its fix uncommitted.
+- Updated development-toolchain dependencies `fast-uri` to 3.1.7 and `qs` to
+  6.16.0 to resolve the current npm advisories within their existing ranges.
+- Reconciled adaptive selection with the public docs, project requirements,
+  architecture, roadmap, and release evidence.
+
+### Limits
+
+- The host model still assesses scope and risk; the selector validates its
+  supplied categories and does not prove those judgments correct or guarantee
+  token savings. Explicit commands retain their required checks.
+
 ## [6.3.0] - 2026-08-19
 
 Engineering evidence and authority release. Godpowers now chooses runtime

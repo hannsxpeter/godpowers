@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/godpowers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-6.3.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-6.4.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/godpowers.svg)](https://www.npmjs.com/package/godpowers)
 
 ### Your AI writes code fast. Godpowers makes it accountable.
@@ -114,6 +114,12 @@ just a shortcut you type into the chat box, like `/god`.)
 
 If you only ever remember one, remember `/god`. Tell it what you want and it
 figures out which of the specialists to bring in.
+
+For ordinary requests, the current model first chooses how much workflow is
+useful: a direct answer, a focused change, or a full project run. Questions
+and assessments can finish in chat. Existing commands retain their required
+checks, and a large repository alone does not trigger the full process.
+See [adaptive run selection](docs/harness-quality.md#adaptive-run-selection).
 
 ### Pick a profile so the command list stays calm
 
@@ -477,13 +483,13 @@ exposes nine read-only tools (`status`, `next`, `gate_check`, `lint_artifact`,
 
 ```bash
 npx godpowers mcp-info --project=.
-npx -y -p godpowers@6.3.0 -p @godpowers/mcp@6.3.0 godpowers-mcp serve --project=.
+npx -y -p godpowers@6.4.0 -p @godpowers/mcp@6.4.0 godpowers-mcp serve --project=.
 ```
 
 Registering it with a host is opt-in:
 
 ```bash
-npx -y -p godpowers@6.3.0 -p @godpowers/mcp@6.3.0 godpowers-mcp setup --host=codex --project=. --write
+npx -y -p godpowers@6.4.0 -p @godpowers/mcp@6.4.0 godpowers-mcp setup --host=codex --project=. --write
 ```
 
 Actions that change anything outside your project never go through this surface.
@@ -495,8 +501,12 @@ They are delegated to host connectors via `/god-connect`. See
 ## What it costs, and when it stops to ask
 
 A full autonomous run brings in many specialists and can get expensive.
-Godpowers tracks token and dollar estimates as it goes. `/god-cost` reports what
-you spent and what caching saved you; `/god-budget` sets limits before you start.
+Godpowers tracks token and dollar estimates as it goes. `/god-cost` reports
+recorded usage and estimated cache savings; `/god-budget` configures context
+caps, model-profile preferences, and caching. These controls are not a total
+spending cap. Adaptive selection reduces unnecessary workflow steps, but actual
+token savings depend on the task and host and have not been established by a
+comparative production study.
 
 It pauses only when a human is genuinely required:
 

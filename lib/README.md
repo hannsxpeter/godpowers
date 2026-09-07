@@ -60,7 +60,7 @@ package-level integrations.
 | `router.js` | Resolve user intent to skills, agents, recipes, and workflows. |
 | `invocation-policy.js` | Derive and validate the closed invocation policy for each canonical core route. |
 | `quarterback.js` | Entry router that classifies a prompt into a play and refuses new work when the project is on red. |
-| `command-families.js` | Define UX command families, status views, decision ladders, and trigger precedence helpers. |
+| `command-families.js` | Define UX command families, status views, decision ladders, trigger precedence, and model-neutral adaptive run recommendations. |
 | `recipes.js` | Load and validate routing recipes. |
 | `workflow-parser.js` | Parse workflow YAML into executable steps. |
 | `workflow-runner.js` | Execute workflow steps with validation hooks. |

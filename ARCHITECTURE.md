@@ -1,6 +1,6 @@
 # Godpowers Architecture (v3 Design Target)
 
-> Status: STABLE v6.3.0 published release (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
+> Status: STABLE v6.4.0 release candidate (Godplans 1.1 two-artifact contracts, lifecycle-safe dispatch, complete GP and requirement traceability, and the existing production runtime surface)
 > Authors: Godpowers Team
 > Last updated: 2026-08-06
 
@@ -444,6 +444,13 @@ precision.
 commands. It groups all commands into start, continue, build, verify, operate,
 maintain, capture, recover, extend, collaborate, and configure, and it owns the
 capture, work size, verification, status-view, and trigger-precedence helpers.
+
+[DECISION] The same module exposes `selectRunApproach`, a recommendation-only
+selector over task, scope, risk, and uncertainty supplied by the host model.
+Ordinary assessments can remain direct, changes use focused existing routes,
+and complete-project objectives retain `/god-mode` invocation authority.
+Explicit commands keep their contracts; no selector agent, state store, or
+model-specific safety exemption is introduced.
 
 [DECISION] `lib/workflow-helper-groups.js` lets workflow YAML reference named
 closeout helper groups while serialized plans still expand the exact helper

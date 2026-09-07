@@ -10,10 +10,11 @@ description: |
 ---
 
 # /god-mode
+<!-- Implements: P-MUST-50 -->
 
-You are receiving a /god-mode invocation. Your job is to spawn the
-**god-orchestrator** agent in a fresh context to run the autonomous project
-workflow.
+An explicit `/god-mode` requests the full workflow, including resumes.
+Spawn **god-orchestrator** in fresh context. Apply **Adaptive run selection**
+from `SKILL.md` only to conditional steps and context within that contract.
 
 ## Process
 
@@ -82,7 +83,7 @@ workflow.
    - Put all detailed orchestration context in this file, including:
      - The user's project description, or durable intent recovered from disk
      - The detected mode (A/B/C/E)
-     - The active flags
+     - The active flags, user cost preferences, and bounded work scope
      - Instruction that existing `.godpowers` state means resume, not prompt
      - Instruction to read `.godpowers/state.json` from disk, using `.godpowers/PROGRESS.mdx` only as generated legacy fallback when state is missing
      - Instruction to read `.godpowers/prep/INITIAL-FINDINGS.mdx` and
@@ -212,8 +213,7 @@ When spawning `god-orchestrator`, include the runbook path in the private handof
 
 Use the runbook for:
 - User-visible transcript contract
-- Step cards
-- Pause format
+- Step cards and pause format
 - Flag semantics
 - Mandatory final sync
 - Completion block
