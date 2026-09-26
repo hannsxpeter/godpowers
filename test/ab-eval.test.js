@@ -56,7 +56,10 @@ test('config validation and run planning', () => {
 test('runs each arm in its own worktree and writes results and a summary', () => {
   const repo = gitRepo();
   const dir = tempDir();
-  const file = write(dir, 'config.json', JSON.stringify(config(repo, { review: 'echo reviewed' })));
+  const cfg = config(repo, { review: 'echo reviewed' });
+  cfg.arms.godpowers.setup = 'node -e "require(\'fs\').writeFileSync(\'armsetup.txt\', \'x\')"';
+  cfg.tasks[0].verify = 'test -f out.txt && echo verified';
+  const file = write(dir, 'config.json', JSON.stringify(cfg));
   const out = path.join(dir, 'out');
   let log = '';
   const code = ab.main([file, '--out', out], { write: text => { log += text; } });
@@ -67,6 +70,10 @@ test('runs each arm in its own worktree and writes results and a summary', () =>
   assert.equal(native.verify, 'pass');
   assert.equal(native.diff.files, 1);
   assert.equal(god.verify, 'fail');
+  assert.deepEqual(god.setupExits, [0]);
+  assert.equal(god.diff.files, 1, 'the arm setup ran in its own worktree');
+  assert.deepEqual(native.setupExits, []);
+  assert.match(fs.readFileSync(path.join(out, 'task_one-native-1.verify.txt'), 'utf8'), /verified/);
   assert.equal(god.usage.costUsd, 0.42);
   assert.equal(god.worktree, null);
   assert.match(fs.readFileSync(path.join(out, god.reviewFile), 'utf8'), /reviewed/);

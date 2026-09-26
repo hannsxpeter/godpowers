@@ -144,11 +144,15 @@ function runOne(run, config, outDir, { keep = false } = {}) {
   const add = sh(`git worktree add --detach ${shellQuote(worktree)} ${shellQuote(task.ref || 'HEAD')}`, { cwd: task.repo });
   if (add.exit !== 0) throw new Error(`git worktree add failed for ${slug}: ${add.stderr.trim()}`);
   try {
-    if (task.setup) sh(task.setup, { cwd: worktree, timeoutMs: 30 * 60 * 1000 });
+    const setupExits = [];
+    if (task.setup) setupExits.push(sh(task.setup, { cwd: worktree, timeoutMs: 30 * 60 * 1000 }).exit);
+    // Arm setup runs after the task setup, for example `godpowers init`.
+    if (arm.setup) setupExits.push(sh(arm.setup, { cwd: worktree, env: arm.env, timeoutMs: 30 * 60 * 1000 }).exit);
     const timeoutMs = (task.timeoutMinutes || config.timeoutMinutes || 60) * 60 * 1000;
     const agent = sh(run.command, { cwd: worktree, env: arm.env, timeoutMs });
     fs.writeFileSync(path.join(outDir, `${slug}.agent.txt`), `${agent.stdout}\n--- stderr ---\n${agent.stderr}`);
     const verify = sh(task.verify, { cwd: worktree, timeoutMs: 30 * 60 * 1000 });
+    fs.writeFileSync(path.join(outDir, `${slug}.verify.txt`), `${verify.stdout}\n--- stderr ---\n${verify.stderr}`);
     const diff = diffStat(worktree);
     let reviewFile = null;
     if (config.review) {
@@ -160,6 +164,7 @@ function runOne(run, config, outDir, { keep = false } = {}) {
       task: task.id,
       arm: armName,
       n,
+      setupExits,
       agentExit: agent.exit,
       agentTimedOut: agent.timedOut,
       minutes: Math.round(agent.ms / 600) / 100,

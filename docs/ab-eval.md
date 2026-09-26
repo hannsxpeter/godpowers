@@ -51,7 +51,13 @@ would ship the result.
 
 `{prompt}` in an arm's `command` is replaced by the shell-quoted prompt. An
 arm's optional `prompt` template wraps the task prompt, so the Godpowers arm can
-send `/god <task>`. `env` sets environment variables for that arm only.
+send `/god <task>`. `env` sets environment variables for that arm only, and an
+arm's `setup` runs in its worktree after the task's `setup` (for example
+`godpowers init` for the Godpowers arm). The verify output of every run is
+saved next to the agent output.
+
+For an objective check, keep an acceptance test the agents never see and copy
+it into the worktree from the task's `verify` command.
 
 ## Run
 
