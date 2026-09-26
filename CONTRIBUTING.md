@@ -66,6 +66,14 @@ Say what changed and why in the body when it is not obvious.
    `npm publish` by hand.
 5. `gh release create v<version> --notes-file RELEASE.md`.
 
+Publishing authenticates with npm Trusted Publishing when it is configured for
+this repository and `.github/workflows/publish.yml` on npmjs.com (package
+settings, Trusted Publisher, GitHub Actions), and the `NPM_TOKEN` secret is
+removed. Otherwise it uses the `NPM_TOKEN` secret, which must be a granular
+token with publish rights. An `E404` on the final `PUT` means npm rejected the
+credentials; fix them and re-run the failed job. Nothing is published before
+that step succeeds.
+
 ## Dependencies and security advisories
 
 Dependabot is enabled. Merge its pull requests rather than adding npm

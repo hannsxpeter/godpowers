@@ -29,6 +29,11 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
+      # npm 11.5.1 or newer can publish through npm Trusted Publishing (OIDC),
+      # so no long-lived token is needed once it is configured on npmjs.com.
+      - name: Use an npm that supports trusted publishing
+        run: npm install -g npm@11 && npm --version
+
       - name: Verify release identity
         shell: bash
         run: |
@@ -61,4 +66,6 @@ jobs:
           fi
           npm publish --provenance --access public
         env:
+          # Empty when the NPM_TOKEN secret is removed; npm then uses trusted
+          # publishing through the id-token permission above.
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
