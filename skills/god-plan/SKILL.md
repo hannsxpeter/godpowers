@@ -8,7 +8,7 @@ argument-hint: "[goal or change]"
 
 Size the plan to the work: a small feature gets a few lines, a new product gets every section.
 
-1. Read STATE.md, PLAN.md and DECISIONS.md if they exist, and enough of the code to ground the plan in real files. For a large or unfamiliar codebase you may delegate the reading to a subagent of your choice and work from its draft.
+1. Read STATE.md, PLAN.md and DECISIONS.md if they exist, and enough of the code to ground the plan in real files. For a large or unfamiliar codebase you may delegate the reading to a subagent of your choice (reading suits a fast model at low effort) and work from its draft.
 2. Write `.godpowers/PLAN.md` with these sections:
    - `## Goal`: who it is for and what success looks like.
    - `## Requirements`: `- R1: <requirement>. Done when: <observable check>.` Each needs a check that a test or a person can run.

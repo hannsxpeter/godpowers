@@ -83,8 +83,11 @@ In a repository:
 Four optional agents ship with it: `god-planner`, `god-executor`,
 `god-reviewer`, and `god-security-auditor`. The skills never require them. The
 agent running a skill decides whether to delegate, which subagent to use (its
-host's own or one of these), and how to run it; the review and security skills
-carry the brief any reviewer should get.
+host's own or one of these), and how to run it, and it sizes each subagent's
+model and reasoning effort to the subtask instead of inheriting its own: a
+small, fast model at low effort for reading and mechanical work, the strongest
+model at high effort only for hard or security-critical work. The review and
+security skills carry the brief any reviewer should get.
 
 ## Project files
 

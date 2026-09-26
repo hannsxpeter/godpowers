@@ -50,4 +50,5 @@ Risks are checkbox lines under `## Risks` in STATE.md: `- [ ] critical: what, wh
 
 - Scale the ceremony to the work. A one-line fix needs no plan; a new product needs PLAN.md.
 - Delegate to a subagent only when a fresh context or parallel work helps. You choose which subagent (your host's own, or the optional god-* agents) and how it runs.
+- Size every subagent before you start it instead of inheriting your own model and effort: pick the cheapest model and the lowest reasoning effort that will do the subtask well. Reading, searching, running checks, and mechanical edits suit a small, fast model at low effort. Subtle design, tricky correctness, and security-critical review justify the most capable model (for example Fable or Astra) at high effort.
 - Ask the user only for decisions that are theirs: scope, spending, credentials, and public or irreversible actions.
