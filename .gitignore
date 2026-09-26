@@ -1,24 +1,11 @@
 node_modules/
-.DS_Store
+coverage/
 *.log
+*.tgz
+.DS_Store
 .env
 .env.*
-coverage/
-dist/
 tmp/
 .claude/
 .codex/
-*.tgz
-.planning/
-.godpowers/cache/
-# Auditor-skill reports. These are point-in-time artifacts regenerated on
-# demand, so a committed copy is a report about an old branch presenting itself
-# as current at the repository root. codeaudit.md was listed here while still
-# tracked, which meant the rule did nothing.
-codeaudit.md
-secaudit.md
-uxaudit.md
-dbaudit.md
-seoaudit.md
-uiaudit.md
-llmaudit.md
+.godpowers/evidence.jsonl.lock

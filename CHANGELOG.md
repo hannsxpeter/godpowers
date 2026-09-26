@@ -7,6 +7,116 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.0.0] - 2026-09-26
+
+Godpowers is now a small core: 8 commands, 4 agents, and about 4K tokens of
+instructions, down from 124 commands, 41 agents, and 1.35 MB of prompt files.
+Frontier models plan and review well on their own, so the prompt methodology
+was costing tokens without changing outcomes. What remains is what a model
+cannot do for itself: durable state, recorded checks bound to exact code, an
+independent reviewer, and gates enforced by hooks.
+
+### Breaking changes
+
+- Commands: 124 became 8. Old commands map to new ones as follows.
+  - `/god`, `/god-mode`, `/god-next`, `/god-help`, `/god-locate`, and
+    `/god-progress` became `/god`. Pass a goal to drive it end to end.
+  - `/god-init`, `/god-migrate`, `/god-context`, and `/god-doctor` became
+    `/god-init` plus `godpowers doctor` and `godpowers migrate`.
+  - `/god-prd`, `/god-arch`, `/god-roadmap`, `/god-stack`, `/god-explore`,
+    `/god-discuss`, `/god-story`, `/god-chart`, and `/god-plan` became
+    `/god-plan`.
+  - `/god-build`, `/god-feature`, `/god-fix`, `/god-hotfix`, `/god-refactor`,
+    `/god-debug`, and `/god-repo` became `/god-build`.
+  - `/god-review`, `/god-review-changes`, `/god-audit`, `/god-preflight`, and
+    `/god-reconcile` became `/god-review`.
+  - `/god-harden` and the security half of `/god-update-deps` became
+    `/god-harden`.
+  - `/god-ship`, `/god-deploy`, `/god-observe`, and `/god-launch` became
+    `/god-ship`.
+  - `/god-status` stays `/god-status`.
+  - Every other command is gone. Use the host directly, or pin
+    `npx godpowers@6` if you depend on one.
+- Agents: 41 became 4 (`god-planner`, `god-executor`, `god-reviewer`,
+  `god-security-auditor`). `god-spec-reviewer` and `god-quality-reviewer`
+  merged into `god-reviewer`; `god-harden-auditor` became
+  `god-security-auditor`.
+- Project layout: `.godpowers/` now holds `STATE.md`, `PLAN.md`,
+  `DECISIONS.md`, and `evidence.jsonl`. Run `godpowers migrate` on a 6.x
+  project. It archives the old files under `.godpowers/archive/v6/`, maps the
+  old tier statuses to a stage, and deletes nothing.
+- Artifacts no longer need DECISION, HYPOTHESIS, or OPEN QUESTION labels on
+  every sentence, and the substitution test is no longer a gate.
+- Removed: the `@godpowers/mcp` package, the extension packs, install profiles,
+  routing and recipes, workflow YAML, the dashboard, automations, suite (multi
+  repo) mode, the learning loop, cost tracking, Pillars integration, and the
+  6.x CLI operations that served them.
+- The package entry point is now `bin/godpowers.js`.
+
+### Added
+
+- Hooks that code enforces, registered by the installer in
+  `~/.claude/settings.json` (Claude Code) and `~/.codex/hooks.json` (Codex)
+  without touching other tools' hooks:
+  - SessionStart prints a three-line project brief and records the session's
+    starting code state.
+  - Stop asks the agent to verify before finishing when code changed without a
+    passing check. It nudges once per code state and passes documentation-only
+    changes.
+  - PreToolUse blocks `git commit` while `godpowers lint` reports errors.
+- Content fingerprints: evidence is bound to a fingerprint of the working
+  copy built from git blob hashes with read-only git commands, so it survives
+  commits, goes stale on any edit, and works inside Codex's read-only-`.git`
+  sandbox.
+- `godpowers verify --waive`, `godpowers record`, `godpowers gate ship`,
+  `godpowers lint`, `godpowers migrate`, `godpowers clean`, `godpowers doctor`,
+  and `godpowers budget`.
+- A prompt budget enforced by the test suite: the shared skill stays under
+  1,500 tokens, each command and agent under 800, all skills and agents under
+  8,000, and the per-session load under 1,200.
+- A Claude Code plugin manifest and marketplace entry.
+- `scripts/ab-eval.js`, an A/B harness that runs the same tasks with and
+  without Godpowers and compares tokens, cost, time, verify results, and diff
+  size.
+
+### Security and robustness
+
+- Only the check command declared in STATE.md satisfies the gates, and a record
+  covers the code as it was when the check started.
+- The fingerprint is read-only and uses `git hash-object`, so it matches git
+  for line-ending conversion, LFS, and SHA-256 repositories, and works in
+  sandboxes that keep `.git` read-only.
+- Hook input is read directly from file descriptor 0, so large or late
+  payloads are never read as empty.
+- `verify` forwards signals to the check's process group, stops waiting
+  shortly after the command exits, and redacts more secret shapes (Stripe keys,
+  JWTs, private keys, credentials in URLs) before cutting the output tail.
+- The installer writes settings through symlinks and keeps file permissions,
+  validates before changing anything, and never removes a user's own hook.
+- `clean` and `migrate` skip symlinked instruction files, never remove text
+  after an unterminated marker, and only remove the exact Pillars block 6.x
+  generated. `migrate` archives every instruction file it changes.
+- `init` never overwrites an existing decision log or ledger, and adds a union
+  merge rule for the ledger to `.gitattributes`.
+
+### Fixed
+
+- Claude Code installs now write `<name>/SKILL.md` skill directories, so the
+  commands appear in the picker. Thanks to @ikkeflikkeri (#90).
+- Reinstalling removes every 6.x leftover: flat skill files, retired agents,
+  data directories, version files, and old hook scripts.
+- Codex skills install to `~/.agents/skills`, the location current Codex reads.
+  Codex agents install as TOML only.
+
+### Upgrade
+
+1. `npx godpowers@7 --claude --codex --global` (or your hosts). This removes
+   the 6.x files.
+2. In each project, run `npx godpowers@7 migrate --dry-run`, then
+   `npx godpowers@7 migrate`. It also removes the old instruction blocks from
+   AGENTS.md, CLAUDE.md, and editor rule files.
+3. In Codex, open `/hooks` once to trust the new hooks.
+
 ## [6.4.0] - 2026-09-07
 
 ### Added

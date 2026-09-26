@@ -1,9 +1,0 @@
-name: dogfood-suite
-siblings:
-  - repo-a
-  - repo-b
-version-table:
-  repo-a:
-    repo-a: 1.2.3
-  repo-b:
-    repo-b: 1.2.3

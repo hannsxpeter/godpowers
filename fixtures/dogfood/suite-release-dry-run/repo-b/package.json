@@ -1,7 +1,0 @@
-{
-  "name": "repo-b",
-  "version": "1.2.3",
-  "dependencies": {
-    "repo-a": "^1.2.3"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "id": "06-audit",
-  "requirement": "Add an audit capability while retaining every inherited behavior.",
-  "feature": {
-    "name": "audit",
-    "value": "recorded"
-  }
-}

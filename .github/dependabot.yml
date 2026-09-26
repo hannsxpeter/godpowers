@@ -13,10 +13,6 @@ version: 2
 # batch security fixes has to say so with `applies-to: security-updates`.
 # Without one, a day that publishes advisories against three packages produces
 # three separate pull requests.
-#
-# The npm entry at "/" also covers packages/mcp: Dependabot reads the root
-# `workspaces` field and fetches each workspace manifest. Do not add a second
-# entry for packages/mcp; directories must not overlap within one ecosystem.
 
 updates:
   - package-ecosystem: "npm"

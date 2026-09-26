@@ -23,157 +23,42 @@ jobs:
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: '20'
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: '3.13'
-
       - name: Install dependencies
-        run: npm ci
-
-      - name: Install pinned official Agent Skills validator
-        run: python -m pip install -r requirements/skills-ref.txt
+        run: npm ci --no-audit --no-fund
 
       - name: Verify release identity
         shell: bash
         run: |
           set -euo pipefail
           tag_version="${GITHUB_REF_NAME#v}"
-          root_version="$(node -p "require('./package.json').version")"
-          mcp_version="$(node -p "require('./packages/mcp/package.json').version")"
-          if [[ "$tag_version" != "$root_version" || "$tag_version" != "$mcp_version" ]]; then
-            echo "Tag v$tag_version does not match root $root_version and MCP $mcp_version."
-            exit 1
-          fi
+          for file in package.json .claude-plugin/plugin.json; do
+            version="$(node -p "require('./$file').version")"
+            if [[ "$tag_version" != "$version" ]]; then
+              echo "Tag v$tag_version does not match $file version $version."
+              exit 1
+            fi
+          done
           git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
           if ! git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main; then
-            echo "Tagged commit is not merged into main."
+            echo "Tagged commit is not on main."
             exit 1
           fi
 
-      - name: Release gate
+      - name: Release check
         run: npm run release:check
 
-      - name: Verify fresh pre-publication gate
-        run: npm run release:prepublication:check
-
-      - name: Pack exact release candidates
-        shell: bash
-        run: |
-          set -euo pipefail
-          candidate_dir="$RUNNER_TEMP/godpowers-release-candidates"
-          mkdir -p "$candidate_dir"
-          npm pack --json --pack-destination "$candidate_dir" > "$candidate_dir/root.json"
-          npm pack --workspace @godpowers/mcp --json --pack-destination "$candidate_dir" > "$candidate_dir/mcp.json"
-          node -e '
-            const fs = require("fs");
-            for (const name of ["root", "mcp"]) {
-              const records = JSON.parse(fs.readFileSync(`${process.argv[1]}/${name}.json`, "utf8"));
-              const record = records[0];
-              if (!record || !record.filename || !record.integrity || !record.shasum) process.exit(1);
-            }
-          ' "$candidate_dir"
-          echo "RELEASE_CANDIDATE_DIR=$candidate_dir" >> "$GITHUB_ENV"
-
-      - name: Publish godpowers to a recoverable staging tag
+      - name: Publish
         shell: bash
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
-          staging_tag="release-${version//./-}"
-          candidate_json="$RELEASE_CANDIDATE_DIR/root.json"
-          tarball="$RELEASE_CANDIDATE_DIR/$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.filename)' "$candidate_json")"
-          expected_integrity="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.integrity)' "$candidate_json")"
-          expected_shasum="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.shasum)' "$candidate_json")"
-          set +e
-          lookup="$(npm view "godpowers@$version" version 2>&1)"
-          lookup_status=$?
-          set -e
-          if [[ $lookup_status -eq 0 ]]; then
-            actual_integrity="$(npm view "godpowers@$version" dist.integrity)"
-            actual_shasum="$(npm view "godpowers@$version" dist.shasum)"
-            if [[ "$actual_integrity" != "$expected_integrity" || "$actual_shasum" != "$expected_shasum" ]]; then
-              echo "godpowers@$version exists but does not match the packed release candidate."
-              exit 1
-            fi
-            echo "godpowers@$version matches the packed candidate; preserving it for recovery."
-          elif grep -q 'E404' <<<"$lookup"; then
-            npm publish "$tarball" --provenance --access public --tag "$staging_tag"
-          else
-            echo "$lookup"
-            echo "Registry state is uncertain; refusing to publish."
+          if npm view "godpowers@$version" version >/dev/null 2>&1; then
+            echo "godpowers@$version is already published."
             exit 1
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish @godpowers/mcp to the same staging tag
-        shell: bash
-        run: |
-          set -euo pipefail
-          version="$(node -p "require('./packages/mcp/package.json').version")"
-          staging_tag="release-${version//./-}"
-          candidate_json="$RELEASE_CANDIDATE_DIR/mcp.json"
-          tarball="$RELEASE_CANDIDATE_DIR/$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.filename)' "$candidate_json")"
-          expected_integrity="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.integrity)' "$candidate_json")"
-          expected_shasum="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.shasum)' "$candidate_json")"
-          set +e
-          lookup="$(npm view "@godpowers/mcp@$version" version 2>&1)"
-          lookup_status=$?
-          set -e
-          if [[ $lookup_status -eq 0 ]]; then
-            actual_integrity="$(npm view "@godpowers/mcp@$version" dist.integrity)"
-            actual_shasum="$(npm view "@godpowers/mcp@$version" dist.shasum)"
-            if [[ "$actual_integrity" != "$expected_integrity" || "$actual_shasum" != "$expected_shasum" ]]; then
-              echo "@godpowers/mcp@$version exists but does not match the packed release candidate."
-              exit 1
-            fi
-            echo "@godpowers/mcp@$version matches the packed candidate; preserving it for recovery."
-          elif grep -q 'E404' <<<"$lookup"; then
-            npm publish "$tarball" --provenance --access public --tag "$staging_tag"
-          else
-            echo "$lookup"
-            echo "Registry state is uncertain; refusing to publish."
-            exit 1
-          fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Verify the exact package pair before promotion
-        shell: bash
-        run: |
-          set -euo pipefail
-          version="$(node -p "require('./package.json').version")"
-          verify_exact_candidate() {
-            package_spec="$1"
-            candidate_json="$2"
-            expected_integrity="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.integrity)' "$candidate_json")"
-            expected_shasum="$(node -e 'const r=require(process.argv[1])[0]; process.stdout.write(r.shasum)' "$candidate_json")"
-            for attempt in {1..12}; do
-              actual_version="$(npm view "$package_spec@$version" version 2>/dev/null || true)"
-              actual_integrity="$(npm view "$package_spec@$version" dist.integrity 2>/dev/null || true)"
-              actual_shasum="$(npm view "$package_spec@$version" dist.shasum 2>/dev/null || true)"
-              if [[ "$actual_version" == "$version" && "$actual_integrity" == "$expected_integrity" && "$actual_shasum" == "$expected_shasum" ]]; then
-                return 0
-              fi
-              if [[ "$attempt" -lt 12 ]]; then
-                sleep 10
-              fi
-            done
-            echo "Registry did not expose the exact packed candidate for $package_spec@$version after 12 attempts."
-            return 1
-          }
-          verify_exact_candidate "godpowers" "$RELEASE_CANDIDATE_DIR/root.json"
-          verify_exact_candidate "@godpowers/mcp" "$RELEASE_CANDIDATE_DIR/mcp.json"
-
-      - name: Promote the verified pair to latest
-        shell: bash
-        run: |
-          set -euo pipefail
-          version="$(node -p "require('./package.json').version")"
-          npm dist-tag add "@godpowers/mcp@$version" latest
-          npm dist-tag add "godpowers@$version" latest
+          npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

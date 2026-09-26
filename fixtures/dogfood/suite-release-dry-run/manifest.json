@@ -1,7 +1,0 @@
-{
-  "name": "Mode D suite release dry-run",
-  "kind": "suite-release",
-  "repo": "repo-a",
-  "version": "1.2.4",
-  "expectedImpacted": 1
-}

@@ -1,0 +1,12 @@
+{
+  "name": "godpowers",
+  "version": "7.0.0",
+  "description": "Durable project state, evidence-backed \"done\", and gates enforced by hooks. Eight commands and four agents.",
+  "author": {
+    "name": "Godpowers"
+  },
+  "homepage": "https://github.com/hannsxpeter/godpowers#readme",
+  "repository": "https://github.com/hannsxpeter/godpowers",
+  "license": "MIT",
+  "keywords": ["verification", "hooks", "state", "review", "security"]
+}

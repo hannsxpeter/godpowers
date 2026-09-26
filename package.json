@@ -1,84 +1,37 @@
 {
   "name": "godpowers",
-  "version": "6.4.0",
-  "description": "AI-powered development system: 124 slash commands and 41 specialist agents that take a project from raw idea to hardened production, then run it as an autonomous loop. Runs inside Claude Code, Codex, Cursor, Windsurf, Gemini, and 10+ other AI coding tools.",
+  "version": "7.0.0",
+  "description": "Durable project state, evidence-backed \"done\", and gates enforced by hooks for Claude Code, Codex, and other AI coding tools. Eight commands, four agents, about 4K tokens of instructions.",
   "bin": {
-    "godpowers": "./bin/install.js"
+    "godpowers": "./bin/godpowers.js"
   },
+  "files": [
+    "bin/",
+    "lib/",
+    "skills/",
+    "agents/"
+  ],
   "scripts": {
     "test": "node scripts/run-tests.js",
-    "version:sync": "node scripts/version-sync.js",
-    "version:check": "node scripts/version-sync.js --check",
-    "release:prepare": "node scripts/release-prepare.js",
-    "prepublishOnly": "npm run release:check && npm run release:prepublication:check",
-    "validate-skills": "node scripts/validate-skills.js",
-    "test:surface": "node scripts/test-doc-surface-counts.js",
-    "test:self-truth": "node scripts/check-self-project-truth.js",
-    "test:quick-proof": "node scripts/test-quick-proof.js",
-    "canary:adoption": "node scripts/run-adoption-canary.js",
-    "verify:published-install": "node scripts/verify-published-install.js",
-    "smoke": "bash scripts/smoke.sh",
-    "test:runtime": "node scripts/test-runtime.js",
-    "test:router": "node scripts/test-router.js",
-    "test:product-routing": "node scripts/test-product-routing.js",
-    "test:prepublication": "node scripts/test-prepublication-gate.js",
-    "test:recipes": "node scripts/test-recipes.js",
-    "test:context": "node scripts/test-context-writer.js",
-    "test:pillars": "node scripts/test-pillars.js",
-    "test:pillars-conformance": "node scripts/test-pillars-conformance.js",
-    "validate:official-skill": "node scripts/validate-official-skill.js",
-    "release:standards": "npm run validate:official-skill && npm run test:pillars && npm run test:pillars-conformance",
-    "test:linter": "node scripts/test-artifact-linter.js",
-    "test:diff": "node scripts/test-artifact-diff.js",
-    "test:e2e": "node tests/integration/full-arc.test.js",
-    "test:mcp": "npm --workspace @godpowers/mcp test",
-    "coverage": "c8 --reporter=text --reporter=lcov node scripts/run-tests.js",
-    "coverage:lib": "c8 --all --include=lib/**/*.js --exclude=lib/agent-browser-driver.js --exclude=lib/browser-bridge.js --exclude=!lib/runtime-test.js --check-coverage --lines 90 --branches 75 --reporter=text --reporter=json-summary node scripts/run-tests.js",
-    "test:audit": "npm audit --omit=dev && node scripts/check-live-advisories.js && git diff --check && npm run test:surface",
-    "audit:live": "node scripts/check-live-advisories.js",
-    "pack:check": "node scripts/check-package-contents.js",
-    "pack:mcp:check": "npm --workspace @godpowers/mcp run pack:check",
-    "release:prepublication:record": "node lib/prepublication-gate.js --record --project=.",
-    "release:prepublication:check": "node lib/prepublication-gate.js --check --project=.",
-    "evidence:drift": "node scripts/sync-evidence-engine.js --check",
-    "release:check": "npm run version:check && npm run release:standards && npm run coverage:lib && node scripts/check-per-file-coverage.js && npm run test:audit && npm run test:self-truth && npm run evidence:drift && npm run pack:check && npm run pack:mcp:check",
-    "lint": "node scripts/static-check.js"
+    "coverage": "c8 --all --include=lib/**/*.js --check-coverage --lines 90 --branches 75 --reporter=text --reporter=text-summary node scripts/run-tests.js",
+    "budget": "node bin/godpowers.js budget",
+    "lint": "node scripts/check-text.js",
+    "pack:check": "node scripts/check-pack.js",
+    "ab": "node scripts/ab-eval.js",
+    "release:check": "npm run lint && npm run coverage && npm run budget && npm run pack:check && npm audit --omit=dev"
   },
-  "workspaces": [
-    "packages/mcp"
-  ],
   "keywords": [
     "ai",
-    "ai-agent",
     "ai-agents",
-    "ai-development",
-    "ai-coding",
-    "ai-orchestration",
-    "agent",
-    "agents",
-    "claude",
     "claude-code",
     "codex",
-    "cursor",
-    "windsurf",
-    "gemini",
-    "copilot",
-    "tdd",
-    "orchestration",
-    "godmode",
-    "slash-commands",
-    "skills",
-    "prd",
-    "architecture",
-    "roadmap",
-    "specialist-agents",
+    "agent-skills",
+    "hooks",
+    "verification",
     "developer-tools"
   ],
   "author": "Godpowers",
   "license": "MIT",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hannsxpeter/godpowers.git"
@@ -87,26 +40,9 @@
   "bugs": {
     "url": "https://github.com/hannsxpeter/godpowers/issues"
   },
-  "files": [
-    "bin/",
-    "skills/",
-    "specialists/",
-    "hooks/",
-    "templates/",
-    "references/",
-    "routing/",
-    "workflows/",
-    "schema/",
-    "lib/",
-    "fixtures/",
-    "extensions/",
-    "INSPIRATION.md",
-    "RELEASE.md",
-    "SKILL.md",
-    "AGENTS.md",
-    "CHANGELOG.md",
-    "LICENSE"
-  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "devDependencies": {
     "c8": "^12.0.0"
   }

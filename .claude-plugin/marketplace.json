@@ -1,0 +1,14 @@
+{
+  "name": "godpowers",
+  "owner": {
+    "name": "Godpowers"
+  },
+  "plugins": [
+    {
+      "name": "godpowers",
+      "source": "./",
+      "description": "Durable project state, evidence-backed \"done\", and gates enforced by hooks. Eight commands and four agents.",
+      "version": "7.0.0"
+    }
+  ]
+}

@@ -1,2 +1,0 @@
-{"kind":"executed","claim":null,"command":"npm test","exit_code":0,"duration_seconds":4.2,"stdout_tail":"All tests passed","stderr_tail":"","verified":true,"timestamp":"2026-06-10T18:09:00.000Z","arc":null,"substep":"tier-2.build","substep_status":"in-flight"}
-{"kind":"executed","claim":null,"command":"npm run lint","exit_code":0,"duration_seconds":1.1,"stdout_tail":"clean","stderr_tail":"","verified":true,"timestamp":"2026-06-10T18:09:30.000Z","arc":null,"substep":"tier-2.build","substep_status":"in-flight"}

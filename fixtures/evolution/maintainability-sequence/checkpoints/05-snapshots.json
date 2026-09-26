@@ -1,8 +1,0 @@
-{
-  "id": "05-snapshots",
-  "requirement": "Expose stable configuration snapshots without mutating prior capabilities.",
-  "feature": {
-    "name": "snapshots",
-    "value": "immutable"
-  }
-}

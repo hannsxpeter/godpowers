@@ -2,167 +2,78 @@
 
 ## Reporting a Vulnerability
 
-Found something? Thank you. Please report it privately so users are not exposed
-during the window before a fix ships.
+Please report vulnerabilities privately so users are not exposed before a fix
+ships. **Do not open a public GitHub issue.**
 
-### How to Report
-
-**Do not open a public GitHub issue.**
-
-Use GitHub's private vulnerability reporting instead:
+Use GitHub's private vulnerability reporting:
 https://github.com/hannsxpeter/godpowers/security/advisories/new
 
-Include what you have. A partial report is far better than no report:
+Include what you have. A partial report is far better than none:
 
-- What the vulnerability is
-- How to reproduce it
-- What the impact could be
-- A suggested fix, if one occurs to you
+- what the vulnerability is,
+- how to reproduce it,
+- what the impact could be,
+- a suggested fix, if you have one.
 
-### What to Expect
+### What to expect
 
-- Best-effort acknowledgment, typically within 7 days (this is a small,
-  pre-launch project, so treat these as targets, not guarantees)
-- Best-effort assessment, typically within 14 days
-- Fix timeline based on severity
-- Credit in the CHANGELOG when the fix ships (unless you prefer anonymity)
+- Acknowledgment within 7 days, on a best-effort basis
+- An assessment within 14 days
+- A fix timeline based on severity
+- Credit in the CHANGELOG when the fix ships, unless you prefer otherwise
+
+## What Godpowers does on your machine
+
+Knowing this helps you judge the risks.
+
+- **The installer** writes skill and agent files into your AI tool's config
+  directory, copies the CLI to `<config>/godpowers/`, and merges three hook
+  entries into `~/.claude/settings.json` or `~/.codex/hooks.json`. It only
+  changes entries it owns, writes through symlinks, keeps file permissions,
+  and refuses a settings file that is not valid JSON. Uninstall removes exactly
+  those entries.
+- **The hooks** run `node <config>/godpowers/bin/godpowers.js hook <event>` at
+  session start, at the end of each agent turn, and before `git commit`. They
+  read the project's `.godpowers/` files and run read-only `git` commands, and
+  write a small session file (mode 0600, pruned after a week) in your temp
+  directory. They make no network calls and fail open.
+- **`godpowers verify "<command>"`** runs the command you or your agent give it,
+  through your shell, in the project directory. It has the same power as typing
+  the command yourself. Treat verify commands like any other command an agent
+  proposes.
+- **The evidence ledger** stores the last 3,000 characters of each check's
+  output. Common secret shapes (GitHub, OpenAI, Stripe, Slack, AWS, and npm
+  tokens, JWTs, private keys, credentials in URLs, bearer headers, and
+  `password=` style values) are masked before writing, but masking is not
+  exhaustive. Do not print secrets in test output.
+- **Tamper evidence** is not tamper proofing. The digest chain detects hand
+  edits to the ledger. Anyone who can rewrite the whole file can recompute it.
 
 ## Scope
 
-Godpowers is a meta-prompting framework: it ships instructions and a small
-runtime, not a server or a hosted service. That shapes what counts as a
-vulnerability here.
+In scope:
 
-### In scope
-- Vulnerabilities in `bin/install.js` (file system access, path traversal)
-- Vulnerabilities in `hooks/*.sh` (command injection, privilege escalation)
-- Vulnerabilities in `scripts/*.{sh,js}` (CI / test infrastructure)
-- Skill or agent prompts that could be exploited to leak credentials
+- `bin/` and `lib/` (file system writes, hook handling, command execution,
+  settings merges)
+- the hook registrations and the plugin manifest
+- skill or agent instructions that could lead an agent to leak credentials or
+  take destructive actions
 
-### Out of scope
-- AI model behavior (report to the model provider)
-- Issues in dependencies (report upstream)
-- Social engineering of AI agents (use `--conservative` mode)
+Out of scope:
 
-## Hardening Recommendations
+- model behavior (report it to the model provider)
+- vulnerabilities in dependencies (report them upstream)
+- commands a user or agent chooses to pass to `godpowers verify`
 
-Read this if you are running Godpowers anywhere sensitive. Several items below
-describe things that look like security boundaries and are not.
-
-1. **Review `--yolo` decisions**: Before merging or deploying, read
-   `.godpowers/YOLO-DECISIONS.mdx` to verify auto-picked defaults match intent
-2. **Never accept Critical findings under `--yolo`**: This is enforced by the
-   framework but worth re-checking
-3. **Keep `.godpowers/` out of public repos** if it contains sensitive PRD
-   content (add to `.gitignore` per-project)
-4. **Hooks are advisory, not a sandbox**: `hooks/pre-tool-use.sh` and
-   `hooks/session-start.sh` run with your shell privileges. The pre-tool-use
-   hook only warns on common destructive command spellings (it is a typo guard
-   and is easily bypassed by uncommon spellings, quoting, aliases, or a child
-   process); do not rely on it as a security boundary. Review both before
-   installing.
-5. **Verify the npm package signature**: `npm audit signatures` (verifies
-   registry provenance and the published package signature)
-6. **Treat `.godpowers/ledger/` as executable, output-bearing state**: the
-   evidence ledger records the exact commands you run via `verify`/`outcome`
-   plus tails of their stdout/stderr. If a command or its output can contain a
-   secret, add `.godpowers/ledger/` to `.gitignore` so it is not committed. The
-   `outcome check` command re-runs a verifier stored in `goal.json`, so only run
-   it in repositories you trust.
-7. **Codex agents install with `sandbox_mode = "workspace-write"`**: the Codex
-   runtime grants every installed Godpowers agent write access to the workspace
-   (they need it to write artifacts). Combined with untrusted instructions in
-   project files, an agent could write anywhere in the workspace; narrow the
-   Codex sandbox per agent if that is a concern.
-8. **Treat review evidence as trusted-workspace consistency, not
-   authentication**: `lib/evidence.resolveReviewEvidence` checks one exact
-   executed record against the expected claim, command, canonical substep,
-   freshness window, SHA-256 digest-bound gate event, and event hash chain. Its
-   projection omits raw claims, commands, and output tails before Stage 2 sees
-   them. An actor able to rewrite the ledger, events, and chain can still
-   recompute internally consistent evidence; signed commits, CI provenance,
-   repository access controls, and publication provenance cover that stronger
-   threat model.
-9. **Fail closed around adversarial review subprocesses**: blast-radius fixture
-   probes use argument-array process execution and treat a 10-second timeout or
-   1 MiB output overflow as a failed detection result. The safety-case feature
-   reuses the existing `godpowers verify` execution authority and ledger; it
-   adds no command, store, dependency, or state writer.
-
-## Supported Versions
+## Supported versions
 
 | Version | Supported |
-|---------|-----------|
-| 6.4.x   | Release candidate |
-| 6.3.x   | Yes |
-| 6.2.x   | Security fixes only |
-| 6.1.x   | Security fixes only |
-| 6.0.x   | Security fixes only |
-| 5.17.x   | Security fixes only |
-| 5.16.x   | Security fixes only |
-| 5.15.x   | Security fixes only |
-| 5.14.x   | Security fixes only |
-| 5.13.x   | Security fixes only |
-| 5.12.x   | Security fixes only |
-| 5.11.x   | Security fixes only |
-| 5.10.x   | Security fixes only |
-| 5.9.x   | Security fixes only |
-| 5.8.x   | Security fixes only |
-| 5.7.x   | Security fixes only |
-| 5.6.x   | Security fixes only |
-| 5.5.x   | Security fixes only |
-| 5.4.x   | Security fixes only |
-| 5.3.x   | Security fixes only |
-| 5.2.x   | Security fixes only |
-| 5.1.x   | Security fixes only |
-| 5.0.x   | Security fixes only |
-| 3.14.x  | Security fixes only |
-| 3.13.x  | Security fixes only |
-| 3.12.x  | Security fixes only |
-| 3.11.x  | Security fixes only |
-| 3.10.x  | Security fixes only |
-| 3.9.x   | Security fixes only |
-| 3.8.x   | Security fixes only |
-| 3.7.x   | Security fixes only |
-| 3.6.x   | Security fixes only |
-| 3.5.x   | Security fixes only |
-| 3.4.x   | Security fixes only |
-| 3.3.x   | Security fixes only |
-| 3.2.x   | Security fixes only |
-| 3.1.x   | Security fixes only |
-| 3.0.x   | Security fixes only |
-| 2.7.x   | Security fixes only |
-| 2.6.x   | Security fixes only |
-| 2.5.x   | Security fixes only |
-| 2.4.x   | Security fixes only |
-| 2.3.x   | Security fixes only |
-| 2.2.x   | Security fixes only |
-| 2.1.x   | Security fixes only |
-| < 2.1   | No |
+| --- | --- |
+| 7.0.x | Yes |
+| 6.x and earlier | No. Upgrade to 7. |
 
-Godpowers repo documentation sync checks this table as part of release
-readiness, but support policy changes still require maintainer review.
+## Disclosure policy
 
-## 6.3.0 Release Verification
-
-- [DECISION] The fresh prepublication gate passed at
-  `2026-08-19T16:01:41.336Z` against hardening revision
-  `sha256:69bd088dc44e405b144536bd51701088bb0da7d5e2200685e9b3e13be7403f5f`
-  with zero Critical findings.
-- [DECISION] The isolated exact 6.3.0 root, MCP, and operations-pack set reported zero dependency
-  vulnerabilities.
-- [DECISION] `npm audit signatures` verified registry signatures and
-  attestations for all 6 installed packages.
-
-## Disclosure Policy
-
-We follow coordinated disclosure:
-
-1. Reporter privately reports the issue
-2. We acknowledge within 7 days
-3. We work on a fix
-4. We coordinate disclosure timing with the reporter
-5. Public disclosure happens after the fix is released
-
-We aim for fix-to-disclosure within 90 days for most issues, faster for
-Critical severity.
+Coordinated disclosure: we acknowledge, fix, agree on timing with the reporter,
+and publish after the fix is released. We aim for fix to disclosure within 90
+days, faster for critical issues.
