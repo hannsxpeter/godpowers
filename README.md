@@ -80,8 +80,11 @@ In a repository:
 | `/god-ship` | Pass the ship gate, then deploy, verify health, record |
 | `/god-status` | State, evidence freshness, and open risks, read-only |
 
-The agents, used when a fresh context or parallel work helps: `god-planner`,
-`god-executor`, `god-reviewer`, and `god-security-auditor`.
+Four optional agents ship with it: `god-planner`, `god-executor`,
+`god-reviewer`, and `god-security-auditor`. The skills never require them. The
+agent running a skill decides whether to delegate, which subagent to use (its
+host's own or one of these), and how to run it; the review and security skills
+carry the brief any reviewer should get.
 
 ## Project files
 

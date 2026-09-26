@@ -20,6 +20,9 @@ It keeps what a model cannot do for itself and enforces it with hooks.
 - **A prompt budget in CI**, so the core cannot quietly grow back.
 - **An A/B harness** (`scripts/ab-eval.js`) to measure whether Godpowers helps
   on your own tasks.
+- **Subagent-neutral skills.** A skill says what a step needs, such as a review
+  from a fresh context, and the agent using it picks the subagent and how to run
+  it. The four bundled agents are optional.
 - **Claude Code skills appear in the picker again** (fix by @ikkeflikkeri), and
   a plugin manifest is included.
 

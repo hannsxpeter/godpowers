@@ -37,10 +37,12 @@ independent reviewer, and gates enforced by hooks.
   - `/god-status` stays `/god-status`.
   - Every other command is gone. Use the host directly, or pin
     `npx godpowers@6` if you depend on one.
-- Agents: 41 became 4 (`god-planner`, `god-executor`, `god-reviewer`,
-  `god-security-auditor`). `god-spec-reviewer` and `god-quality-reviewer`
-  merged into `god-reviewer`; `god-harden-auditor` became
-  `god-security-auditor`.
+- Agents: 41 became 4 optional agents (`god-planner`, `god-executor`,
+  `god-reviewer`, `god-security-auditor`). `god-spec-reviewer` and
+  `god-quality-reviewer` merged into `god-reviewer`; `god-harden-auditor`
+  became `god-security-auditor`. No skill requires them: skills describe what a
+  step needs, and the agent using the skill chooses the subagent, if any, and
+  how to run it.
 - Project layout: `.godpowers/` now holds `STATE.md`, `PLAN.md`,
   `DECISIONS.md`, and `evidence.jsonl`. Run `godpowers migrate` on a 6.x
   project. It archives the old files under `.godpowers/archive/v6/`, maps the

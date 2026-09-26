@@ -49,5 +49,5 @@ Risks are checkbox lines under `## Risks` in STATE.md: `- [ ] critical: what, wh
 ## Working style
 
 - Scale the ceremony to the work. A one-line fix needs no plan; a new product needs PLAN.md.
-- Use the subagents (god-planner, god-executor, god-reviewer, god-security-auditor) when a fresh context or parallel work helps, not by default.
+- Delegate to a subagent only when a fresh context or parallel work helps. You choose which subagent (your host's own, or the optional god-* agents) and how it runs.
 - Ask the user only for decisions that are theirs: scope, spending, credentials, and public or irreversible actions.

@@ -7,7 +7,11 @@ argument-hint: "[base ref]"
 # /god-review
 
 1. Work out the change set: `git diff <base>...HEAD` plus uncommitted work. The base defaults to the main branch or the last release tag.
-2. Spawn the god-reviewer subagent with the diff scope, the PLAN.md requirements, relevant DECISIONS.md entries, and the verify command. Do not pass your own conclusions; the review is only useful if it is independent.
+2. Get the review from a fresh context. You choose how: any subagent your host offers, a separate session, or another tool, run however suits the work. Give the reviewer the diff scope, the PLAN.md requirements, relevant DECISIONS.md entries, the verify command, and this brief, but not your own conclusions:
+   - Correctness: does the change meet each "Done when" check, including error paths and unusual inputs?
+   - Blast radius: what depends on the changed code? Name the one fact that must hold for the change to be safe, and how it was proven.
+   - Safety and fit: input validation, auth, secrets, destructive operations, data loss; existing patterns, no scope creep.
+   - Output: findings as `severity: what, where, why`, then pass or fail.
 3. Fix each finding or state why not. Critical and high findings you leave open go under Risks in STATE.md.
 4. Run `npx -y godpowers@7 verify "<verify command>"` after the fixes. After a large fix, review the new diff again.
 5. Record the outcome on the final code: `npx -y godpowers@7 record review --pass --summary "<one line>"`, or `--fail` with the reason.

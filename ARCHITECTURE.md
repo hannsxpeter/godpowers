@@ -15,7 +15,9 @@ The CLI and the hooks check that it was done.
    (`lib/budget.js`).
 4. **Use what the host provides.** Subagents, memory, planning, scheduling, and
    usage tracking belong to Claude Code and Codex, so Godpowers does not
-   reimplement them.
+   reimplement them. Skills say what a step needs, such as a review from a fresh
+   context, and leave the choice of subagent and how to run it to the agent
+   using the skill.
 
 ## Layout
 
@@ -23,7 +25,7 @@ The CLI and the hooks check that it was done.
 bin/godpowers.js      entry point; calls lib/cli.js
 lib/                  the CLI (see below)
 skills/<name>/SKILL.md  8 commands plus the shared `godpowers` skill
-agents/<name>.md      4 subagents
+agents/<name>.md      4 optional subagents
 hooks/hooks.json      hook registration for the Claude Code plugin
 .claude-plugin/       plugin and marketplace manifests
 scripts/              test runner, text lint, package check, A/B harness
