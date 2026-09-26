@@ -30,7 +30,7 @@ function assert(cond, msg) {
 }
 
 const RUNTIME_SURFACES = {
-  claude: { dir: '.claude', skillsDir: 'skills', skillFile: 'god-mode.md' },
+  claude: { dir: '.claude', skillsDir: 'skills', skillFile: path.join('god-mode', 'SKILL.md') },
   codex: { dir: '.codex', skillsDir: 'skills', skillFile: path.join('god-mode', 'SKILL.md'), codexAgents: true },
   cursor: { dir: '.cursor', skillsDir: 'rules', skillFile: 'god-mode.md' },
   windsurf: { dir: '.windsurf', skillsDir: 'rules', skillFile: 'god-mode.md' },
@@ -69,11 +69,11 @@ test('installer completes against a clean HOME', () => {
 
 const installedDir = path.join(fakeHome, '.claude');
 
-test('installer wrote ~/.claude/skills/ with at least 80 god-* files', () => {
+test('installer wrote ~/.claude/skills/ with at least 80 god-* entries', () => {
   const skillsDir = path.join(installedDir, 'skills');
   assert(fs.existsSync(skillsDir), `${skillsDir} missing`);
-  const files = fs.readdirSync(skillsDir).filter(f => /^god/.test(f));
-  assert(files.length >= 80, `expected >=80 skills, got ${files.length}`);
+  const entries = fs.readdirSync(skillsDir).filter(f => /^god/.test(f));
+  assert(entries.length >= 80, `expected >=80 skills, got ${entries.length}`);
 });
 
 test('installer writes Codex commands as skill directories', () => {
@@ -281,10 +281,10 @@ test('installed OTel exporter reports package version', () => {
 
 test('installed router skills explain godpowers-runtime resolution', () => {
   const skillsDir = path.join(installedDir, 'skills');
-  const god = fs.readFileSync(path.join(skillsDir, 'god.md'), 'utf8');
-  const next = fs.readFileSync(path.join(skillsDir, 'god-next.md'), 'utf8');
-  assert(god.includes('godpowers-runtime'), 'god.md missing runtime bundle guidance');
-  assert(next.includes('godpowers-runtime'), 'god-next.md missing runtime bundle guidance');
+  const god = fs.readFileSync(path.join(skillsDir, 'god', 'SKILL.md'), 'utf8');
+  const next = fs.readFileSync(path.join(skillsDir, 'god-next', 'SKILL.md'), 'utf8');
+  assert(god.includes('godpowers-runtime'), 'god/SKILL.md missing runtime bundle guidance');
+  assert(next.includes('godpowers-runtime'), 'god-next/SKILL.md missing runtime bundle guidance');
 });
 
 test('the 9 freshly-built skills are all installed', () => {
@@ -293,8 +293,8 @@ test('the 9 freshly-built skills are all installed', () => {
                 'god-smite'];
   const skillsDir = path.join(installedDir, 'skills');
   for (const s of want) {
-    assert(fs.existsSync(path.join(skillsDir, `${s}.md`)),
-      `${s}.md not installed`);
+    assert(fs.existsSync(path.join(skillsDir, s, 'SKILL.md')),
+      `${s}/SKILL.md not installed`);
   }
 });
 
