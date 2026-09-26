@@ -25,3 +25,8 @@ Why: Works on every host with Node, pinned to the major version so the evidence 
 Context: The first A/B run on a real feature found the full plan, build, review, harden, and ship pipeline as correct as plain Codex at about 4x the cost, with review, harden, and ship taking 55-60% of the tokens; one of two reviewers silently inherited the session's model at xhigh.
 Decision: /god gives a feature a plan, a build, and one fresh-context review, adds /god-harden only for trust-boundary changes, and runs /god-ship only on request. Skills require the agent to set every subagent's model and effort itself.
 Why: Pay for process only where it changes outcomes; the ship gate still demands a security record before any release.
+
+## 2026-09-26: Skip the plan for specified requests and record the check once per build
+Context: With proportional stages the A/B task still cost about 2.4x plain Codex. The main thread made about 25 tool calls against 11, mostly bookkeeping: a plan for a request that already listed its requirements, and 9-12 test runs, several recorded through the CLI after each slice.
+Decision: /god skips /god-plan when the request already lists its requirements, and /god-build runs targeted tests directly and records the project check once, on the final code.
+Why: Every extra call resends the whole context, and the Stop hook and ship gate only need one passing record for the final code.

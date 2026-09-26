@@ -94,12 +94,14 @@ make `godaudits diff` usable as a CI gate. Codex ran `gpt-5.6-sol` at xhigh,
 two runs per arm. A hidden acceptance test, the full suite, and a blind review
 graded each run.
 
-| | Plain Codex | Godpowers, full pipeline | Godpowers, proportional |
-| --- | --- | --- | --- |
-| Hidden test and suite | 2 of 2 pass | 4 of 4 pass | 2 of 2 pass |
-| Blind review score (of 10) | 7, 7 | 7, 8, 8, 8 | 8, 8 |
-| Minutes per run | 3.4 to 3.5 | 13 to 27 | 7.2 to 8.2 |
-| Estimated spend | 1x | about 4x | about 2.4x |
+| | Plain Codex | Full pipeline | Proportional | Lean |
+| --- | --- | --- | --- | --- |
+| Hidden test and suite | 2 of 2 pass | 4 of 4 pass | 2 of 2 pass | 2 of 2 pass |
+| Blind review score (of 10) | 7, 7 | 7, 8, 8, 8 | 8, 8 | 8, 7 |
+| Minutes per run | 3.4 to 3.5 | 13 to 27 | 7.2 to 8.2 | 5.9 to 6.0 |
+| Estimated spend | 1x | about 4x | about 2.4x | about 1.8x |
+
+The last three columns are Godpowers.
 
 Spend weights cached input at a tenth and output at eight times the price of
 uncached input. In the runs with full logs, review, security, and ship took 55
@@ -113,6 +115,13 @@ silently inherited the session's model at xhigh. The proportional column is a
 re-run of the same task with those changes. Both runs stopped after the review,
 set their reviewer's effort explicitly (one also chose a smaller model), and
 got "ship as is" from the blind reviewer, at a little over half the previous
-spend. Most of the remaining gap to plain Codex is bookkeeping calls during the
-build. One task and two runs per arm is a small sample, so run your own before
-drawing conclusions.
+spend. Most of the remaining gap was bookkeeping calls during the build.
+
+The lean column is a third re-run after `/god` stopped writing a plan for
+requests that already list their requirements and `/god-build` started
+recording the check once per build. The main thread made 16 to 19 tool calls
+instead of about 25, and planning plus building cost about what plain Codex
+spends on the whole task, so the review is now most of the remaining gap. Both
+blind reviews asked for more edge-case tests before shipping, so watch test
+depth on requests that skip the plan. One task and two runs per arm is a small
+sample, so run your own before drawing conclusions.

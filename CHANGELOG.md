@@ -59,11 +59,14 @@ independent reviewer, and gates enforced by hooks.
 
 ### Added
 
-- Proportional stages: `/god` gives a feature a plan, a build, and an
-  independent review, adds a security pass only when the change touches a
-  trust boundary, and ships only when you ask. In the first A/B run
+- Proportional stages: `/god` gives a feature a build and an independent
+  review, writes a plan only when the request does not already list its
+  requirements, adds a security pass only when the change touches a trust
+  boundary, and ships only when you ask. The project check is recorded once
+  per build rather than after every slice. In the first A/B run
   (`docs/ab-eval.md`), running every stage matched plain Codex on correctness
-  at about 4x the cost; with proportional stages the same task cost about 2.4x.
+  at about 4x the cost; with proportional stages the same task cost about 2.4x,
+  and about 1.8x once the plan was skipped and the check recorded once.
 - Hooks that code enforces, registered by the installer in
   `~/.claude/settings.json` (Claude Code) and `~/.codex/hooks.json` (Codex)
   without touching other tools' hooks:

@@ -18,7 +18,7 @@ test('session-start prints a brief for 7.x, a hint for 6.x, and nothing elsewher
   const id = sessionId();
   const brief = run('session-start', { cwd: root, session_id: id, source: 'startup' });
   assert.match(brief, /^Godpowers: demo \| stage build \| checks none on current code \| open risks: none/);
-  assert.match(brief, /\nGoal: Ship a demo\.\nNext: Run \/god-plan/);
+  assert.match(brief, /\nGoal: Ship a demo\.\nNext: Run \/god with the goal/);
   const session = hooks.readSession(root, id);
   assert.match(session.baseline.fingerprint, /^[0-9a-f]{64}$/);
   assert.ok(session.baseline.files['src/app.js']);

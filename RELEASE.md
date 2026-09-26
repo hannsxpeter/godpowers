@@ -17,12 +17,14 @@ It keeps what a model cannot do for itself and enforces it with hooks.
   `DECISIONS.md`, and `evidence.jsonl`.
 - **A ship gate.** `godpowers gate ship` needs a passing check, review, and
   security record for the current code, and no open critical risk.
-- **Only the stages a goal needs.** `/god` plans, builds, and independently
-  reviews a feature, adds a security pass only when the change touches a trust
-  boundary, and ships only when you ask. In the first A/B run, running every
-  stage matched plain Codex on correctness at about 4x the cost. Re-run with
-  this change, the same task cost about 2.4x, and both runs scored 8 of 10 in
-  blind review against plain Codex's 7.
+- **Only the stages a goal needs.** `/god` builds and independently reviews a
+  feature, writes a plan only when the request does not already list its
+  requirements, adds a security pass only when the change touches a trust
+  boundary, ships only when you ask, and records the project check once per
+  build. In the first A/B run, running every stage matched plain Codex on
+  correctness at about 4x the cost. Re-run with these changes, the same task
+  cost about 1.8x, with blind review scores of 8 and 7 against plain Codex's 7
+  and 7.
 - **A prompt budget in CI**, so the core cannot quietly grow back.
 - **An A/B harness** (`scripts/ab-eval.js`) to measure whether Godpowers helps
   on your own tasks.

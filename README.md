@@ -65,10 +65,11 @@ In a repository:
 1. `/god-init` creates `.godpowers/`, detects your check command, and adds a
    short note to AGENTS.md. On a 6.x project it runs the migration instead.
 2. `/god <goal>` picks the smallest path that does the job well. A question gets
-   an answer, a small change gets made and verified, and a feature gets planned,
-   built, and independently reviewed, with a security pass only when it touches
-   a trust boundary (auth, secrets, untrusted input, money, deleting data). It
-   ships only when you ask.
+   an answer, a small change gets made and verified, and a feature gets built
+   and independently reviewed. It writes a plan only when your request does not
+   already list the requirements, adds a security pass only when the change
+   touches a trust boundary (auth, secrets, untrusted input, money, deleting
+   data), and ships only when you ask.
 3. `/god` with no goal tells you where the project stands and the next step.
 
 | Command | What it does |
@@ -101,7 +102,8 @@ Everything lives in `.godpowers/`, which you commit with your code:
   Its body holds Goal, Now, Next, and Risks. A risk is one checkbox line:
   `- [ ] critical: SQL injection in /search (src/api/search.ts:40)`.
 - `PLAN.md` holds the goal, requirements with "Done when" checks, non-goals,
-  design, and slices.
+  design, and slices. It is skipped when a request already lists its
+  requirements; those go under Goal in `STATE.md`.
 - `DECISIONS.md` is an append-only decision log. Entries look like
   `## 2026-09-26: Use Postgres`. To change a decision, add a newer entry.
 - `evidence.jsonl` is written only by the CLI. Each record is bound to the exact

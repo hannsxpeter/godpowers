@@ -19,9 +19,11 @@ The CLI and the hooks check that it was done.
    context, and leave the choice of subagent and how to run it to the agent
    using the skill. That agent always sets each subagent's model and effort,
    sized to the subtask, instead of letting it inherit the session's.
-5. **Process only where it pays.** `/god` gives a feature a plan, a build, and
-   an independent review, adds a security pass only when the change touches a
-   trust boundary, and ships only when the user asks. In the first A/B run
+5. **Process only where it pays.** `/god` gives a feature a build and an
+   independent review, writes a plan only when the request does not already
+   list its requirements, adds a security pass only when the change touches a
+   trust boundary, ships only when the user asks, and records the project check
+   once per build. In the first A/B run
    (`docs/ab-eval.md`), running every stage matched plain Codex on correctness
    at about 4x the cost.
 
