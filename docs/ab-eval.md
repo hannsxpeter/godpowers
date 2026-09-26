@@ -94,12 +94,12 @@ make `godaudits diff` usable as a CI gate. Codex ran `gpt-5.6-sol` at xhigh,
 two runs per arm. A hidden acceptance test, the full suite, and a blind review
 graded each run.
 
-| | Plain Codex | Godpowers, full pipeline |
-| --- | --- | --- |
-| Hidden test and suite | 2 of 2 pass | 4 of 4 pass |
-| Blind review score (of 10) | 7, 7 | 7, 8, 8, 8 |
-| Minutes per run | 3.4 to 3.5 | 13 to 27 |
-| Estimated spend | 1x | about 4x |
+| | Plain Codex | Godpowers, full pipeline | Godpowers, proportional |
+| --- | --- | --- | --- |
+| Hidden test and suite | 2 of 2 pass | 4 of 4 pass | 2 of 2 pass |
+| Blind review score (of 10) | 7, 7 | 7, 8, 8, 8 | 8, 8 |
+| Minutes per run | 3.4 to 3.5 | 13 to 27 | 7.2 to 8.2 |
+| Estimated spend | 1x | about 4x | about 2.4x |
 
 Spend weights cached input at a tenth and output at eight times the price of
 uncached input. In the runs with full logs, review, security, and ship took 55
@@ -108,6 +108,11 @@ shipped the same top gap: a misspelled flag silently disabled the gate.
 
 So `/god` now runs the security pass only for changes that touch a trust
 boundary and ships only on request, and the skills require every subagent's
-model and effort to be set explicitly: in one of two runs the reviewer silently
-inherited the session's model at xhigh. One task and two runs per arm is a
-small sample, so run your own before drawing conclusions.
+model and effort to be set explicitly: in one of two runs the reviewer had
+silently inherited the session's model at xhigh. The proportional column is a
+re-run of the same task with those changes. Both runs stopped after the review,
+set their reviewer's effort explicitly (one also chose a smaller model), and
+got "ship as is" from the blind reviewer, at a little over half the previous
+spend. Most of the remaining gap to plain Codex is bookkeeping calls during the
+build. One task and two runs per arm is a small sample, so run your own before
+drawing conclusions.

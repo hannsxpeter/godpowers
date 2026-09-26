@@ -63,7 +63,7 @@ independent reviewer, and gates enforced by hooks.
   independent review, adds a security pass only when the change touches a
   trust boundary, and ships only when you ask. In the first A/B run
   (`docs/ab-eval.md`), running every stage matched plain Codex on correctness
-  at about 4x the cost.
+  at about 4x the cost; with proportional stages the same task cost about 2.4x.
 - Hooks that code enforces, registered by the installer in
   `~/.claude/settings.json` (Claude Code) and `~/.codex/hooks.json` (Codex)
   without touching other tools' hooks:
