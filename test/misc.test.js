@@ -76,3 +76,14 @@ test('findProjectRoot walks up to .godpowers, then to git, then stays put', () =
   const loose = tempDir();
   assert.equal(paths.findProjectRoot(loose), loose);
 });
+
+test('layout recognizes 6.x projects by any of their marker files', () => {
+  for (const marker of paths.V6_MARKERS) {
+    const root = tempDir();
+    write(root, `.godpowers/${marker}${marker.includes('.') ? '' : '/x'}`, 'x');
+    assert.equal(paths.layout(root), 'v6', marker);
+  }
+  const docsOnly = tempDir();
+  write(docsOnly, '.godpowers/docs/a.md', 'x');
+  assert.equal(paths.layout(docsOnly), 'none', 'a docs folder alone is not a project');
+});

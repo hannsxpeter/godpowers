@@ -97,7 +97,8 @@ independent reviewer, and gates enforced by hooks.
   after an unterminated marker, and only remove the exact Pillars block 6.x
   generated. `migrate` archives every instruction file it changes.
 - `init` never overwrites an existing decision log or ledger, and adds a union
-  merge rule for the ledger to `.gitattributes`.
+  merge rule for the ledger to `.gitattributes`. Projects that keep
+  `.godpowers/` out of git get neither that rule nor the AGENTS.md note.
 
 ### Fixed
 

@@ -161,3 +161,32 @@ test('migrate archives every instruction file it changes', () => {
   assert.match(read(root, '.godpowers/archive/v6/instruction-files/AGENTS.md'), /old block/);
   assert.match(read(root, '.godpowers/archive/v6/instruction-files/CLAUDE.md'), /See AGENTS\.md/);
 });
+
+test('migrate handles a 6.x project that lost its state.json', () => {
+  const root = tempDir();
+  write(root, '.godpowers/PROGRESS.mdx', '# progress');
+  write(root, '.godpowers/ledger/verifications.jsonl', '');
+  const result = migrateTools.migrate(root);
+  assert.equal(result.ok, true);
+  assert.equal(result.stage, 'plan');
+  assert.ok(fs.existsSync(path.join(root, '.godpowers/archive/v6/ledger/verifications.jsonl')));
+});
+
+test('projects that keep .godpowers/ out of git get no shared-file changes', () => {
+  const root = gitRepo();
+  write(root, '.gitignore', '.godpowers/\n');
+  git(root, 'add', '.gitignore');
+  git(root, 'commit', '-q', '-m', 'ignore');
+  const result = initTools.init(root);
+  assert.equal(result.agents, 'skipped (.godpowers/ is not tracked)');
+  assert.equal(fs.existsSync(path.join(root, 'AGENTS.md')), false);
+  assert.equal(fs.existsSync(path.join(root, '.gitattributes')), false);
+  const legacy = gitRepo();
+  fs.appendFileSync(path.join(legacy, '.git/info/exclude'), '.godpowers/\n');
+  write(legacy, '.godpowers/state.json', '{}');
+  write(legacy, 'AGENTS.md', '# Rules\n');
+  const migrated = migrateTools.migrate(legacy);
+  assert.equal(migrated.agents, 'skipped (.godpowers/ is not tracked)');
+  assert.equal(read(legacy, 'AGENTS.md'), '# Rules\n');
+  assert.equal(fs.existsSync(path.join(legacy, '.gitattributes')), false);
+});

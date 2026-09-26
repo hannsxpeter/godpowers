@@ -11,10 +11,10 @@ updated: 2026-09-26
 Keep Godpowers a small, verified core: durable project state, checks bound to exact code, an independent reviewer, and gates enforced by hooks in Claude Code and Codex.
 
 ## Now
-- 7.0.0 is built, independently reviewed (all high and medium findings fixed with regression tests), and smoke-tested live in Codex.
+- 7.0.0 is tagged and CI-green; npm publish is waiting on npm credentials (E404 from the registry).
 
 ## Next
-- Publish 7.0.0 from a v7.0.0 tag, then upgrade the local install on every host.
+- Fix npm auth (trusted publishing or a new NPM_TOKEN), rerun the publish job, then publish the draft GitHub release.
 
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested

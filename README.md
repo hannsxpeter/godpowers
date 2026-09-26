@@ -131,7 +131,9 @@ frontmatter, or set `GODPOWERS_GATE=off` for one session.
 
 `godpowers init` adds `.godpowers/evidence.jsonl merge=union` to
 `.gitattributes`, so branches that each recorded checks merge without
-conflicts. Merged ledgers show chain-break warnings, which are expected.
+conflicts. Merged ledgers show chain-break warnings, which are expected. If you
+keep `.godpowers/` out of git, init leaves `.gitattributes` and AGENTS.md
+alone.
 
 ## CLI
 
