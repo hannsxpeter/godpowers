@@ -65,8 +65,11 @@ independent reviewer, and gates enforced by hooks.
   boundary, and ships only when you ask. The project check is recorded once
   per build rather than after every slice. In the first A/B run
   (`docs/ab-eval.md`), running every stage matched plain Codex on correctness
-  at about 4x the cost; with proportional stages the same task cost about 2.4x,
-  and about 1.8x once the plan was skipped and the check recorded once.
+  at about 4x the cost; the current flow cost about 2x to 2.8x, with blind
+  review scores of 8 and 8.
+- Reviews check tests: the review brief and the `god-reviewer` agent ask
+  whether each requirement has a test, including the cases that must not
+  trigger it.
 - Hooks that code enforces, registered by the installer in
   `~/.claude/settings.json` (Claude Code) and `~/.codex/hooks.json` (Codex)
   without touching other tools' hooks:

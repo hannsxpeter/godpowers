@@ -1,6 +1,6 @@
 ---
 name: god-review
-description: Independent fresh-context review of the current changes against the plan or the listed requirements for correctness, blast radius, safety, and fit, then fix and record the outcome. Use for /god-review, "review this", or before shipping.
+description: Independent fresh-context review of the current changes against the plan or the listed requirements for correctness, tests, blast radius, safety, and fit, then fix and record the outcome. Use for /god-review, "review this", or before shipping.
 argument-hint: "[base ref]"
 ---
 
@@ -9,6 +9,7 @@ argument-hint: "[base ref]"
 1. Work out the change set: `git diff <base>...HEAD` plus uncommitted work. The base defaults to the main branch or the last release tag.
 2. Get the review from a fresh context. You choose how: any subagent your host offers, a separate session, or another tool, run however suits the work. Set the reviewer's model and effort yourself, sized to the change: a fast model at low effort for a small, low-risk diff; the most capable model at high effort for auth, data, money, or concurrency changes. Give the reviewer the diff scope, the requirements (from PLAN.md, or listed under Goal in STATE.md), relevant DECISIONS.md entries, the verify command, and this brief, but not your own conclusions:
    - Correctness: does the change meet each requirement and its check, including error paths and unusual inputs?
+   - Tests: does each requirement have a test, including the cases that must not trigger it? A test that would still pass with the behavior broken is a finding; name the missing case.
    - Blast radius: what depends on the changed code? Name the one fact that must hold for the change to be safe, and how it was proven.
    - Safety and fit: input validation, auth, secrets, destructive operations, data loss; existing patterns, no scope creep.
    - Output: findings as `severity: what, where, why`, then pass or fail.
