@@ -65,13 +65,15 @@ In a repository:
 1. `/god-init` creates `.godpowers/`, detects your check command, and adds a
    short note to AGENTS.md. On a 6.x project it runs the migration instead.
 2. `/god <goal>` picks the smallest path that does the job well. A question gets
-   an answer, a small change gets made and verified, and a feature goes through
-   plan, build, review, harden, and ship.
+   an answer, a small change gets made and verified, and a feature gets planned,
+   built, and independently reviewed, with a security pass only when it touches
+   a trust boundary (auth, secrets, untrusted input, money, deleting data). It
+   ships only when you ask.
 3. `/god` with no goal tells you where the project stands and the next step.
 
 | Command | What it does |
 | --- | --- |
-| `/god` | Front door: the next step, or drive a goal end to end |
+| `/god` | Front door: the next step, or drive a goal through the stages it needs |
 | `/god-init` | Set up `.godpowers/`, or migrate a 6.x project |
 | `/god-plan` | Write `PLAN.md`: goal, requirements with "Done when" checks, design, slices |
 | `/god-build` | Implement slices test-first and record the checks |
@@ -83,11 +85,12 @@ In a repository:
 Four optional agents ship with it: `god-planner`, `god-executor`,
 `god-reviewer`, and `god-security-auditor`. The skills never require them. The
 agent running a skill decides whether to delegate, which subagent to use (its
-host's own or one of these), and how to run it, and it sizes each subagent's
-model and reasoning effort to the subtask instead of inheriting its own: a
-small, fast model at low effort for reading and mechanical work, the strongest
-model at high effort only for hard or security-critical work. The review and
-security skills carry the brief any reviewer should get.
+host's own or one of these), and how to run it. It always sets each subagent's
+model and reasoning effort itself, sized to the subtask, rather than letting
+the subagent inherit its own: a small, fast model at low effort for reading and
+mechanical work, the strongest model at high effort only for hard or
+security-critical work. The review and security skills carry the brief any
+reviewer should get.
 
 ## Project files
 

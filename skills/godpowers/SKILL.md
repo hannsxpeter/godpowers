@@ -11,7 +11,7 @@ Godpowers keeps a project's memory on disk and refuses unverified "done". You do
 
 | Command | Use it to |
 | --- | --- |
-| `/god` | ask what to do next, or drive a goal end to end |
+| `/god` | ask what to do next, or drive a goal through the stages it needs |
 | `/god-init` | set up `.godpowers/` in a repo, or migrate a 6.x project |
 | `/god-plan` | write or refresh the plan |
 | `/god-build` | implement plan slices test-first |
@@ -48,7 +48,7 @@ Risks are checkbox lines under `## Risks` in STATE.md: `- [ ] critical: what, wh
 
 ## Working style
 
-- Scale the ceremony to the work. A one-line fix needs no plan; a new product needs PLAN.md.
+- Scale the ceremony to the work. A one-line fix needs no plan. A feature gets a plan, a build, and an independent review, plus a security pass only when it touches a trust boundary (auth, secrets, untrusted input, money, deleting data). Ship only when the user asks.
 - Delegate to a subagent only when a fresh context or parallel work helps. You choose which subagent (your host's own, or the optional god-* agents) and how it runs.
-- Size every subagent before you start it instead of inheriting your own model and effort: pick the cheapest model and the lowest reasoning effort that will do the subtask well. Reading, searching, running checks, and mechanical edits suit a small, fast model at low effort. Subtle design, tricky correctness, and security-critical review justify the most capable model (for example Fable or Astra) at high effort.
+- Every time you start a subagent, set its model and reasoning effort yourself (whichever your host accepts); never let it inherit yours. Pick the cheapest model and the lowest effort that will do the subtask well: a small, fast model at low effort for reading, searching, running checks, and mechanical edits; the most capable model (for example Fable or Astra) at high effort only for subtle design, tricky correctness, or security-critical review. Start it with a fresh context and a self-contained brief, because some hosts accept a model or effort only for a fresh-context subagent.
 - Ask the user only for decisions that are theirs: scope, spending, credentials, and public or irreversible actions.

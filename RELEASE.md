@@ -17,14 +17,18 @@ It keeps what a model cannot do for itself and enforces it with hooks.
   `DECISIONS.md`, and `evidence.jsonl`.
 - **A ship gate.** `godpowers gate ship` needs a passing check, review, and
   security record for the current code, and no open critical risk.
+- **Only the stages a goal needs.** `/god` plans, builds, and independently
+  reviews a feature, adds a security pass only when the change touches a trust
+  boundary, and ships only when you ask. In the first A/B run, running every
+  stage matched plain Codex on correctness at about 4x the cost.
 - **A prompt budget in CI**, so the core cannot quietly grow back.
 - **An A/B harness** (`scripts/ab-eval.js`) to measure whether Godpowers helps
   on your own tasks.
 - **Subagent-neutral, right-sized delegation.** A skill says what a step needs,
-  such as a review from a fresh context, and the agent using it picks the
-  subagent, how to run it, and the cheapest model and effort that fit the
-  subtask, keeping the strongest model and high effort for work that needs them.
-  The four bundled agents are optional.
+  such as a review from a fresh context. The agent using it picks the subagent
+  and how to run it, and always sets its model and effort itself: the cheapest
+  that fit the subtask, with the strongest model and high effort kept for work
+  that needs them. The four bundled agents are optional.
 - **Claude Code skills appear in the picker again** (fix by @ikkeflikkeri), and
   a plugin manifest is included.
 

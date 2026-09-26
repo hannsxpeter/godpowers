@@ -17,7 +17,13 @@ The CLI and the hooks check that it was done.
    usage tracking belong to Claude Code and Codex, so Godpowers does not
    reimplement them. Skills say what a step needs, such as a review from a fresh
    context, and leave the choice of subagent and how to run it to the agent
-   using the skill.
+   using the skill. That agent always sets each subagent's model and effort,
+   sized to the subtask, instead of letting it inherit the session's.
+5. **Process only where it pays.** `/god` gives a feature a plan, a build, and
+   an independent review, adds a security pass only when the change touches a
+   trust boundary, and ships only when the user asks. In the first A/B run
+   (`docs/ab-eval.md`), running every stage matched plain Codex on correctness
+   at about 4x the cost.
 
 ## Layout
 

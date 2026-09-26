@@ -75,8 +75,39 @@ are close, because single agent runs vary.
 
 - Token and cost columns come from the agent's own report. If an arm's command
   does not print one, those columns stay empty.
+- Codex `exec --json` reports the main thread's tokens only. Subagents' tokens
+  are in their session files under `~/.codex/sessions`, so leave out
+  `--ephemeral` when an arm can delegate.
+- `--dangerously-bypass-hook-trust` also runs the hooks in `~/.codex/hooks.json`,
+  so an arm that passes hooks with `-c` runs them twice. Give the native arm
+  `--disable hooks`.
 - `verify` is your check, not the agent's claim.
 - The review output is there to count real defects. Read it rather than
   trusting its verdict.
 - Decide per stage. Godpowers may help most on the steps beyond code (security,
   deploy, monitoring) and least on routine feature work.
+
+## First results
+
+On 2026-09-26 the harness ran one well-specified feature from a real backlog:
+make `godaudits diff` usable as a CI gate. Codex ran `gpt-5.6-sol` at xhigh,
+two runs per arm. A hidden acceptance test, the full suite, and a blind review
+graded each run.
+
+| | Plain Codex | Godpowers, full pipeline |
+| --- | --- | --- |
+| Hidden test and suite | 2 of 2 pass | 4 of 4 pass |
+| Blind review score (of 10) | 7, 7 | 7, 8, 8, 8 |
+| Minutes per run | 3.4 to 3.5 | 13 to 27 |
+| Estimated spend | 1x | about 4x |
+
+Spend weights cached input at a tenth and output at eight times the price of
+uncached input. In the runs with full logs, review, security, and ship took 55
+to 60% of the Godpowers tokens, and every run, with or without Godpowers,
+shipped the same top gap: a misspelled flag silently disabled the gate.
+
+So `/god` now runs the security pass only for changes that touch a trust
+boundary and ships only on request, and the skills require every subagent's
+model and effort to be set explicitly: in one of two runs the reviewer silently
+inherited the session's model at xhigh. One task and two runs per arm is a
+small sample, so run your own before drawing conclusions.

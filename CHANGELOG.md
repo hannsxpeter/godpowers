@@ -20,7 +20,8 @@ independent reviewer, and gates enforced by hooks.
 
 - Commands: 124 became 8. Old commands map to new ones as follows.
   - `/god`, `/god-mode`, `/god-next`, `/god-help`, `/god-locate`, and
-    `/god-progress` became `/god`. Pass a goal to drive it end to end.
+    `/god-progress` became `/god`. Pass a goal to drive it through the stages
+    it needs.
   - `/god-init`, `/god-migrate`, `/god-context`, and `/god-doctor` became
     `/god-init` plus `godpowers doctor` and `godpowers migrate`.
   - `/god-prd`, `/god-arch`, `/god-roadmap`, `/god-stack`, `/god-explore`,
@@ -41,9 +42,9 @@ independent reviewer, and gates enforced by hooks.
   `god-reviewer`, `god-security-auditor`). `god-spec-reviewer` and
   `god-quality-reviewer` merged into `god-reviewer`; `god-harden-auditor`
   became `god-security-auditor`. No skill requires them: skills describe what a
-  step needs, and the agent using the skill chooses the subagent, if any, how
-  to run it, and its model and reasoning effort, sized to the subtask rather
-  than inherited from the session.
+  step needs, and the agent using the skill chooses the subagent, if any, and
+  how to run it, and always sets its model and reasoning effort explicitly,
+  sized to the subtask rather than inherited from the session.
 - Project layout: `.godpowers/` now holds `STATE.md`, `PLAN.md`,
   `DECISIONS.md`, and `evidence.jsonl`. Run `godpowers migrate` on a 6.x
   project. It archives the old files under `.godpowers/archive/v6/`, maps the
@@ -58,6 +59,11 @@ independent reviewer, and gates enforced by hooks.
 
 ### Added
 
+- Proportional stages: `/god` gives a feature a plan, a build, and an
+  independent review, adds a security pass only when the change touches a
+  trust boundary, and ships only when you ask. In the first A/B run
+  (`docs/ab-eval.md`), running every stage matched plain Codex on correctness
+  at about 4x the cost.
 - Hooks that code enforces, registered by the installer in
   `~/.claude/settings.json` (Claude Code) and `~/.codex/hooks.json` (Codex)
   without touching other tools' hooks:

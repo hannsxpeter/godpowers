@@ -19,3 +19,4 @@ Keep Godpowers a small, verified core: durable project state, checks bound to ex
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested
 - [ ] low: the session-start snapshot takes about 5 seconds on repositories with 120,000 files
+- [ ] low: the publish job installs npm@11 unpinned and runs dev-dependency install scripts while holding id-token: write, .github/workflows/publish.yml

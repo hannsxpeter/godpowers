@@ -20,3 +20,8 @@ Why: Short command names and one install path for both hosts the author uses.
 Context: Skills are plain files shared across hosts and cannot know where the CLI was copied.
 Decision: Use `npx -y godpowers@7` in skills; hooks use the absolute path of the installed copy.
 Why: Works on every host with Node, pinned to the major version so the evidence format stays compatible.
+
+## 2026-09-26: Run only the stages a goal needs, and always size subagents
+Context: The first A/B run on a real feature found the full plan, build, review, harden, and ship pipeline as correct as plain Codex at about 4x the cost, with review, harden, and ship taking 55-60% of the tokens; one of two reviewers silently inherited the session's model at xhigh.
+Decision: /god gives a feature a plan, a build, and one fresh-context review, adds /god-harden only for trust-boundary changes, and runs /god-ship only on request. Skills require the agent to set every subagent's model and effort itself.
+Why: Pay for process only where it changes outcomes; the ship gate still demands a security record before any release.
