@@ -30,3 +30,8 @@ Why: Pay for process only where it changes outcomes; the ship gate still demands
 Context: With proportional stages the A/B task still cost about 2.4x plain Codex. The main thread made about 25 tool calls against 11, mostly bookkeeping: a plan for a request that already listed its requirements, and 9-12 test runs, several recorded through the CLI after each slice.
 Decision: /god skips /god-plan when the request already lists its requirements, and /god-build runs targeted tests directly and records the project check once, on the final code.
 Why: Every extra call resends the whole context, and the Stop hook and ship gate only need one passing record for the final code.
+
+## 2026-09-27: Make subagent sizing its own step
+Context: Across the 8 A/B runs since skills first asked for sizing (two each at a38c592, 902d024, 9a9ab58, and a5641cb), the reviewer inherited the session's model and effort in 2 and got only an effort in 1; the inherited xhigh reviewer used about 2.4x the input tokens of a sized one.
+Decision: Before starting any subagent, the agent says which model and effort it picked and why, then passes both explicitly in the call that starts it.
+Why: Naming the choice turns a buried clause into a step, and a skipped choice becomes visible in the transcript. Not yet measured.

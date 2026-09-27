@@ -31,9 +31,9 @@ It keeps what a model cannot do for itself and enforces it with hooks.
   on your own tasks.
 - **Subagent-neutral, right-sized delegation.** A skill says what a step needs,
   such as a review from a fresh context. The agent using it picks the subagent
-  and how to run it, and always sets its model and effort itself: the cheapest
-  that fit the subtask, with the strongest model and high effort kept for work
-  that needs them. The four bundled agents are optional.
+  and how to run it, then names and passes its model and effort explicitly: the
+  cheapest that fit the subtask, with the strongest model and high effort kept
+  for work that needs them. The four bundled agents are optional.
 - **Claude Code skills appear in the picker again** (fix by @ikkeflikkeri), and
   a plugin manifest is included.
 

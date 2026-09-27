@@ -43,8 +43,9 @@ independent reviewer, and gates enforced by hooks.
   `god-quality-reviewer` merged into `god-reviewer`; `god-harden-auditor`
   became `god-security-auditor`. No skill requires them: skills describe what a
   step needs, and the agent using the skill chooses the subagent, if any, and
-  how to run it, and always sets its model and reasoning effort explicitly,
-  sized to the subtask rather than inherited from the session.
+  how to run it, and names and passes its model and reasoning effort
+  explicitly before starting it, sized to the subtask rather than inherited
+  from the session.
 - Project layout: `.godpowers/` now holds `STATE.md`, `PLAN.md`,
   `DECISIONS.md`, and `evidence.jsonl`. Run `godpowers migrate` on a 6.x
   project. It archives the old files under `.godpowers/archive/v6/`, maps the

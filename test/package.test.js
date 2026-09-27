@@ -49,6 +49,15 @@ test('version numbers agree across the package, plugin, marketplace, and changel
   assert.equal(pkg.dependencies, undefined, 'no production dependencies');
 });
 
+test('every skill that delegates makes subagent sizing an explicit step', () => {
+  for (const name of install.listSkills(SRC)) {
+    const text = readText(`skills/${name}/SKILL.md`);
+    if (!/subagent/i.test(text)) continue;
+    assert.match(text, /pass both explicitly/, `${name}: the agent must pass model and effort explicitly`);
+    assert.match(text, /never let it inherit/i, `${name}: a subagent must not inherit the session's model and effort`);
+  }
+});
+
 test('the README documents every command and the CLI', () => {
   const readme = readText('README.md');
   for (const name of COMMANDS) assert.ok(readme.includes(`/${name}`), name);

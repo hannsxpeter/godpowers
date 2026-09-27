@@ -130,5 +130,7 @@ and 2 of 10 for the lean runs and 9 of 12 for the proportional ones. One of the
 two agents spawned its reviewer without a model or effort, so the reviewer
 inherited the session's xhigh; that run cost about 2.8x plain Codex and the
 other about 2x, which makes reliable subagent sizing the largest lever left.
-One task and two runs per arm is a small sample, so run your own before
-drawing conclusions.
+The skills now make sizing its own step: before starting a subagent, the agent
+says which model and effort it picked and why, then passes both explicitly.
+That change is not measured yet. One task and two runs per arm is a small
+sample, so run your own before drawing conclusions.

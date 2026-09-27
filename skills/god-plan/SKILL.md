@@ -8,7 +8,7 @@ argument-hint: "[goal or change]"
 
 Size the plan to the work. When the request already lists its requirements, the plan is just the goal, those requirements with their "Done when" checks, and the slices. A new product gets every section.
 
-1. Read STATE.md, PLAN.md and DECISIONS.md if they exist, and enough of the code to ground the plan in real files. For a large or unfamiliar codebase you may delegate the reading to a subagent of your choice, setting its model and effort yourself (a fast model at low effort is enough), and work from its draft.
+1. Read STATE.md, PLAN.md and DECISIONS.md if they exist, and enough of the code to ground the plan in real files. For a large or unfamiliar codebase you may delegate the reading to a subagent of your choice and work from its draft. Before you start it, say which model and effort you picked and why, then pass both explicitly (whichever your host accepts); never let it inherit yours. A fast model at low effort is enough for reading.
 2. Write `.godpowers/PLAN.md` with these sections:
    - `## Goal`: who it is for and what success looks like.
    - `## Requirements`: `- R1: <requirement>. Done when: <observable check>.` Each needs a check that a test or a person can run.
