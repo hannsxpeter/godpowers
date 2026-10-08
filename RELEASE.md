@@ -59,7 +59,8 @@ It keeps what a model cannot do for itself and enforces it with hooks.
 116 commands, 37 agents, the MCP package, extension packs, routing, workflows,
 dashboards, automations, suite mode, and the learning loop are gone. The command
 map and upgrade steps are in [docs/migrating-from-6.md](docs/migrating-from-6.md).
-`npx godpowers@6` still installs 6.4.0.
+`npx godpowers@6` still installs 6.3.0, the last 6.x release on npm; the 6.4
+source is tagged `v6.4.0`.
 
 ## Upgrade
 
