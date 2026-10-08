@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `godpowers doctor` and `godpowers budget` no longer fail with `ENOENT` when
+  run from the installed copy (`~/.claude/godpowers` or `~/.codex/godpowers`).
+  The installer now copies the skill and agent sources there too.
+- Reinstalling from the installed copy no longer deletes the installed skills.
+  The copy is left in place instead of being cleared and copied onto itself.
+
 ## [7.0.0] - 2026-09-26
 
 Godpowers is now a small core: 8 commands, 4 agents, and about 4K tokens of

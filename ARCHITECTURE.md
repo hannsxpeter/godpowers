@@ -127,10 +127,12 @@ blocks the host.
 
 `install.install(host)` first validates the host's settings or hooks file, then
 removes 6.x leftovers, copies skills (directories for Claude Code and Codex,
-flat files elsewhere) and agents (TOML for Codex), copies `bin/`, `lib/`, and
-`package.json` to `<host>/godpowers/` with a `.godpowers-runtime` marker, and
-merges the hook entries. On Claude Code and Codex the installed skills and
-agents call that copy by path instead of `npx`. The installer only touches
+flat files elsewhere) and agents (TOML for Codex), copies `bin/`, `lib/`, the
+skill and agent sources (which `doctor` and `budget` read), and `package.json`
+to `<host>/godpowers/` with a `.godpowers-runtime` marker, and merges the hook
+entries. Reinstalling from that copy leaves it in place. On Claude Code and
+Codex the installed skills and agents call that copy by path instead of `npx`.
+The installer only touches
 entries named `god`, `god-*`, or `godpowers`, hook commands that run
 `godpowers.js hook`, and registrations of 6.x hook scripts that no longer
 exist. It writes settings through symlinks, keeps their permissions, and

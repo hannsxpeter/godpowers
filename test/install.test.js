@@ -250,3 +250,29 @@ test('an installed copy names itself by path in agent-facing hints', () => {
   const plugin = spawnSync(process.execPath, ['-e', 'console.log(require("./lib/paths").cliCommand())'], { cwd: SRC, encoding: 'utf8', env: { ...process.env, CLAUDE_PLUGIN_ROOT: SRC } });
   assert.equal(plugin.stdout.trim(), `node "${path.join(SRC, 'bin/godpowers.js')}"`);
 });
+
+test('doctor, budget, and a reinstall run from the installed copy', () => {
+  const base = tempDir('gp-home-');
+  install.install('claude', { srcDir: SRC, base });
+  const installed = path.join(base, '.claude/godpowers');
+  const cli = args => spawnSync(process.execPath, [path.join(installed, 'bin/godpowers.js'), ...args], {
+    cwd: base,
+    encoding: 'utf8',
+    env: { ...process.env, HOME: base, USERPROFILE: base }
+  });
+  const budget = cli(['budget', '--json']);
+  assert.equal(budget.status, 0, budget.stderr);
+  assert.equal(JSON.parse(budget.stdout).corpus, require('../lib/budget').measure(SRC).corpus, 'the copy measures the shipped sources');
+  const doctor = cli(['doctor', '--json']);
+  assert.equal(doctor.status, 0, doctor.stderr);
+  const claude = JSON.parse(doctor.stdout).runtimes.find(r => r.key === 'claude');
+  assert.deepEqual(claude.skills.missing, []);
+  assert.deepEqual(claude.agents.missing, []);
+  const again = cli(['--claude', '--global']);
+  assert.equal(again.status, 0, again.stderr);
+  assert.ok(fs.existsSync(path.join(installed, 'bin/godpowers.js')), 'the runtime copy is left in place');
+  assert.ok(fs.existsSync(path.join(installed, '.godpowers-runtime')));
+  for (const name of SKILLS) assert.ok(fs.existsSync(path.join(base, '.claude/skills', name, 'SKILL.md')), name);
+  assert.ok(read(base, '.claude/skills/god/SKILL.md').includes(`node "${path.join(installed, 'bin/godpowers.js')}"`));
+  assert.equal(ownCommands(json(base, '.claude/settings.json').hooks).length, 3);
+});
