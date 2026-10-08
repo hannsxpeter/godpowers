@@ -7,13 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.0.1] - 2026-10-08
+
+The first 7.x release on npm: 7.0.0 was tagged but never published.
+
+### Security
+
+- Registering hooks no longer writes `settings.json` or `hooks.json` through
+  the predictable temp name `<file>.godpowers-tmp`. A repository that planted a
+  symlink at that name could make a `--local` install overwrite the file it
+  pointed at, such as a shell startup file. The temp file now has a random name
+  and is created exclusively.
+
 ### Fixed
 
 - `godpowers doctor` and `godpowers budget` no longer fail with `ENOENT` when
   run from the installed copy (`~/.claude/godpowers` or `~/.codex/godpowers`).
   The installer now copies the skill and agent sources there too.
-- Reinstalling from the installed copy no longer deletes the installed skills.
-  The copy is left in place instead of being cleared and copied onto itself.
+- Reinstalling from the installed copy no longer deletes the installed skills
+  or the copy itself, whatever spelling of its path is used. The new copy is
+  built beside the old one and swapped in, the old one goes back if the swap
+  fails, and a source without skills or agents fails before anything is
+  removed. Staging folders left by a killed install are swept by the next
+  install or uninstall.
 
 ## [7.0.0] - 2026-09-26
 

@@ -1,6 +1,6 @@
 {
   "name": "godpowers",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "Durable project state, evidence-backed \"done\", and gates enforced by hooks. Eight commands and four agents.",
   "author": {
     "name": "Godpowers"

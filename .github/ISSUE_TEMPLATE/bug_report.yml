@@ -12,7 +12,7 @@ body:
     attributes:
       label: Version
       description: Output of `npx godpowers --version`
-      placeholder: "7.0.0"
+      placeholder: "7.0.1"
     validations:
       required: true
 

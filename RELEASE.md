@@ -1,4 +1,21 @@
-# Godpowers 7.0.0
+# Godpowers 7.0.1
+
+7.0.1 is the first 7.x release on npm (7.0.0 was tagged but never published).
+It carries everything in 7.0 below, plus one security fix and two fixes to
+the installed copy.
+
+## Fixes in 7.0.1
+
+- **Security:** registering hooks no longer writes settings through a
+  predictable temp file. A repository that planted a symlink at
+  `.claude/settings.json.godpowers-tmp` could make a `--local` install
+  overwrite the file it pointed at.
+- `godpowers doctor` and `godpowers budget` no longer fail with `ENOENT` when
+  run from `~/.claude/godpowers` or `~/.codex/godpowers`.
+- Reinstalling from the installed copy no longer deletes the installed skills
+  or the copy itself, and a failed install leaves the old copy working.
+
+## What 7.0 changed
 
 Godpowers is now a small core: 8 commands, 4 agents, and about 4K tokens of
 instructions, down from 124 commands, 41 agents, and 1.35 MB of prompt files.
