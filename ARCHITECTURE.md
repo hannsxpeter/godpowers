@@ -130,13 +130,16 @@ removes 6.x leftovers, copies skills (directories for Claude Code and Codex,
 flat files elsewhere) and agents (TOML for Codex), copies `bin/`, `lib/`, the
 skill and agent sources (which `doctor` and `budget` read), and `package.json`
 to `<host>/godpowers/` with a `.godpowers-runtime` marker, and merges the hook
-entries. Reinstalling from that copy leaves it in place. On Claude Code and
-Codex the installed skills and agents call that copy by path instead of `npx`.
-The installer only touches
-entries named `god`, `god-*`, or `godpowers`, hook commands that run
-`godpowers.js hook`, and registrations of 6.x hook scripts that no longer
-exist. It writes settings through symlinks, keeps their permissions, and
-refuses a file that is not valid JSON or has an unexpected `hooks` shape.
+entries. The copy is built in a staging folder beside the old one, the old one
+is moved aside, and the new one is renamed in (the old one goes back if that
+fails), so a reinstall from the copy itself works and a failed install leaves a
+working copy. On Claude Code and Codex the installed skills and agents call that
+copy by path instead of `npx`. The installer only touches entries named `god`,
+`god-*`, or `godpowers`, hook commands that run `godpowers.js hook`, and
+registrations of 6.x hook scripts that no longer exist. It writes settings
+through symlinks using an exclusively created temp file, keeps their
+permissions, and refuses a file that is not valid JSON or has an unexpected
+`hooks` shape.
 
 ## Tests and budgets
 

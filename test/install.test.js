@@ -46,6 +46,15 @@ function legacyHome() {
   return base;
 }
 
+/** A copy of the package sources (bin, lib, skills, agents, package.json) outside the repo. */
+function sourceTree() {
+  const base = tempDir('gp-src-');
+  install.install('claude', { srcDir: SRC, base });
+  const dir = path.join(base, '.claude/godpowers');
+  fs.rmSync(path.join(dir, '.godpowers-runtime'));
+  return dir;
+}
+
 test('Claude Code install writes skill directories, agents, runtime, and hooks, and removes 6.x leftovers', () => {
   const base = legacyHome();
   const result = install.install('claude', { srcDir: SRC, base });
@@ -186,6 +195,29 @@ test('settings are written through symlinks with their permissions kept', () => 
   assert.equal(fs.statSync(path.join(dotfiles, 'claude-settings.json')).mode & 0o777, 0o600);
 });
 
+test('a symlink planted at a temp name cannot redirect the settings write', () => {
+  const base = tempDir('gp-project-');
+  const victim = write(tempDir('gp-victim-'), 'rc', 'echo original\n');
+  write(base, '.claude/settings.json', JSON.stringify({ model: 'opus' }));
+  // The name 7.0.0 used, then the name a fixed random draw would produce.
+  fs.symlinkSync(victim, path.join(base, '.claude/settings.json.godpowers-tmp'));
+  install.install('claude', { srcDir: SRC, base, local: true });
+  assert.equal(fs.readFileSync(victim, 'utf8'), 'echo original\n');
+  assert.equal(fs.lstatSync(path.join(base, '.claude/settings.json')).isSymbolicLink(), false);
+  assert.equal(ownCommands(json(base, '.claude/settings.json').hooks).length, 3);
+  const crypto = require('crypto');
+  const randomBytes = crypto.randomBytes;
+  crypto.randomBytes = size => Buffer.alloc(size, 7);
+  try {
+    const guess = `settings.json.godpowers-${process.pid}-${Buffer.alloc(6, 7).toString('hex')}`;
+    fs.symlinkSync(victim, path.join(base, '.claude', guess));
+    assert.throws(() => install.install('claude', { srcDir: SRC, base, local: true }), /EEXIST/);
+  } finally {
+    crypto.randomBytes = randomBytes;
+  }
+  assert.equal(fs.readFileSync(victim, 'utf8'), 'echo original\n', 'an existing name is refused, not followed');
+});
+
 test('a bad hooks shape stops the install before anything changes', () => {
   const base = legacyHome();
   write(base, '.claude/settings.json', JSON.stringify({ hooks: { Stop: { command: 'x' } } }));
@@ -270,9 +302,139 @@ test('doctor, budget, and a reinstall run from the installed copy', () => {
   assert.deepEqual(claude.agents.missing, []);
   const again = cli(['--claude', '--global']);
   assert.equal(again.status, 0, again.stderr);
-  assert.ok(fs.existsSync(path.join(installed, 'bin/godpowers.js')), 'the runtime copy is left in place');
-  assert.ok(fs.existsSync(path.join(installed, '.godpowers-runtime')));
+  for (const rel of ['bin/godpowers.js', 'skills/god/SKILL.md', 'agents/god-reviewer.md', '.godpowers-runtime']) {
+    assert.ok(fs.existsSync(path.join(installed, rel)), `the runtime copy keeps ${rel}`);
+  }
   for (const name of SKILLS) assert.ok(fs.existsSync(path.join(base, '.claude/skills', name, 'SKILL.md')), name);
   assert.ok(read(base, '.claude/skills/god/SKILL.md').includes(`node "${path.join(installed, 'bin/godpowers.js')}"`));
   assert.equal(ownCommands(json(base, '.claude/settings.json').hooks).length, 3);
+  const codex = cli(['--codex', '--global']);
+  assert.equal(codex.status, 0, codex.stderr);
+  assert.ok(fs.existsSync(path.join(base, '.codex/godpowers/skills/god/SKILL.md')), 'Codex installs from the Claude Code copy');
+  assert.ok(fs.existsSync(path.join(base, '.codex/godpowers/agents/god-reviewer.md')));
+});
+
+test('a reinstall replaces the runtime copy whole, whatever path names it', () => {
+  const base = tempDir('gp-home-');
+  install.install('claude', { srcDir: SRC, base });
+  const installed = path.join(base, '.claude/godpowers');
+  write(installed, 'lib/stale.js', 'left by an older version');
+  write(installed, 'package.json', JSON.stringify({ name: 'godpowers', version: '0.0.1' }));
+  install.install('claude', { srcDir: SRC, base });
+  assert.equal(fs.existsSync(path.join(installed, 'lib/stale.js')), false, 'files the new version does not ship are gone');
+  assert.equal(json(base, '.claude/godpowers/package.json').version, require('../package.json').version);
+  // The same folder reached through a symlinked home: the copy must not delete its own source.
+  const link = path.join(tempDir('gp-link-'), 'home');
+  fs.symlinkSync(base, link);
+  install.install('claude', { srcDir: path.join(link, '.claude/godpowers'), base });
+  assert.ok(fs.existsSync(path.join(installed, 'lib/install.js')));
+  assert.ok(fs.existsSync(path.join(installed, 'skills/god/SKILL.md')));
+  // On a case-insensitive filesystem (the macOS default), a differently cased path.
+  const upper = path.join(base, '.CLAUDE/GODPOWERS');
+  if (fs.existsSync(upper)) {
+    install.install('claude', { srcDir: upper, base });
+    assert.ok(fs.existsSync(path.join(installed, 'lib/install.js')), 'a differently cased source path keeps the copy');
+  }
+  assert.deepEqual(fs.readdirSync(path.join(base, '.claude')).filter(name => name.startsWith('.godpowers-new-')), [], 'no staging folder is left behind');
+});
+
+test('a runtime folder symlinked to a checkout becomes a real copy and the checkout is untouched', () => {
+  const base = tempDir('gp-home-');
+  const checkout = sourceTree();
+  fs.mkdirSync(path.join(base, '.claude'), { recursive: true });
+  fs.symlinkSync(checkout, path.join(base, '.claude/godpowers'));
+  install.install('claude', { srcDir: checkout, base });
+  const installed = path.join(base, '.claude/godpowers');
+  assert.equal(fs.lstatSync(installed).isSymbolicLink(), false);
+  assert.ok(fs.existsSync(path.join(installed, '.godpowers-runtime')));
+  assert.equal(fs.existsSync(path.join(checkout, '.godpowers-runtime')), false, 'no marker is written into the checkout');
+  assert.ok(fs.existsSync(path.join(checkout, 'lib/install.js')));
+});
+
+test('a failed swap puts the old runtime copy back and leaves no staging folder', () => {
+  const base = tempDir('gp-home-');
+  install.install('claude', { srcDir: SRC, base });
+  const installed = path.join(base, '.claude/godpowers');
+  write(installed, 'lib/marker-of-old-copy.js', 'old');
+  const renameSync = fs.renameSync;
+  let failed = false;
+  fs.renameSync = (from, to) => {
+    if (!failed && to === installed && from.includes('.godpowers-new-')) {
+      failed = true;
+      throw Object.assign(new Error('EACCES: simulated'), { code: 'EACCES' });
+    }
+    return renameSync(from, to);
+  };
+  try {
+    assert.throws(() => install.install('claude', { srcDir: SRC, base }), /EACCES/);
+  } finally {
+    fs.renameSync = renameSync;
+  }
+  assert.ok(fs.existsSync(path.join(installed, 'lib/marker-of-old-copy.js')), 'the old copy is back in place');
+  assert.ok(fs.existsSync(path.join(installed, 'bin/godpowers.js')));
+  assert.deepEqual(fs.readdirSync(path.join(base, '.claude')).filter(name => name.startsWith('.godpowers-new-')), []);
+});
+
+test('staging folders left by a killed install are swept by the next install and by uninstall', () => {
+  const base = tempDir('gp-home-');
+  write(base, '.claude/.godpowers-new-killed/lib/x.js', 'left by a killed install');
+  install.install('claude', { srcDir: SRC, base });
+  assert.equal(fs.existsSync(path.join(base, '.claude/.godpowers-new-killed')), false);
+  write(base, '.claude/.godpowers-new-killed/lib/x.js', 'left by a killed install');
+  install.uninstall('claude', { base });
+  assert.equal(fs.existsSync(path.join(base, '.claude/.godpowers-new-killed')), false);
+});
+
+test('the runtime copy folder follows the umask, and settings keep their mode under any umask', () => {
+  const previous = process.umask(0o022);
+  try {
+    const open = tempDir('gp-home-');
+    install.install('claude', { srcDir: SRC, base: open });
+    assert.equal(fs.statSync(path.join(open, '.claude/godpowers')).mode & 0o777, 0o755);
+    process.umask(0o077);
+    const strict = tempDir('gp-home-');
+    write(strict, '.claude/settings.json', JSON.stringify({ model: 'opus' }));
+    fs.chmodSync(path.join(strict, '.claude/settings.json'), 0o644);
+    install.install('claude', { srcDir: SRC, base: strict });
+    assert.equal(fs.statSync(path.join(strict, '.claude/godpowers')).mode & 0o777, 0o700, 'a strict umask is not widened');
+    assert.equal(fs.statSync(path.join(strict, '.claude/settings.json')).mode & 0o777, 0o644, 'the settings mode survives the umask');
+  } finally {
+    process.umask(previous);
+  }
+});
+
+test('a failed settings write removes its temp file', () => {
+  const base = tempDir('gp-home-');
+  write(base, '.claude/settings.json', JSON.stringify({ model: 'opus' }));
+  const renameSync = fs.renameSync;
+  fs.renameSync = (from, to) => {
+    if (/\.godpowers-\d+-[0-9a-f]{12}$/.test(from)) throw Object.assign(new Error('EIO: simulated'), { code: 'EIO' });
+    return renameSync(from, to);
+  };
+  try {
+    assert.throws(() => install.install('claude', { srcDir: SRC, base }), /EIO/);
+  } finally {
+    fs.renameSync = renameSync;
+  }
+  assert.deepEqual(fs.readdirSync(path.join(base, '.claude')).filter(name => name.startsWith('settings.json.')), []);
+  assert.equal(json(base, '.claude/settings.json').model, 'opus');
+});
+
+test('a source that cannot be copied fails with the installed copy intact', () => {
+  const base = tempDir('gp-home-');
+  install.install('claude', { srcDir: SRC, base });
+  const noSkills = tempDir('gp-src-');
+  assert.throws(() => install.install('claude', { srcDir: noSkills, base }), /ENOENT/);
+  for (const name of SKILLS) assert.ok(fs.existsSync(path.join(base, '.claude/skills', name, 'SKILL.md')), `${name} survives a source without skills`);
+  const empty = tempDir('gp-src-');
+  fs.mkdirSync(path.join(empty, 'skills'));
+  fs.mkdirSync(path.join(empty, 'agents'));
+  assert.throws(() => install.install('claude', { srcDir: empty, base }), /holds no skills or agents/);
+  assert.equal(fs.readdirSync(path.join(base, '.claude/skills')).filter(install.isOwnName).length, SKILLS.length, 'empty source folders remove nothing');
+  const noPackage = sourceTree();
+  fs.rmSync(path.join(noPackage, 'package.json'));
+  assert.throws(() => install.install('claude', { srcDir: noPackage, base }), /ENOENT/);
+  assert.equal(json(base, '.claude/godpowers/package.json').name, 'godpowers', 'the old runtime copy is still in place');
+  assert.ok(fs.existsSync(path.join(base, '.claude/godpowers/lib/install.js')));
+  assert.deepEqual(fs.readdirSync(path.join(base, '.claude')).filter(name => name.startsWith('.godpowers-new-')), []);
 });
