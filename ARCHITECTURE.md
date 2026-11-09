@@ -58,6 +58,8 @@ test/                 node:test suites
 | `evidence.js` | The evidence ledger: run and record checks, reuse, waivers, attestations, chain |
 | `fast.js` | The `fast` check: replaces each `{files}` (only a standalone word outside quotes, judged by a small POSIX quote scanner; anything else is refused) with `"$@"` and runs `/bin/sh -c <script> godpowers-fast <file>...`, so file names are arguments and never shell source (a command with `{files}` is refused on Windows); skips files that resolve outside the project, and runs without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
 | `reviews.js` | Review rounds since the last pass, and the three-round warning |
+| `verdict.js` | The pasteable verdict block from the ledger and git; judges like the ship gate, claims no pass on a damaged ledger, always exits 0 |
+| `drift.js` | Base drift: whether the target branch changed files this change also touches, from local refs only (never fetches) |
 | `stats.js` | Numbers computed from the ledger |
 | `testguard.js` | Flags deleted tests, fewer tests or assertions, and added skip markers since a base |
 | `risk.js` | Classifies the change since a base as low, normal, or high, from its paths |
@@ -103,7 +105,10 @@ do not carry a code fingerprint that could outlive an edit; a record that still
 has a `code` field, from a development build, is valid and the field is
 ignored). Attestations carry `head` (the HEAD commit, or null
 outside git). A review record may also carry `dismissed`: up to 20 findings of
-300 characters each, redacted, that the author chose not to fix. The
+300 characters each, redacted, that the author chose not to fix. Review and
+harden records may carry `reviewer` (redacted, at most 100 characters), and a
+review record carries `diff` (`{ base, files, added, removed }` against the
+base, or null without one), which `reviews` uses for the growth warning. The
 fingerprint version stays 1, so 7.0 records keep matching on `tree`, apart
 from the verify records described below. File names with a newline or other
 control character are fingerprinted like any other (hashed one at a time,
@@ -134,7 +139,7 @@ nothing. `state.validate` reports unusable `docs:` and `risk:` globs as errors.
 
 `statusFor` takes, for one fingerprint, the last `verify` of the project's
 declared check (or any `verify` when none is declared) or `waive` as the check
-status, and the last `review`, `harden`, and `ship` records as those statuses.
+status, and the last `review`, `harden`, and `ship` records as those statuses. `last` holds those three records themselves.
 A verify record also has to be of the declared command itself: it carries
 `cmd`, the identity of the exact command, because the stored `command` is
 redacted and two commands that differ only in a secret share it. `cmd` is
@@ -184,6 +189,11 @@ critical risk. Records a tier does not need show as ok with the reason. When a
 base exists it also runs `testguard` and shows its findings as a warning that
 does not block, and warns when the `docs:` or `risk:` setting in STATE.md
 differs from the base commit's (a missing file there means no setting, an unreadable one is reported). Outside a git work tree the ship gate fails (`git` check, error): there is no fingerprint to bind a record to, so no record counts. The stop gate still allows the stop there, because hooks fail open.
+`drift.js` adds one more warning: the
+target branch (`--onto`, else `origin/HEAD`, else `main`) is compared by
+merge base with HEAD, and files both sides changed are listed. It uses local
+refs only, so it is as fresh as the last fetch, and an unknown answer is
+reported as a reason, never an error.
 
 Review rounds are bounded: `reviews` counts failed review records since the
 last passing one and says to stop and rethink the approach at three. A
@@ -231,7 +241,7 @@ blocks the host.
 ## Install
 
 `install.install(host)` first validates the host's settings or hooks file, then
-removes 6.x leftovers, copies skills (directories for Claude Code and Codex,
+removes 6.x leftovers, copies skills (directories for Claude Code and Codex, with each skill's `agents/openai.yaml` added for Codex only;
 flat files elsewhere) and agents (TOML for Codex), copies `bin/`, `lib/`, the
 skill and agent sources (which `doctor` and `budget` read), and `package.json`
 to `<host>/godpowers/` with a `.godpowers-runtime` marker, and merges the hook

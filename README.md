@@ -11,7 +11,7 @@ of which checks actually ran against which code, an independent reviewer in a
 fresh context, and gates that code enforces through Claude Code and Codex hooks.
 
 It is deliberately small: 8 commands, 4 agents, and about 6K tokens of
-instructions in total. About 950 tokens load per session whether you use it or
+instructions in total. About 600 tokens load per session whether you use it or
 not.
 
 ## Why 7.0 is smaller
@@ -39,7 +39,7 @@ npx godpowers --claude --global
 ```
 
 Use `--codex` for Codex (skills go to `~/.agents/skills`, hooks to
-`~/.codex/hooks.json`), `--claude --codex` for both, or `--all` for every
+`~/.codex/hooks.json`, plus `agents/openai.yaml` metadata next to each skill), `--claude --codex` for both, or `--all` for every
 supported host. Claude Code and Codex get the hooks. Cursor, Windsurf, Gemini
 CLI, OpenCode, Copilot, and the other hosts get the skills and agents only.
 `--local` installs into the current directory instead of your home directory.
@@ -141,9 +141,11 @@ Other commands are recorded but do not count.
   check. Normal risk also needs a passing review record. High risk also needs
   a passing security record. With no tag and no `--base` there is nothing to
   compare, so the tier is high. An open critical risk always blocks, and
-  `tests` findings show as a warning. Outside a git work tree the gate fails
-  with "not a git repository: evidence cannot be bound to the code", because no
-  record can be tied to the code there.
+  `tests` findings show as a warning, as does base drift: when the branch you
+  will merge into (`--onto`, default `origin/HEAD`, else `main`) changed files
+  this change also touches. It never fetches. Outside a git work tree the gate
+  fails with "not a git repository: evidence cannot be bound to the code",
+  because no record can be tied to the code there.
 
 ### Risk tiers
 
@@ -223,11 +225,14 @@ godpowers fast --hook                   PostToolUse handler: silent unless the c
 godpowers verify --waive "<reason>"     record that no automated check covers this code
 godpowers record review|harden|ship --pass|--fail --summary "<text>"
 godpowers record review ... --dismiss "<finding>: <reason>"   (repeatable)
+godpowers record review|harden ... --reviewer "<name>"   who reviewed
+godpowers record review ... --base <ref>   store the change size for the growth warning
 godpowers reviews [--json]              review rounds since the last pass
+godpowers verdict [--base <ref>] [--json]   check, review, security, open risks, to paste
 godpowers stats [--json]                check runs, recovery time, review rounds
 godpowers tests [--base <ref>] [--json] flag weakened tests since the base
 godpowers risk [--base <ref>] [--json]  low, normal, or high risk since the base
-godpowers gate ship [--base <ref>] [--json]   the release gate, by risk tier
+godpowers gate ship [--base <ref>] [--json] [--onto <ref>]   the release gate, by risk tier
 godpowers lint [--notes] [--json]       validate .godpowers/ files
 godpowers doctor [--json]               installed hosts, registered hooks, 6.x leftovers
 godpowers budget [--json]               prompt size of the shipped skills and agents
@@ -278,6 +283,16 @@ each saw and the findings dismissed. After three failed rounds it says to stop
 and rethink the approach. Record a finding you chose not to fix with
 `record review --fail --summary "<text>" --dismiss "<finding>: <reason>"`, so
 the next reviewer is not asked about it again.
+
+`record review|harden --reviewer "<name>"` stores who judged, never guessed,
+and `reviews` shows it. `record review --base <ref>` also stores the size of
+the change; `reviews` and `record review` warn when it grew by more than 25%
+(and at least 20 lines) during review.
+
+`verdict` prints the check, review rounds and reviewer, security record, and
+open risks for the current code, to paste unedited into a PR description or
+release notes. It judges evidence like the ship gate, claims no pass while the
+ledger has integrity errors, and always exits 0.
 
 `stats` reports from the ledger: check runs with passes, failures, and median
 and longest duration, the median time from a failing run to the next passing

@@ -1,78 +1,49 @@
-# Godpowers 7.1.0
+# Godpowers 7.2.0
 
-7.1.0 is the first 7.x release on npm. 7.0.0 and 7.0.1 were tagged but never
-published, because the publish job failed with `E404` on npm credentials.
+7.2.0 builds on 7.1.0. See
+[CHANGELOG.md](CHANGELOG.md) for the 7.1.0 details, and
+[docs/migrating-from-6.md](docs/migrating-from-6.md) for the 6.x command map
+and upgrade steps.
 
-## What 7.0 brought
+Godpowers is still small: 8 commands, 4 agents, and about 6K tokens of
+instructions, of which about 600 load per session.
 
-Godpowers 7 is a small core: 8 commands, 4 agents, and about 6K tokens of
-instructions, down from 124 commands, 41 agents, and 1.35 MB of prompt files.
-It keeps durable state, evidence bound to exact code, an independent review,
-and gates that hooks enforce. See [CHANGELOG.md](CHANGELOG.md) for the full
-7.0.0 and 7.0.1 notes and [docs/migrating-from-6.md](docs/migrating-from-6.md)
-for the command map and upgrade steps.
+## Changes in 7.2.0
 
-## Changes in 7.1.0
+- **`godpowers verdict`** prints the check, review rounds and reviewer,
+  security record, and open risks for the current code, ready to paste into a
+  PR description or release notes. It judges evidence like the ship gate,
+  claims no pass while the ledger has integrity errors, and always exits 0.
+- **Reviewer on the record.** `record review|harden --reviewer "<name>"` stores
+  who reviewed. It is never guessed. `reviews` shows it.
+- **Review growth.** `record review --base <ref>` stores the size of the change.
+  `reviews` and `record review` warn when it grew by more than 25% (and at
+  least 20 lines) during review.
+- **Base drift.** `gate ship --onto <ref>` (default `origin/HEAD`, else `main`)
+  warns, without blocking, when the target branch moved on in files this
+  change also touches. It never fetches.
+- **Codex metadata.** Codex installs get `agents/openai.yaml` next to each
+  skill.
+- **Trigger-style descriptions.** Skill and agent descriptions say when to use
+  them. The always-loaded prompt fell from 957 to 605 tokens, with every
+  trigger phrase kept.
+- **Unattended runs.** When you are not watching, `/god` asks through the
+  host's question tool and ends ready, waiting for approval, or blocked.
+  Reviews judge severity against the goal and cut what review added beyond it.
+  `/god-ship` pastes the verdict and runs the drift check.
 
-- **`godpowers fast`** runs a file-local check declared as `fast:` in STATE.md
-  on the changed files, for quick feedback. It is never recorded. `{files}`
-  must be a plain argument word outside quotes (commands with `${` are
-  refused) and becomes `"$@"`, so file names are arguments and never shell
-  source (not supported on Windows). `fast --hook`
-  is a handler for a PostToolUse hook you add yourself.
-- **`verify` reuses a passing record** of the same command on unchanged code.
-  `--force` runs it again.
-- **Bounded reviews.** Review records store the commit they saw and the findings
-  you dismissed. `godpowers reviews` lists the rounds and says to rethink the
-  approach after three failed ones. Re-reviews cover only the change since the
-  last reviewed commit.
-- **`godpowers tests`** flags deleted tests, fewer tests or assertions, and
-  added skip or focus markers since the last release tag.
-- **`godpowers risk` and a tiered ship gate.** Low-risk changes need a passing
-  check, normal ones also a review, and high-risk ones also a security record.
-  With no tag to compare against, the tier is high.
-- **`docs:` in STATE.md** narrows what counts as documentation for the stop
-  gate and the low risk tier; it can never widen the built-in rule. Every
-  record still matches the exact code, so a documentation edit voids a review,
-  as in 7.0. Unusable `docs:` or `risk:`
-  globs are `lint` errors, and a STATE.md with errors or an unusable `risk:`
-  glob keeps the tier high.
-- **`godpowers stats`** reports check runs, recovery time, and review rounds.
-- **Plan slices carry a kind**, `(behavior)` or `(refactor)`, and the skills
-  keep the two apart. The shared skill no longer names a specific model.
-- **CI** cancels superseded pull request runs, lints once, and runs the release
-  check in parallel.
-
-Godpowers does not register a hook that runs the `fast` command, because an
-installed hook would run a command any cloned repository declares. The README
-shows a hook you can add to a trusted repository's own
-`.claude/settings.local.json`.
-
-## Evidence hardening
-
-- `verify` reuses only records signed with a key kept on this machine
-  (`~/.godpowers/local.key`), over the exact command, so a ledger committed to a
-  repository cannot stand in for a check that never ran here.
-- Every gate matches a check to the declared command by an exact identity, not
-  by its redacted text.
-- Settings a repository controls (`docs:`, `risk:`) can only make a gate
-  stricter, and a STATE.md with errors keeps the strictest requirement.
-- File names with control characters are fingerprinted and make the tier high.
-- Redaction covers Basic credentials, Google API keys, and quoted values.
+Several of these ideas come from tstack (MIT, by Theo Browne). See
+[INSPIRATION.md](INSPIRATION.md).
 
 ## Behavior change
 
-A verify record made by 7.0 no longer satisfies the stop gate, the ship gate, or
-`status`, because records are matched to the declared command by an exact
-identity that 7.0 did not store. After upgrading, run `godpowers verify` once.
+None since 7.1.0. Old records stay valid: a review record without `reviewer`
+or `diff` still counts, and the new warnings never block.
 
-The ship gate now fails outside a git work tree ("not a git repository:
-evidence cannot be bound to the code"). Before, it passed on the latest
-records with only a warning.
-
-The ship gate no longer requires a security record for normal-risk changes, or
-a review for low-risk ones. Add globs under `risk:` in STATE.md to make more
-paths high risk.
+Coming from 6.x or 7.0, read the 7.1.0 behavior changes in
+[CHANGELOG.md](CHANGELOG.md) too: run `godpowers verify` once after upgrading,
+because 7.0 verify records no longer satisfy the gates, and the ship gate now
+fails outside a git work tree.
 
 ## Upgrade
 
@@ -81,4 +52,4 @@ npx godpowers@7 --claude --codex --global
 npx godpowers@7 migrate --dry-run   # 6.x projects only, then without --dry-run
 ```
 
-In Codex, open `/hooks` once to trust the new hooks.
+In Codex, open `/hooks` once to trust the hooks if you have not already.

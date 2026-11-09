@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.2.0] - 2026-11-09
+
+Verdicts you can paste, reviews that say who judged and how far the change
+grew, a warning when the target branch moved on, descriptions that say when to
+use a skill, and unattended runs. Several ideas come from tstack
+(github.com/t3dotgg/tstack, MIT, by Theo Browne); see INSPIRATION.md.
+
+### Added
+
+- `godpowers verdict [--base <ref>] [--json]` prints a block built from the
+  ledger and git: the check, review rounds and reviewer, security record, and
+  open risks, for pasting unedited into a PR description or release notes. It
+  judges evidence exactly like the ship gate, claims no pass while the ledger
+  has integrity errors, and always exits 0.
+- `record review|harden --reviewer "<name>"` stores who reviewed, redacted and
+  capped at 100 characters, and never guesses. `reviews` shows it.
+- `record review --base <ref>` stores the size of the change against the base
+  (default: the latest `v*` tag) in the record's `diff` field. `reviews` and
+  `record review` warn when the change grew by more than 25% and at least 20
+  lines during review.
+- `gate ship --onto <ref>` (default `origin/HEAD`, else `main`) warns, without
+  blocking, when the target branch moved on in files this change also touches.
+  It never fetches, so it is as fresh as the last fetch.
+- Codex installs get `agents/openai.yaml` (display name, short description,
+  default prompt) next to each skill's `SKILL.md`.
+- `lib/verdict.js` and `lib/drift.js`.
+
+### Changed
+
+- Skill and agent descriptions now say when to use them. The always-loaded
+  prompt fell from 957 to 605 tokens, with every trigger phrase kept.
+- `/god` covers unattended work: when you are not watching, questions go
+  through the host's question tool, and the run ends ready, waiting for
+  approval, or blocked.
+- Reviews judge severity against the goal and cut what review added beyond it.
+  `/god-ship` pastes the verdict and runs the drift check.
+- `statusFor` also returns `last`, the attestation record behind each judgment.
+
 ## [7.1.0] - 2026-11-09
 
 Faster and more selective verification: cheap local feedback, no repeated
