@@ -209,3 +209,127 @@ test('a same-size edit is still detected after the clock moves to the next secon
   await new Promise(resolve => setTimeout(resolve, 1100));
   assert.equal(gitTools.treeFingerprint(root), edited, 'git trusts cached stats only as far as the real index would');
 });
+
+test('workingChanges lists changed and untracked files, not deleted or bookkeeping files', () => {
+  const root = gitRepo();
+  write(root, 'gone.txt', 'x');
+  write(root, 'staged.txt', 'x');
+  write(root, '.godpowers/STATE.md', 'x');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'more');
+  assert.deepEqual(gitTools.workingChanges(root), []);
+  write(root, 'src/app.js', 'edited');
+  write(root, 'staged.txt', 'staged edit');
+  git(root, 'add', 'staged.txt');
+  write(root, 'new dir/new.js', 'untracked');
+  write(root, '.godpowers/evidence.jsonl', 'ignored');
+  fs.rmSync(path.join(root, 'gone.txt'));
+  write(root, 'added.txt', 'staged add');
+  git(root, 'add', 'added.txt');
+  assert.deepEqual(gitTools.workingChanges(root), ['added.txt', 'new dir/new.js', 'src/app.js', 'staged.txt']);
+  const before = gitTools.treeFingerprint(root);
+  gitTools.workingChanges(root);
+  assert.equal(gitTools.treeFingerprint(root), before);
+});
+
+test('workingChanges before the first commit lists every file, and is empty outside git', () => {
+  const fresh = tempDir();
+  git(fresh, 'init', '-q');
+  write(fresh, 'a.txt', 'a');
+  write(fresh, 'sub/b.txt', 'b');
+  assert.deepEqual(gitTools.workingChanges(fresh), ['a.txt', 'sub/b.txt']);
+  assert.deepEqual(gitTools.workingChanges(tempDir()), []);
+});
+
+test('workingChanges is relative to a project in a subdirectory', () => {
+  const root = gitRepo();
+  write(root, 'pkg/a.js', 'a');
+  write(root, 'other/b.js', 'b');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'pkg');
+  write(root, 'pkg/a.js', 'edited');
+  write(root, 'pkg/c.js', 'new');
+  write(root, 'other/b.js', 'edited');
+  assert.deepEqual(gitTools.workingChanges(path.join(root, 'pkg')), ['a.js', 'c.js']);
+});
+
+test('a file name with a newline or other control character is part of every view of the tree', () => {
+  const root = gitRepo();
+  const clean = gitTools.treeFingerprint(root);
+  for (const name of ['src/auth/token\n.js', 'src/bell\u0007.js', 'src/tab\t.js']) {
+    write(root, name, 'one');
+    const added = gitTools.treeFingerprint(root);
+    assert.notEqual(added, clean, JSON.stringify(name));
+    write(root, name, 'two');
+    assert.notEqual(gitTools.treeFingerprint(root), added, 'an edit to it changes the fingerprint');
+    assert.ok(gitTools.workingChanges(root).includes(name), 'workingChanges lists it');
+    assert.ok(gitTools.changedSince(root, 'HEAD').includes(name), 'changedSince lists it');
+    assert.ok(gitTools.snapshot(root).files[name], 'the snapshot has its hash');
+    fs.rmSync(path.join(root, name));
+  }
+  assert.equal(gitTools.treeFingerprint(root), clean);
+  write(root, 'src/auth/token\n.js', 'tracked');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'odd name');
+  const committed = gitTools.treeFingerprint(root);
+  assert.equal(gitTools.headTree(root), committed);
+  write(root, 'src/auth/token\n.js', 'edited after commit');
+  assert.notEqual(gitTools.treeFingerprint(root), committed, 'a tracked file with a newline in its name is rehashed');
+  assert.deepEqual(gitTools.changedSince(root, 'HEAD'), ['src/auth/token\n.js']);
+  assert.equal(gitTools.hashPath(root, 'src/auth/token\n.js'), gitTools.git(root, ['hash-object', '--', 'src/auth/token\n.js']).stdout.trim());
+  assert.deepEqual(gitTools.diffSince(root, 'HEAD').files.map(f => f.path), ['src/auth/token\n.js']);
+});
+
+test('changes cannot be listed in a repository without a work tree, and the error says so', () => {
+  const root = gitRepo();
+  const bare = path.join(tempDir(), 'bare.git');
+  git(root, 'clone', '-q', '--bare', root, bare);
+  assert.equal(git(bare, 'rev-parse', 'HEAD'), git(root, 'rev-parse', 'HEAD'), 'the base itself resolves in a bare repository');
+  assert.equal(gitTools.resolveBase(bare, 'HEAD'), git(root, 'rev-parse', 'HEAD'));
+  assert.throws(() => gitTools.changedSince(bare, 'HEAD'), /no work tree/);
+  assert.throws(() => gitTools.diffSince(bare, 'HEAD'), /no work tree/);
+  assert.throws(() => gitTools.changedSince(path.join(bare, 'objects'), 'HEAD'), /no work tree/, 'inside the git directory too');
+  assert.deepEqual(gitTools.changedSince(root, 'HEAD'), []);
+});
+
+test('releaseBase takes only v<digit> tags and skips tags on HEAD', () => {
+  const root = gitRepo();
+  git(root, 'tag', 'v1.0.0');
+  write(root, 'one.txt', '1');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'one');
+  git(root, 'tag', 'vnext');
+  git(root, 'tag', 'v-draft');
+  git(root, 'tag', '-a', 'vfoo', '-m', 'not a release');
+  assert.equal(gitTools.releaseBase(root).ref, 'v1.0.0', 'tags that are not v<digit> do not count');
+  git(root, 'tag', 'v1.1.0');
+  assert.equal(gitTools.releaseBase(root).ref, 'v1.0.0', 'the tag on HEAD is skipped: the just-tagged release compares with the previous one');
+  write(root, 'two.txt', '2');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'two');
+  assert.equal(gitTools.releaseBase(root).ref, 'v1.1.0');
+  git(root, 'tag', '-a', 'v2.0.0', '-m', 'annotated');
+  git(root, 'tag', 'v2.0.1');
+  assert.equal(gitTools.releaseBase(root).ref, 'v1.1.0', 'annotated and lightweight tags on HEAD are both skipped');
+  const only = gitRepo();
+  git(only, 'tag', 'v1.0.0');
+  assert.equal(gitTools.releaseBase(only), null, 'a repository whose only tag is on HEAD has no base');
+});
+
+test('readAt reads a file as it was at a commit, relative to the project; null when it is absent there; throws when it cannot be read', () => {
+  const root = gitRepo();
+  const sha = git(root, 'rev-parse', 'HEAD');
+  assert.equal(gitTools.readAt(root, sha, 'src/app.js'), 'module.exports = 1;\n');
+  assert.equal(gitTools.readAt(root, sha, 'missing.txt'), null);
+  assert.equal(gitTools.readAt(path.join(root, 'src'), sha, 'app.js'), 'module.exports = 1;\n', 'a project in a subdirectory');
+  assert.equal(gitTools.readAt(root, sha, 'no/such/dir/file.txt'), null);
+  assert.throws(() => gitTools.readAt(root, sha, 'src'), /not a regular file/, 'a directory is not a file');
+  assert.throws(() => gitTools.readAt(root, 'not-a-sha', 'src/app.js'), /could not read/);
+  assert.throws(() => gitTools.readAt(tempDir(), sha, 'src/app.js'), /could not read/);
+  const blob = git(root, 'rev-parse', `${sha}:src/app.js`);
+  const object = path.join(root, '.git', 'objects', blob.slice(0, 2), blob.slice(2));
+  fs.chmodSync(object, 0o644);
+  fs.rmSync(object);
+  assert.throws(() => gitTools.readAt(root, sha, 'src/app.js'), /could not read src\/app\.js at /, 'listed at the commit, but its content is gone');
+  assert.equal(gitTools.readAt(root, sha, 'missing.txt'), null, 'absence is still absence');
+});

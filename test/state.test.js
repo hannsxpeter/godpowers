@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 
 const stateStore = require('../lib/state');
 const templates = require('../lib/templates');
-const { tempDir, write, read } = require('./helpers');
+const { tempDir, write, read, stateText } = require('./helpers');
 
 const messages = diags => diags.map(d => `${d.severity}: ${d.message}`).join('\n');
 
@@ -75,4 +75,41 @@ test('setFields updates frontmatter, keeps the body, and rejects bad stages', ()
 
 test('read returns null without STATE.md', () => {
   assert.equal(stateStore.read(tempDir()), null);
+});
+
+test('accepts fast, docs, and risk keys and warns about an empty fast command', () => {
+  const ok = stateStore.parse(stateText({ fast: 'eslint {files}', docs: '*.md, docs/**', risk: 'db/**' }));
+  const text = messages(stateStore.validate(ok));
+  assert.doesNotMatch(text, /unknown frontmatter key/);
+  assert.doesNotMatch(text, /"fast"/);
+  const empty = stateStore.parse(stateText({ fast: '' }));
+  assert.match(messages(stateStore.validate(empty)), /warning: frontmatter "fast" is empty/);
+});
+
+test('docs and risk globs that would match nearly every path are errors', () => {
+  for (const glob of ['*', '**', '**/*', '*.*', '*/', './**', '?', '**/**']) {
+    for (const key of ['docs', 'risk']) {
+      const text = messages(stateStore.validate(stateStore.parse(stateText({ [key]: glob }))));
+      assert.match(text, new RegExp(`error: frontmatter "${key}" has a glob that would match nearly every path \\(`), `${key}: ${glob}`);
+      assert.match(text, /It is ignored/);
+    }
+  }
+  const several = messages(stateStore.validate(stateStore.parse(stateText({ docs: 'README.md, **, *.*' }))));
+  assert.match(several, /error: frontmatter "docs" has globs that .* \(\*\*, \*\.\*\)/);
+  for (const glob of ['none', 'docs/**', '*.md', 'a*', 'src/*/x', '*.txt', '*auth*']) {
+    assert.doesNotMatch(messages(stateStore.validate(stateStore.parse(stateText({ docs: glob, risk: glob })))), /nearly every path/, glob);
+  }
+});
+
+test('docs and risk globs that cannot be used are errors that say what happens', () => {
+  const tooMany = 'src/a**b**c**d**e**f**g**h.js';
+  const tooLong = `${'a'.repeat(513)}/**`;
+  const docs = messages(stateStore.validate(stateStore.parse(stateText({ docs: `README.md, ${tooMany}` }))));
+  assert.match(docs, /error: frontmatter "docs" has a glob that cannot be used \(src\/a\*\*b/);
+  assert.match(docs, /It is ignored/);
+  const risk = messages(stateStore.validate(stateStore.parse(stateText({ risk: tooMany }))));
+  assert.match(risk, /error: frontmatter "risk" has a glob that cannot be used/);
+  assert.match(risk, /risk tier stays high/);
+  assert.match(messages(stateStore.validate(stateStore.parse(stateText({ risk: tooLong })))), /frontmatter "risk" has a glob that cannot be used \(a{20}/);
+  assert.doesNotMatch(messages(stateStore.validate(stateStore.parse(stateText({ docs: 'a**b.js', risk: 'db/**' })))), /cannot be used/);
 });

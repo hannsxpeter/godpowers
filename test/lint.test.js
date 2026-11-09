@@ -93,3 +93,50 @@ test('prose notes are advisory and hidden unless asked for', () => {
   assert.match(lint.formatLint(result, { showNotes: true }), /note\s+\.godpowers\/PLAN\.md:4\s+filler/);
   assert.ok(fs.existsSync(path.join(root, '.godpowers', 'PLAN.md')));
 });
+
+test('the plan template carries a slice kind and still reads as unedited', () => {
+  const template = templates.planTemplate({ goal: 'x' });
+  assert.ok(template.includes('- [ ] 1. (behavior) (thin end-to-end slice): (how it is verified)'));
+  const root = v7Repo();
+  write(root, '.godpowers/PLAN.md', template);
+  const result = lint.lintProject(root);
+  assert.ok(result.diagnostics.some(d => d.message === 'PLAN.md still has template placeholders'));
+  assert.equal(result.notes, 0, 'the template itself raises no slice-kind note');
+});
+
+const PLACEHOLDER_WARNING = 'PLAN.md still has template placeholders';
+const FILLED_REQUIREMENT = '- R1: Publish a draft. Done when: a published draft returns 200 at its URL.';
+const warned = root => lint.lintProject(root).diagnostics.some(d => d.message === PLACEHOLDER_WARNING);
+
+test('an unedited slice line raises the placeholder warning even when the requirement is filled in', () => {
+  const root = v7Repo();
+  const template = templates.planTemplate({ goal: 'Let editors publish drafts.' });
+  const withRequirement = template.replace('- R1: (requirement). Done when: (observable check).', FILLED_REQUIREMENT);
+  assert.ok(withRequirement.includes(FILLED_REQUIREMENT));
+  assert.ok(withRequirement.includes('(thin end-to-end slice)'));
+  write(root, '.godpowers/PLAN.md', withRequirement);
+  assert.equal(warned(root), true, 'only the 7.1 slice placeholder is left');
+  write(root, '.godpowers/PLAN.md', withRequirement.replace('- [ ] 1. (behavior) (thin end-to-end slice): (how it is verified)', '- [ ] 1. (behavior) Publish endpoint: integration test'));
+  assert.equal(warned(root), false, 'with the slice filled in too, the warning goes away');
+});
+
+test('the 7.0 slice placeholder still raises the warning on older plans', () => {
+  const root = v7Repo();
+  const older = GOOD_PLAN.replace(/- \[x\] 1\..*\n/, '- [ ] 1. (thin end-to-end slice): (how it is verified)\n');
+  assert.ok(older.includes(FILLED_REQUIREMENT));
+  write(root, '.godpowers/PLAN.md', older);
+  assert.equal(warned(root), true);
+  write(root, '.godpowers/PLAN.md', GOOD_PLAN);
+  assert.equal(warned(root), false);
+});
+
+test('prose notes flag slices without a kind', () => {
+  const root = v7Repo();
+  write(root, '.godpowers/PLAN.md', GOOD_PLAN);
+  const result = lint.lintProject(root);
+  const notes = result.diagnostics.filter(d => d.severity === 'note');
+  assert.equal(notes.length, 2);
+  assert.ok(notes.every(note => note.message.startsWith('slice-kind:')));
+  write(root, '.godpowers/PLAN.md', GOOD_PLAN.replace('1. Publish', '1. (behavior) Publish').replace('2. Editor', '2. (refactor) Editor'));
+  assert.equal(lint.lintProject(root).notes, 0);
+});

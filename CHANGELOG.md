@@ -7,6 +7,113 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.1.0] - 2026-11-09
+
+Faster and more selective verification: cheap local feedback, no repeated
+checks on unchanged code, bounded review loops, a check for weakened tests,
+and a ship gate that scales with the risk of the change.
+
+### Added
+
+- `godpowers fast [files...]` runs the STATE.md `fast:` command on the given
+  files, or on the files changed since HEAD plus untracked files. Every
+  `{files}` becomes `"$@"` and the command runs as `/bin/sh -c <script>
+  godpowers-fast <file>...`, so file names are arguments and never shell
+  source. `{files}` is supported only as a word of its own outside quotes,
+  backticks, and `$(...)` (a POSIX quote scanner decides); `"{files}"`,
+  `'{files}'`, `x{files}`, a `{files}` after a `#` comment, any command with
+  `${`, and the like exit 2 with a message naming the supported form, and the
+  hook fails open. Use `{files}` as a plain argument; other shell positions,
+  such as a redirection target, are not supported. A very long file list can exceed the
+  operating system's argument limit (`E2BIG`); pass explicit files then. Names
+  that start with `-` get a `./` prefix, and names with control characters or
+  that resolve outside the project through a symlink are skipped. A command
+  with `{files}` is not supported on Windows and exits 2 ("declare a command without it"; the hook fails open).
+  The hook runs nothing when its payload names a rejected path. It prints
+  `Running: <script>` and the file list on stderr and never writes the ledger.
+  `fast --hook` is a handler for a PostToolUse hook that users add to their own
+  settings: it reads the hook JSON from stdin, checks the edited file, stays
+  silent unless the check fails, and then exits 2 with the output on stderr.
+- `verify` reuses the latest passing record of the same command on unchanged
+  code instead of running it again. `--force` runs it anyway. Only records this
+  machine signed count: every `verify` record carries `local`, an HMAC over its
+  fields and the exact command, keyed by a random key at
+  `$GODPOWERS_HOME/local.key` (default `~/.godpowers/local.key`). A forged or
+  copied ledger, a command whose secret redacts like another's, a ledger with
+  an integrity error, or an unreadable key all mean the check runs.
+- Review records store the HEAD commit and the findings the author chose not to
+  fix (`record review --dismiss "<finding>: <reason>"`). `godpowers reviews`
+  lists the rounds since the last pass, and after three failed rounds `reviews`,
+  `status`, and `record review --fail` say to stop and rethink.
+- `godpowers stats` reports check runs, median recovery time from a failing to
+  a passing run, waivers, and review rounds from the ledger.
+- `godpowers tests` flags deleted test files, test files that turned binary,
+  fewer tests or assertions, and added skip or focus markers since the base (default: the latest `v*` tag). A
+  line marked `godpowers: allow-test-change` is a deliberate change.
+- `godpowers risk` classifies the change since the base as low, normal, or high
+  from its paths. STATE.md `risk:` adds high-risk globs.
+- STATE.md `docs:` (globs, or `none`) narrows what counts as documentation for
+  the stop gate's allowance (a session that changed only documentation may stop
+  without a check) and the low risk tier. It can never widen the built-in rule:
+  a path is documentation only if the built-in rule says so, it is not an agent
+  instruction file or a high-risk path, and a listed glob matches. A `docs:` or
+  `risk:` glob that is wildcard-only, longer than 512 characters, or over the
+  alternatives cap is a `lint` error, and a STATE.md with errors (also a
+  duplicate key), at the base or in the working tree, gives no documentation
+  allowance and a high tier. An unusable `risk:` glob keeps the risk tier high
+  (`unusable risk pattern: <glob>`).
+- The ship gate warns when `docs:` or `risk:` differs from the base commit's.
+- Prose notes flag plan slices that have no `(behavior)` or `(refactor)` kind.
+
+### Changed
+
+- **Behavior change:** `gate ship` fails outside a git work tree with
+  `not a git repository: evidence cannot be bound to the code`. Before, it
+  passed on the latest records with a warning. The stop gate still fails open
+  there.
+- `verify` reuses a record only if the gates would accept it too: a locally
+  signed record without the exact-command `cmd` identity (from an earlier build
+  of this branch) is no longer reused.
+- Every record still matches the exact code, as in 7.0: a documentation edit
+  voids a review, so record it again after the last change.
+- The ship gate scales with risk: it no longer requires a security record for
+  normal-risk changes, or a review for low-risk ones. With no base to compare,
+  the tier is high and the 7.0 rule applies. `gate ship` takes `--base` and
+  warns about `tests` findings.
+- File names with a newline or other control character are fingerprinted and
+  listed like any other, and a changed one makes the change high risk.
+  `changedSince` and `diffSince` fail in a repository without a work tree, and a
+  change that cannot be listed is high risk. Compose files named `*.yaml` are
+  high risk. The base tag must look like `v<digit>...` and not point at HEAD.
+- Gates match a verify record to the declared command by `cmd`, the identity
+  of the exact command (a SHA-256, or an HMAC with the machine-local key when
+  the command has secret shapes), not by redacted text, so changing a secret
+  value in `verify:` no longer reuses the old pass. **A verify record made by
+  7.0 has no `cmd`, so it no longer satisfies the stop gate, the ship gate, or
+  `status` after you upgrade: run `verify` once.** There is no fallback to
+  redacted text.
+- A path counts as documentation for the stop gate and the low and normal ship
+  tiers only when the rule at HEAD (stop gate) or at the base commit (ship
+  gate) and the working rule agree, and a `risk:` glob at the base still
+  applies. Editing `docs:` or `risk:` after the baseline cannot loosen a gate.
+  A baseline STATE.md that exists but cannot be read counts nothing as
+  documentation (stop gate) and makes the tier high (`risk`, ship gate).
+- A malformed `local` or `cmd` value makes a record not reusable instead of
+  crashing `verify`, and `reviews`, `status`, `stats`, and the reuse message
+  print any ledger value as text without throwing.
+- Redaction also masks `Authorization: Basic` credentials, Google API keys, and
+  quoted secret values in full. Ledger text printed by `reviews`, `status`,
+  `stats`, and the reuse message loses control characters, and `reviews`
+  tolerates odd `head` and `dismissed` values.
+- Plan slices carry a kind: `- [ ] 1. (behavior) <slice>: <how it is verified>`.
+  The skills keep refactors apart from behavior changes.
+- `/god-review` scopes re-reviews to the change since the last reviewed commit,
+  passes dismissed findings and test-guard findings to the reviewer, and
+  prefers a reviewer from a different model family. The shared skill names no
+  specific model.
+- CI cancels superseded pull request runs, lints once, and runs the release
+  check in parallel with the test matrix.
+
 ## [7.0.1] - 2026-10-08
 
 The first 7.x release on npm: 7.0.0 was tagged but never published.

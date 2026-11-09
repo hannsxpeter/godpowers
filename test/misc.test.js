@@ -58,6 +58,18 @@ test('status collects and formats state, evidence, risks, and lint', async () =>
   assert.match(status.formatStatus(status.collect(root)), /FAILING on current code/);
 });
 
+test('status shows a review only while the exact code is unchanged, documentation edits included', async () => {
+  const root = v7Repo();
+  evidence.attest(root, 'review', { pass: true, summary: 'ok' });
+  assert.match(status.formatStatus(status.collect(root)), /Review: {2}pass {3}Security: none/);
+  write(root, 'README.md', 'edited');
+  const info = status.collect(root);
+  assert.equal(info.evidence.review, 'none');
+  assert.equal(info.evidence.viaCode, undefined);
+  assert.match(status.formatStatus(info), /Review: {2}none {3}Security: none/);
+  assert.doesNotMatch(status.formatStatus(info), /documentation changed/);
+});
+
 test('prose scanner finds sentence patterns and skips code', () => {
   const findings = prose.scan('It is important to note that the API works.\n```\nexperts agree\n```\nStudies show it is fine.\n');
   assert.deepEqual(findings.map(f => f.ruleId), ['filler', 'vague-attribution']);
@@ -86,4 +98,26 @@ test('layout recognizes 6.x projects by any of their marker files', () => {
   const docsOnly = tempDir();
   write(docsOnly, '.godpowers/docs/a.md', 'x');
   assert.equal(paths.layout(docsOnly), 'none', 'a docs folder alone is not a project');
+});
+
+test('prose scanner notes slice lines under Slices that lack a kind', () => {
+  const plan = [
+    '## Requirements',
+    '- [ ] 1. Not a slice section line',
+    '## Slices',
+    '- [x] 1. (behavior) Done: unit test',
+    '- [ ] 2. (refactor) Tidy: unit test',
+    '- [ ] 3. No kind: unit test',
+    '- [ ] Unnumbered: unit test',
+    '  - [ ] 4. (spike) Unknown kind: unit test',
+    '```',
+    '- [ ] 5. In a fence: unit test',
+    '```',
+    '## Open questions',
+    '- [ ] 6. Not a slice: nobody'
+  ].join('\n');
+  const findings = prose.scan(plan).filter(f => f.ruleId === 'slice-kind');
+  assert.deepEqual(findings.map(f => f.line), [6, 7, 8]);
+  assert.equal(findings[0].column, 1);
+  assert.deepEqual(prose.scan('## Slices\n- [ ] 1. (behavior) ok: test\n'), []);
 });

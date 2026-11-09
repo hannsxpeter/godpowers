@@ -58,7 +58,9 @@ Say what changed and why in the body when it is not obvious.
 1. Update the version in `package.json`, `.claude-plugin/plugin.json`, and
    `.claude-plugin/marketplace.json`, add the CHANGELOG entry, and rewrite
    `RELEASE.md`.
-2. `npm run release:check`.
+2. `npm run release:check`. `godpowers gate ship` checks the tier of the
+   change since the last tag (low: a check; normal: also a review; high: also
+   a security record), so run it before tagging.
 3. Commit and push `main`.
 4. Tag and push the tag: `git tag v<version> && git push origin v<version>`.
    The publish workflow checks the tag against `package.json` and `main`, runs

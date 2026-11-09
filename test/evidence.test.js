@@ -159,3 +159,281 @@ test('works outside git with a null tree, and waits out a held lock', async () =
   assert.equal(next.kind, 'waive');
   assert.equal(fs.existsSync(lock), false);
 });
+
+const KEY_A = 'a'.repeat(64);
+const KEY_B = 'b'.repeat(64);
+const signed = (record, command = record.command, key = KEY_A) => ({ ...record, local: evidence.localTag(key, record, command) });
+const ledgerOf = (...records) => ({ records, problems: [] });
+const identityOf = command => evidence.commandIdentity(command, { key: KEY_A });
+
+test('findReusable returns only a clean, signed passing record of the same command on the same tree', () => {
+  const unsigned = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', cmd: identityOf('npm test'), ok: true };
+  const base = signed(unsigned);
+  const find = (ledger, tree, command, key = KEY_A) => evidence.findReusable(ledger, tree, command, { key });
+  assert.equal(find(ledgerOf(base), 't1', 'npm test'), base);
+  assert.equal(find(ledgerOf(base), 't2', 'npm test'), null, 'changed tree');
+  assert.equal(find(ledgerOf(base), 't1', 'npm run lint'), null, 'different command');
+  assert.equal(find(ledgerOf(base), null, 'npm test'), null, 'no tree');
+  assert.equal(find(ledgerOf(signed({ ...unsigned, fp: 0 })), 't1', 'npm test'), null, 'old fingerprint version');
+  assert.equal(find(ledgerOf(base, signed({ ...unsigned, ok: false })), 't1', 'npm test'), null, 'latest failed');
+  assert.equal(find(ledgerOf(signed({ ...unsigned, ok: false }), base), 't1', 'npm test'), base, 'latest passed');
+  assert.equal(find(ledgerOf(signed({ ...unsigned, changedDuringRun: true })), 't1', 'npm test'), null);
+  assert.equal(find(ledgerOf(signed({ ...unsigned, timedOut: true })), 't1', 'npm test'), null);
+  assert.equal(find(ledgerOf(unsigned), 't1', 'npm test'), null, 'no local signature');
+  const { cmd, ...legacy } = unsigned;
+  assert.equal(find(ledgerOf(signed(legacy)), 't1', 'npm test'), null, 'a signed record without the exact-command identity, which the gates reject too');
+  assert.equal(find(ledgerOf(signed({ ...unsigned, cmd: null })), 't1', 'npm test'), null, 'a null identity');
+  assert.equal(find(ledgerOf({ ...base, local: 'f'.repeat(64) }), 't1', 'npm test'), null, 'a wrong signature');
+  assert.equal(find(ledgerOf({ ...base, local: 12 }), 't1', 'npm test'), null, 'a signature that is not text');
+  assert.equal(find(ledgerOf(base), 't1', 'npm test', KEY_B), null, 'signed with another key');
+  assert.equal(find(ledgerOf(base), 't1', 'npm test', null), null, 'no key, no reuse');
+  assert.equal(find([base], 't1', 'npm test'), null, 'a bare record list says nothing about integrity');
+  assert.equal(find(null, 't1', 'npm test'), null);
+  assert.equal(find({ records: [base], problems: [{ severity: 'warning', message: 'chain break' }] }, 't1', 'npm test'), base, 'a chain break from a merge is only a warning');
+  assert.equal(find({ records: [base], problems: [{ severity: 'error', message: 'edited' }] }, 't1', 'npm test'), null, 'any integrity error anywhere');
+  const edited = { ...signed({ ...unsigned, ok: false }), ok: true };
+  assert.equal(find(ledgerOf(edited), 't1', 'npm test'), null, 'a failing record edited to pass, even with a fresh digest');
+});
+
+test('the signature covers the exact command, which the stored record has redacted', () => {
+  const stored = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'PASSWORD=[redacted] node x.js', cmd: identityOf('PASSWORD=hunter-one node x.js'), ok: true };
+  const record = signed(stored, 'PASSWORD=hunter-one node x.js');
+  const find = command => evidence.findReusable(ledgerOf(record), 't1', command, { key: KEY_A });
+  assert.equal(find('PASSWORD=hunter-one node x.js'), record);
+  assert.equal(find('PASSWORD=hunter-two node x.js'), null);
+});
+
+test('the local key is private, created once, shared by racing readers, and never leaks', async () => {
+  const home = path.join(tempDir(), '.godpowers');
+  const saved = process.env.GODPOWERS_HOME;
+  process.env.GODPOWERS_HOME = home;
+  try {
+    assert.equal(evidence.localKey(), null, 'reading never creates a key');
+    assert.equal(fs.existsSync(home), false);
+    const key = evidence.localKey({ create: true });
+    assert.match(key, /^[0-9a-f]{64}$/);
+    assert.equal(evidence.localKey({ create: true }), key, 'a second caller reads the first key');
+    assert.equal(evidence.localKey(), key);
+    if (process.platform !== 'win32') {
+      assert.equal(fs.statSync(path.join(home, 'local.key')).mode & 0o777, 0o600);
+      assert.equal(fs.statSync(home).mode & 0o777, 0o700);
+      fs.chmodSync(path.join(home, 'local.key'), 0o644);
+      assert.equal(evidence.localKey({ create: true }), null, 'a key others can read is not trusted, and is not replaced');
+      fs.chmodSync(path.join(home, 'local.key'), 0o600);
+    }
+    fs.writeFileSync(path.join(home, 'local.key'), 'not a key');
+    fs.chmodSync(path.join(home, 'local.key'), 0o600);
+    assert.equal(evidence.localKey({ create: true }), null, 'a malformed key is not replaced either');
+    fs.rmSync(path.join(home, 'local.key'));
+    const root = v7Repo();
+    const { record } = await evidence.verify(root, 'node -e "0"');
+    const fresh = evidence.localKey();
+    assert.match(record.local, /^[0-9a-f]{64}$/);
+    assert.notEqual(record.local, fresh);
+    assert.equal(read(root, '.godpowers/evidence.jsonl').includes(fresh), false, 'the key is not in the ledger');
+  } finally {
+    if (saved === undefined) delete process.env.GODPOWERS_HOME;
+    else process.env.GODPOWERS_HOME = saved;
+  }
+});
+
+test('without a usable key the check still runs and records, and nothing is reusable', async () => {
+  const root = v7Repo();
+  const blocker = write(tempDir(), 'file', 'a regular file where the key directory should go');
+  const saved = process.env.GODPOWERS_HOME;
+  process.env.GODPOWERS_HOME = path.join(blocker, 'home');
+  try {
+    assert.equal(evidence.localKey({ create: true }), null);
+    const { record } = await evidence.verify(root, 'node -e "0"');
+    assert.equal(record.ok, true);
+    assert.equal(record.local, undefined);
+    const tree = gitTools.treeFingerprint(root);
+    assert.equal(evidence.findReusable(evidence.readAll(root), tree, 'node -e "0"'), null);
+  } finally {
+    if (saved === undefined) delete process.env.GODPOWERS_HOME;
+    else process.env.GODPOWERS_HOME = saved;
+  }
+});
+
+test('redact masks Basic credentials, Google API keys, and quoted secret values in full', () => {
+  assert.equal(evidence.redact('curl -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" https://x.test'), 'curl -H "Authorization: Basic [redacted]" https://x.test');
+  assert.equal(evidence.redact('authorization=basic dXNlcjpwYXNz'), 'authorization=basic [redacted]');
+  assert.equal(evidence.redact(`key=AIza${'B'.repeat(35)} next`), 'key=[redacted] next');
+  assert.equal(evidence.redact(`AIza${'a1_-'.repeat(8)}xyz`), '[redacted]');
+  assert.equal(evidence.redact('password="hunter two words" done'), 'password="[redacted]" done');
+  assert.equal(evidence.redact("PASSWORD='hunter two words'"), "PASSWORD='[redacted]'");
+  assert.equal(evidence.redact('{"token": "a b c", "n": 1}'), '{"token": "[redacted]", "n": 1}');
+  assert.equal(evidence.redact('secret: "say \\"hi\\" there" end'), 'secret: "[redacted]" end');
+  assert.equal(evidence.redact('api_key=abcdefghij'), 'api_key=[redacted]');
+  assert.equal(evidence.redact('token=""'), 'token=""', 'an empty value hides nothing');
+  assert.doesNotMatch(evidence.redact('password="hunter two words"'), /hunter|two|words/);
+});
+
+test('reviewHistory counts rounds after the last passing review', () => {
+  const review = verdict => ({ kind: 'review', verdict });
+  assert.deepEqual(evidence.reviewHistory([]), { lastPass: null, rounds: [], failedSinceLastPass: 0 });
+  const records = [review('fail'), review('pass'), { kind: 'harden', verdict: 'fail' }, review('fail'), review('fail')];
+  const history = evidence.reviewHistory(records);
+  assert.equal(history.lastPass, records[1]);
+  assert.deepEqual(history.rounds, [records[3], records[4]]);
+  assert.equal(history.failedSinceLastPass, 2);
+  assert.equal(evidence.reviewHistory([...records, review('pass')]).failedSinceLastPass, 0);
+  assert.equal(evidence.reviewHistory([review('fail'), review('fail'), review('fail')]).failedSinceLastPass, 3);
+});
+
+test('attest stores the head commit, and dismissals only for reviews', () => {
+  const root = v7Repo();
+  const head = gitTools.git(root, ['rev-parse', 'HEAD']).stdout.trim();
+  const record = evidence.attest(root, 'review', {
+    pass: false,
+    summary: 'round one',
+    dismissed: ['a: fine', '  ', 'x'.repeat(400), 'token=abcdefghijklmnop: leaked', ...Array.from({ length: 30 }, (_, i) => `n${i}`)]
+  });
+  assert.equal(record.head, head);
+  assert.equal(record.dismissed.length, 20);
+  assert.equal(record.dismissed[0], 'a: fine');
+  assert.equal(record.dismissed[1].length, 300);
+  assert.match(record.dismissed[2], /\[redacted\]/);
+  assert.equal(evidence.attest(root, 'review', { pass: true, summary: 'ok', dismissed: ['', ' '] }).dismissed, undefined);
+  assert.throws(() => evidence.attest(root, 'harden', { pass: true, summary: 'ok', dismissed: ['a: b'] }), /--dismiss only applies to record review/);
+  assert.equal(evidence.attest(root, 'ship', { pass: true, summary: 'ok' }).dismissed, undefined);
+});
+
+test('attest stores a null head outside git and before the first commit', () => {
+  const plain = tempDir();
+  assert.equal(evidence.attest(plain, 'review', { pass: true, summary: 'ok' }).head, null);
+  assert.equal(gitTools.headCommit(plain), null);
+  const empty = tempDir();
+  gitTools.git(empty, ['init', '-q']);
+  assert.equal(evidence.attest(empty, 'review', { pass: true, summary: 'ok' }).head, null);
+});
+
+test('records carry no code field, and a review matches only the exact tree', async () => {
+  const root = v7Repo();
+  const before = gitTools.treeFingerprint(root);
+  const { record } = await evidence.verify(root, 'node -e "0"');
+  assert.equal('code' in record, false);
+  assert.equal('code' in evidence.waive(root, 'no harness'), false);
+  const review = evidence.attest(root, 'review', { pass: true, summary: 'ok' });
+  assert.equal('code' in review, false);
+  assert.equal(review.tree, before);
+
+  write(root, 'README.md', 'docs only edit');
+  const edited = gitTools.treeFingerprint(root);
+  assert.notEqual(edited, before);
+  const records = evidence.readAll(root).records;
+  assert.equal(evidence.statusFor(records, edited).review, 'none', 'a README edit voids the review');
+  assert.equal(evidence.statusFor(records, edited).viaCode, undefined);
+  assert.equal(evidence.statusFor(records, before).review, 'pass');
+});
+
+test('a record that still has a code field (written by a 7.1 pre-release) is matched on its tree only', () => {
+  const old = { kind: 'review', tree: 'aaa', code: 'ccc', fp: 1, verdict: 'pass', time: 't', id: 'x' };
+  assert.equal(evidence.statusFor([old], 'aaa').review, 'pass');
+  assert.equal(evidence.statusFor([old], 'bbb', { code: 'ccc' }).review, 'none', 'the same code on another tree does not match');
+  const newer = { ...old, fp: 2 };
+  assert.equal(evidence.statusFor([newer], 'aaa').review, 'none', 'a newer fingerprint version is ignored');
+});
+
+test('records are not bound to a code fingerprint outside git either', async () => {
+  const root = tempDir();
+  write(root, '.godpowers/STATE.md', 'x');
+  assert.equal('code' in (await evidence.verify(root, 'node -e "0"')).record, false);
+  assert.equal('code' in evidence.attest(root, 'review', { pass: true, summary: 's' }), false);
+  assert.equal('code' in evidence.waive(root, 'r'), false);
+});
+
+const SECRET_ONE = 'PASSWORD=hunter-one node x.js';
+const SECRET_TWO = 'PASSWORD=hunter-two node x.js';
+const verifyRecord = (fields = {}) => ({ kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: evidence.redact(SECRET_ONE), ok: true, ...fields });
+
+test('commandIdentity: a plain hash without secret shapes, a keyed one with them, null without a key', () => {
+  const plain = evidence.commandIdentity('npm test', { key: null });
+  assert.match(plain, /^sha256:[0-9a-f]{64}$/);
+  assert.equal(evidence.commandIdentity('npm test', { key: KEY_A }), plain, 'no key needed, so any machine agrees');
+  assert.notEqual(evidence.commandIdentity('npm run lint', { key: null }), plain);
+  const one = evidence.commandIdentity(SECRET_ONE, { key: KEY_A });
+  assert.match(one, /^hmac:[0-9a-f]{64}$/);
+  assert.equal(evidence.commandIdentity(SECRET_ONE, { key: KEY_A }), one);
+  assert.notEqual(evidence.commandIdentity(SECRET_TWO, { key: KEY_A }), one, 'the secret value is part of the identity');
+  assert.notEqual(evidence.commandIdentity(SECRET_ONE, { key: KEY_B }), one, 'another machine key');
+  assert.equal(evidence.commandIdentity(SECRET_ONE, { key: null }), null);
+});
+
+test('verify stores the identity of the exact command, and nothing from which the secret could be read', async () => {
+  const root = v7Repo();
+  const secret = 'node -e "0" #PASSWORD=hunter-one';
+  const { record } = await evidence.verify(root, secret);
+  assert.equal(record.command.includes('hunter-one'), false);
+  assert.equal(record.cmd, evidence.commandIdentity(secret, { key: evidence.localKey() }));
+  assert.match(record.cmd, /^hmac:/);
+  const plain = (await evidence.verify(root, 'node -e "0"')).record;
+  assert.equal(plain.cmd, evidence.commandIdentity('node -e "0"', { key: null }));
+  assert.match(plain.cmd, /^sha256:/);
+});
+
+test('statusFor matches a verify record to the declared command by identity, never by redacted text', () => {
+  const key = KEY_A;
+  const status = (records, command) => evidence.statusFor(records, 't1', { command, key }).check;
+  const one = verifyRecord({ cmd: evidence.commandIdentity(SECRET_ONE, { key }) });
+  assert.equal(status([one], SECRET_ONE), 'pass');
+  assert.equal(status([one], SECRET_TWO), 'none', 'the same redacted text is not the same command');
+  assert.equal(status([one], 'PASSWORD=[redacted] node x.js'), 'none', 'neither is the redacted text itself');
+  assert.equal(status([one], 'node y.js'), 'none');
+  assert.equal(evidence.statusFor([one], 't1', { command: SECRET_ONE, key: KEY_B }).check, 'none', 'another machine cannot tell');
+  assert.equal(evidence.statusFor([one], 't1', { command: SECRET_ONE, key: null }).check, 'none', 'no key, no match');
+  assert.equal(status([one], 'none'), 'pass', 'with no declared command any verify counts');
+  const failing = verifyRecord({ ok: false, cmd: evidence.commandIdentity(SECRET_TWO, { key }) });
+  assert.equal(status([one, failing], SECRET_ONE), 'pass', 'a record of the other command is not counted');
+  assert.equal(status([one, failing], SECRET_TWO), 'fail');
+});
+
+test('a secret-free command matches across machines, with no key at all', () => {
+  const command = 'node -e "0"';
+  const record = verifyRecord({ command, cmd: evidence.commandIdentity(command, { key: KEY_B }) });
+  assert.equal(evidence.statusFor([record], 't1', { command, key: null }).check, 'pass');
+  assert.equal(evidence.statusFor([record], 't1', { command, key: KEY_A }).check, 'pass');
+});
+
+test('a record without cmd (7.0) never counts as a verify record, with or without a declared command', () => {
+  const old = verifyRecord({ command: 'node y.js' });
+  assert.equal(old.cmd, undefined);
+  assert.equal(evidence.statusFor([old], 't1', { command: 'node y.js', key: KEY_A }).check, 'none', 'redacted text is not an identity');
+  assert.equal(evidence.statusFor([old], 't1', { command: 'node z.js', key: KEY_A }).check, 'none');
+  assert.equal(evidence.statusFor([old], 't1', { key: KEY_A }).check, 'none', 'nor with no declared command');
+  assert.equal(evidence.statusFor([old], 't1', { command: 'none', key: KEY_A }).check, 'none');
+  const secret = verifyRecord();
+  assert.equal(evidence.statusFor([secret], 't1', { command: SECRET_ONE, key: KEY_A }).check, 'none');
+  assert.equal(evidence.statusFor([secret], 't1', { command: SECRET_TWO, key: KEY_A }).check, 'none');
+  // The reported case: the 7.0 record of PASSWORD=hunter-one stored the text below.
+  const redacted = 'PASSWORD=[redacted] node x.js';
+  assert.equal(secret.command, redacted);
+  assert.equal(evidence.statusFor([secret], 't1', { command: redacted, key: KEY_A }).check, 'none', 'a declared command that is the redacted text matches nothing from 7.0');
+  const fresh = verifyRecord({ command: redacted, cmd: evidence.commandIdentity(redacted, { key: KEY_A }) });
+  assert.equal(evidence.statusFor([secret, fresh], 't1', { command: redacted, key: KEY_A }).check, 'pass', 'a record made by 7.1 verify does');
+  const waived = { kind: 'waive', fp: evidence.FP_VERSION, tree: 't1' };
+  assert.equal(evidence.statusFor([old, waived], 't1', { command: 'node y.js', key: KEY_A }).check, 'waived', 'waivers do not carry a command');
+});
+
+test('a record whose cmd is null, or malformed, matches nothing', () => {
+  const nulled = verifyRecord({ cmd: null });
+  assert.equal(evidence.statusFor([nulled], 't1', { command: SECRET_ONE, key: KEY_A }).check, 'none');
+  assert.equal(evidence.statusFor([nulled], 't1', { command: 'PASSWORD=[redacted] node x.js', key: KEY_A }).check, 'none');
+  for (const cmd of [12, 'sha256:xyz', `sha256:${'é'.repeat(64)}`, {}, `hmac:${'A'.repeat(64)}`]) {
+    const record = verifyRecord({ command: 'node y.js', cmd });
+    assert.equal(evidence.statusFor([record], 't1', { command: 'node y.js', key: KEY_A }).check, 'none', JSON.stringify(cmd));
+  }
+});
+
+test('findReusable ignores malformed signatures and identities instead of throwing', () => {
+  const unsigned = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', cmd: identityOf('npm test'), ok: true };
+  for (const local of ['é'.repeat(64), 'F'.repeat(64), 'a'.repeat(63), `${'a'.repeat(63)}\u0000`]) {
+    assert.equal(evidence.findReusable(ledgerOf({ ...unsigned, local }), 't1', 'npm test', { key: KEY_A }), null, JSON.stringify(local));
+  }
+  const record = signed(unsigned);
+  assert.equal(evidence.findReusable(ledgerOf(record), 't1', 'npm test', { key: KEY_A }), record, 'a good identity is reusable');
+  const bad = signed({ ...unsigned, cmd: 'sha256:é' });
+  assert.equal(evidence.findReusable(ledgerOf(bad), 't1', 'npm test', { key: KEY_A }), null);
+  const swapped = signed({ ...unsigned, cmd: evidence.commandIdentity('npm run lint', { key: null }) });
+  assert.equal(evidence.findReusable(ledgerOf(swapped), 't1', 'npm test', { key: KEY_A }), null, 'the identity must be this command');
+});

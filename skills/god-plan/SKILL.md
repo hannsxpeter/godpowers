@@ -14,7 +14,7 @@ Size the plan to the work. When the request already lists its requirements, the 
    - `## Requirements`: `- R1: <requirement>. Done when: <observable check>.` Each needs a check that a test or a person can run.
    - `## Non-goals`: what is deliberately out.
    - `## Design`: structure, data, interfaces, and failure handling that matter, naming real files.
-   - `## Slices`: ordered thin end-to-end slices, `- [ ] 1. <slice>: <how it is verified>`.
+   - `## Slices`: ordered thin end-to-end slices, `- [ ] 1. (behavior|refactor) <slice>: <how it is verified>`. One concern per slice, refactors separate from behavior changes, and each slice leaves the project working.
    - `## Open questions`: only ones that change the plan, each with who decides.
 3. Append lasting choices (stack, data model, external services, trade-offs) to DECISIONS.md as `## YYYY-MM-DD: <decision>` with one line each for Context, Decision, and Why. Never edit old entries; add one that supersedes.
 4. Put known risks in STATE.md, set `stage: build`, and name the first slice under Next.

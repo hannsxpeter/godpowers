@@ -3,7 +3,9 @@ godpowers: 7
 project: godpowers
 stage: ship
 verify: npm test
-updated: 2026-10-08
+fast: node scripts/check-text.js
+docs: README.md, CHANGELOG.md, RELEASE.md, CONTRIBUTING.md, ARCHITECTURE.md, SECURITY.md, SUPPORT.md, USERS.md, INSPIRATION.md, CODE_OF_CONDUCT.md, docs/**
+updated: 2026-11-09
 ---
 # godpowers
 
@@ -11,10 +13,10 @@ updated: 2026-10-08
 Keep Godpowers a small, verified core: durable project state, checks bound to exact code, an independent reviewer, and gates enforced by hooks in Claude Code and Codex.
 
 ## Now
-- 7.0.1 carries the installed-copy fix for doctor and budget. 7.0.0 was tagged but never reached npm: the publish job got E404 from the registry, an npm credentials problem.
+- 7.1.0 (faster, more selective verification) passed the ship gate at the high tier: npm test, Codex review, and a security pass on the final code. 7.0.0 and 7.0.1 never reached npm.
 
 ## Next
-- Fix npm auth (trusted publishing or a new NPM_TOKEN), push the v7.0.1 tag, then create the 7.0.1 GitHub release from RELEASE.md.
+- Merge to main, tag v7.1.0, and publish. npm publishing needs working credentials (E404 since 7.0.0): a trusted publisher for publish.yml, or a new NPM_TOKEN secret; then re-run the failed publish job.
 
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested
@@ -24,3 +26,4 @@ Keep Godpowers a small, verified core: durable project state, checks bound to ex
 - [ ] medium: hook commands and installed skill text wrap the CLI path in plain double quotes, so a directory name with $() or a double quote runs in the shell, lib/install.js hookCommand, installedCli
 - [ ] medium: on multi-user Linux the session files live in a shared os.tmpdir() folder whose owner and mode are not checked, so another user could switch off the stop gate, lib/hooks.js
 - [ ] low: 7.0.1 security pass backlog: runtime copy file modes follow umask, an empty or relative HOME gives relative hook paths, git honors core.fsmonitor from a copied repo's .git/config, the commit gate matches only plain `git commit`, a dev-only brace-expansion advisory (c8)
+- [ ] medium: a repository-declared verify or fast command runs when the agent calls the CLI, with no Godpowers trust step; the host permission prompt is the trust step and fast prints the command, skills/godpowers/SKILL.md, lib/fast.js

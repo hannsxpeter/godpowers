@@ -10,6 +10,10 @@ function tempDir(prefix = 'gp-test-') {
   return fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), prefix)));
 }
 
+// The machine-local evidence key lives under GODPOWERS_HOME. Tests get their
+// own, so they never read or create ~/.godpowers (child processes inherit it).
+if (!process.env.GODPOWERS_HOME) process.env.GODPOWERS_HOME = path.join(tempDir('gp-home-'), '.godpowers');
+
 function write(root, rel, content) {
   const file = path.join(root, rel);
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -40,8 +44,12 @@ function gitRepo(prefix) {
   return root;
 }
 
+/** STATE.md text. Keys `fast`, `docs`, and `risk` are added to the frontmatter. */
 function stateText(overrides = {}) {
-  return templates.stateTemplate({ project: 'demo', goal: 'Ship a demo.', verify: 'node -e "process.exit(0)"', stage: 'build', ...overrides });
+  const { fast, docs, risk, ...rest } = overrides;
+  const text = templates.stateTemplate({ project: 'demo', goal: 'Ship a demo.', verify: 'node -e "process.exit(0)"', stage: 'build', ...rest });
+  const extra = Object.entries({ fast, docs, risk }).filter(([, value]) => value !== undefined).map(([key, value]) => `${key}: ${value}`);
+  return extra.length ? text.replace(/\nupdated: /, `\n${extra.join('\n')}\nupdated: `) : text;
 }
 
 /** A git repo that is a Godpowers 7 project (state committed). */
