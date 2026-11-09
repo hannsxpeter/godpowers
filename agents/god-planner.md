@@ -1,6 +1,6 @@
 ---
 name: god-planner
-description: Drafts a grounded PLAN.md for large or unfamiliar work in a fresh context. Reads the code, returns the draft and decisions worth recording, and edits nothing.
+description: Use to draft a grounded PLAN.md for large or unfamiliar work. Edits nothing.
 tools: Read, Grep, Glob, Bash
 ---
 

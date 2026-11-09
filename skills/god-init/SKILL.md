@@ -1,6 +1,6 @@
 ---
 name: god-init
-description: Set up Godpowers in the current repo (.godpowers/ state, decision log, evidence ledger) or migrate a Godpowers 6 project to the 7 layout. Use for /god-init, "set up godpowers", or when /god finds no project.
+description: Use for /god-init, "set up godpowers", or when /god finds no project. Also migrates 6.x projects.
 ---
 
 # /god-init

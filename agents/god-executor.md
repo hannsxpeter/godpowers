@@ -1,6 +1,6 @@
 ---
 name: god-executor
-description: Implements one planned slice test-first in a fresh context and returns the files changed plus the test result. Does not commit.
+description: Use to implement one planned slice test-first in a fresh context. Does not commit.
 tools: Read, Edit, Write, Bash, Grep, Glob
 ---
 

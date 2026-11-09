@@ -1,6 +1,6 @@
 ---
 name: god-status
-description: Show Godpowers project state, evidence freshness, and open risks without changing anything. Use for /god-status, "where are we", or "is this verified".
+description: Use for /god-status, "where are we", or "is this verified". Read-only state and risks.
 ---
 
 # /god-status

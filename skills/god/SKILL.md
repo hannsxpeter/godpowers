@@ -1,6 +1,6 @@
 ---
 name: god
-description: Godpowers front door. Reads .godpowers/STATE.md and either names the next step or drives a goal through only the stages it needs. Use for /god, "what next", or "take this to production".
+description: Use for /god, "what next", or "take this to production". Reads STATE.md, names the next step or drives a goal.
 argument-hint: "[goal]"
 ---
 
@@ -15,4 +15,5 @@ argument-hint: "[goal]"
    - A new product, or a large or unclear goal: /god-plan in full, /god-build, /god-review, and /god-harden.
 4. Run /god-ship only when the user asks to ship, release, or deploy. Its gate follows the risk tier, so run /god-harden first only if the gate asks for a security record.
 5. Keep going between the stages you chose without asking. Stop only for decisions that belong to the user (scope, spending, credentials, public or irreversible actions), or when the same gate fails twice for the same reason.
-6. Finish with what changed, the verify result, open risks, and the next step.
+6. Unattended ("I'm not watching", "unattended", "full stop"): keep going until the work is ready for the step only the user takes, and never cross into a public or irreversible step. Ask only through the host's question tool (AskUserQuestion in Claude Code, request_user_input in Codex), giving the context, what blocks you, and the options with your recommendation first; a question in a normal message goes unseen and the turn looks finished. End in one state: ready (gates pass, the next step is the user's), waiting for the user's approval, or blocked (what blocks, what you tried, what is needed).
+7. Finish with what changed, the verify result, open risks, and the next step.

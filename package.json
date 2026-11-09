@@ -1,6 +1,6 @@
 {
   "name": "godpowers",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "description": "Durable project state, evidence-backed \"done\", and gates enforced by hooks for Claude Code, Codex, and other AI coding tools. Eight commands, four agents, about 6K tokens of instructions.",
   "bin": {
     "godpowers": "./bin/godpowers.js"
