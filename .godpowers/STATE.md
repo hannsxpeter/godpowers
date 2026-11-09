@@ -1,11 +1,11 @@
 ---
 godpowers: 7
 project: godpowers
-stage: review
+stage: ship
 verify: npm test
 fast: node scripts/check-text.js
 docs: README.md, CHANGELOG.md, RELEASE.md, CONTRIBUTING.md, ARCHITECTURE.md, SECURITY.md, SUPPORT.md, USERS.md, INSPIRATION.md, CODE_OF_CONDUCT.md, docs/**
-updated: 2026-11-08
+updated: 2026-11-09
 ---
 # godpowers
 
@@ -13,10 +13,10 @@ updated: 2026-11-08
 Keep Godpowers a small, verified core: durable project state, checks bound to exact code, an independent reviewer, and gates enforced by hooks in Claude Code and Codex.
 
 ## Now
-- Building 7.1.0 on feat/faster-verification: faster, more selective verification (see PLAN.md). 7.0.0 and 7.0.1 never reached npm.
+- 7.1.0 (faster, more selective verification) passed the ship gate at the high tier: npm test, Codex review, and a security pass on the final code. 7.0.0 and 7.0.1 never reached npm.
 
 ## Next
-- Independent Codex review of main...feat/faster-verification, then the security pass (risk is high: ci.yml changed), the ship gate, and the v7.1.0 tag. npm publishing still needs working credentials (E404 since 7.0.0).
+- Merge to main, tag v7.1.0, and publish. npm publishing needs working credentials (E404 since 7.0.0): a trusted publisher for publish.yml, or a new NPM_TOKEN secret; then re-run the failed publish job.
 
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested
