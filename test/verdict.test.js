@@ -174,7 +174,7 @@ test('outside git, with no tag, or with no ledger, the verdict still answers', a
   assert.match((await verdict(unborn))[0], /^Godpowers verdict for no commit/);
 });
 
-test('ledger text is printed without control characters or markdown backticks', async () => {
+test('ledger text is printed without control characters', async () => {
   const root = releasedRepo();
   write(root, 'src/app.js', 'module.exports = 2;\n');
   const esc = '\u001b';
@@ -192,7 +192,7 @@ test('ledger text is printed without control characters or markdown backticks', 
   out = (await run(['verdict'], { cwd: root })).out;
   assert.doesNotMatch(out.replace(/\n/g, ''), CONTROL);
   const tick = verdictTools.format({ head: 'abcdef0123', dirty: false, risk: { tier: 'normal' }, check: { status: 'pass', command: 'run `evil`', time: '2026-01-02T00:00:00Z' }, review: { status: 'none', required: true }, security: { status: 'none', required: false }, openRisks: { total: 0 } });
-  assert.match(tick, /Check: passed, `run 'evil'`, 2026-01-02\n/);
+  assert.match(tick, /Check: passed, `` run `evil` ``, 2026-01-02\n/);
   assert.match(tick, /^Godpowers verdict for abcdef0 \(risk: normal\)/);
 });
 
@@ -237,4 +237,72 @@ test('the verdict and the ship gate agree on check, review, and security across 
   await agree('after a documentation edit');
   await run(['verify', '--force'], { cwd: root, env: { CHECK_FAIL: '1' } });
   await agree('check failed');
+});
+
+test('a command with backticks is shown unchanged in a code span fenced one backtick longer', () => {
+  const check = command => ({ status: 'pass', command, time: '2026-01-02T00:00:00Z' });
+  const line = command => verdictTools.format({ head: 'abcdef0', dirty: false, risk: { tier: 'low' }, check: check(command), review: { status: 'none', required: false }, security: { status: 'none', required: false }, openRisks: { total: 0 } }).split('\n')[1];
+  assert.equal(line('npm test'), 'Check: passed, `npm test`, 2026-01-02');
+  assert.equal(line('echo `date` now'), 'Check: passed, ``echo `date` now``, 2026-01-02');
+  assert.equal(line('a ``b`` c ```d``` e'), 'Check: passed, ````a ``b`` c ```d``` e````, 2026-01-02');
+  assert.equal(line('`start'), 'Check: passed, `` `start ``, 2026-01-02');
+  assert.equal(line('end`'), 'Check: passed, `` end` ``, 2026-01-02');
+  assert.equal(line('`'), 'Check: passed, `` ` ``, 2026-01-02');
+});
+
+/** Flip the first review record in the ledger from fail to pass without fixing its digest. */
+function forgeReviewPass(root) {
+  const file = path.join(root, '.godpowers/evidence.jsonl');
+  fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace('"verdict":"fail"', '"verdict":"pass"'));
+}
+
+test('a ledger with an integrity error claims no pass and says so', async () => {
+  const root = releasedRepo({ risks: ['- [ ] high: still open'] });
+  write(root, 'src/auth/login.js', 'x\n');
+  await run(['verify'], { cwd: root });
+  await record(root, 'review', 'fail');
+  await record(root, 'harden', 'pass');
+  forgeReviewPass(root);
+  const lines = await verdict(root);
+  const unknown = 'unknown (the ledger has integrity errors)';
+  assert.deepEqual(lines, [
+    `Godpowers verdict for ${short(root)} plus uncommitted changes (risk: high)`,
+    'Ledger: 1 integrity error; no pass is claimed',
+    `Check: ${unknown}`,
+    `Review: ${unknown}`,
+    `Security: ${unknown}`,
+    'Open risks: 1 high'
+  ]);
+  const json = JSON.parse((await run(['verdict', '--json'], { cwd: root })).out);
+  assert.deepEqual(json.ledger, { errors: 1, warnings: 0 });
+  assert.equal(json.check.status, 'unknown');
+  assert.equal(json.review.status, 'unknown');
+  assert.equal(json.review.rounds, null);
+  assert.equal(json.security.status, 'unknown');
+  assert.equal(json.security.required, true);
+});
+
+test('chain breaks from a merge are warnings and do not hide a pass', async () => {
+  const root = releasedRepo();
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  await record(root, 'review', 'fail');
+  await record(root, 'review', 'pass', ['--reviewer', 'Claude']);
+  const file = path.join(root, '.godpowers/evidence.jsonl');
+  const [first, ...rest] = fs.readFileSync(file, 'utf8').trim().split('\n');
+  fs.writeFileSync(file, `${rest.join('\n')}\n`);
+  assert.ok(first);
+  const lines = await verdict(root);
+  assert.ok(lines.every(line => !line.startsWith('Ledger:')));
+  assert.equal(lines[2], 'Review: passed after 1 round, reviewer Claude');
+  const json = JSON.parse((await run(['verdict', '--json'], { cwd: root })).out);
+  assert.deepEqual(json.ledger, { errors: 0, warnings: 1 });
+});
+
+test('several integrity errors are counted, and a clean ledger reports zero', async () => {
+  const root = releasedRepo();
+  await record(root, 'review', 'fail');
+  fs.appendFileSync(path.join(root, '.godpowers/evidence.jsonl'), 'not json\n{"kind":"nope"}\n');
+  assert.equal((await verdict(root))[1], 'Ledger: 2 integrity errors; no pass is claimed');
+  const clean = releasedRepo();
+  assert.deepEqual(JSON.parse((await run(['verdict', '--json'], { cwd: clean })).out).ledger, { errors: 0, warnings: 0 });
 });

@@ -35,7 +35,7 @@ test('main moved on in files this change also touches: a non-blocking warning na
   const result = gate.shipGate(root);
   const warning = byName(result).drift;
   assert.equal(warning.severity, 'warning');
-  assert.equal(warning.detail, 'main has 2 commits since this branch forked that touch files this change also touches (as of the last fetch): src/a.js. Rebase, then run verify again.');
+  assert.equal(warning.detail, 'main is 2 commits ahead of where this branch forked, and changed files this change also touches (as of the last fetch): src/a.js. Rebase, then run verify again.');
   assert.equal(result.drift.onto, 'main');
   assert.equal(result.drift.commits, 2);
   assert.deepEqual(result.drift.files, ['src/a.js']);
@@ -50,7 +50,7 @@ test('more than three files are cut with a count, and a single commit is not plu
   commitOnMain(root, { 'src/a.js': '1\n', 'src/b.js': '1\n', 'src/c.js': '1\n', 'src/d.js': '1\n', 'src/e.js': '1\n' });
   for (const name of ['e', 'd', 'c', 'b', 'a']) write(root, `src/${name}.js`, 'mine\n');
   const detail = byName(gate.shipGate(root)).drift.detail;
-  assert.equal(detail, 'main has 1 commit since this branch forked that touch files this change also touches (as of the last fetch): src/a.js, src/b.js, src/c.js (+2 more). Rebase, then run verify again.');
+  assert.equal(detail, 'main is 1 commit ahead of where this branch forked, and changed files this change also touches (as of the last fetch): src/a.js, src/b.js, src/c.js (+2 more). Rebase, then run verify again.');
   assert.match(drift.compute(root).warning, /\(\+2 more\)/);
 });
 
@@ -92,9 +92,9 @@ test('--onto names the branch; an unresolvable ref gives no warning and a reason
   git(root, 'checkout', '-q', 'feature');
   write(root, 'src/a.js', 'mine\n');
   const viaMain = await run(['gate', 'ship', '--onto', 'main'], { cwd: root });
-  assert.match(viaMain.out, /! drift\s+main has 1 commit since this branch forked/);
+  assert.match(viaMain.out, /! drift\s+main is 1 commit ahead of where this branch forked/);
   const viaRelease = await run(['gate', 'ship', '--onto', 'release'], { cwd: root });
-  assert.match(viaRelease.out, /! drift\s+release has 1 commit/);
+  assert.match(viaRelease.out, /! drift\s+release is 1 commit ahead/);
   for (const ref of ['no-such-branch', '-x', '']) {
     const bad = await run(['gate', 'ship', '--onto', ref, '--json'], { cwd: root });
     const json = JSON.parse(bad.out);
@@ -126,7 +126,7 @@ test('the default is origin/HEAD when it resolves, shown by its branch name, els
   const viaOrigin = drift.compute(root);
   assert.equal(viaOrigin.drift.onto, 'origin/trunk');
   assert.equal(viaOrigin.drift.commits, 1, 'origin/trunk is one commit behind local main');
-  assert.match(viaOrigin.warning, /^origin\/trunk has 1 commit since/);
+  assert.match(viaOrigin.warning, /^origin\/trunk is 1 commit ahead of where/);
   assert.equal(drift.compute(root, { onto: 'main' }).drift.commits, 2, 'an explicit --onto wins');
 });
 
