@@ -65,3 +65,8 @@ Why: Removing the attack surface is sounder than another patch round. Re-recordi
 Context: The first review of the redesign found custom `docs:` globs still widening what counts as documentation (instruction files through `docs: *.md`), and a malformed STATE.md dropping its own restrictions.
 Decision: A path is documentation only if the built-in rule says so, it is not an instruction file or high-risk path, and, when `docs:` lists globs, one of them matches. A STATE.md with validation errors, at the baseline or in the working tree, gives no documentation allowance and a high tier. The ship gate blocks outside git.
 Why: A setting a repository controls should only be able to make a gate stricter. That closes the remaining class of findings by construction instead of one case at a time.
+
+## 2026-11-09: Adopt tstack's checkable ideas, not its pull request workflow
+Context: tstack (Theo Browne's agent skills, MIT) automates the pull request lifecycle: a review loop with GPT Sol, a three-model council, a PR watcher script, and unattended merging.
+Decision: Take what the CLI can check or what costs a few tokens: a verdict block printed from the ledger, the reviewer on review records, review-growth and base-drift warnings, trigger-style descriptions, Codex skill metadata, and unattended-run guidance in /god. Do not adopt council, the pr-wait watcher, unattended merging, or the PR comment and filing skills.
+Why: Code over prose, and use what the host provides. Hosts already watch pull requests, three reviewers per round triples review cost with no evidence it pays (docs/ab-eval.md), and merging is the user's irreversible step.
