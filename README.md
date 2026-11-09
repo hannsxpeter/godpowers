@@ -259,8 +259,9 @@ its own outside quotes, backticks, and `$(...)` (`eslint --format "stylish"
 {files} --fix` is fine). Inside quotes the shell would split or glob the
 names, or pass a literal, so `"{files}"`, `'{files}'`, `` `x {files}` ``,
 `x{files}`, `{files}x`, `{files}` next to a non-ASCII space, `{files}` after
-a `#` comment, and any command with `${` exit 2 with a message naming the supported form
-(the hook fails open). A very long list of changed files can exceed the
+a `#` comment, and any command with `${` exit 2 with a message naming the
+supported form (the hook fails open). Use `{files}` as a plain argument; other
+shell positions, such as a redirection target, are not supported. A very long list of changed files can exceed the
 operating system's argument limit (`E2BIG`); the command then fails with exit
 2, and passing explicit files is the way around it. Names that start with
 `-` are passed as `./-name`, names with control characters are skipped with a

@@ -21,12 +21,14 @@ and a ship gate that scales with the risk of the change.
   godpowers-fast <file>...`, so file names are arguments and never shell
   source. `{files}` is supported only as a word of its own outside quotes,
   backticks, and `$(...)` (a POSIX quote scanner decides); `"{files}"`,
-  `'{files}'`, `x{files}`, and the like exit 2 with a message naming the
-  supported form, and the hook fails open. A very long file list can exceed the
+  `'{files}'`, `x{files}`, a `{files}` after a `#` comment, any command with
+  `${`, and the like exit 2 with a message naming the supported form, and the
+  hook fails open. Use `{files}` as a plain argument; other shell positions,
+  such as a redirection target, are not supported. A very long file list can exceed the
   operating system's argument limit (`E2BIG`); pass explicit files then. Names
   that start with `-` get a `./` prefix, and names with control characters or
-  that resolve outside the project through a symlink are skipped. A command with `{files}` is not supported on
-  Windows and exits 2 ("declare a command without it"; the hook fails open).
+  that resolve outside the project through a symlink are skipped. A command
+  with `{files}` is not supported on Windows and exits 2 ("declare a command without it"; the hook fails open).
   The hook runs nothing when its payload names a rejected path. It prints
   `Running: <script>` and the file list on stderr and never writes the ledger.
   `fast --hook` is a handler for a PostToolUse hook that users add to their own

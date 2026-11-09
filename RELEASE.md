@@ -16,8 +16,9 @@ for the command map and upgrade steps.
 
 - **`godpowers fast`** runs a file-local check declared as `fast:` in STATE.md
   on the changed files, for quick feedback. It is never recorded. `{files}`
-  must be a word of its own outside quotes and becomes `"$@"`, so file names
-  are arguments and never shell source (not supported on Windows). `fast --hook`
+  must be a plain argument word outside quotes (commands with `${` are
+  refused) and becomes `"$@"`, so file names are arguments and never shell
+  source (not supported on Windows). `fast --hook`
   is a handler for a PostToolUse hook you add yourself.
 - **`verify` reuses a passing record** of the same command on unchanged code.
   `--force` runs it again.
