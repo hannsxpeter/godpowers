@@ -211,3 +211,57 @@ test('attest stores a null head outside git and before the first commit', () => 
   gitTools.git(empty, ['init', '-q']);
   assert.equal(evidence.attest(empty, 'review', { pass: true, summary: 'ok' }).head, null);
 });
+
+test('every record stores the code fingerprint, and judgments match on tree or code', async () => {
+  const root = v7Repo();
+  const isDoc = require('../lib/docs').docPredicate(null);
+  const fingerprints = () => gitTools.fingerprints(root, isDoc);
+  const before = fingerprints();
+  assert.match(before.code, /^[0-9a-f]{64}$/);
+  const { record } = await evidence.verify(root, 'node -e "0"');
+  assert.equal(record.code, before.code);
+  assert.equal(evidence.waive(root, 'no harness').code, before.code);
+  const review = evidence.attest(root, 'review', { pass: true, summary: 'ok' });
+  assert.equal(review.code, before.code);
+  assert.equal(review.tree, before.tree);
+
+  write(root, 'README.md', 'docs only edit');
+  const docsEdit = fingerprints();
+  assert.notEqual(docsEdit.tree, before.tree);
+  assert.equal(docsEdit.code, before.code);
+  const records = evidence.readAll(root).records;
+  let status = evidence.statusFor(records, docsEdit.tree, { code: docsEdit.code });
+  assert.equal(status.review, 'pass');
+  assert.deepEqual(status.viaCode, { review: true, harden: false, ship: false });
+  assert.equal(status.check, 'none', 'verify and waive records match only on the tree');
+  status = evidence.statusFor(records, docsEdit.tree);
+  assert.equal(status.review, 'none', 'without a code fingerprint only the tree matches');
+  status = evidence.statusFor(records, before.tree, { code: before.code });
+  assert.equal(status.review, 'pass');
+  assert.equal(status.viaCode.review, false);
+
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  const codeEdit = fingerprints();
+  assert.notEqual(codeEdit.code, before.code);
+  status = evidence.statusFor(records, codeEdit.tree, { code: codeEdit.code });
+  assert.equal(status.review, 'none');
+});
+
+test('records without a code field (written by 7.0) match on the tree only', () => {
+  const old = { kind: 'review', tree: 'aaa', fp: 1, verdict: 'pass', time: 't', id: 'x' };
+  assert.equal(evidence.statusFor([old], 'aaa', { code: 'ccc' }).review, 'pass');
+  assert.equal(evidence.statusFor([old], 'bbb', { code: 'ccc' }).review, 'none');
+  assert.equal(evidence.statusFor([old], 'bbb', { code: null }).review, 'none');
+  const unknown = { ...old, code: null };
+  assert.equal(evidence.statusFor([unknown], 'bbb', { code: null }).review, 'none', 'a null code never matches');
+  const newer = { ...old, code: 'ccc', fp: 2 };
+  assert.equal(evidence.statusFor([newer], 'bbb', { code: 'ccc' }).review, 'none', 'a newer fingerprint version is ignored');
+});
+
+test('records store a null code outside git', async () => {
+  const root = tempDir();
+  write(root, '.godpowers/STATE.md', 'x');
+  assert.equal((await evidence.verify(root, 'node -e "0"')).record.code, null);
+  assert.equal(evidence.attest(root, 'review', { pass: true, summary: 's' }).code, null);
+  assert.equal(evidence.waive(root, 'r').code, null);
+});

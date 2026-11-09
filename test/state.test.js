@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 
 const stateStore = require('../lib/state');
 const templates = require('../lib/templates');
-const { tempDir, write, read } = require('./helpers');
+const { tempDir, write, read, stateText } = require('./helpers');
 
 const messages = diags => diags.map(d => `${d.severity}: ${d.message}`).join('\n');
 
@@ -75,4 +75,13 @@ test('setFields updates frontmatter, keeps the body, and rejects bad stages', ()
 
 test('read returns null without STATE.md', () => {
   assert.equal(stateStore.read(tempDir()), null);
+});
+
+test('accepts fast, docs, and risk keys and warns about an empty fast command', () => {
+  const ok = stateStore.parse(stateText({ fast: 'eslint {files}', docs: '*.md, docs/**', risk: 'db/**' }));
+  const text = messages(stateStore.validate(ok));
+  assert.doesNotMatch(text, /unknown frontmatter key/);
+  assert.doesNotMatch(text, /"fast"/);
+  const empty = stateStore.parse(stateText({ fast: '' }));
+  assert.match(messages(stateStore.validate(empty)), /warning: frontmatter "fast" is empty/);
 });

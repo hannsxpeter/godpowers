@@ -167,3 +167,82 @@ test('ship gate falls back to latest records outside git', async () => {
   checks = gate.shipGate(root).checks;
   assert.match(checks.find(c => c.name === 'verify').detail, /"waived"/);
 });
+
+const byName = r => Object.fromEntries(r.checks.map(c => [c.name, c]));
+const setState = (root, overrides) => write(root, '.godpowers/STATE.md', stateText({ verify: CHECK, ...overrides }));
+
+test('a review survives a documentation edit but not a code edit, and verify goes stale', async () => {
+  const root = checkedRepo();
+  await runCheck(root);
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  evidence.attest(root, 'harden', { pass: true, summary: 'no findings' });
+  assert.equal(gate.shipGate(root).ok, true);
+  assert.equal(byName(gate.shipGate(root)).review.detail, 'review passed on the current code');
+  write(root, 'README.md', 'a new readme');
+  let result = gate.shipGate(root);
+  assert.equal(byName(result).review.ok, true);
+  assert.equal(byName(result).review.detail, 'review passed on the current code (documentation changed since)');
+  assert.equal(byName(result).harden.detail, 'security pass on the current code (documentation changed since)');
+  assert.equal(byName(result).verify.ok, false, 'a check can read documentation, so it goes stale');
+  await runCheck(root);
+  assert.equal(gate.shipGate(root).ok, true);
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  result = gate.shipGate(root);
+  assert.equal(byName(result).review.ok, false);
+  assert.equal(byName(result).harden.ok, false);
+});
+
+test('with docs: none a documentation edit voids the review', async () => {
+  const root = checkedRepo({ docs: 'none' });
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  write(root, 'README.md', 'a new readme');
+  assert.equal(byName(gate.shipGate(root)).review.ok, false);
+  setState(root, { docs: '' });
+  write(root, 'README.md', 'another readme');
+  evidence.attest(root, 'review', { pass: true, summary: 'clean again' });
+  write(root, 'README.md', 'yet another');
+  assert.equal(byName(gate.shipGate(root)).review.ok, true, 'an empty docs setting uses the built-in rule');
+});
+
+test('docs globs decide what counts as documentation', async () => {
+  const root = checkedRepo({ docs: 'guides/**, *.txt' });
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  write(root, 'guides/intro.js', 'listed, so documentation');
+  write(root, 'notes/todo.txt', 'listed by base name');
+  assert.equal(byName(gate.shipGate(root)).review.ok, true);
+  write(root, 'README.md', 'not listed, so code');
+  assert.equal(byName(gate.shipGate(root)).review.ok, false);
+});
+
+test('the stop gate lets listed paths through and blocks unlisted ones', () => {
+  const root = checkedRepo({ docs: 'guides/**, *.txt' });
+  write(root, 'guides/intro.js', 'x');
+  write(root, 'notes/todo.txt', 'x');
+  let result = gate.stopGate(root);
+  assert.equal(result.block, false);
+  assert.equal(result.reason, 'only documentation changed');
+  write(root, 'README.md', 'markdown is not listed here');
+  result = gate.stopGate(root);
+  assert.equal(result.block, true);
+  assert.match(result.reason, /README\.md/);
+});
+
+test('with docs: none even a README edit needs a check before stopping', () => {
+  const root = checkedRepo({ docs: 'none' });
+  write(root, 'README.md', 'x');
+  assert.equal(gate.stopGate(root).block, true);
+  const builtIn = checkedRepo();
+  write(builtIn, 'README.md', 'x');
+  assert.equal(gate.stopGate(builtIn).reason, 'only documentation changed');
+});
+
+test('docPredicate follows the STATE.md docs setting', () => {
+  const { docPredicate } = require('../lib/docs');
+  const parse = overrides => require('../lib/state').parse(stateText(overrides));
+  assert.equal(docPredicate(null)('README.md'), true);
+  assert.equal(docPredicate(parse({}))('lib/a.js'), false);
+  assert.equal(docPredicate(parse({ docs: 'none' }))('README.md'), false);
+  assert.equal(docPredicate(parse({ docs: 'NONE' }))('README.md'), false);
+  const globs = docPredicate(parse({ docs: 'site/**, *.adoc' }));
+  assert.deepEqual(['site/a.js', 'x/y.ADOC', 'README.md'].map(globs), [true, true, false]);
+});

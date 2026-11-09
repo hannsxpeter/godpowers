@@ -35,7 +35,7 @@ Source: the November 2026 research review of agent verification bottlenecks
 
 ## Slices
 - [x] 1. (behavior) Ledger commands: verify reuse, review rounds and dismissals, stats (R2, R3, R4): unit tests
-- [ ] 2. (behavior) Fast check, documentation setting, code fingerprint (R1, R5): unit tests
+- [x] 2. (behavior) Fast check, documentation setting, code fingerprint (R1, R5): unit tests
 - [ ] 3. (behavior) Test guard, risk tiers, tiered ship gate (R6, R7): unit tests
 - [ ] 4. (behavior) Plan template, skills, agents, CI, docs, version 7.1.0 (R8 to R11): `npm run release:check`
 - [ ] 5. (behavior) Independent review, security pass, ship gate, tag v7.1.0: `godpowers gate ship`, then the publish workflow

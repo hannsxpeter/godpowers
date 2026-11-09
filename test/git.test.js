@@ -209,3 +209,62 @@ test('a same-size edit is still detected after the clock moves to the next secon
   await new Promise(resolve => setTimeout(resolve, 1100));
   assert.equal(gitTools.treeFingerprint(root), edited, 'git trusts cached stats only as far as the real index would');
 });
+
+test('fingerprints give the tree and the code from one snapshot', () => {
+  const root = gitRepo();
+  const isDoc = rel => rel.endsWith('.md');
+  const clean = gitTools.fingerprints(root, isDoc);
+  assert.equal(clean.tree, gitTools.treeFingerprint(root));
+  write(root, 'README.md', 'docs');
+  const docs = gitTools.fingerprints(root, isDoc);
+  assert.notEqual(docs.tree, clean.tree);
+  assert.equal(docs.code, clean.code);
+  write(root, 'src/app.js', 'changed');
+  assert.notEqual(gitTools.fingerprints(root, isDoc).code, clean.code);
+  assert.deepEqual(gitTools.fingerprints(tempDir(), isDoc), { tree: null, code: null });
+  assert.equal(gitTools.codeFingerprint(null, isDoc), null, 'unknown without a file map');
+  assert.equal(gitTools.codeFingerprint({ 'a.md': '1', 'b.js': '2' }, isDoc), gitTools.fingerprintOf({ 'b.js': '2' }));
+});
+
+test('workingChanges lists changed and untracked files, not deleted or bookkeeping files', () => {
+  const root = gitRepo();
+  write(root, 'gone.txt', 'x');
+  write(root, 'staged.txt', 'x');
+  write(root, '.godpowers/STATE.md', 'x');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'more');
+  assert.deepEqual(gitTools.workingChanges(root), []);
+  write(root, 'src/app.js', 'edited');
+  write(root, 'staged.txt', 'staged edit');
+  git(root, 'add', 'staged.txt');
+  write(root, 'new dir/new.js', 'untracked');
+  write(root, '.godpowers/evidence.jsonl', 'ignored');
+  fs.rmSync(path.join(root, 'gone.txt'));
+  write(root, 'added.txt', 'staged add');
+  git(root, 'add', 'added.txt');
+  assert.deepEqual(gitTools.workingChanges(root), ['added.txt', 'new dir/new.js', 'src/app.js', 'staged.txt']);
+  const before = gitTools.treeFingerprint(root);
+  gitTools.workingChanges(root);
+  assert.equal(gitTools.treeFingerprint(root), before);
+});
+
+test('workingChanges before the first commit lists every file, and is empty outside git', () => {
+  const fresh = tempDir();
+  git(fresh, 'init', '-q');
+  write(fresh, 'a.txt', 'a');
+  write(fresh, 'sub/b.txt', 'b');
+  assert.deepEqual(gitTools.workingChanges(fresh), ['a.txt', 'sub/b.txt']);
+  assert.deepEqual(gitTools.workingChanges(tempDir()), []);
+});
+
+test('workingChanges is relative to a project in a subdirectory', () => {
+  const root = gitRepo();
+  write(root, 'pkg/a.js', 'a');
+  write(root, 'other/b.js', 'b');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'pkg');
+  write(root, 'pkg/a.js', 'edited');
+  write(root, 'pkg/c.js', 'new');
+  write(root, 'other/b.js', 'edited');
+  assert.deepEqual(gitTools.workingChanges(path.join(root, 'pkg')), ['a.js', 'c.js']);
+});

@@ -58,6 +58,18 @@ test('status collects and formats state, evidence, risks, and lint', async () =>
   assert.match(status.formatStatus(status.collect(root)), /FAILING on current code/);
 });
 
+test('status says when a review matches the code but documentation changed', async () => {
+  const root = v7Repo();
+  evidence.attest(root, 'review', { pass: true, summary: 'ok' });
+  assert.doesNotMatch(status.formatStatus(status.collect(root)), /documentation changed/);
+  write(root, 'README.md', 'edited');
+  const info = status.collect(root);
+  assert.equal(info.evidence.review, 'pass');
+  assert.match(status.formatStatus(info), /Review: {2}pass \(documentation changed since\) {3}Security: none/);
+  write(root, 'src/app.js', 'edited');
+  assert.match(status.formatStatus(status.collect(root)), /Review: {2}none {3}Security: none/);
+});
+
 test('prose scanner finds sentence patterns and skips code', () => {
   const findings = prose.scan('It is important to note that the API works.\n```\nexperts agree\n```\nStudies show it is fine.\n');
   assert.deepEqual(findings.map(f => f.ruleId), ['filler', 'vague-attribution']);

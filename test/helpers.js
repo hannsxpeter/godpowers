@@ -40,8 +40,12 @@ function gitRepo(prefix) {
   return root;
 }
 
+/** STATE.md text. Keys `fast`, `docs`, and `risk` are added to the frontmatter. */
 function stateText(overrides = {}) {
-  return templates.stateTemplate({ project: 'demo', goal: 'Ship a demo.', verify: 'node -e "process.exit(0)"', stage: 'build', ...overrides });
+  const { fast, docs, risk, ...rest } = overrides;
+  const text = templates.stateTemplate({ project: 'demo', goal: 'Ship a demo.', verify: 'node -e "process.exit(0)"', stage: 'build', ...rest });
+  const extra = Object.entries({ fast, docs, risk }).filter(([, value]) => value !== undefined).map(([key, value]) => `${key}: ${value}`);
+  return extra.length ? text.replace(/\nupdated: /, `\n${extra.join('\n')}\nupdated: `) : text;
 }
 
 /** A git repo that is a Godpowers 7 project (state committed). */
