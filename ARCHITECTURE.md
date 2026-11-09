@@ -51,12 +51,12 @@ test/                 node:test suites
 | `frontmatter.js` | Flat YAML frontmatter parse and write |
 | `templates.js` | Starting content for STATE.md, PLAN.md, DECISIONS.md |
 | `state.js` | STATE.md sections, risk lines, validation, field updates |
-| `match.js` | Glob matching (case-insensitive, linear time, no regular expressions; a `**` inside a name expands to at most 64 alternatives) and comma-separated list parsing for STATE.md settings |
-| `policy.js` | Shared constants and checks: the high-risk patterns, control characters in paths and printed text, wildcard-only globs |
-| `docs.js` | What counts as documentation: the built-in rule or the `docs:` setting, and a digest of the rule in force |
-| `git.js` | Read-only snapshots and fingerprints (whole tree and code only), changed paths, release base, diffs, lines removed since HEAD |
+| `match.js` | Glob matching (case-insensitive, linear time, no regular expressions; a `**` inside a name expands to at most 64 alternatives), `usable` (is a glob wildcard-only, too long, or over the alternatives cap), and comma-separated list parsing for STATE.md settings |
+| `policy.js` | Shared constants and checks: the high-risk patterns, control characters in paths and printed text |
+| `docs.js` | What counts as documentation (for the stop gate's allowance and the low tier only): the built-in rule or the `docs:` setting, and STATE.md as committed at a baseline |
+| `git.js` | Read-only snapshots and the tree fingerprint, changed paths, release base, diffs, lines removed since HEAD, and `readAt` (a file at a commit: absent is null, unreadable throws) |
 | `evidence.js` | The evidence ledger: run and record checks, reuse, waivers, attestations, chain |
-| `fast.js` | The `fast` check: expands each `{files}` that is a separate word outside quotes (by position, else refuses) with shell quoting, skips files that resolve outside the project, and runs it without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
+| `fast.js` | The `fast` check: replaces each `{files}` with `"$@"` and runs `/bin/sh -c <script> godpowers-fast <file>...`, so file names are arguments and never shell source (a command with `{files}` is refused on Windows); skips files that resolve outside the project, and runs without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
 | `reviews.js` | Review rounds since the last pass, and the three-round warning |
 | `stats.js` | Numbers computed from the ledger |
 | `testguard.js` | Flags deleted tests, fewer tests or assertions, and added skip markers since a base |
@@ -97,44 +97,51 @@ and `digest` (a SHA-256 over its own canonical JSON). `readAll` reports digest
 mismatches and invalid lines as errors, and chain breaks (from merges) as
 warnings.
 
-Records also carry `code`, a second fingerprint over the files that are not
-documentation (see `docs.js`) mixed with a digest of the documentation rule in
-force (the default rule's version, `none`, or the sorted `docs:` globs, plus the
-`risk:` globs), so changing the rule voids carry-forward; it is null when no
-file is code. Paths that match a high-risk pattern or have a control
-character in their name are never documentation, and the gates (the stop
-gate's documentation allowance and the low risk tier) count a path as
-documentation only when both the rule committed at the baseline (HEAD for the
-stop gate, the base commit for the ship gate) and the working rule say so, so
-editing `docs:` or `risk:` after the baseline cannot loosen them; a `risk:`
-glob present at the base also keeps matching after the working one drops it.
-A missing STATE.md at the baseline means the built-in rule. The code
-fingerprint keeps binding the working rule, and neither are agent
-instruction files under the default rule (`AGENTS.md`, `CLAUDE.md`,
-`SKILL.md`, and files under `.claude`, `.agents`, `agents`, `skills`,
-`prompts`, and similar). A `docs:` or `risk:` glob made only of wildcards is a
-validation error and is ignored. File names with a newline or other control
-character are fingerprinted like any other (hashed one at a time, since
-`--stdin-paths` reads one name per line). Attestations carry `head` (the HEAD commit,
-or null outside git). A review record may also carry `dismissed`: up to 20
-findings of 300 characters each, redacted, that the author chose not to fix.
-The fingerprint version stays 1, so 7.0 records, which have no `code`, keep
-matching on `tree`.
+Every record matches only the exact `tree`; there is no second, narrower
+fingerprint, so any edit, documentation included, makes a record stale (records
+do not carry a code fingerprint that could outlive an edit; a record that still
+has a `code` field, from a development build, is valid and the field is
+ignored). Attestations carry `head` (the HEAD commit, or null
+outside git). A review record may also carry `dismissed`: up to 20 findings of
+300 characters each, redacted, that the author chose not to fix. The
+fingerprint version stays 1, so 7.0 records keep matching on `tree`, apart
+from the verify records described below. File names with a newline or other
+control character are fingerprinted like any other (hashed one at a time,
+since `--stdin-paths` reads one name per line).
+
+`docs.js` decides what counts as documentation, and only for two things: the
+stop gate's allowance (a session that changed only documentation may stop
+without a check) and the low risk tier. Paths that match a high-risk pattern,
+have a control character in their name, or are agent instruction files
+(`AGENTS.md`, `CLAUDE.md`, `SKILL.md`, and files under `.claude`, `.agents`,
+`agents`, `skills`, `prompts`, and similar) are never documentation. A path
+counts as documentation only when both the rule committed at the baseline (HEAD
+for the stop gate, the base commit for the ship gate) and the working rule say
+so, so editing `docs:` or `risk:` after the baseline cannot loosen them; a
+`risk:` glob present at the base also keeps matching after the working one
+drops it. A STATE.md that does not exist at the baseline means the built-in
+rule; one that exists but cannot be read makes `docs.stateAt` throw, and the
+callers are strict (the stop gate counts nothing as documentation, `classify`
+returns high). `match.usable(glob)` is false for a glob that is wildcard-only,
+longer than 512 characters, or over 64 alternatives. An unusable `docs:` glob
+is ignored; an unusable `risk:` glob keeps `classify` at high
+(`unusable risk pattern: <glob>`) and makes the documentation rule count
+nothing. `state.validate` reports both as errors.
 
 `statusFor` takes, for one fingerprint, the last `verify` of the project's
 declared check (or any `verify` when none is declared) or `waive` as the check
 status, and the last `review`, `harden`, and `ship` records as those statuses.
-Verify and waive records match only when `tree` matches, because a check can
-read documentation. A verify record also has to be of the declared command
-itself: it carries `cmd`, the identity of the exact command, because the
-stored `command` is redacted and two commands that differ only in a secret
-share it. `cmd` is `sha256:<hex>` of the command when it has no secret
-shapes (any machine computes it), `hmac:<hex>` keyed by the machine-local key
-when it has some, or null when there is no key. `statusFor`, the stop gate,
-the ship gate, and `status` compare identities only. A 7.0 record without
-`cmd` matches by redacted text, and only for a command with no secret shapes.
-A null or malformed `cmd` matches nothing. `stats` still groups by text. Review, harden, and ship records match when `tree` or
-`code` matches; `viaCode` reports which of them matched only by `code`.
+A verify record also has to be of the declared command itself: it carries
+`cmd`, the identity of the exact command, because the stored `command` is
+redacted and two commands that differ only in a secret share it. `cmd` is
+`sha256:<hex>` of the command when it has no secret shapes (any machine
+computes it), `hmac:<hex>` keyed by the machine-local key when it has some, or
+null when there is no key. `statusFor`, the stop gate, the ship gate, and
+`status` compare identities only. A verify record without a well-formed `cmd`
+(every 7.0 record, and one with a null or malformed value) never counts, with
+or without a declared command, and there is no fallback to redacted text; after
+upgrading from 7.0, one `verify` makes the gates pass again. `stats` still
+groups by text.
 
 `verify` reuses work, but only a record this machine can vouch for. Every new
 `verify` record carries `local`, an HMAC-SHA256 over its fields (all but
@@ -164,7 +171,7 @@ release), otherwise none. `risk.classify` lists the paths that differ
 from the base (untracked files included); when they cannot be listed (a
 repository without a work tree, or a failing git call) the tier is high. A path
 with a control character in its name, one that matches a built-in
-pattern in `HIGH_RISK_PATTERNS` (in `policy.js`) or a `risk:` glob makes the change high; only
+pattern in `HIGH_RISK_PATTERNS` (in `policy.js`) or a `risk:` glob makes the change high, and so does a `risk:` glob that is unusable or a base STATE.md that cannot be read; only
 documentation and test files, or no change, make it low; anything else is
 normal. With no base the tier is high, so the gate relaxes only when the CLI can
 see what changed. The gate requires a passing check for every tier, a review at
@@ -172,14 +179,14 @@ normal and high, and a security record at high, and always blocks on an open
 critical risk. Records a tier does not need show as ok with the reason. When a
 base exists it also runs `testguard` and shows its findings as a warning that
 does not block, and warns when the `docs:` or `risk:` setting in STATE.md
-differs from the base commit's (a missing file there means no setting).
+differs from the base commit's (a missing file there means no setting, an unreadable one is reported).
 
 Review rounds are bounded: `reviews` counts failed review records since the
 last passing one and says to stop and rethink the approach at three. A
 re-review is scoped to the change since the last reviewed `head`, and
 dismissed findings are passed on so they are not raised again.
 
-The command runs in its own process group. A timeout, or a signal to the CLI,
+The command (for `fast`, the `/bin/sh -c` script with its argument list) runs in its own process group. A timeout, or a signal to the CLI,
 ends the whole group; on Windows the tree is ended with `taskkill`. The CLI
 stops waiting shortly after the command exits, even if a background process it
 started still holds the output pipes.

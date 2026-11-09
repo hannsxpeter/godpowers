@@ -16,13 +16,15 @@ and a ship gate that scales with the risk of the change.
 ### Added
 
 - `godpowers fast [files...]` runs the STATE.md `fast:` command on the given
-  files, or on the files changed since HEAD plus untracked files. A bare
-  `{files}` expands to them, quoted for the shell (it must be a separate word
-  outside quotes and escapes, or `fast` refuses). Names that start with `-`
-  get a `./` prefix, names with control characters or that resolve outside the
-  project through a symlink are skipped, and on Windows names with `%` or `"`
-  are refused. The hook runs nothing when its payload names a rejected path. It
-  prints `Running: <command>` on stderr and never writes the ledger.
+  files, or on the files changed since HEAD plus untracked files. Every
+  `{files}` becomes `"$@"` and the command runs as `/bin/sh -c <script>
+  godpowers-fast <file>...`, so file names are arguments and never shell source,
+  even inside quotes or backticks. Names that start with `-` get a `./` prefix,
+  and names with control characters or that resolve outside the project
+  through a symlink are skipped. A command with `{files}` is not supported on
+  Windows and exits 2 ("declare a command without it"; the hook fails open).
+  The hook runs nothing when its payload names a rejected path. It prints
+  `Running: <script>` and the file list on stderr and never writes the ledger.
   `fast --hook` is a handler for a PostToolUse hook that users add to their own
   settings: it reads the hook JSON from stdin, checks the edited file, stays
   silent unless the check fails, and then exits 2 with the output on stderr.
@@ -44,18 +46,20 @@ and a ship gate that scales with the risk of the change.
   line marked `godpowers: allow-test-change` is a deliberate change.
 - `godpowers risk` classifies the change since the base as low, normal, or high
   from its paths. STATE.md `risk:` adds high-risk globs.
-- STATE.md `docs:` (globs, or `none`) defines documentation. Records store a
-  second fingerprint over the files that are not documentation, mixed with a
-  digest of the documentation rule, so changing the rule voids carry-forward.
-  Agent instruction files and high-risk paths are never documentation, and
-  wildcard-only `docs:` or `risk:` globs are errors and are ignored.
+- STATE.md `docs:` (globs, or `none`) defines documentation for the stop
+  gate's allowance (a session that changed only documentation may stop without
+  a check) and the low risk tier. Agent instruction files and high-risk paths
+  are never documentation. A `docs:` or `risk:` glob that is wildcard-only,
+  longer than 512 characters, or over the alternatives cap is a `lint` error:
+  an unusable `docs:` glob is ignored, and an unusable `risk:` glob keeps the
+  risk tier high (`unusable risk pattern: <glob>`).
 - The ship gate warns when `docs:` or `risk:` differs from the base commit's.
 - Prose notes flag plan slices that have no `(behavior)` or `(refactor)` kind.
 
 ### Changed
 
-- Review, harden, and ship records now survive documentation edits. Check and
-  waiver records still go stale on any edit.
+- Every record still matches the exact code, as in 7.0: a documentation edit
+  voids a review, so record it again after the last change.
 - The ship gate scales with risk: it no longer requires a security record for
   normal-risk changes, or a review for low-risk ones. With no base to compare,
   the tier is high and the 7.0 rule applies. `gate ship` takes `--base` and
@@ -68,12 +72,16 @@ and a ship gate that scales with the risk of the change.
 - Gates match a verify record to the declared command by `cmd`, the identity
   of the exact command (a SHA-256, or an HMAC with the machine-local key when
   the command has secret shapes), not by redacted text, so changing a secret
-  value in `verify:` no longer reuses the old pass. 7.0 records match by text
-  only for commands without secret shapes.
+  value in `verify:` no longer reuses the old pass. **A verify record made by
+  7.0 has no `cmd`, so it no longer satisfies the stop gate, the ship gate, or
+  `status` after you upgrade: run `verify` once.** There is no fallback to
+  redacted text.
 - A path counts as documentation for the stop gate and the low and normal ship
   tiers only when the rule at HEAD (stop gate) or at the base commit (ship
   gate) and the working rule agree, and a `risk:` glob at the base still
   applies. Editing `docs:` or `risk:` after the baseline cannot loosen a gate.
+  A baseline STATE.md that exists but cannot be read counts nothing as
+  documentation (stop gate) and makes the tier high (`risk`, ship gate).
 - A malformed `local` or `cmd` value makes a record not reusable instead of
   crashing `verify`, and `reviews`, `status`, `stats`, and the reuse message
   print any ledger value as text without throwing.

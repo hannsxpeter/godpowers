@@ -100,3 +100,16 @@ test('docs and risk globs that would match nearly every path are errors', () => 
     assert.doesNotMatch(messages(stateStore.validate(stateStore.parse(stateText({ docs: glob, risk: glob })))), /nearly every path/, glob);
   }
 });
+
+test('docs and risk globs that cannot be used are errors that say what happens', () => {
+  const tooMany = 'src/a**b**c**d**e**f**g**h.js';
+  const tooLong = `${'a'.repeat(513)}/**`;
+  const docs = messages(stateStore.validate(stateStore.parse(stateText({ docs: `README.md, ${tooMany}` }))));
+  assert.match(docs, /error: frontmatter "docs" has a glob that cannot be used \(src\/a\*\*b/);
+  assert.match(docs, /It is ignored/);
+  const risk = messages(stateStore.validate(stateStore.parse(stateText({ risk: tooMany }))));
+  assert.match(risk, /error: frontmatter "risk" has a glob that cannot be used/);
+  assert.match(risk, /risk tier stays high/);
+  assert.match(messages(stateStore.validate(stateStore.parse(stateText({ risk: tooLong })))), /frontmatter "risk" has a glob that cannot be used \(a{20}/);
+  assert.doesNotMatch(messages(stateStore.validate(stateStore.parse(stateText({ docs: 'a**b.js', risk: 'db/**' })))), /cannot be used/);
+});

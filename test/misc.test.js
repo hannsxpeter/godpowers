@@ -58,16 +58,16 @@ test('status collects and formats state, evidence, risks, and lint', async () =>
   assert.match(status.formatStatus(status.collect(root)), /FAILING on current code/);
 });
 
-test('status says when a review matches the code but documentation changed', async () => {
+test('status shows a review only while the exact code is unchanged, documentation edits included', async () => {
   const root = v7Repo();
   evidence.attest(root, 'review', { pass: true, summary: 'ok' });
-  assert.doesNotMatch(status.formatStatus(status.collect(root)), /documentation changed/);
+  assert.match(status.formatStatus(status.collect(root)), /Review: {2}pass {3}Security: none/);
   write(root, 'README.md', 'edited');
   const info = status.collect(root);
-  assert.equal(info.evidence.review, 'pass');
-  assert.match(status.formatStatus(info), /Review: {2}pass \(documentation changed since\) {3}Security: none/);
-  write(root, 'src/app.js', 'edited');
-  assert.match(status.formatStatus(status.collect(root)), /Review: {2}none {3}Security: none/);
+  assert.equal(info.evidence.review, 'none');
+  assert.equal(info.evidence.viaCode, undefined);
+  assert.match(status.formatStatus(info), /Review: {2}none {3}Security: none/);
+  assert.doesNotMatch(status.formatStatus(info), /documentation changed/);
 });
 
 test('prose scanner finds sentence patterns and skips code', () => {

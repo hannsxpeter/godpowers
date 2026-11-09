@@ -304,58 +304,39 @@ test('attest stores a null head outside git and before the first commit', () => 
   assert.equal(evidence.attest(empty, 'review', { pass: true, summary: 'ok' }).head, null);
 });
 
-test('every record stores the code fingerprint, and judgments match on tree or code', async () => {
+test('records carry no code field, and a review matches only the exact tree', async () => {
   const root = v7Repo();
-  const isDoc = require('../lib/docs').docPredicate(null);
-  const fingerprints = () => gitTools.fingerprints(root, isDoc);
-  const before = fingerprints();
-  assert.match(before.code, /^[0-9a-f]{64}$/);
+  const before = gitTools.treeFingerprint(root);
   const { record } = await evidence.verify(root, 'node -e "0"');
-  assert.equal(record.code, before.code);
-  assert.equal(evidence.waive(root, 'no harness').code, before.code);
+  assert.equal('code' in record, false);
+  assert.equal('code' in evidence.waive(root, 'no harness'), false);
   const review = evidence.attest(root, 'review', { pass: true, summary: 'ok' });
-  assert.equal(review.code, before.code);
-  assert.equal(review.tree, before.tree);
+  assert.equal('code' in review, false);
+  assert.equal(review.tree, before);
 
   write(root, 'README.md', 'docs only edit');
-  const docsEdit = fingerprints();
-  assert.notEqual(docsEdit.tree, before.tree);
-  assert.equal(docsEdit.code, before.code);
+  const edited = gitTools.treeFingerprint(root);
+  assert.notEqual(edited, before);
   const records = evidence.readAll(root).records;
-  let status = evidence.statusFor(records, docsEdit.tree, { code: docsEdit.code });
-  assert.equal(status.review, 'pass');
-  assert.deepEqual(status.viaCode, { review: true, harden: false, ship: false });
-  assert.equal(status.check, 'none', 'verify and waive records match only on the tree');
-  status = evidence.statusFor(records, docsEdit.tree);
-  assert.equal(status.review, 'none', 'without a code fingerprint only the tree matches');
-  status = evidence.statusFor(records, before.tree, { code: before.code });
-  assert.equal(status.review, 'pass');
-  assert.equal(status.viaCode.review, false);
-
-  write(root, 'src/app.js', 'module.exports = 2;\n');
-  const codeEdit = fingerprints();
-  assert.notEqual(codeEdit.code, before.code);
-  status = evidence.statusFor(records, codeEdit.tree, { code: codeEdit.code });
-  assert.equal(status.review, 'none');
+  assert.equal(evidence.statusFor(records, edited).review, 'none', 'a README edit voids the review');
+  assert.equal(evidence.statusFor(records, edited).viaCode, undefined);
+  assert.equal(evidence.statusFor(records, before).review, 'pass');
 });
 
-test('records without a code field (written by 7.0) match on the tree only', () => {
-  const old = { kind: 'review', tree: 'aaa', fp: 1, verdict: 'pass', time: 't', id: 'x' };
-  assert.equal(evidence.statusFor([old], 'aaa', { code: 'ccc' }).review, 'pass');
-  assert.equal(evidence.statusFor([old], 'bbb', { code: 'ccc' }).review, 'none');
-  assert.equal(evidence.statusFor([old], 'bbb', { code: null }).review, 'none');
-  const unknown = { ...old, code: null };
-  assert.equal(evidence.statusFor([unknown], 'bbb', { code: null }).review, 'none', 'a null code never matches');
-  const newer = { ...old, code: 'ccc', fp: 2 };
-  assert.equal(evidence.statusFor([newer], 'bbb', { code: 'ccc' }).review, 'none', 'a newer fingerprint version is ignored');
+test('a record that still has a code field (written by a 7.1 pre-release) is matched on its tree only', () => {
+  const old = { kind: 'review', tree: 'aaa', code: 'ccc', fp: 1, verdict: 'pass', time: 't', id: 'x' };
+  assert.equal(evidence.statusFor([old], 'aaa').review, 'pass');
+  assert.equal(evidence.statusFor([old], 'bbb', { code: 'ccc' }).review, 'none', 'the same code on another tree does not match');
+  const newer = { ...old, fp: 2 };
+  assert.equal(evidence.statusFor([newer], 'aaa').review, 'none', 'a newer fingerprint version is ignored');
 });
 
-test('records store a null code outside git', async () => {
+test('records are not bound to a code fingerprint outside git either', async () => {
   const root = tempDir();
   write(root, '.godpowers/STATE.md', 'x');
-  assert.equal((await evidence.verify(root, 'node -e "0"')).record.code, null);
-  assert.equal(evidence.attest(root, 'review', { pass: true, summary: 's' }).code, null);
-  assert.equal(evidence.waive(root, 'r').code, null);
+  assert.equal('code' in (await evidence.verify(root, 'node -e "0"')).record, false);
+  assert.equal('code' in evidence.attest(root, 'review', { pass: true, summary: 's' }), false);
+  assert.equal('code' in evidence.waive(root, 'r'), false);
 });
 
 const SECRET_ONE = 'PASSWORD=hunter-one node x.js';
@@ -410,14 +391,24 @@ test('a secret-free command matches across machines, with no key at all', () => 
   assert.equal(evidence.statusFor([record], 't1', { command, key: KEY_A }).check, 'pass');
 });
 
-test('a record without cmd (7.0) matches by redacted text only when the current command has no secret shapes', () => {
+test('a record without cmd (7.0) never counts as a verify record, with or without a declared command', () => {
   const old = verifyRecord({ command: 'node y.js' });
-  assert.equal(evidence.statusFor([old], 't1', { command: 'node y.js', key: KEY_A }).check, 'pass');
+  assert.equal(old.cmd, undefined);
+  assert.equal(evidence.statusFor([old], 't1', { command: 'node y.js', key: KEY_A }).check, 'none', 'redacted text is not an identity');
   assert.equal(evidence.statusFor([old], 't1', { command: 'node z.js', key: KEY_A }).check, 'none');
+  assert.equal(evidence.statusFor([old], 't1', { key: KEY_A }).check, 'none', 'nor with no declared command');
+  assert.equal(evidence.statusFor([old], 't1', { command: 'none', key: KEY_A }).check, 'none');
   const secret = verifyRecord();
-  assert.equal(secret.cmd, undefined);
   assert.equal(evidence.statusFor([secret], 't1', { command: SECRET_ONE, key: KEY_A }).check, 'none');
   assert.equal(evidence.statusFor([secret], 't1', { command: SECRET_TWO, key: KEY_A }).check, 'none');
+  // The reported case: the 7.0 record of PASSWORD=hunter-one stored the text below.
+  const redacted = 'PASSWORD=[redacted] node x.js';
+  assert.equal(secret.command, redacted);
+  assert.equal(evidence.statusFor([secret], 't1', { command: redacted, key: KEY_A }).check, 'none', 'a declared command that is the redacted text matches nothing from 7.0');
+  const fresh = verifyRecord({ command: redacted, cmd: evidence.commandIdentity(redacted, { key: KEY_A }) });
+  assert.equal(evidence.statusFor([secret, fresh], 't1', { command: redacted, key: KEY_A }).check, 'pass', 'a record made by 7.1 verify does');
+  const waived = { kind: 'waive', fp: evidence.FP_VERSION, tree: 't1' };
+  assert.equal(evidence.statusFor([old, waived], 't1', { command: 'node y.js', key: KEY_A }).check, 'waived', 'waivers do not carry a command');
 });
 
 test('a record whose cmd is null, or malformed, matches nothing', () => {

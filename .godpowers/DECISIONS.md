@@ -55,3 +55,8 @@ Why: Attention should follow blast radius, not apply equally to every change. Un
 Context: A per-edit hook could run the STATE.md `fast` command automatically.
 Decision: Godpowers ships `godpowers fast` and documents a hook users can add to their own settings, but its installer does not register one.
 Why: An installed hook would run a command any cloned repository declares, without a permission prompt. Godpowers runs repository commands only when the agent or user calls the CLI.
+
+## 2026-11-09: Drop judgment carry-forward; pass changed files as arguments
+Context: Three Codex review rounds kept finding gate bypasses in the features that relax a gate from repository-controlled input: review records carried across edits through a policy-bound `code` fingerprint, and `{files}` spliced into shell source (escaped quotes, then backticks). Each patch opened a new edge.
+Decision: Supersedes "Judgment records survive documentation edits, check records do not". Review, harden, and ship records match the exact tree again, as in 7.0. The `docs:` setting only decides the stop gate's documentation allowance and the low tier, using the stricter of the baseline and current policies. `{files}` becomes `"$@"` and the file names are passed as arguments to `sh -c`, so they never enter shell source; Windows does not support `{files}`. An unusable `risk:` glob or an unreadable baseline policy keeps the strictest requirement, and records without the exact-command identity no longer satisfy gates.
+Why: Removing the attack surface is sounder than another patch round. Re-recording a review after a documentation edit is cheap; a gate that a repository can talk its way past is not.

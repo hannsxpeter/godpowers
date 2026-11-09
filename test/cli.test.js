@@ -25,6 +25,20 @@ test('parseArgs handles commands, values, flags, runtimes, and short options', (
   assert.throws(() => cli.parseArgs(['record', 'review', '--pass=false']), /--pass does not take a value/);
 });
 
+test('quoteArg uses POSIX single quotes and Windows double quotes', () => {
+  const platform = Object.getOwnPropertyDescriptor(process, 'platform');
+  try {
+    Object.defineProperty(process, 'platform', { value: 'linux' });
+    assert.equal(cli.quoteArg('src/a-b.js'), 'src/a-b.js');
+    assert.equal(cli.quoteArg("it's a"), "'it'\\''s a'");
+    Object.defineProperty(process, 'platform', { value: 'win32' });
+    assert.equal(cli.quoteArg('my file.js'), '"my file.js"');
+    assert.equal(cli.quoteArg('plain.js'), 'plain.js');
+  } finally {
+    Object.defineProperty(process, 'platform', platform);
+  }
+});
+
 test('verify keeps the command exactly as typed', () => {
   const command = argv => cli.verifyCommand(cli.parseArgs(argv));
   assert.equal(command(['verify', 'node', '-e', 'console.log(1)']), "node -e 'console.log(1)'");
@@ -273,8 +287,8 @@ test('a record for one secret value is not reused for another command that redac
 test('verify does not reuse a forged record, a record from another key, or anything in a damaged ledger', async () => {
   const root = v7Repo();
   const cmd = 'node -e "console.log(2)"';
-  const { tree, code } = gitTools.fingerprints(root, require('../lib/docs').forRoot(root));
-  const forged = { kind: 'verify', tree, code, command: cmd, claim: null, exit: 0, ok: true, timedOut: false, ms: 1, tail: '' };
+  const tree = gitTools.treeFingerprint(root);
+  const forged = { kind: 'verify', tree, command: cmd, claim: null, exit: 0, ok: true, timedOut: false, ms: 1, tail: '' };
   evidence.append(root, forged);
   assert.deepEqual(evidence.readAll(root).problems, [], 'the forgery is validly chained');
   assert.equal(ranIt(await run(['verify', cmd], { cwd: root })), true, 'a record without a local signature is not reused');
@@ -421,8 +435,8 @@ test('reviews, status, stats, and the reuse message survive ledger fields that c
 test('verify runs the check when a record has a malformed signature, instead of crashing', async () => {
   const root = v7Repo();
   const cmd = 'node -e "console.log(5)"';
-  const { tree, code } = gitTools.fingerprints(root, require('../lib/docs').forRoot(root));
-  const forged = { kind: 'verify', tree, code, command: cmd, claim: null, exit: 0, ok: true, timedOut: false, ms: 1, tail: '' };
+  const tree = gitTools.treeFingerprint(root);
+  const forged = { kind: 'verify', tree, command: cmd, claim: null, exit: 0, ok: true, timedOut: false, ms: 1, tail: '' };
   evidence.append(root, { ...forged, local: 'é'.repeat(64) });
   const result = await run(['verify', cmd], { cwd: root });
   assert.equal(result.code, 0, result.err);

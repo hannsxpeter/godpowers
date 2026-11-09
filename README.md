@@ -99,10 +99,10 @@ Everything lives in `.godpowers/`, which you commit with your code:
 
 - `STATE.md` is the one state file. Its frontmatter holds `project`, `stage`
   (plan, build, review, harden, ship, done), and `verify` (your check command).
-  Optional keys: `fast` (a file-local check; a bare `{files}` expands to the
-  changed files, each quoted for the shell), `docs` (comma-separated globs that count
-  as documentation, or `none`), and `risk` (comma-separated globs that make a
-  change high risk). Its body holds Goal, Now, Next, and Risks. A risk is one checkbox line:
+  Optional keys: `fast` (a file-local check; `{files}` is replaced by the
+  changed files, passed as arguments, not on Windows), `docs` (comma-separated
+  globs that count as documentation, or `none`), and `risk` (comma-separated
+  globs that make a change high risk). Its body holds Goal, Now, Next, and Risks. A risk is one checkbox line:
   `- [ ] critical: SQL injection in /search (src/api/search.ts:40)`.
 - `PLAN.md` holds the goal, requirements with "Done when" checks, non-goals,
   design, and slices. It is skipped when a request already lists its
@@ -160,21 +160,33 @@ reachable from HEAD, leaving out tags on HEAD itself, so the gate for a
 just-tagged release compares with the previous release. The ship gate warns
 when `docs:` or `risk:` in STATE.md differs from the base commit's.
 
-### Records that survive documentation edits
+### Records match the exact code
 
-Records also store a fingerprint of the files that are not documentation.
-Review, harden, and ship records match when either fingerprint matches, so a
-README typo does not void a review. Check and waiver records still match only
-the whole tree, because a test suite can read documentation. `docs:` in
-STATE.md changes what counts as documentation; `docs: none` turns the
-exemption off, for the records and for the Stop hook. Agent instruction files
+Every record (check, waiver, review, security, ship) matches only the exact
+tree it was made on, so any edit, a README typo included, makes it stale; record
+the review again after the last change. A check record also has to be of the
+declared command itself: `verify` stores an identity of the exact command, and
+a record without one (written by 7.0, which kept only the redacted text) never
+satisfies a gate. After upgrading from 7.0, run `verify` once.
+
+`docs:` in STATE.md decides only what the Stop hook may let through without a
+check (a session that changed only documentation) and what keeps a change in
+the low risk tier. The built-in rule applies without it; `docs: none` turns the
+allowance off. A path counts as documentation only when the rule committed at
+the baseline (HEAD for the Stop hook, the base commit for risk and the ship
+gate) and the working rule both say so, so editing `docs:` after the baseline
+cannot loosen a gate. A baseline STATE.md that exists but cannot be read counts
+nothing as documentation and makes the tier high. Agent instruction files
 (`AGENTS.md`, `CLAUDE.md`, `SKILL.md`, anything under `.claude`, `agents`,
 `skills`, `prompts`, and similar) are never documentation by default, and
 neither is any path that matches a high-risk pattern or a `risk:` glob. A
-glob made only of wildcards (`**`, `*.*`) is an error and is ignored. In a
-glob, `**` inside a name (`src/**.js`) can span directories; a glob that
-needs more than 64 alternatives (more than six such `**` in all) never matches. Changing
-the rule voids carried-forward records.
+glob is unusable when it is made only of wildcards (`**`, `*.*`), is longer
+than 512 characters, or needs more than 64 alternatives (more than six `**`
+inside names in all). `lint` reports an unusable `docs:` or `risk:` glob as an
+error. An unusable `docs:` glob is ignored; an unusable `risk:` glob (in the
+working STATE.md or at the base) keeps the tier high with the reason
+`unusable risk pattern: <glob>`, and makes the Stop hook count nothing as
+documentation. In a glob, `**` inside a name (`src/**.js`) can span directories.
 
 To switch the Stop and commit gates off, add `gate: off` to STATE.md's
 frontmatter, or set `GODPOWERS_GATE=off` for one session.
@@ -233,18 +245,18 @@ stands in for a run. A damaged ledger, or no readable key, turns reuse off.
 `fast` runs the `fast:` command from STATE.md on the files you give it, or on
 the files changed since HEAD plus untracked files. It never writes the ledger,
 so it is feedback, not evidence. With `{files}` in the command and nothing
-changed, it runs nothing. Write `{files}` bare: Godpowers quotes each name
-itself, and every `{files}` must be a separate word outside quotes and
-backslash escapes (`eslint {files} --fix`, not `"{files}"`, `\{files}`, or
-`x{files}`), because the shell would expand a file name like `$(...)` in any
-other place; otherwise `fast` refuses (exit 2; the hook fails open). Names
-that start with `-` are passed as `./-name`, names with control characters are
-skipped with a note, and so is any file that resolves outside the project
-through a symlink. The hook runs nothing when the payload names a path that is
-rejected. `fast` prints
-`Running: <command>` on stderr first, so you see what the repository declared.
-On Windows, names containing `%` or `"` are refused (native Windows is
-untested).
+changed, it runs nothing. Every `{files}` is replaced by `"$@"` and the
+command runs as `/bin/sh -c <script> godpowers-fast <file>...`, so file names
+are arguments and never part of the shell script, wherever `{files}` sits
+(`eslint {files} --fix`, or inside quotes or backticks). Names that start with
+`-` are passed as `./-name`, names with control characters are skipped with a
+note, and so is any file that resolves outside the project through a symlink.
+The hook runs nothing when the payload names a path that is rejected. `fast`
+prints `Running: <script>` and the file list on stderr first, so you see what
+the repository declared. A command without `{files}` runs as written. Windows
+has no such interface: a `fast` command with `{files}` exits 2 with "`{files}`
+is not supported on Windows; declare a command without it" (the hook fails
+open).
 
 `reviews` lists the review rounds since the last passing one, with the commit
 each saw and the findings dismissed. After three failed rounds it says to stop

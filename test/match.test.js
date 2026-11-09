@@ -1,7 +1,9 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const { matches, parseList } = require('../lib/match');
+const match = require('../lib/match');
+
+const { matches, parseList } = match;
 
 test('** spans path segments, including none', () => {
   const globs = ['**/x/**'];
@@ -140,4 +142,12 @@ test('parseList splits comma-separated values and arrays', () => {
   assert.deepEqual(parseList(undefined), []);
   assert.deepEqual(parseList(''), []);
   assert.deepEqual(parseList(5), ['5']);
+});
+
+test('usable refuses globs that are too long, need too many alternatives, or are wildcard-only', () => {
+  for (const glob of ['src/**', '*.md', 'a**b.js', 'src/a**b**c.js', 'none', 'db/migrations/', 'x'.repeat(512)]) assert.equal(match.usable(glob), true, glob);
+  for (const glob of ['x'.repeat(513), 'src/a**b**c**d**e**f**g**h.js', '*', '**', '**/*', '*.*', '?', '*/', './**']) {
+    assert.equal(match.usable(glob), false, glob.slice(0, 40));
+  }
+  assert.equal(match.usable(7), false, 'not a string');
 });

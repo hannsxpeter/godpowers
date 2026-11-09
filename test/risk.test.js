@@ -248,3 +248,59 @@ test('a risk: glob at the base still counts after the working STATE.md drops it'
   write(root, 'src/app.js', 'x');
   assert.equal(classify(root).tier, 'high');
 });
+
+const TOO_MANY = 'src/a**b**c**d**e**f**g**h.js';
+
+test('an unusable risk: glob keeps the tier high, from the base or the working STATE.md', () => {
+  const root = releasedRepo({ risk: TOO_MANY });
+  write(root, 'src/abcdefgh.js', 'x');
+  let result = classify(root);
+  assert.equal(result.tier, 'high');
+  assert.equal(result.reason, `unusable risk pattern: ${TOO_MANY}`);
+  write(root, '.godpowers/STATE.md', stateText());
+  assert.equal(classify(root).tier, 'high', 'dropping it from the working STATE.md changes nothing');
+  const working = releasedRepo();
+  write(working, '.godpowers/STATE.md', stateText({ risk: TOO_MANY }));
+  write(working, 'README.md', 'docs');
+  assert.equal(classify(working).reason, `unusable risk pattern: ${TOO_MANY}`);
+  const nothing = releasedRepo({ risk: TOO_MANY });
+  assert.equal(classify(nothing).tier, 'high', 'even when nothing changed');
+});
+
+test('a risk: glob over the length cap, or wildcard-only, is unusable too, and usable ones are not', () => {
+  for (const glob of [`${'a'.repeat(513)}/**`, '**', '*.*', '**/*']) {
+    const root = releasedRepo({ risk: glob });
+    write(root, 'README.md', 'docs');
+    const result = classify(root);
+    assert.equal(result.tier, 'high', glob.slice(0, 20));
+    assert.match(result.reason, /^unusable risk pattern: /);
+  }
+  const root = releasedRepo({ risk: 'db/**, *.sql, src/a**b.js' });
+  write(root, 'README.md', 'docs');
+  assert.equal(classify(root).tier, 'low');
+});
+
+test('an unusable docs: glob is ignored, so the built-in rule decides', () => {
+  const root = releasedRepo({ docs: TOO_MANY });
+  write(root, 'README.md', 'docs');
+  assert.equal(classify(root).tier, 'low');
+  write(root, 'src/abcdefgh.js', 'x');
+  assert.equal(classify(root).tier, 'normal');
+});
+
+test('a STATE.md that cannot be read at the base makes the tier high; one that is absent does not', () => {
+  const root = releasedRepo();
+  write(root, 'README.md', 'docs');
+  const blob = git(root, 'rev-parse', 'HEAD:.godpowers/STATE.md');
+  const file = path.join(root, '.git', 'objects', blob.slice(0, 2), blob.slice(2));
+  fs.chmodSync(file, 0o644);
+  fs.rmSync(file);
+  const result = classify(root);
+  assert.equal(result.tier, 'high');
+  assert.match(result.reason, /^could not read STATE\.md at v1\.0\.0: /);
+  const absent = require('./helpers').gitRepo();
+  git(absent, 'tag', 'v1.0.0');
+  git(absent, 'commit', '-q', '--allow-empty', '-m', 'after');
+  write(absent, 'README.md', 'docs');
+  assert.equal(classify(absent).tier, 'low', 'no STATE.md at the base means no settings');
+});
