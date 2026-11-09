@@ -58,7 +58,7 @@ test/                 node:test suites
 | `evidence.js` | The evidence ledger: run and record checks, reuse, waivers, attestations, chain |
 | `fast.js` | The `fast` check: replaces each `{files}` (only a standalone word outside quotes, judged by a small POSIX quote scanner; anything else is refused) with `"$@"` and runs `/bin/sh -c <script> godpowers-fast <file>...`, so file names are arguments and never shell source (a command with `{files}` is refused on Windows); skips files that resolve outside the project, and runs without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
 | `reviews.js` | Review rounds since the last pass, and the three-round warning |
-| `verdict.js` | The pasteable verdict block from the ledger and git; judges like the ship gate, claims no pass on a damaged ledger, always exits 0 |
+| `verdict.js` | The pasteable verdict block from the ledger and git; judges like the ship gate, claims no pass on a damaged ledger, exits 0 whatever the evidence says |
 | `drift.js` | Base drift: whether the target branch changed files this change also touches, from local refs only (never fetches) |
 | `stats.js` | Numbers computed from the ledger |
 | `testguard.js` | Flags deleted tests, fewer tests or assertions, and added skip markers since a base |

@@ -13,7 +13,7 @@ instructions, of which about 600 load per session.
 - **`godpowers verdict`** prints the check, review rounds and reviewer,
   security record, and open risks for the current code, ready to paste into a
   PR description or release notes. It judges evidence like the ship gate,
-  claims no pass while the ledger has integrity errors, and always exits 0.
+  claims no pass while the ledger has integrity errors, and exits 0 whatever the evidence says (a bad `--base` exits 2).
 - **Reviewer on the record.** `record review|harden --reviewer "<name>"` stores
   who reviewed. It is never guessed. `reviews` shows it.
 - **Review growth.** `record review --base <ref>` stores the size of the change.

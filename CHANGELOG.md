@@ -20,7 +20,7 @@ use a skill, and unattended runs. Several ideas come from tstack
   ledger and git: the check, review rounds and reviewer, security record, and
   open risks, for pasting unedited into a PR description or release notes. It
   judges evidence exactly like the ship gate, claims no pass while the ledger
-  has integrity errors, and always exits 0.
+  has integrity errors, and exits 0 whatever the evidence says (a bad `--base` exits 2).
 - `record review|harden --reviewer "<name>"` stores who reviewed, redacted and
   capped at 100 characters, and never guesses. `reviews` shows it.
 - `record review --base <ref>` stores the size of the change against the base

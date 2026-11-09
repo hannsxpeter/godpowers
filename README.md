@@ -292,7 +292,7 @@ the change; `reviews` and `record review` warn when it grew by more than 25%
 `verdict` prints the check, review rounds and reviewer, security record, and
 open risks for the current code, to paste unedited into a PR description or
 release notes. It judges evidence like the ship gate, claims no pass while the
-ledger has integrity errors, and always exits 0.
+ledger has integrity errors, and exits 0 whatever the evidence says (a bad `--base` exits 2).
 
 `stats` reports from the ledger: check runs with passes, failures, and median
 and longest duration, the median time from a failing run to the next passing
