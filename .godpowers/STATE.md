@@ -1,9 +1,9 @@
 ---
 godpowers: 7
 project: godpowers
-stage: ship
+stage: build
 verify: npm test
-updated: 2026-10-08
+updated: 2026-11-08
 ---
 # godpowers
 
@@ -11,10 +11,10 @@ updated: 2026-10-08
 Keep Godpowers a small, verified core: durable project state, checks bound to exact code, an independent reviewer, and gates enforced by hooks in Claude Code and Codex.
 
 ## Now
-- 7.0.1 carries the installed-copy fix for doctor and budget. 7.0.0 was tagged but never reached npm: the publish job got E404 from the registry, an npm credentials problem.
+- Building 7.1.0 on feat/faster-verification: faster, more selective verification (see PLAN.md). 7.0.0 and 7.0.1 never reached npm.
 
 ## Next
-- Fix npm auth (trusted publishing or a new NPM_TOKEN), push the v7.0.1 tag, then create the 7.0.1 GitHub release from RELEASE.md.
+- Slice 1: verify reuse, review rounds, stats. npm publishing still needs working credentials (E404 since 7.0.0).
 
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested

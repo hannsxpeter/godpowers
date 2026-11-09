@@ -214,3 +214,76 @@ test('killing verify also stops the check it started', async t => {
   await new Promise(r => setTimeout(r, 300));
   assert.throws(() => process.kill(checkPid, 0), /ESRCH/, 'the check process is gone');
 });
+
+test('parseArgs collects repeated --dismiss values and accepts --force for verify', () => {
+  assert.deepEqual(cli.parseArgs(['record', 'review', '--dismiss', 'a: b', '--dismiss=c: d', '--summary', 's']).opts, {
+    dismiss: ['a: b', 'c: d'], summary: 's'
+  });
+  assert.throws(() => cli.parseArgs(['record', 'review', '--dismiss']), /--dismiss needs a value/);
+  assert.equal(cli.parseArgs(['verify', 'npm test', '--force']).opts.force, true);
+  assert.equal(cli.verifyCommand(cli.parseArgs(['verify', 'npm test', '--force'])), 'npm test');
+  assert.equal(cli.parseArgs(['verify', '--force', 'npm', 'test']).opts.force, true);
+  assert.equal(cli.parseArgs(['verify', 'npm', 'test', '--force']).opts.force, undefined, 'split form: belongs to the command');
+});
+
+test('verify reuses a passing record unless forced', async () => {
+  const root = v7Repo();
+  const cmd = 'node -e "console.log(7)"';
+  const count = () => fs.readFileSync(path.join(root, '.godpowers/evidence.jsonl'), 'utf8').split('\n').filter(Boolean).length;
+  assert.equal((await run(['verify', cmd], { cwd: root })).code, 0);
+  const reused = await run(['verify', cmd], { cwd: root });
+  assert.equal(reused.code, 0);
+  assert.match(reused.out, /^Reused passing record ev_\S+ from \S+: .* already passed on this code\. Use --force to run it again\./);
+  assert.doesNotMatch(reused.out, /PASS:/);
+  assert.equal(count(), 1);
+  const json = JSON.parse((await run(['verify', cmd, '--json'], { cwd: root })).out);
+  assert.equal(json.reused, true);
+  assert.equal(json.record.kind, 'verify');
+  assert.equal(count(), 1);
+  assert.match((await run(['verify', cmd, '--force'], { cwd: root })).out, /PASS:/);
+  assert.equal(count(), 2);
+  assert.match((await run(['verify', '--force', cmd], { cwd: root })).out, /PASS:/);
+  assert.match((await run(['verify', 'node -e "console.log(8)"'], { cwd: root })).out, /PASS:/, 'different command runs');
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  assert.match((await run(['verify', cmd], { cwd: root })).out, /PASS:/, 'changed tree runs');
+  assert.equal(count(), 5);
+});
+
+test('verify runs again after a failed latest run and after changedDuringRun', async () => {
+  const root = v7Repo();
+  const failing = 'node -e "process.exit(1)"';
+  assert.equal((await run(['verify', failing], { cwd: root })).code, 1);
+  assert.equal((await run(['verify', failing], { cwd: root })).code, 1, 'a failed record is never reused');
+  const changer = 'node -e "require(\'fs\').writeFileSync(\'gen.txt\', String(Date.now()))"';
+  assert.match((await run(['verify', changer], { cwd: root })).out, /Files changed while/);
+  fs.rmSync(path.join(root, 'gen.txt'));
+  assert.match((await run(['verify', changer], { cwd: root })).out, /Files changed while/, 'changedDuringRun is not reused');
+});
+
+test('record review reports rounds, dismissals, and the three-round warning', async () => {
+  const root = v7Repo();
+  const fail = (extra = []) => run(['record', 'review', '--fail', '--summary', 'found issues', ...extra], { cwd: root });
+  const none = await run(['reviews'], { cwd: root });
+  assert.equal(none.code, 0);
+  assert.match(none.out, /No passing review yet\./);
+  assert.match((await fail(['--dismiss', 'naming: house style', '--dismiss', 'perf: not hot'])).out, /Review round 1 since the last pass\./);
+  assert.match((await fail()).out, /Review round 2/);
+  const third = await fail();
+  assert.match(third.out, /Review round 3/);
+  assert.match(third.out, /3 failed review rounds since the last pass: stop and rethink the approach \(re-plan, or ask the user\) before another round\./);
+  const text = await run(['reviews'], { cwd: root });
+  assert.match(text.out, /Round 1: fail \w{7} at \S+: found issues\n  dismissed: naming: house style\n  dismissed: perf: not hot/);
+  assert.match(text.out, /3 failed review rounds/);
+  const json = JSON.parse((await run(['reviews', '--json'], { cwd: root })).out);
+  assert.equal(json.failedSinceLastPass, 3);
+  assert.equal(json.rounds[0].dismissed.length, 2);
+  assert.match((await run(['status'], { cwd: root })).out, /Rounds:  3 failed review round\(s\) since the last pass\n3 failed review rounds/);
+  assert.equal(JSON.parse((await run(['status', '--json'], { cwd: root })).out).failedReviewRounds, 3);
+  assert.match((await run(['record', 'review', '--pass', '--summary', 'clean'], { cwd: root })).out, /Review round 4 since the last pass\.\n?$/);
+  const after = await run(['reviews'], { cwd: root });
+  assert.match(after.out, /Last passing review: \w{7} at \S+: clean\nNo review rounds since the last pass\./);
+  assert.doesNotMatch((await run(['status'], { cwd: root })).out, /Rounds:/);
+  const bad = await run(['record', 'harden', '--pass', '--summary', 'ok', '--dismiss', 'a: b'], { cwd: root });
+  assert.equal(bad.code, 2);
+  assert.match(bad.err, /--dismiss only applies to record review/);
+});

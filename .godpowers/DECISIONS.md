@@ -35,3 +35,23 @@ Why: Every extra call resends the whole context, and the Stop hook and ship gate
 Context: Across the 8 A/B runs since skills first asked for sizing (two each at a38c592, 902d024, 9a9ab58, and a5641cb), the reviewer inherited the session's model and effort in 2 and got only an effort in 1; the inherited xhigh reviewer used about 2.4x the input tokens of a sized one.
 Decision: Before starting any subagent, the agent says which model and effort it picked and why, then passes both explicitly in the call that starts it.
 Why: Naming the choice turns a buried clause into a step, and a skipped choice becomes visible in the transcript. Not yet measured.
+
+## 2026-11-08: Reuse a passing check instead of running it again
+Context: `verify` ran the command every time, even when a passing record of the same command already matched the exact code.
+Decision: `verify` returns the latest passing record of the same command on the same tree without running it; `--force` runs it anyway.
+Why: The fingerprint already proves nothing changed, so a second run costs time without adding evidence. Environment drift is the caller's to rule out with `--force`.
+
+## 2026-11-08: Judgment records survive documentation edits, check records do not
+Context: A README typo after review voided the review and security records for the ship gate, although the stop gate already treated documentation-only edits as safe.
+Decision: Records also store a fingerprint over non-documentation files. Review, harden, and ship records match on it; verify and waive records still match only the whole tree. A `docs:` setting in STATE.md defines documentation, or turns the exemption off.
+Why: A person or reviewer judged the code, which did not change. A test suite can read documentation (this repository's does), so checks stay bound to everything.
+
+## 2026-11-08: Scale the ship gate to the risk of the change since the last release
+Context: The ship gate demanded a review and a security record for every release, including documentation-only ones, which spends review on low-risk work.
+Decision: `godpowers risk` classifies the change since the latest `v*` tag as low, normal, or high from its paths. The ship gate needs a check for low, a review for normal, and a security record as well for high. Without a base the tier is high.
+Why: Attention should follow blast radius, not apply equally to every change. Unknown means high, so the gate only relaxes when the CLI can see what changed.
+
+## 2026-11-08: Do not register a hook that runs the repository's fast check
+Context: A per-edit hook could run the STATE.md `fast` command automatically.
+Decision: Godpowers ships `godpowers fast` and documents a hook users can add to their own settings, but its installer does not register one.
+Why: An installed hook would run a command any cloned repository declares, without a permission prompt. Godpowers runs repository commands only when the agent or user calls the CLI.

@@ -159,3 +159,55 @@ test('works outside git with a null tree, and waits out a held lock', async () =
   assert.equal(next.kind, 'waive');
   assert.equal(fs.existsSync(lock), false);
 });
+
+test('findReusable returns only a clean passing record of the same command on the same tree', () => {
+  const base = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', ok: true };
+  assert.equal(evidence.findReusable([base], 't1', 'npm test'), base);
+  assert.equal(evidence.findReusable([base], 't2', 'npm test'), null, 'changed tree');
+  assert.equal(evidence.findReusable([base], 't1', 'npm run lint'), null, 'different command');
+  assert.equal(evidence.findReusable([base], null, 'npm test'), null, 'no tree');
+  assert.equal(evidence.findReusable([{ ...base, fp: 0 }], 't1', 'npm test'), null, 'old fingerprint version');
+  assert.equal(evidence.findReusable([base, { ...base, ok: false }], 't1', 'npm test'), null, 'latest failed');
+  assert.equal(evidence.findReusable([{ ...base, ok: false }, base], 't1', 'npm test'), base, 'latest passed');
+  assert.equal(evidence.findReusable([{ ...base, changedDuringRun: true }], 't1', 'npm test'), null);
+  assert.equal(evidence.findReusable([{ ...base, timedOut: true }], 't1', 'npm test'), null);
+});
+
+test('reviewHistory counts rounds after the last passing review', () => {
+  const review = verdict => ({ kind: 'review', verdict });
+  assert.deepEqual(evidence.reviewHistory([]), { lastPass: null, rounds: [], failedSinceLastPass: 0 });
+  const records = [review('fail'), review('pass'), { kind: 'harden', verdict: 'fail' }, review('fail'), review('fail')];
+  const history = evidence.reviewHistory(records);
+  assert.equal(history.lastPass, records[1]);
+  assert.deepEqual(history.rounds, [records[3], records[4]]);
+  assert.equal(history.failedSinceLastPass, 2);
+  assert.equal(evidence.reviewHistory([...records, review('pass')]).failedSinceLastPass, 0);
+  assert.equal(evidence.reviewHistory([review('fail'), review('fail'), review('fail')]).failedSinceLastPass, 3);
+});
+
+test('attest stores the head commit, and dismissals only for reviews', () => {
+  const root = v7Repo();
+  const head = gitTools.git(root, ['rev-parse', 'HEAD']).stdout.trim();
+  const record = evidence.attest(root, 'review', {
+    pass: false,
+    summary: 'round one',
+    dismissed: ['a: fine', '  ', 'x'.repeat(400), 'token=abcdefghijklmnop: leaked', ...Array.from({ length: 30 }, (_, i) => `n${i}`)]
+  });
+  assert.equal(record.head, head);
+  assert.equal(record.dismissed.length, 20);
+  assert.equal(record.dismissed[0], 'a: fine');
+  assert.equal(record.dismissed[1].length, 300);
+  assert.match(record.dismissed[2], /\[redacted\]/);
+  assert.equal(evidence.attest(root, 'review', { pass: true, summary: 'ok', dismissed: ['', ' '] }).dismissed, undefined);
+  assert.throws(() => evidence.attest(root, 'harden', { pass: true, summary: 'ok', dismissed: ['a: b'] }), /--dismiss only applies to record review/);
+  assert.equal(evidence.attest(root, 'ship', { pass: true, summary: 'ok' }).dismissed, undefined);
+});
+
+test('attest stores a null head outside git and before the first commit', () => {
+  const plain = tempDir();
+  assert.equal(evidence.attest(plain, 'review', { pass: true, summary: 'ok' }).head, null);
+  assert.equal(gitTools.headCommit(plain), null);
+  const empty = tempDir();
+  gitTools.git(empty, ['init', '-q']);
+  assert.equal(evidence.attest(empty, 'review', { pass: true, summary: 'ok' }).head, null);
+});
