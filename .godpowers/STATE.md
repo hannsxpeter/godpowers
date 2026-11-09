@@ -13,10 +13,10 @@ updated: 2026-11-09
 Keep Godpowers a small, verified core: durable project state, checks bound to exact code, an independent reviewer, and gates enforced by hooks in Claude Code and Codex.
 
 ## Now
-- 7.1.0 (faster, more selective verification) passed the ship gate at the high tier: npm test, Codex review, and a security pass on the final code. 7.0.0 and 7.0.1 never reached npm.
+- 7.1.0 is merged to main (c0b2900), tagged v7.1.0, and pushed; CI passed. The publish job (run 42567838762) passed the identity and release checks and failed at the final PUT with E404, so npm still has 6.3.0 as latest. The GitHub release is a draft until npm has 7.1.0.
 
 ## Next
-- Merge to main, tag v7.1.0, and publish. npm publishing needs working credentials (E404 since 7.0.0): a trusted publisher for publish.yml, or a new NPM_TOKEN secret; then re-run the failed publish job.
+- Fix npm credentials (a trusted publisher for publish.yml and no NPM_TOKEN secret, or a new granular NPM_TOKEN), then `gh run rerun 42567838762`, publish the draft release (`gh release edit v7.1.0 --draft=false`), and upgrade the local install (`npx godpowers@7 --claude --codex --global`).
 
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested
