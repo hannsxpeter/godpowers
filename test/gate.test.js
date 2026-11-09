@@ -529,3 +529,121 @@ test('the ship gate treats a repository without a work tree as high risk and doe
   assert.match(byName(result).tests.detail, /test guard could not run/);
   assert.equal(byName(result).tests.severity, 'warning');
 });
+
+// A secret in the declared command redacts alike for every value; the gates must still tell values apart.
+const SECRET_ONE = 'PASSWORD=hunter-one node check.js';
+const SECRET_TWO = 'PASSWORD=hunter-two node check.js';
+
+test('the stop gate does not accept a pass of another command whose secret redacts alike', async () => {
+  const root = checkedRepo({ verify: SECRET_ONE });
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  assert.equal(gate.stopGate(root).block, true);
+  await evidence.verify(root, SECRET_ONE);
+  assert.equal(gate.stopGate(root).block, false, 'the declared command passed');
+  setState(root, { verify: SECRET_TWO });
+  assert.equal(gate.stopGate(root).block, true, 'a different value is a different command');
+  setState(root, { verify: SECRET_ONE });
+  assert.equal(gate.stopGate(root).block, false);
+});
+
+test('the ship gate does not accept a pass of another command whose secret redacts alike', async () => {
+  const root = releasedRepo({ verify: SECRET_ONE });
+  write(root, 'README.md', 'docs');
+  await evidence.verify(root, SECRET_ONE);
+  assert.equal(gate.shipGate(root).ok, true);
+  setState(root, { verify: SECRET_TWO });
+  const result = gate.shipGate(root);
+  assert.equal(byName(result).verify.ok, false);
+  assert.equal(result.ok, false);
+});
+
+test('the ship gate outside git does not accept it either', async () => {
+  const root = tempDir();
+  write(root, '.godpowers/STATE.md', stateText({ verify: SECRET_ONE }));
+  write(root, '.godpowers/DECISIONS.md', 'x');
+  write(root, '.godpowers/evidence.jsonl', '');
+  write(root, 'check.js', 'process.exit(0);\n');
+  await evidence.verify(root, SECRET_ONE);
+  assert.equal(byName(gate.shipGate(root)).verify.ok, true);
+  setState(root, { verify: SECRET_TWO });
+  assert.equal(byName(gate.shipGate(root)).verify.ok, false);
+});
+
+test('status does not show another command\'s pass as passing', async () => {
+  const status = require('../lib/status');
+  const root = checkedRepo({ verify: SECRET_ONE });
+  await evidence.verify(root, SECRET_ONE);
+  assert.equal(status.collect(root).evidence.check, 'pass');
+  setState(root, { verify: SECRET_TWO });
+  assert.equal(status.collect(root).evidence.check, 'none');
+});
+
+// Policy intersection: a path is documentation only when the committed rule and the working one agree.
+
+test('stop gate: loosening docs: after the baseline does not make code documentation', () => {
+  const root = checkedRepo();
+  setState(root, { docs: 'src/**' });
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  const result = gate.stopGate(root);
+  assert.equal(result.block, true, 'src/app.js is not documentation under the committed rule');
+  assert.match(result.reason, /src\/app\.js/);
+});
+
+test('stop gate: a loosened docs: committed at HEAD is honored', () => {
+  const root = checkedRepo();
+  setState(root, { docs: 'src/**' });
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'docs policy');
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  assert.equal(gate.stopGate(root).reason, 'only documentation changed');
+});
+
+test('stop gate: removing a risk: glob after the baseline does not make a path documentation', () => {
+  const root = checkedRepo({ docs: 'site/**', risk: 'site/private/**' });
+  setState(root, { docs: 'site/**' });
+  write(root, 'site/private/key.js', 'x');
+  assert.equal(gate.stopGate(root).block, true);
+  write(root, 'site/page.js', 'x');
+  assert.match(gate.stopGate(root).reason, /site\/private\/key\.js/);
+});
+
+test('stop gate: without a committed STATE.md the default rule is the baseline', () => {
+  const root = gitRepo();
+  write(root, '.godpowers/STATE.md', stateText({ verify: CHECK, docs: 'src/**' }));
+  write(root, '.godpowers/DECISIONS.md', 'x');
+  write(root, '.godpowers/evidence.jsonl', '');
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  assert.equal(gate.stopGate(root).block, true);
+  const empty = tempDir();
+  require('child_process').spawnSync('git', ['init', '-q'], { cwd: empty });
+  write(empty, '.godpowers/STATE.md', stateText({ verify: CHECK, docs: 'src/**' }));
+  write(empty, 'src/app.js', 'x');
+  assert.equal(gate.stopGate(empty).block, true, 'no commits, default rule');
+});
+
+test('ship gate: loosening docs: after the base does not make the change low risk', () => {
+  const root = releasedRepo();
+  setState(root, { docs: 'src/**' });
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  const result = gate.shipGate(root);
+  assert.equal(result.tier, 'normal');
+  assert.equal(byName(result).review.ok, false, 'a review is required');
+  assert.equal(byName(result).settings.severity, 'warning', 'the settings warning stays');
+});
+
+test('ship gate: a loosened docs: present at the base is honored', () => {
+  const root = checkedRepo({ docs: 'src/**' });
+  git(root, 'tag', 'v1.0.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  assert.equal(gate.shipGate(root).tier, 'low');
+});
+
+test('ship gate: removing a risk: glob after the base keeps the change high risk', () => {
+  const root = checkedRepo({ risk: 'src/**' });
+  git(root, 'tag', 'v1.0.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
+  setState(root, {});
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  assert.equal(gate.shipGate(root).tier, 'high');
+});

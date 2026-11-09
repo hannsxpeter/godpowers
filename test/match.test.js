@@ -71,6 +71,9 @@ test('a hostile glob finishes quickly instead of backtracking', () => {
   assert.equal(matches([hostile], `dir/${long}`), false);
   assert.equal(matches([`src/${hostile}/**/${hostile}.js`], `src/${long}/${long}/${long}`), false);
   assert.equal(matches(['**/**/**/**/**/**/**/**/**/**/**/x'], `${'a/'.repeat(100)}y`), false);
+  const stars = '*a**a*a**a*a**a*b'; // 2^3 = 8 alternatives
+  const wide = `${'a/'.repeat(100)}${long}`;
+  assert.equal(matches([stars, `**${stars}**${stars}`, `${stars}/**/${stars}`], wide), false);
   assert.equal(matches([hostile], `${long}b`), true, 'the same pattern still matches when it should');
   assert.ok(Date.now() - started < 500, `took ${Date.now() - started} ms`);
 });
@@ -91,8 +94,37 @@ test('wildcards treat literal stars and question marks in names as ordinary char
   assert.equal(matches(['a*b*c'], 'acb'), false);
   assert.equal(matches(['*'], 'x/y'), true, 'a glob without a slash matches the base name');
   assert.equal(matches(['x/*'], 'x/y/z'), false);
-  assert.equal(matches(['a**b'], 'a/b'), false, '** inside a name behaves like *');
+  assert.equal(matches(['a**b'], 'a/b'), true, '** inside a name can span segments');
   assert.equal(matches(['a**b'], 'axxb'), true);
+});
+
+test('** inside a name spans segments too, as it did before the matcher stopped using regular expressions', () => {
+  assert.equal(matches(['src/**.js'], 'src/check.js'), true);
+  assert.equal(matches(['src/**.js'], 'src/private/check.js'), true);
+  assert.equal(matches(['src/**.js'], 'src/a/b/c/check.js'), true);
+  assert.equal(matches(['src/**.js'], 'src/check.ts'), false);
+  assert.equal(matches(['src/**.js'], 'lib/src/check.js'), false, 'still anchored');
+  assert.equal(matches(['a**b'], 'a1/x/2b'), true);
+  assert.equal(matches(['a**b'], 'a1/x/2c'), false);
+  assert.equal(matches(['a**'], 'a1/x/y'), true);
+  assert.equal(matches(['a**'], 'b/x'), false);
+  assert.equal(matches(['x**y**z'], 'xyz'), true);
+  assert.equal(matches(['x**y**z'], 'x/y/z'), true);
+  assert.equal(matches(['x**y**z'], 'x/a/b/y/c/z'), true);
+  assert.equal(matches(['x**y**z'], 'x/a/b/c/z'), false, 'the middle y is required');
+  assert.equal(matches(['x**y**z'], 'q/x/y/z'), true, 'no slash in the glob: the name may sit anywhere');
+  assert.equal(matches(['x**y**z'], 'q/x/y/zq'), false);
+});
+
+test('a glob that would expand to more than 64 alternatives never matches', () => {
+  const six = 'a**b**c**d**e**f**g'; // 2^6 = 64 alternatives: allowed
+  const seven = 'a**b**c**d**e**f**g**h'; // 2^7 = 128: refused
+  assert.equal(matches([six], 'a/b/c/d/e/f/g'), true);
+  assert.equal(matches([six], 'abcdefg'), true);
+  assert.equal(matches([seven], 'a/b/c/d/e/f/g/h'), false);
+  assert.equal(matches([seven], 'abcdefgh'), false);
+  assert.equal(matches(['a**b/c**d/e**f/g**h'], 'a/b/c/d/e/f/g/h'), true, '2^4 = 16 alternatives across segments');
+  assert.equal(matches(['a**b/c**d/e**f/g**h/i**j/k**l/m**n'], 'a/b/c/d/e/f/g/h/i/j/k/l/m/n'), false, '2^7 across segments');
 });
 
 test('no globs match nothing, and any glob may match', () => {

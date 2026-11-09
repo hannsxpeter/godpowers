@@ -357,3 +357,89 @@ test('records store a null code outside git', async () => {
   assert.equal(evidence.attest(root, 'review', { pass: true, summary: 's' }).code, null);
   assert.equal(evidence.waive(root, 'r').code, null);
 });
+
+const SECRET_ONE = 'PASSWORD=hunter-one node x.js';
+const SECRET_TWO = 'PASSWORD=hunter-two node x.js';
+const verifyRecord = (fields = {}) => ({ kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: evidence.redact(SECRET_ONE), ok: true, ...fields });
+
+test('commandIdentity: a plain hash without secret shapes, a keyed one with them, null without a key', () => {
+  const plain = evidence.commandIdentity('npm test', { key: null });
+  assert.match(plain, /^sha256:[0-9a-f]{64}$/);
+  assert.equal(evidence.commandIdentity('npm test', { key: KEY_A }), plain, 'no key needed, so any machine agrees');
+  assert.notEqual(evidence.commandIdentity('npm run lint', { key: null }), plain);
+  const one = evidence.commandIdentity(SECRET_ONE, { key: KEY_A });
+  assert.match(one, /^hmac:[0-9a-f]{64}$/);
+  assert.equal(evidence.commandIdentity(SECRET_ONE, { key: KEY_A }), one);
+  assert.notEqual(evidence.commandIdentity(SECRET_TWO, { key: KEY_A }), one, 'the secret value is part of the identity');
+  assert.notEqual(evidence.commandIdentity(SECRET_ONE, { key: KEY_B }), one, 'another machine key');
+  assert.equal(evidence.commandIdentity(SECRET_ONE, { key: null }), null);
+});
+
+test('verify stores the identity of the exact command, and nothing from which the secret could be read', async () => {
+  const root = v7Repo();
+  const secret = 'node -e "0" #PASSWORD=hunter-one';
+  const { record } = await evidence.verify(root, secret);
+  assert.equal(record.command.includes('hunter-one'), false);
+  assert.equal(record.cmd, evidence.commandIdentity(secret, { key: evidence.localKey() }));
+  assert.match(record.cmd, /^hmac:/);
+  const plain = (await evidence.verify(root, 'node -e "0"')).record;
+  assert.equal(plain.cmd, evidence.commandIdentity('node -e "0"', { key: null }));
+  assert.match(plain.cmd, /^sha256:/);
+});
+
+test('statusFor matches a verify record to the declared command by identity, never by redacted text', () => {
+  const key = KEY_A;
+  const status = (records, command) => evidence.statusFor(records, 't1', { command, key }).check;
+  const one = verifyRecord({ cmd: evidence.commandIdentity(SECRET_ONE, { key }) });
+  assert.equal(status([one], SECRET_ONE), 'pass');
+  assert.equal(status([one], SECRET_TWO), 'none', 'the same redacted text is not the same command');
+  assert.equal(status([one], 'PASSWORD=[redacted] node x.js'), 'none', 'neither is the redacted text itself');
+  assert.equal(status([one], 'node y.js'), 'none');
+  assert.equal(evidence.statusFor([one], 't1', { command: SECRET_ONE, key: KEY_B }).check, 'none', 'another machine cannot tell');
+  assert.equal(evidence.statusFor([one], 't1', { command: SECRET_ONE, key: null }).check, 'none', 'no key, no match');
+  assert.equal(status([one], 'none'), 'pass', 'with no declared command any verify counts');
+  const failing = verifyRecord({ ok: false, cmd: evidence.commandIdentity(SECRET_TWO, { key }) });
+  assert.equal(status([one, failing], SECRET_ONE), 'pass', 'a record of the other command is not counted');
+  assert.equal(status([one, failing], SECRET_TWO), 'fail');
+});
+
+test('a secret-free command matches across machines, with no key at all', () => {
+  const command = 'node -e "0"';
+  const record = verifyRecord({ command, cmd: evidence.commandIdentity(command, { key: KEY_B }) });
+  assert.equal(evidence.statusFor([record], 't1', { command, key: null }).check, 'pass');
+  assert.equal(evidence.statusFor([record], 't1', { command, key: KEY_A }).check, 'pass');
+});
+
+test('a record without cmd (7.0) matches by redacted text only when the current command has no secret shapes', () => {
+  const old = verifyRecord({ command: 'node y.js' });
+  assert.equal(evidence.statusFor([old], 't1', { command: 'node y.js', key: KEY_A }).check, 'pass');
+  assert.equal(evidence.statusFor([old], 't1', { command: 'node z.js', key: KEY_A }).check, 'none');
+  const secret = verifyRecord();
+  assert.equal(secret.cmd, undefined);
+  assert.equal(evidence.statusFor([secret], 't1', { command: SECRET_ONE, key: KEY_A }).check, 'none');
+  assert.equal(evidence.statusFor([secret], 't1', { command: SECRET_TWO, key: KEY_A }).check, 'none');
+});
+
+test('a record whose cmd is null, or malformed, matches nothing', () => {
+  const nulled = verifyRecord({ cmd: null });
+  assert.equal(evidence.statusFor([nulled], 't1', { command: SECRET_ONE, key: KEY_A }).check, 'none');
+  assert.equal(evidence.statusFor([nulled], 't1', { command: 'PASSWORD=[redacted] node x.js', key: KEY_A }).check, 'none');
+  for (const cmd of [12, 'sha256:xyz', `sha256:${'é'.repeat(64)}`, {}, `hmac:${'A'.repeat(64)}`]) {
+    const record = verifyRecord({ command: 'node y.js', cmd });
+    assert.equal(evidence.statusFor([record], 't1', { command: 'node y.js', key: KEY_A }).check, 'none', JSON.stringify(cmd));
+  }
+});
+
+test('findReusable ignores malformed signatures and identities instead of throwing', () => {
+  const unsigned = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', ok: true };
+  for (const local of ['é'.repeat(64), 'F'.repeat(64), 'a'.repeat(63), `${'a'.repeat(63)}\u0000`]) {
+    assert.equal(evidence.findReusable(ledgerOf({ ...unsigned, local }), 't1', 'npm test', { key: KEY_A }), null, JSON.stringify(local));
+  }
+  const withId = { ...unsigned, cmd: evidence.commandIdentity('npm test', { key: null }) };
+  const record = signed(withId);
+  assert.equal(evidence.findReusable(ledgerOf(record), 't1', 'npm test', { key: KEY_A }), record, 'a good identity is reusable');
+  const bad = signed({ ...unsigned, cmd: 'sha256:é' });
+  assert.equal(evidence.findReusable(ledgerOf(bad), 't1', 'npm test', { key: KEY_A }), null);
+  const swapped = signed({ ...unsigned, cmd: evidence.commandIdentity('npm run lint', { key: null }) });
+  assert.equal(evidence.findReusable(ledgerOf(swapped), 't1', 'npm test', { key: KEY_A }), null, 'the identity must be this command');
+});

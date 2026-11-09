@@ -5,7 +5,7 @@ const path = require('path');
 
 const risk = require('../lib/risk');
 const gitTools = require('../lib/git');
-const { write, git, v7Repo, run } = require('./helpers');
+const { write, git, stateText, v7Repo, run } = require('./helpers');
 
 /** A Godpowers repo tagged v1.0.0 at its first commit. */
 function releasedRepo(stateOverrides) {
@@ -230,4 +230,21 @@ test('agent instruction files and prompts are not documentation, so they keep a 
   const root = releasedRepo();
   write(root, 'README.md', 'docs');
   assert.equal(classify(root).tier, 'low');
+});
+
+test('the docs rule in force is the intersection of the base commit\'s and the working one', () => {
+  const root = releasedRepo();
+  write(root, '.godpowers/STATE.md', stateText({ docs: 'src/**' }));
+  write(root, 'src/app.js', 'x');
+  assert.equal(classify(root).tier, 'normal', 'code is not documentation because STATE.md now says so');
+  const loose = releasedRepo({ docs: 'src/**' });
+  write(loose, 'src/app.js', 'x');
+  assert.equal(classify(loose).tier, 'low', 'a rule that was already in place at the base');
+});
+
+test('a risk: glob at the base still counts after the working STATE.md drops it', () => {
+  const root = releasedRepo({ risk: 'src/**' });
+  write(root, '.godpowers/STATE.md', stateText());
+  write(root, 'src/app.js', 'x');
+  assert.equal(classify(root).tier, 'high');
 });

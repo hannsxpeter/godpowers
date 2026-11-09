@@ -171,7 +171,9 @@ exemption off, for the records and for the Stop hook. Agent instruction files
 (`AGENTS.md`, `CLAUDE.md`, `SKILL.md`, anything under `.claude`, `agents`,
 `skills`, `prompts`, and similar) are never documentation by default, and
 neither is any path that matches a high-risk pattern or a `risk:` glob. A
-glob made only of wildcards (`**`, `*.*`) is an error and is ignored. Changing
+glob made only of wildcards (`**`, `*.*`) is an error and is ignored. In a
+glob, `**` inside a name (`src/**.js`) can span directories; a glob that
+needs more than 64 alternatives (more than six such `**` in all) never matches. Changing
 the rule voids carried-forward records.
 
 To switch the Stop and commit gates off, add `gate: off` to STATE.md's
@@ -232,9 +234,14 @@ stands in for a run. A damaged ledger, or no readable key, turns reuse off.
 the files changed since HEAD plus untracked files. It never writes the ledger,
 so it is feedback, not evidence. With `{files}` in the command and nothing
 changed, it runs nothing. Write `{files}` bare: Godpowers quotes each name
-itself, and a `{files}` inside quotes is refused because the shell would expand
-a file name like `$(...)`. Names that start with `-` are passed as `./-name`,
-and names with control characters are skipped with a note. `fast` prints
+itself, and every `{files}` must be a separate word outside quotes and
+backslash escapes (`eslint {files} --fix`, not `"{files}"`, `\{files}`, or
+`x{files}`), because the shell would expand a file name like `$(...)` in any
+other place; otherwise `fast` refuses (exit 2; the hook fails open). Names
+that start with `-` are passed as `./-name`, names with control characters are
+skipped with a note, and so is any file that resolves outside the project
+through a symlink. The hook runs nothing when the payload names a path that is
+rejected. `fast` prints
 `Running: <command>` on stderr first, so you see what the repository declared.
 On Windows, names containing `%` or `"` are refused (native Windows is
 untested).

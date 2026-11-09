@@ -147,14 +147,55 @@ test('--hook checks the one edited file and is silent when the check passes', as
   assert.equal(ledgerText(root), before, 'the ledger is untouched');
 });
 
-test('--hook falls back to the changed files, and ignores paths outside the project or in .godpowers', async () => {
+test('--hook falls back to the changed files only when the payload names no path', async () => {
   const root = fastRepo();
   write(root, 'changed.js', 'x');
-  for (const stdin of ['', 'not json', '{}', payload({ file_path: '/etc/passwd' }), payload({ file_path: '../up.js' }), payload({ file_path: '.godpowers/PLAN.md' }), payload({ file_path: 7 })]) {
+  for (const stdin of ['', 'not json', '{}', payload({ file_path: 7 }), payload({ file_path: '  ' })]) {
     const result = await run(['fast', '--hook'], { cwd: root, stdin, env: { FAST_EXIT: '5' } });
     assert.equal(result.code, 2, stdin);
     assert.deepEqual(JSON.parse(result.err.split('\n')[0]), ['changed.js'], stdin);
   }
+});
+
+test('--hook runs nothing when the payload names a path that is rejected', { skip: process.platform === 'win32' }, async () => {
+  const root = fastRepo();
+  const outside = tempDir();
+  write(outside, 'secret.js', 'x');
+  fs.symlinkSync(path.join(outside, 'secret.js'), path.join(root, 'link.js'));
+  write(root, 'changed.js', 'x');
+  const rejected = ['/etc/passwd', '../up.js', '.godpowers/PLAN.md', 'link.js'];
+  for (const file of rejected) {
+    const result = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: file }), env: { FAST_EXIT: '5' } });
+    assert.equal(result.code, 0, file);
+    assert.equal(result.out, '', file);
+    assert.match(result.err, /^godpowers fast --hook: skipped \([^\n]*\)\n$/, file);
+  }
+});
+
+test('a file that resolves outside the project is skipped with a note, from the changed files and from arguments', { skip: process.platform === 'win32' }, async () => {
+  const root = fastRepo();
+  const outside = tempDir();
+  write(outside, 'secret.js', 'x');
+  fs.symlinkSync(path.join(outside, 'secret.js'), path.join(root, 'link.js'));
+  fs.symlinkSync(outside, path.join(root, 'linkdir'));
+  fs.symlinkSync(path.join(root, 'nowhere.js'), path.join(root, 'dangling.js'));
+  write(root, 'ok.js', 'x');
+  const changed = await fastJson(root);
+  assert.equal(changed.code, 0);
+  assert.deepEqual(changed.json.files, ['ok.js']);
+  assert.deepEqual(JSON.parse(changed.json.tail.trim()), ['ok.js']);
+  assert.match(changed.err, /^godpowers fast: skipped 3 file\(s\) that resolve outside the project: "dangling\.js", "link\.js", "linkdir"\n$/);
+  const explicit = await fastJson(root, ['link.js', 'ok.js', 'linkdir/secret.js', '../up.js', path.join(outside, 'secret.js')]);
+  assert.deepEqual(explicit.json.files, ['ok.js']);
+  assert.deepEqual(JSON.parse(explicit.json.tail.trim()), ['ok.js']);
+  assert.match(explicit.err, /skipped 4 file\(s\) that resolve outside the project/);
+  const hook = await run(['fast', '--hook'], { cwd: root, stdin: '', env: { FAST_EXIT: '5' } });
+  assert.equal(hook.code, 2);
+  assert.deepEqual(JSON.parse(hook.err.split('\n')[1]), ['ok.js']);
+  fs.rmSync(path.join(root, 'ok.js'));
+  const only = await fastJson(root, ['link.js']);
+  assert.equal(only.code, 0);
+  assert.deepEqual(only.json.files, []);
 });
 
 test('--hook exits 0 silently without a project, a declared check, or anything to check', async () => {
@@ -186,28 +227,80 @@ async function onPlatform(name, body) {
   }
 }
 
-test('placeholderInQuotes sees {files} inside single or double quotes only', () => {
-  const inside = ['echo "{files}"', "echo '{files}'", 'echo "a $(x) {files}"', 'echo "a\\" {files}"', 'echo "{files}', "echo 'a'\"{files}\"", 'x "{files}" {files}'];
-  const bare = ['echo {files}', 'echo "a" {files}', "echo 'a' \"b\" {files}", 'echo \\"{files}', 'echo "a\\"" {files}', "echo '\\' {files}", 'echo plain'];
-  for (const command of inside) assert.equal(fastTools.placeholderInQuotes(command), true, command);
-  for (const command of bare) assert.equal(fastTools.placeholderInQuotes(command), false, command);
+// Every {files} must be a separate shell word outside quotes and escapes.
+const UNSAFE_COMMANDS = [
+  'echo "{files}"',
+  "echo '{files}'",
+  'echo "a $(x) {files}"',
+  'echo "a\\" {files}"',
+  'echo "{files}',
+  "echo 'a'\"{files}\"",
+  'x "{files}" {files}',
+  'node checker.js "\\{files}"',
+  'echo \\{files}',
+  'echo x{files}',
+  'echo {files}x',
+  'echo " {files} "',
+  "echo ' {files} '",
+  "echo 'a'{files}",
+  'echo a\\ {files}',
+  'echo {files}{files}',
+  'echo $(cat {files})',
+  'echo {files} "{files}"',
+  'a {files} && b \\{files}'
+];
+const SAFE_COMMANDS = {
+  'eslint {files} --fix': [7],
+  'a {files} && b {files}': [2, 15],
+  '{files}': [0],
+  'echo {files}': [5],
+  'echo "a" {files}': [9],
+  "echo 'a' \"b\" {files}": [13],
+  'echo "a\\"" {files}': [11],
+  "echo '\\' {files}": [9],
+  'echo plain': [],
+  'echo\t{files}\t--x': [5]
+};
+
+test('placeholderPositions accepts only {files} that is a separate word outside quotes', () => {
+  for (const command of UNSAFE_COMMANDS) assert.equal(fastTools.placeholderPositions(command), null, command);
+  for (const [command, positions] of Object.entries(SAFE_COMMANDS)) {
+    assert.deepEqual(fastTools.placeholderPositions(command), positions, command);
+  }
 });
 
-test('a quoted {files} is refused, so a file name cannot run code', async () => {
-  for (const declared of ['node args.js "{files}"', "node args.js '{files}'"]) {
+test('expand replaces exactly the validated occurrences and refuses the rest', () => {
+  assert.equal(fastTools.expand('eslint {files} --fix', ['a b.js', 'c.js']), "eslint 'a b.js' c.js --fix");
+  assert.equal(fastTools.expand('a {files} && b {files}', ['x.js']), 'a x.js && b x.js');
+  assert.equal(fastTools.expand('echo plain', ['x.js']), 'echo plain');
+  for (const command of UNSAFE_COMMANDS) assert.throws(() => fastTools.expand(command, ['$(touch x).js']), /\{files\} must be bare/, command);
+});
+
+test('an unsafe {files} is refused, so a file name cannot run code', async () => {
+  const declaredCommands = ['node args.js "{files}"', "node args.js '{files}'", 'node args.js "\\{files}"', 'node args.js \\{files}', 'node args.js x{files}', 'node args.js {files}x', 'node args.js " {files} "'];
+  for (const declared of declaredCommands) {
     const root = fastRepo(declared);
     write(root, '$(touch INJECTED).js', 'x');
     const result = await run(['fast'], { cwd: root });
     assert.equal(result.code, 2, declared);
     assert.match(result.err, /\{files\} must be bare/);
     assert.match(result.err, /quotes each file name itself/);
-    assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false);
+    assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false, declared);
     const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: '$(touch INJECTED).js' }) });
     assert.equal(hook.code, 0, 'the hook fails open');
     assert.equal(hook.out, '');
     assert.match(hook.err, /^godpowers fast --hook: skipped \(\{files\} must be bare[^\n]*\)\n$/);
-    assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false);
+    assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false, declared);
   }
+});
+
+test('a command with {files} twice expands both, and a hostile name stays one argument', async () => {
+  const root = fastRepo('node args.js {files} -- {files}');
+  write(root, '$(touch INJECTED).js', 'x');
+  const result = await fastJson(root);
+  assert.equal(result.code, 0);
+  assert.deepEqual(JSON.parse(result.json.tail.trim()), ['$(touch INJECTED).js', '--', '$(touch INJECTED).js']);
+  assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false);
 });
 
 test('file names that start with a dash reach the command as ./ paths', async () => {

@@ -399,3 +399,32 @@ test('the tiered ship gate through the CLI: tier, --base, JSON, and a refused re
   assert.equal(refused.code, 2);
   assert.match(refused.err, /cannot start with "-"/);
 });
+
+test('reviews, status, stats, and the reuse message survive ledger fields that cannot be turned into text', async () => {
+  const root = v7Repo();
+  const odd = { toString: null };
+  evidence.append(root, { kind: 'review', verdict: 'fail', head: odd, dismissed: [odd, { a: 1 }], summary: odd, tree: 't', code: 'c', time: odd });
+  evidence.append(root, { kind: 'review', verdict: odd, head: true, dismissed: 5, summary: [1, 'two'], tree: 't', code: 'c', time: 12 });
+  evidence.append(root, { kind: 'verify', command: odd, ok: true, ms: 1, tree: 't', time: odd });
+  const reviews = await run(['reviews'], { cwd: root });
+  assert.equal(reviews.code, 0, reviews.err);
+  assert.match(reviews.out, /Round 1: fail no commit at \{"toString":null\}: \{"toString":null\}/);
+  assert.match(reviews.out, /dismissed: \{"a":1\}/);
+  assert.match(reviews.out, /Round 2: \{"toString":null\} no commit at 12: \[1,"two"\]/);
+  for (const command of [['status'], ['stats'], ['reviews', '--json']]) {
+    const result = await run(command, { cwd: root });
+    assert.equal(result.code, 0, `${command.join(' ')}: ${result.err}`);
+  }
+  assert.match((await run(['stats'], { cwd: root })).out, /Records: /);
+});
+
+test('verify runs the check when a record has a malformed signature, instead of crashing', async () => {
+  const root = v7Repo();
+  const cmd = 'node -e "console.log(5)"';
+  const { tree, code } = gitTools.fingerprints(root, require('../lib/docs').forRoot(root));
+  const forged = { kind: 'verify', tree, code, command: cmd, claim: null, exit: 0, ok: true, timedOut: false, ms: 1, tail: '' };
+  evidence.append(root, { ...forged, local: 'é'.repeat(64) });
+  const result = await run(['verify', cmd], { cwd: root });
+  assert.equal(result.code, 0, result.err);
+  assert.equal(ranIt(result), true);
+});

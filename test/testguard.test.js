@@ -178,6 +178,31 @@ test('very long lines are matched in linear time, and a marker far along a long 
   assert.ok(hostile.length > 100000);
 });
 
+test('whitespace padding cannot split a marker, a declaration, or an assertion across scan windows', async () => {
+  const pad = ' '.repeat(2500);
+  const tab = '\t'.repeat(2500);
+  const root = taggedRepo({ 'test/a.test.js': 'test("a", () => {\n  expect(1).toBe(1);\n});\n', 'test/b.test.js': 'x\n' });
+  // The declaration and the assertion are still there, only far apart: nothing is lost.
+  write(root, 'test/a.test.js', `test${pad}("a", () => {\n  expect${tab}(1).toBe(1);\n});\n`);
+  write(root, 'test/b.test.js', `test.skip${pad}("late", () => {});\nit.only${tab}("focus", () => {});\n`); // godpowers: allow-test-change
+  write(root, 'test/new.test.js', `describe.skip${pad}("n", () => {});\n`); // godpowers: allow-test-change
+  const offsets = [];
+  for (let n = 1300; n <= 4300; n += 7) offsets.push(n);
+  write(root, 'test/edge.test.js', `${offsets.map(n => `${'x'.repeat(n)} it.skip("edge");`).join('\n')}\n`); // godpowers: allow-test-change
+  const result = await guard(root);
+  const edge = kinds(result.json).filter(entry => entry.includes('edge.test.js'));
+  assert.equal(edge.length, offsets.length, 'a marker is found wherever it falls against a window edge');
+  assert.deepEqual(kinds(result.json).filter(entry => !entry.includes('edge.test.js')), ['skip-marker test/b.test.js:1', 'skip-marker test/b.test.js:2', 'skip-marker test/new.test.js:1']);
+  // Removing the padded declaration and assertion is still caught.
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'padded');
+  git(root, 'tag', 'v1.0.1');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after');
+  write(root, 'test/a.test.js', 'y\n');
+  const removed = await guard(root);
+  assert.deepEqual(kinds(removed.json).filter(entry => entry.startsWith('fewer')), ['fewer-tests test/a.test.js', 'fewer-assertions test/a.test.js']);
+});
+
 test('an untracked test file is checked for markers with its real line numbers; others are not', async () => {
   const root = taggedRepo({ 'src/keep.js': 'x\n' });
   write(root, 'test/new.test.js', 'test("a", () => {});\n\n\nit.skip("b", () => {});\n');

@@ -51,12 +51,12 @@ test/                 node:test suites
 | `frontmatter.js` | Flat YAML frontmatter parse and write |
 | `templates.js` | Starting content for STATE.md, PLAN.md, DECISIONS.md |
 | `state.js` | STATE.md sections, risk lines, validation, field updates |
-| `match.js` | Glob matching (case-insensitive) and comma-separated list parsing for STATE.md settings |
+| `match.js` | Glob matching (case-insensitive, linear time, no regular expressions; a `**` inside a name expands to at most 64 alternatives) and comma-separated list parsing for STATE.md settings |
 | `policy.js` | Shared constants and checks: the high-risk patterns, control characters in paths and printed text, wildcard-only globs |
 | `docs.js` | What counts as documentation: the built-in rule or the `docs:` setting, and a digest of the rule in force |
 | `git.js` | Read-only snapshots and fingerprints (whole tree and code only), changed paths, release base, diffs, lines removed since HEAD |
 | `evidence.js` | The evidence ledger: run and record checks, reuse, waivers, attestations, chain |
-| `fast.js` | The `fast` check: expands `{files}` with shell quoting and runs it without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
+| `fast.js` | The `fast` check: expands each `{files}` that is a separate word outside quotes (by position, else refuses) with shell quoting, skips files that resolve outside the project, and runs it without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
 | `reviews.js` | Review rounds since the last pass, and the three-round warning |
 | `stats.js` | Numbers computed from the ledger |
 | `testguard.js` | Flags deleted tests, fewer tests or assertions, and added skip markers since a base |
@@ -102,7 +102,14 @@ documentation (see `docs.js`) mixed with a digest of the documentation rule in
 force (the default rule's version, `none`, or the sorted `docs:` globs, plus the
 `risk:` globs), so changing the rule voids carry-forward; it is null when no
 file is code. Paths that match a high-risk pattern or have a control
-character in their name are never documentation, and neither are agent
+character in their name are never documentation, and the gates (the stop
+gate's documentation allowance and the low risk tier) count a path as
+documentation only when both the rule committed at the baseline (HEAD for the
+stop gate, the base commit for the ship gate) and the working rule say so, so
+editing `docs:` or `risk:` after the baseline cannot loosen them; a `risk:`
+glob present at the base also keeps matching after the working one drops it.
+A missing STATE.md at the baseline means the built-in rule. The code
+fingerprint keeps binding the working rule, and neither are agent
 instruction files under the default rule (`AGENTS.md`, `CLAUDE.md`,
 `SKILL.md`, and files under `.claude`, `.agents`, `agents`, `skills`,
 `prompts`, and similar). A `docs:` or `risk:` glob made only of wildcards is a
@@ -118,7 +125,15 @@ matching on `tree`.
 declared check (or any `verify` when none is declared) or `waive` as the check
 status, and the last `review`, `harden`, and `ship` records as those statuses.
 Verify and waive records match only when `tree` matches, because a check can
-read documentation. Review, harden, and ship records match when `tree` or
+read documentation. A verify record also has to be of the declared command
+itself: it carries `cmd`, the identity of the exact command, because the
+stored `command` is redacted and two commands that differ only in a secret
+share it. `cmd` is `sha256:<hex>` of the command when it has no secret
+shapes (any machine computes it), `hmac:<hex>` keyed by the machine-local key
+when it has some, or null when there is no key. `statusFor`, the stop gate,
+the ship gate, and `status` compare identities only. A 7.0 record without
+`cmd` matches by redacted text, and only for a command with no secret shapes.
+A null or malformed `cmd` matches nothing. `stats` still groups by text. Review, harden, and ship records match when `tree` or
 `code` matches; `viaCode` reports which of them matched only by `code`.
 
 `verify` reuses work, but only a record this machine can vouch for. Every new
@@ -135,6 +150,8 @@ three gaps: two commands whose secrets redact alike, a forged but validly
 chained ledger committed to a repository, and a damaged ledger. If the key
 cannot be created or read (no home, read-only home, a file others can read),
 reuse is off and the check runs; `verify` never fails because of the key.
+Signatures and identities that are not 64 lowercase hex digits are never
+equal, and never reach the constant-time compare.
 The CLI prints the reuse and exits 0 without running the command or appending,
 and says that inputs outside git are not covered. `--force` skips the lookup.
 

@@ -17,9 +17,11 @@ and a ship gate that scales with the risk of the change.
 
 - `godpowers fast [files...]` runs the STATE.md `fast:` command on the given
   files, or on the files changed since HEAD plus untracked files. A bare
-  `{files}` expands to them, quoted for the shell (inside quotes it is
-  refused). Names that start with `-` get a `./` prefix, names with control
-  characters are skipped, and on Windows names with `%` or `"` are refused. It
+  `{files}` expands to them, quoted for the shell (it must be a separate word
+  outside quotes and escapes, or `fast` refuses). Names that start with `-`
+  get a `./` prefix, names with control characters or that resolve outside the
+  project through a symlink are skipped, and on Windows names with `%` or `"`
+  are refused. The hook runs nothing when its payload names a rejected path. It
   prints `Running: <command>` on stderr and never writes the ledger.
   `fast --hook` is a handler for a PostToolUse hook that users add to their own
   settings: it reads the hook JSON from stdin, checks the edited file, stays
@@ -63,6 +65,18 @@ and a ship gate that scales with the risk of the change.
   `changedSince` and `diffSince` fail in a repository without a work tree, and a
   change that cannot be listed is high risk. Compose files named `*.yaml` are
   high risk. The base tag must look like `v<digit>...` and not point at HEAD.
+- Gates match a verify record to the declared command by `cmd`, the identity
+  of the exact command (a SHA-256, or an HMAC with the machine-local key when
+  the command has secret shapes), not by redacted text, so changing a secret
+  value in `verify:` no longer reuses the old pass. 7.0 records match by text
+  only for commands without secret shapes.
+- A path counts as documentation for the stop gate and the low and normal ship
+  tiers only when the rule at HEAD (stop gate) or at the base commit (ship
+  gate) and the working rule agree, and a `risk:` glob at the base still
+  applies. Editing `docs:` or `risk:` after the baseline cannot loosen a gate.
+- A malformed `local` or `cmd` value makes a record not reusable instead of
+  crashing `verify`, and `reviews`, `status`, `stats`, and the reuse message
+  print any ledger value as text without throwing.
 - Redaction also masks `Authorization: Basic` credentials, Google API keys, and
   quoted secret values in full. Ledger text printed by `reviews`, `status`,
   `stats`, and the reuse message loses control characters, and `reviews`
