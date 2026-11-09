@@ -1,11 +1,11 @@
 ---
 name: god-ship
-description: Release gate and shipping checklist. Requires fresh checks, a passing review and security record, and no open critical risk, then covers deploy, rollback, monitoring, and release notes. Use for /god-ship, "ship it", "release", or "deploy".
+description: Release gate and shipping checklist. Requires the records the change's risk tier needs (check, review, security) and no open critical risk, then covers deploy, rollback, monitoring, and release notes. Use for /god-ship, "ship it", "release", or "deploy".
 ---
 
 # /god-ship
 
-1. Run `npx -y godpowers@7 gate ship`. Fix every failed check before going further. Never record a pass you did not earn.
+1. Run `npx -y godpowers@7 gate ship`. Its requirements follow the risk tier it prints; run /god-harden only when it asks for a security record. Show the user any `tests` warning before shipping. Fix every failed check before going further. Never record a pass you did not earn.
 2. Make sure the release path fits the project, and add what is missing:
    - Build and deploy are repeatable from a clean checkout, and the tested artifact is the one released.
    - Rollback is written down and has been tried once.

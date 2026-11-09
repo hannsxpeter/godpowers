@@ -1,72 +1,57 @@
-# Godpowers 7.0.1
+# Godpowers 7.1.0
 
-7.0.1 is the first 7.x release on npm (7.0.0 was tagged but never published).
-It carries everything in 7.0 below, plus one security fix and two fixes to
-the installed copy.
+7.1.0 is the first 7.x release on npm. 7.0.0 and 7.0.1 were tagged but never
+published, because the publish job failed with `E404` on npm credentials.
 
-## Fixes in 7.0.1
+## What 7.0 brought
 
-- **Security:** registering hooks no longer writes settings through a
-  predictable temp file. A repository that planted a symlink at
-  `.claude/settings.json.godpowers-tmp` could make a `--local` install
-  overwrite the file it pointed at.
-- `godpowers doctor` and `godpowers budget` no longer fail with `ENOENT` when
-  run from `~/.claude/godpowers` or `~/.codex/godpowers`.
-- Reinstalling from the installed copy no longer deletes the installed skills
-  or the copy itself, and a failed install leaves the old copy working.
-
-## What 7.0 changed
-
-Godpowers is now a small core: 8 commands, 4 agents, and about 4K tokens of
+Godpowers 7 is a small core: 8 commands, 4 agents, and about 6K tokens of
 instructions, down from 124 commands, 41 agents, and 1.35 MB of prompt files.
-It keeps what a model cannot do for itself and enforces it with hooks.
+It keeps durable state, evidence bound to exact code, an independent review,
+and gates that hooks enforce. See [CHANGELOG.md](CHANGELOG.md) for the full
+7.0.0 and 7.0.1 notes and [docs/migrating-from-6.md](docs/migrating-from-6.md)
+for the command map and upgrade steps.
 
-## Highlights
+## Changes in 7.1.0
 
-- **Hooks that code enforces** on Claude Code and Codex. The session brief
-  shows state at startup. A Stop gate asks the agent to verify when code changed
-  without a passing check. A commit gate blocks `git commit` while the
-  `.godpowers/` files have errors.
-- **Evidence bound to code.** Every check is recorded against a content
-  fingerprint of the working copy. It survives commits, goes stale on any edit,
-  and is computed with read-only git commands, so it works inside sandboxes.
-- **One state file.** `.godpowers/` now holds `STATE.md`, `PLAN.md`,
-  `DECISIONS.md`, and `evidence.jsonl`.
-- **A ship gate.** `godpowers gate ship` needs a passing check, review, and
-  security record for the current code, and no open critical risk.
-- **Only the stages a goal needs.** `/god` builds and independently reviews a
-  feature, writes a plan only when the request does not already list its
-  requirements, adds a security pass only when the change touches a trust
-  boundary, ships only when you ask, and records the project check once per
-  build. The reviewer checks that each requirement has a test, including the
-  cases that must not trigger it. In the first A/B run, running every stage
-  matched plain Codex on correctness at about 4x the cost. With the current
-  flow the same task cost about 2x to 2.8x, and both runs scored 8 of 10 in
-  blind review against plain Codex's 7.
-- **A prompt budget in CI**, so the core cannot quietly grow back.
-- **An A/B harness** (`scripts/ab-eval.js`) to measure whether Godpowers helps
-  on your own tasks.
-- **Subagent-neutral, right-sized delegation.** A skill says what a step needs,
-  such as a review from a fresh context. The agent using it picks the subagent
-  and how to run it, then names and passes its model and effort explicitly: the
-  cheapest that fit the subtask, with the strongest model and high effort kept
-  for work that needs them. The four bundled agents are optional.
-- **Claude Code skills appear in the picker again** (fix by @ikkeflikkeri), and
-  a plugin manifest is included.
+- **`godpowers fast`** runs a file-local check declared as `fast:` in STATE.md
+  on the changed files, for quick feedback. It is never recorded. `fast --hook`
+  is a handler for a PostToolUse hook you add yourself.
+- **`verify` reuses a passing record** of the same command on unchanged code.
+  `--force` runs it again.
+- **Bounded reviews.** Review records store the commit they saw and the findings
+  you dismissed. `godpowers reviews` lists the rounds and says to rethink the
+  approach after three failed ones. Re-reviews cover only the change since the
+  last reviewed commit.
+- **`godpowers tests`** flags deleted tests, fewer tests or assertions, and
+  added skip or focus markers since the last release tag.
+- **`godpowers risk` and a tiered ship gate.** Low-risk changes need a passing
+  check, normal ones also a review, and high-risk ones also a security record.
+  With no tag to compare against, the tier is high.
+- **Documentation edits no longer void reviews.** Review, harden, and ship
+  records match on a second fingerprint over non-documentation files. `docs:`
+  in STATE.md changes what counts as documentation.
+- **`godpowers stats`** reports check runs, recovery time, and review rounds.
+- **Plan slices carry a kind**, `(behavior)` or `(refactor)`, and the skills
+  keep the two apart. The shared skill no longer names a specific model.
+- **CI** cancels superseded pull request runs, lints once, and runs the release
+  check in parallel.
 
-## Breaking changes
+Godpowers does not register a hook that runs the `fast` command, because an
+installed hook would run a command any cloned repository declares. The README
+shows a hook you can add to your own settings.
 
-116 commands, 37 agents, the MCP package, extension packs, routing, workflows,
-dashboards, automations, suite mode, and the learning loop are gone. The command
-map and upgrade steps are in [docs/migrating-from-6.md](docs/migrating-from-6.md).
-`npx godpowers@6` still installs 6.3.0, the last 6.x release on npm; the 6.4
-source is tagged `v6.4.0`.
+## Behavior change
+
+The ship gate no longer requires a security record for normal-risk changes, or
+a review for low-risk ones. Add globs under `risk:` in STATE.md to make more
+paths high risk.
 
 ## Upgrade
 
 ```bash
 npx godpowers@7 --claude --codex --global
-npx godpowers@7 migrate --dry-run   # in each project, then without --dry-run
+npx godpowers@7 migrate --dry-run   # 6.x projects only, then without --dry-run
 ```
 
 In Codex, open `/hooks` once to trust the new hooks.

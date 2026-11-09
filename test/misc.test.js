@@ -99,3 +99,25 @@ test('layout recognizes 6.x projects by any of their marker files', () => {
   write(docsOnly, '.godpowers/docs/a.md', 'x');
   assert.equal(paths.layout(docsOnly), 'none', 'a docs folder alone is not a project');
 });
+
+test('prose scanner notes slice lines under Slices that lack a kind', () => {
+  const plan = [
+    '## Requirements',
+    '- [ ] 1. Not a slice section line',
+    '## Slices',
+    '- [x] 1. (behavior) Done: unit test',
+    '- [ ] 2. (refactor) Tidy: unit test',
+    '- [ ] 3. No kind: unit test',
+    '- [ ] Unnumbered: unit test',
+    '  - [ ] 4. (spike) Unknown kind: unit test',
+    '```',
+    '- [ ] 5. In a fence: unit test',
+    '```',
+    '## Open questions',
+    '- [ ] 6. Not a slice: nobody'
+  ].join('\n');
+  const findings = prose.scan(plan).filter(f => f.ruleId === 'slice-kind');
+  assert.deepEqual(findings.map(f => f.line), [6, 7, 8]);
+  assert.equal(findings[0].column, 1);
+  assert.deepEqual(prose.scan('## Slices\n- [ ] 1. (behavior) ok: test\n'), []);
+});

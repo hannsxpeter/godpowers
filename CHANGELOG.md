@@ -7,6 +7,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.1.0] - 2026-11-08
+
+Faster and more selective verification: cheap local feedback, no repeated
+checks on unchanged code, bounded review loops, a check for weakened tests,
+and a ship gate that scales with the risk of the change.
+
+### Added
+
+- `godpowers fast [files...]` runs the STATE.md `fast:` command on the given
+  files, or on the files changed since HEAD plus untracked files. `{files}`
+  expands to them, quoted for the shell. It never writes the ledger.
+  `fast --hook` is a handler for a PostToolUse hook that users add to their own
+  settings: it reads the hook JSON from stdin, checks the edited file, stays
+  silent unless the check fails, and then exits 2 with the output on stderr.
+- `verify` reuses the latest passing record of the same command on unchanged
+  code instead of running it again. `--force` runs it anyway.
+- Review records store the HEAD commit and the findings the author chose not to
+  fix (`record review --dismiss "<finding>: <reason>"`). `godpowers reviews`
+  lists the rounds since the last pass, and after three failed rounds `reviews`,
+  `status`, and `record review --fail` say to stop and rethink.
+- `godpowers stats` reports check runs, median recovery time from a failing to
+  a passing run, waivers, and review rounds from the ledger.
+- `godpowers tests` flags deleted test files, fewer tests or assertions, and
+  added skip or focus markers since the base (default: the latest `v*` tag). A
+  line marked `godpowers: allow-test-change` is a deliberate change.
+- `godpowers risk` classifies the change since the base as low, normal, or high
+  from its paths. STATE.md `risk:` adds high-risk globs.
+- STATE.md `docs:` (globs, or `none`) defines documentation. Records store a
+  second fingerprint over the files that are not documentation.
+- Prose notes flag plan slices that have no `(behavior)` or `(refactor)` kind.
+
+### Changed
+
+- Review, harden, and ship records now survive documentation edits. Check and
+  waiver records still go stale on any edit.
+- The ship gate scales with risk: it no longer requires a security record for
+  normal-risk changes, or a review for low-risk ones. With no base to compare,
+  the tier is high and the 7.0 rule applies. `gate ship` takes `--base` and
+  warns about `tests` findings.
+- Plan slices carry a kind: `- [ ] 1. (behavior) <slice>: <how it is verified>`.
+  The skills keep refactors apart from behavior changes.
+- `/god-review` scopes re-reviews to the change since the last reviewed commit,
+  passes dismissed findings and test-guard findings to the reviewer, and
+  prefers a reviewer from a different model family. The shared skill names no
+  specific model.
+- CI cancels superseded pull request runs, lints once, and runs the release
+  check in parallel with the test matrix.
+
 ## [7.0.1] - 2026-10-08
 
 The first 7.x release on npm: 7.0.0 was tagged but never published.

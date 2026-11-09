@@ -93,3 +93,24 @@ test('prose notes are advisory and hidden unless asked for', () => {
   assert.match(lint.formatLint(result, { showNotes: true }), /note\s+\.godpowers\/PLAN\.md:4\s+filler/);
   assert.ok(fs.existsSync(path.join(root, '.godpowers', 'PLAN.md')));
 });
+
+test('the plan template carries a slice kind and still reads as unedited', () => {
+  const template = templates.planTemplate({ goal: 'x' });
+  assert.ok(template.includes('- [ ] 1. (behavior) (thin end-to-end slice): (how it is verified)'));
+  const root = v7Repo();
+  write(root, '.godpowers/PLAN.md', template);
+  const result = lint.lintProject(root);
+  assert.ok(result.diagnostics.some(d => d.message === 'PLAN.md still has template placeholders'));
+  assert.equal(result.notes, 0, 'the template itself raises no slice-kind note');
+});
+
+test('prose notes flag slices without a kind', () => {
+  const root = v7Repo();
+  write(root, '.godpowers/PLAN.md', GOOD_PLAN);
+  const result = lint.lintProject(root);
+  const notes = result.diagnostics.filter(d => d.severity === 'note');
+  assert.equal(notes.length, 2);
+  assert.ok(notes.every(note => note.message.startsWith('slice-kind:')));
+  write(root, '.godpowers/PLAN.md', GOOD_PLAN.replace('1. Publish', '1. (behavior) Publish').replace('2. Editor', '2. (refactor) Editor'));
+  assert.equal(lint.lintProject(root).notes, 0);
+});

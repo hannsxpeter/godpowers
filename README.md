@@ -10,8 +10,8 @@ cannot do for itself: durable state that survives sessions and tools, a record
 of which checks actually ran against which code, an independent reviewer in a
 fresh context, and gates that code enforces through Claude Code and Codex hooks.
 
-It is deliberately small: 8 commands, 4 agents, and about 4K tokens of
-instructions in total. About 900 tokens load per session whether you use it or
+It is deliberately small: 8 commands, 4 agents, and about 6K tokens of
+instructions in total. About 950 tokens load per session whether you use it or
 not.
 
 ## Why 7.0 is smaller
@@ -25,7 +25,7 @@ are the state files and the enforcement, and those now live in code:
 | --- | --- | --- |
 | Commands | 124 | 8 |
 | Agents | 41 | 4 |
-| Prompt text shipped | about 1.35 MB | about 17 KB |
+| Prompt text shipped | about 1.35 MB | about 24 KB |
 | Gates | written instructions | Stop and commit hooks, plus `gate ship` |
 | Project state | `state.json`, generated views, and a folder per tier | `STATE.md`, `PLAN.md`, `DECISIONS.md`, `evidence.jsonl` |
 
@@ -99,7 +99,10 @@ Everything lives in `.godpowers/`, which you commit with your code:
 
 - `STATE.md` is the one state file. Its frontmatter holds `project`, `stage`
   (plan, build, review, harden, ship, done), and `verify` (your check command).
-  Its body holds Goal, Now, Next, and Risks. A risk is one checkbox line:
+  Optional keys: `fast` (a file-local check; `{files}` expands to the changed
+  files, each quoted for the shell), `docs` (comma-separated globs that count
+  as documentation, or `none`), and `risk` (comma-separated globs that make a
+  change high risk). Its body holds Goal, Now, Next, and Risks. A risk is one checkbox line:
   `- [ ] critical: SQL injection in /search (src/api/search.ts:40)`.
 - `PLAN.md` holds the goal, requirements with "Done when" checks, non-goals,
   design, and slices. It is skipped when a request already lists its
@@ -133,9 +136,33 @@ Other commands are recorded but do not count.
 - **Commit hook.** `git commit` is blocked while `godpowers lint` finds errors
   in `.godpowers/`, for example a malformed risk line or an edited past
   decision.
-- **Ship gate.** `godpowers gate ship` passes only with a passing check, a
-  passing review record, and a passing security record for the current code,
-  and no open critical risk.
+- **Ship gate.** `godpowers gate ship` scales with the risk of the change
+  since the latest `v*` tag (or `--base <ref>`). Low risk needs a passing
+  check. Normal risk also needs a passing review record. High risk also needs
+  a passing security record. With no tag and no `--base` there is nothing to
+  compare, so the tier is high. An open critical risk always blocks, and
+  `tests` findings show as a warning.
+
+### Risk tiers
+
+`godpowers risk [--base <ref>]` classifies the change since the base. Low means
+only documentation and test files changed (or nothing). High means a changed
+path matches a built-in pattern or a `risk:` glob from STATE.md. Everything
+else is normal. The built-in patterns (`HIGH_RISK_PATTERNS` in
+[lib/risk.js](lib/risk.js)) cover sign-in and authorization code, sessions,
+permissions, crypto, secrets and `.env` files, database migrations and SQL
+schemas, payments and billing, CI workflows, Docker and Compose files,
+Terraform, Kubernetes and Helm, and deploy and infra folders. Matching is
+case-insensitive.
+
+### Records that survive documentation edits
+
+Records also store a fingerprint of the files that are not documentation.
+Review, harden, and ship records match when either fingerprint matches, so a
+README typo does not void a review. Check and waiver records still match only
+the whole tree, because a test suite can read documentation. `docs:` in
+STATE.md changes what counts as documentation; `docs: none` turns the
+exemption off, for the records and for the Stop hook.
 
 To switch the Stop and commit gates off, add `gate: off` to STATE.md's
 frontmatter, or set `GODPOWERS_GATE=off` for one session.
@@ -159,9 +186,17 @@ godpowers migrate [--dry-run]           6.x layout to 7.x; archives, deletes not
 godpowers clean [--dry-run]             remove 6.x blocks from AGENTS.md, CLAUDE.md, rule files
 godpowers status [--json]               stage, evidence freshness, risks, next step
 godpowers verify "<cmd>" [--claim "<text>"]   run a check and record it
+godpowers verify "<cmd>" --force        run even if it already passed on this code
+godpowers fast [files...]               run the STATE.md "fast:" check; never recorded
+godpowers fast --hook                   PostToolUse handler: silent unless the check fails (exit 2)
 godpowers verify --waive "<reason>"     record that no automated check covers this code
 godpowers record review|harden|ship --pass|--fail --summary "<text>"
-godpowers gate ship [--json]            the release gate
+godpowers record review ... --dismiss "<finding>: <reason>"   (repeatable)
+godpowers reviews [--json]              review rounds since the last pass
+godpowers stats [--json]                check runs, recovery time, review rounds
+godpowers tests [--base <ref>] [--json] flag weakened tests since the base
+godpowers risk [--base <ref>] [--json]  low, normal, or high risk since the base
+godpowers gate ship [--base <ref>] [--json]   the release gate, by risk tier
 godpowers lint [--notes] [--json]       validate .godpowers/ files
 godpowers doctor [--json]               installed hosts, registered hooks, 6.x leftovers
 godpowers budget [--json]               prompt size of the shipped skills and agents
@@ -172,6 +207,76 @@ check fails, and prints only the last 3,000 characters of output, to keep the
 agent's context small. Quote the command (`verify "pytest -k 'not slow'"`) or
 put godpowers options first (`verify --claim x pytest -k "not slow"`).
 Stopping `verify` stops the check too.
+
+`verify` reuses work. When the latest record of the same command on the same
+code passed, it prints that it reused the record and exits 0 without running
+the command or writing the ledger. `--force` always runs it (use it when the
+environment may have changed). `--json` output then has `reused: true`.
+
+`fast` runs the `fast:` command from STATE.md on the files you give it, or on
+the files changed since HEAD plus untracked files. It never writes the ledger,
+so it is feedback, not evidence. With `{files}` in the command and nothing
+changed, it runs nothing.
+
+`reviews` lists the review rounds since the last passing one, with the commit
+each saw and the findings dismissed. After three failed rounds it says to stop
+and rethink the approach. Record a finding you chose not to fix with
+`record review --fail --summary "<text>" --dismiss "<finding>: <reason>"`, so
+the next reviewer is not asked about it again.
+
+`stats` reports from the ledger: check runs with passes, failures, and median
+and longest duration, the median time from a failing run to the next passing
+one, waivers, and review rounds.
+
+`tests` compares the working tree with the base (default: the latest `v*` tag;
+exit 2 when there is none and no `--base`) and flags deleted test files, fewer
+test declarations or assertions in a file, and added skip or focus markers. It
+exits 1 with findings. Put `godpowers: allow-test-change` on a line to mark a
+deliberate change.
+
+## Per-edit feedback hook
+
+Godpowers does not register a hook that runs `fast`, because an installed hook
+would run a command that any cloned repository declares, with no prompt.
+Godpowers runs a repository's commands only when you or the agent call the
+CLI. If you want feedback after every edit in Claude Code, add a PostToolUse
+hook yourself, in the repository's own `.claude/settings.local.json` (which you
+do not commit), and only in a repository whose `fast:` command you trust. Do
+not put it in the global `~/.claude/settings.json`: a global hook would run the
+`fast` command of every repository you open, including ones you just cloned.
+Adjust the path to the installed copy:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/godpowers/bin/godpowers.js\" fast --hook",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+`fast --hook` reads the hook's JSON from stdin. If `tool_input.file_path` (or
+`tool_input.path`) is a file inside the project, it checks that file;
+otherwise it checks the files changed since HEAD. It never writes the ledger.
+
+- Exit 0 with no output: nothing to do (no project, no `fast:` declared,
+  nothing to check), the check passed, or the hook hit an internal error and
+  failed open (a short note goes to stderr).
+- Exit 2: the check failed. The output tail and a one-line summary go to stderr,
+  which Claude Code shows to the agent, so it can fix the edit.
+
+Keep the `timeout` short (seconds, not minutes); a check that cannot finish
+quickly belongs in `verify`, not in a per-edit hook.
 
 ## Measure it yourself
 

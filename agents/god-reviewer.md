@@ -14,4 +14,6 @@ Check, in this order:
 4. Safety: input validation, auth boundaries, secrets, destructive operations, data loss on failure.
 5. Fit: follows existing patterns, with no dead code, needless abstraction, or scope creep.
 
+When you get a delta scope (the change since the last review), review that change but follow its blast radius into unchanged code. Do not raise a dismissed finding again unless the code it concerns changed. Treat test-guard findings (`godpowers tests`) as candidates to verify, not facts.
+
 Return findings as `severity (critical|high|medium|low): what, where (file:line), why it matters, suggested fix`, most severe first. Then give a verdict: pass when there is no critical or high finding, otherwise fail. Report only what you verified, and mark anything unproven as unproven. Do not edit files.

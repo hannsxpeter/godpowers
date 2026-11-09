@@ -10,7 +10,8 @@ The CLI and the hooks check that it was done.
    reasoning. Skills name the outcome, the files to keep current, and the checks
    to run.
 2. **Code over prose.** Anything checkable is checked by the CLI: evidence
-   freshness, file structure, append-only decisions, the ship gate.
+   freshness, file structure, append-only decisions, the ship gate, weakened
+   tests, and the risk of a change.
 3. **Small always-on footprint.** The test suite enforces a prompt budget
    (`lib/budget.js`).
 4. **Use what the host provides.** Subagents, memory, planning, scheduling, and
@@ -50,9 +51,16 @@ test/                 node:test suites
 | `frontmatter.js` | Flat YAML frontmatter parse and write |
 | `templates.js` | Starting content for STATE.md, PLAN.md, DECISIONS.md |
 | `state.js` | STATE.md sections, risk lines, validation, field updates |
-| `git.js` | Read-only snapshots and fingerprints, changed paths, lines removed since HEAD |
-| `evidence.js` | The evidence ledger: run and record checks, waivers, attestations, chain |
-| `gate.js` | Stop gate and ship gate |
+| `match.js` | Glob matching (case-insensitive) and comma-separated list parsing for STATE.md settings |
+| `docs.js` | What counts as documentation: the built-in rule or the `docs:` setting |
+| `git.js` | Read-only snapshots and fingerprints (whole tree and code only), changed paths, release base, diffs, lines removed since HEAD |
+| `evidence.js` | The evidence ledger: run and record checks, reuse, waivers, attestations, chain |
+| `fast.js` | The `fast` check: expands `{files}` with shell quoting and runs it without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
+| `reviews.js` | Review rounds since the last pass, and the three-round warning |
+| `stats.js` | Numbers computed from the ledger |
+| `testguard.js` | Flags deleted tests, fewer tests or assertions, and added skip markers since a base |
+| `risk.js` | Classifies the change since a base as low, normal, or high, from its paths |
+| `gate.js` | Stop gate and the tiered ship gate |
 | `lint.js` | Structural checks on `.godpowers/` files |
 | `prose.js` | Advisory prose notes for PLAN.md and DECISIONS.md |
 | `status.js` | Status view and the session brief |
@@ -88,9 +96,44 @@ and `digest` (a SHA-256 over its own canonical JSON). `readAll` reports digest
 mismatches and invalid lines as errors, and chain breaks (from merges) as
 warnings.
 
+Records also carry `code`, a second fingerprint over the files that are not
+documentation (see `docs.js`), and attestations carry `head` (the HEAD commit,
+or null outside git). A review record may also carry `dismissed`: up to 20
+findings of 300 characters each, redacted, that the author chose not to fix.
+The fingerprint version stays 1, so 7.0 records, which have no `code`, keep
+matching on `tree`.
+
 `statusFor` takes, for one fingerprint, the last `verify` of the project's
 declared check (or any `verify` when none is declared) or `waive` as the check
 status, and the last `review`, `harden`, and `ship` records as those statuses.
+Verify and waive records match only when `tree` matches, because a check can
+read documentation. Review, harden, and ship records match when `tree` or
+`code` matches; `viaCode` reports which of them matched only by `code`.
+
+`verify` reuses work: `findReusable` returns the latest `verify` record of the
+same redacted command on the current tree that passed, has the current
+fingerprint version, and has neither `changedDuringRun` nor `timedOut`. The CLI
+prints it and exits 0 without running the command or appending. `--force`
+skips the lookup.
+
+## Gates and risk
+
+The ship gate takes a base: the `--base` ref, otherwise the latest `v*` tag
+reachable from HEAD, otherwise none. `risk.classify` lists the paths that differ
+from the base (untracked files included). A path that matches a built-in
+pattern in `HIGH_RISK_PATTERNS` or a `risk:` glob makes the change high; only
+documentation and test files, or no change, make it low; anything else is
+normal. With no base the tier is high, so the gate relaxes only when the CLI can
+see what changed. The gate requires a passing check for every tier, a review at
+normal and high, and a security record at high, and always blocks on an open
+critical risk. Records a tier does not need show as ok with the reason. When a
+base exists it also runs `testguard` and shows its findings as a warning that
+does not block.
+
+Review rounds are bounded: `reviews` counts failed review records since the
+last passing one and says to stop and rethink the approach at three. A
+re-review is scoped to the change since the last reviewed `head`, and
+dismissed findings are passed on so they are not raised again.
 
 The command runs in its own process group. A timeout, or a signal to the CLI,
 ends the whole group; on Windows the tree is ended with `taskkill`. The CLI
@@ -119,6 +162,13 @@ stdin.
 Hook input is read from file descriptor 0 directly. Checking
 `process.stdin.isTTY` would switch it to non-blocking mode and make large or
 late payloads read as empty.
+
+Godpowers never runs a command a repository declares from a hook. The `fast`
+and `verify` commands in STATE.md run only when the agent or the user calls the
+CLI, because an installed hook would run whatever any cloned repository
+declares, without a permission prompt. The README shows a PostToolUse hook
+(`godpowers fast --hook`) that users can add to a trusted repository's own
+local settings.
 
 Every hook fails open: an internal error is shown as a system message and never
 blocks the host.

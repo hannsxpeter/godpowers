@@ -4,7 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const fastTools = require('../lib/fast');
-const { write, git, v7Repo, run } = require('./helpers');
+const { tempDir, write, git, v7Repo, run } = require('./helpers');
+
+const pick = result => [result.code, result.out, result.err];
 
 // Prints the arguments it receives as JSON, and exits with FAST_EXIT if set.
 const ARGS_SCRIPT = 'console.log(JSON.stringify(process.argv.slice(2))); process.exit(Number(process.env.FAST_EXIT || 0));\n';
@@ -127,4 +129,48 @@ test('a failing command returns its exit code, and a timeout returns 1', async (
   assert.equal(timed.json.timedOut, true);
   assert.equal(timed.json.ok, false);
   assert.match((await run(['fast', '--timeout', '10m'], { cwd: root })).err, /--timeout must be a number/);
+});
+
+const payload = input => JSON.stringify({ tool_name: 'Edit', tool_input: input });
+
+test('--hook checks the one edited file and is silent when the check passes', async () => {
+  const root = fastRepo();
+  write(root, 'other.js', 'also changed');
+  const before = ledgerText(root);
+  const absolute = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: path.join(root, 'src', 'app.js') }) });
+  assert.deepEqual([absolute.code, absolute.out, absolute.err], [0, '', '']);
+  const failing = await run(['fast', '--hook'], { cwd: root, stdin: payload({ path: 'src/app.js' }), env: { FAST_EXIT: '4' } });
+  assert.equal(failing.code, 2);
+  assert.equal(failing.out, '');
+  assert.deepEqual(JSON.parse(failing.err.split('\n')[0]), ['src/app.js']);
+  assert.match(failing.err, /godpowers fast FAILED: node args\.js \{files\} \(1 file, exit 4\)\n$/);
+  assert.equal(ledgerText(root), before, 'the ledger is untouched');
+});
+
+test('--hook falls back to the changed files, and ignores paths outside the project or in .godpowers', async () => {
+  const root = fastRepo();
+  write(root, 'changed.js', 'x');
+  for (const stdin of ['', 'not json', '{}', payload({ file_path: '/etc/passwd' }), payload({ file_path: '../up.js' }), payload({ file_path: '.godpowers/PLAN.md' }), payload({ file_path: 7 })]) {
+    const result = await run(['fast', '--hook'], { cwd: root, stdin, env: { FAST_EXIT: '5' } });
+    assert.equal(result.code, 2, stdin);
+    assert.deepEqual(JSON.parse(result.err.split('\n')[0]), ['changed.js'], stdin);
+  }
+});
+
+test('--hook exits 0 silently without a project, a declared check, or anything to check', async () => {
+  const bare = tempDir();
+  assert.deepEqual(pick(await run(['fast', '--hook'], { cwd: bare, stdin: payload({ file_path: 'a.js' }) })), [0, '', '']);
+  const undeclared = v7Repo();
+  assert.deepEqual(pick(await run(['fast', '--hook'], { cwd: undeclared, stdin: payload({ file_path: 'README.md' }) })), [0, '', '']);
+  const clean = fastRepo();
+  assert.deepEqual(pick(await run(['fast', '--hook'], { cwd: clean, env: { FAST_EXIT: '3' } })), [0, '', '']);
+});
+
+test('--hook fails open on an internal error', async () => {
+  const root = fastRepo();
+  write(root, 'new.js', 'x');
+  const result = await run(['fast', '--hook', '--timeout', 'soon'], { cwd: root });
+  assert.equal(result.code, 0);
+  assert.equal(result.out, '');
+  assert.match(result.err, /^godpowers fast --hook: skipped \(.*--timeout must be a number/);
 });
