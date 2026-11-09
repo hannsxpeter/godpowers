@@ -164,9 +164,10 @@ const KEY_A = 'a'.repeat(64);
 const KEY_B = 'b'.repeat(64);
 const signed = (record, command = record.command, key = KEY_A) => ({ ...record, local: evidence.localTag(key, record, command) });
 const ledgerOf = (...records) => ({ records, problems: [] });
+const identityOf = command => evidence.commandIdentity(command, { key: KEY_A });
 
 test('findReusable returns only a clean, signed passing record of the same command on the same tree', () => {
-  const unsigned = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', ok: true };
+  const unsigned = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', cmd: identityOf('npm test'), ok: true };
   const base = signed(unsigned);
   const find = (ledger, tree, command, key = KEY_A) => evidence.findReusable(ledger, tree, command, { key });
   assert.equal(find(ledgerOf(base), 't1', 'npm test'), base);
@@ -179,6 +180,9 @@ test('findReusable returns only a clean, signed passing record of the same comma
   assert.equal(find(ledgerOf(signed({ ...unsigned, changedDuringRun: true })), 't1', 'npm test'), null);
   assert.equal(find(ledgerOf(signed({ ...unsigned, timedOut: true })), 't1', 'npm test'), null);
   assert.equal(find(ledgerOf(unsigned), 't1', 'npm test'), null, 'no local signature');
+  const { cmd, ...legacy } = unsigned;
+  assert.equal(find(ledgerOf(signed(legacy)), 't1', 'npm test'), null, 'a signed record without the exact-command identity, which the gates reject too');
+  assert.equal(find(ledgerOf(signed({ ...unsigned, cmd: null })), 't1', 'npm test'), null, 'a null identity');
   assert.equal(find(ledgerOf({ ...base, local: 'f'.repeat(64) }), 't1', 'npm test'), null, 'a wrong signature');
   assert.equal(find(ledgerOf({ ...base, local: 12 }), 't1', 'npm test'), null, 'a signature that is not text');
   assert.equal(find(ledgerOf(base), 't1', 'npm test', KEY_B), null, 'signed with another key');
@@ -192,7 +196,7 @@ test('findReusable returns only a clean, signed passing record of the same comma
 });
 
 test('the signature covers the exact command, which the stored record has redacted', () => {
-  const stored = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'PASSWORD=[redacted] node x.js', ok: true };
+  const stored = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'PASSWORD=[redacted] node x.js', cmd: identityOf('PASSWORD=hunter-one node x.js'), ok: true };
   const record = signed(stored, 'PASSWORD=hunter-one node x.js');
   const find = command => evidence.findReusable(ledgerOf(record), 't1', command, { key: KEY_A });
   assert.equal(find('PASSWORD=hunter-one node x.js'), record);
@@ -422,12 +426,11 @@ test('a record whose cmd is null, or malformed, matches nothing', () => {
 });
 
 test('findReusable ignores malformed signatures and identities instead of throwing', () => {
-  const unsigned = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', ok: true };
+  const unsigned = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', cmd: identityOf('npm test'), ok: true };
   for (const local of ['é'.repeat(64), 'F'.repeat(64), 'a'.repeat(63), `${'a'.repeat(63)}\u0000`]) {
     assert.equal(evidence.findReusable(ledgerOf({ ...unsigned, local }), 't1', 'npm test', { key: KEY_A }), null, JSON.stringify(local));
   }
-  const withId = { ...unsigned, cmd: evidence.commandIdentity('npm test', { key: null }) };
-  const record = signed(withId);
+  const record = signed(unsigned);
   assert.equal(evidence.findReusable(ledgerOf(record), 't1', 'npm test', { key: KEY_A }), record, 'a good identity is reusable');
   const bad = signed({ ...unsigned, cmd: 'sha256:é' });
   assert.equal(evidence.findReusable(ledgerOf(bad), 't1', 'npm test', { key: KEY_A }), null);

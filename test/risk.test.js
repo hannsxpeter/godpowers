@@ -104,8 +104,11 @@ test('the docs setting decides what keeps a change low', () => {
   write(root, 'README.md', 'docs');
   assert.equal(classify(root).tier, 'normal', 'with docs: none a README is code');
   const globs = releasedRepo({ docs: 'site/**' });
-  write(globs, 'site/page.js', 'x');
+  write(globs, 'site/page.md', 'x');
   assert.equal(classify(globs).tier, 'low');
+  write(globs, 'site/page.js', 'a list narrows the built-in rule, it never widens it');
+  assert.equal(classify(globs).tier, 'normal');
+  fs.rmSync(path.join(globs, 'site/page.js'));
   write(globs, 'README.md', 'not listed, so code');
   assert.equal(classify(globs).tier, 'normal');
 });
@@ -239,7 +242,10 @@ test('the docs rule in force is the intersection of the base commit\'s and the w
   assert.equal(classify(root).tier, 'normal', 'code is not documentation because STATE.md now says so');
   const loose = releasedRepo({ docs: 'src/**' });
   write(loose, 'src/app.js', 'x');
-  assert.equal(classify(loose).tier, 'low', 'a rule that was already in place at the base');
+  assert.equal(classify(loose).tier, 'normal', 'a docs: list that was already in place at the base cannot widen the rule either');
+  write(loose, 'src/app.js', 'module.exports = 1;\n');
+  write(loose, 'src/notes.md', 'x');
+  assert.equal(classify(loose).tier, 'low');
 });
 
 test('a risk: glob at the base still counts after the working STATE.md drops it', () => {
@@ -280,12 +286,46 @@ test('a risk: glob over the length cap, or wildcard-only, is unusable too, and u
   assert.equal(classify(root).tier, 'low');
 });
 
-test('an unusable docs: glob is ignored, so the built-in rule decides', () => {
+test('an unusable docs: glob is a STATE.md error, so the tier is high', () => {
   const root = releasedRepo({ docs: TOO_MANY });
   write(root, 'README.md', 'docs');
-  assert.equal(classify(root).tier, 'low');
-  write(root, 'src/abcdefgh.js', 'x');
+  const result = classify(root);
+  assert.equal(result.tier, 'high');
+  assert.match(result.reason, /^STATE\.md at v1\.0\.0 has 1 error/);
+  const working = releasedRepo();
+  write(working, '.godpowers/STATE.md', stateText({ docs: TOO_MANY }));
+  write(working, 'README.md', 'docs');
+  assert.match(classify(working).reason, /^the working STATE\.md has 1 error/);
+});
+
+test('a docs: *.md does not make AGENTS.md documentation', () => {
+  const root = releasedRepo({ docs: '*.md' });
+  write(root, 'AGENTS.md', 'x');
   assert.equal(classify(root).tier, 'normal');
+});
+
+test('a duplicate key in the STATE.md at the base, or in the working one, keeps the tier high and names which', () => {
+  const dup = text => text.replace(/\nupdated: /, '\nrisk:\nupdated: ');
+  const root = releasedRepo();
+  write(root, '.godpowers/STATE.md', dup(stateText({ risk: 'src/**' })));
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'dup');
+  git(root, 'tag', 'v1.1.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after');
+  write(root, '.godpowers/STATE.md', stateText());
+  write(root, 'src/app.js', 'x');
+  const base = classify(root);
+  assert.equal(base.tier, 'high');
+  assert.match(base.reason, /^STATE\.md at v1\.1\.0 has 1 error\(s\): duplicate frontmatter key: risk/);
+  const clean = releasedRepo();
+  write(clean, '.godpowers/STATE.md', dup(stateText({ risk: 'db/**' })));
+  write(clean, 'README.md', 'x');
+  const working = classify(clean);
+  assert.equal(working.tier, 'high');
+  assert.match(working.reason, /^the working STATE\.md has 1 error\(s\): duplicate frontmatter key: risk/);
+  const plain = releasedRepo();
+  write(plain, 'README.md', 'x');
+  assert.equal(classify(plain).tier, 'low', 'a valid STATE.md does not raise the tier');
 });
 
 test('a STATE.md that cannot be read at the base makes the tier high; one that is absent does not', () => {

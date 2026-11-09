@@ -53,10 +53,10 @@ test/                 node:test suites
 | `state.js` | STATE.md sections, risk lines, validation, field updates |
 | `match.js` | Glob matching (case-insensitive, linear time, no regular expressions; a `**` inside a name expands to at most 64 alternatives), `usable` (is a glob wildcard-only, too long, or over the alternatives cap), and comma-separated list parsing for STATE.md settings |
 | `policy.js` | Shared constants and checks: the high-risk patterns, control characters in paths and printed text |
-| `docs.js` | What counts as documentation (for the stop gate's allowance and the low tier only): the built-in rule or the `docs:` setting, and STATE.md as committed at a baseline |
+| `docs.js` | What counts as documentation (for the stop gate's allowance and the low tier only): the built-in rule, which the `docs:` setting can only narrow, and STATE.md as committed at a baseline |
 | `git.js` | Read-only snapshots and the tree fingerprint, changed paths, release base, diffs, lines removed since HEAD, and `readAt` (a file at a commit: absent is null, unreadable throws) |
 | `evidence.js` | The evidence ledger: run and record checks, reuse, waivers, attestations, chain |
-| `fast.js` | The `fast` check: replaces each `{files}` with `"$@"` and runs `/bin/sh -c <script> godpowers-fast <file>...`, so file names are arguments and never shell source (a command with `{files}` is refused on Windows); skips files that resolve outside the project, and runs without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
+| `fast.js` | The `fast` check: replaces each `{files}` (only a standalone word outside quotes, judged by a small POSIX quote scanner; anything else is refused) with `"$@"` and runs `/bin/sh -c <script> godpowers-fast <file>...`, so file names are arguments and never shell source (a command with `{files}` is refused on Windows); skips files that resolve outside the project, and runs without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
 | `reviews.js` | Review rounds since the last pass, and the three-round warning |
 | `stats.js` | Numbers computed from the ledger |
 | `testguard.js` | Flags deleted tests, fewer tests or assertions, and added skip markers since a base |
@@ -119,14 +119,18 @@ counts as documentation only when both the rule committed at the baseline (HEAD
 for the stop gate, the base commit for the ship gate) and the working rule say
 so, so editing `docs:` or `risk:` after the baseline cannot loosen them; a
 `risk:` glob present at the base also keeps matching after the working one
-drops it. A STATE.md that does not exist at the baseline means the built-in
-rule; one that exists but cannot be read makes `docs.stateAt` throw, and the
-callers are strict (the stop gate counts nothing as documentation, `classify`
-returns high). `match.usable(glob)` is false for a glob that is wildcard-only,
-longer than 512 characters, or over 64 alternatives. An unusable `docs:` glob
-is ignored; an unusable `risk:` glob keeps `classify` at high
+drops it. `docs:` can only narrow: the built-in rule (`byDefaultRule`, which
+excludes instruction files) and the high-risk check always apply, and the globs
+are one more condition, so no setting a repository controls widens a gate. A
+STATE.md that does not exist at the baseline means the built-in rule; one that
+exists but cannot be read makes `docs.stateAt` throw, and a STATE.md (baseline
+or working) with `state.validate` errors, a duplicate key included, is strict
+too: `docs.forStop` returns a predicate that accepts nothing, and `classify`
+returns high naming which STATE.md has errors. `match.usable(glob)` is false
+for a glob that is wildcard-only, longer than 512 characters, or over 64
+alternatives. An unusable `risk:` glob keeps `classify` at high
 (`unusable risk pattern: <glob>`) and makes the documentation rule count
-nothing. `state.validate` reports both as errors.
+nothing. `state.validate` reports unusable `docs:` and `risk:` globs as errors.
 
 `statusFor` takes, for one fingerprint, the last `verify` of the project's
 declared check (or any `verify` when none is declared) or `waive` as the check
@@ -179,7 +183,7 @@ normal and high, and a security record at high, and always blocks on an open
 critical risk. Records a tier does not need show as ok with the reason. When a
 base exists it also runs `testguard` and shows its findings as a warning that
 does not block, and warns when the `docs:` or `risk:` setting in STATE.md
-differs from the base commit's (a missing file there means no setting, an unreadable one is reported).
+differs from the base commit's (a missing file there means no setting, an unreadable one is reported). Outside a git work tree the ship gate fails (`git` check, error): there is no fingerprint to bind a record to, so no record counts. The stop gate still allows the stop there, because hooks fail open.
 
 Review rounds are bounded: `reviews` counts failed review records since the
 last passing one and says to stop and rethink the approach at three. A

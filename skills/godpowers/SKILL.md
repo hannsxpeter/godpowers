@@ -22,7 +22,7 @@ Godpowers keeps a project's memory on disk and refuses unverified "done". You do
 
 ## Files in `.godpowers/`
 
-- `STATE.md`: the one state file. Frontmatter: `project`, `stage` (plan, build, review, harden, ship, done), `verify` (the project's check command). Optional: `fast` (a file-local check; `{files}` is replaced by the changed files as arguments, not on Windows), `docs` (globs that count as documentation, or `none`), `risk` (extra globs that make a change high risk). Sections: Goal, Now, Next, Risks.
+- `STATE.md`: the one state file. Frontmatter: `project`, `stage` (plan, build, review, harden, ship, done), `verify` (the project's check command). Optional: `fast` (a file-local check; `{files}`, a word of its own outside quotes, is replaced by the changed files as arguments, not on Windows), `docs` (globs that narrow what counts as documentation, never widen it, or `none`), `risk` (extra globs that make a change high risk). Sections: Goal, Now, Next, Risks.
 - `PLAN.md`: goal, requirements with "Done when" checks, non-goals, design, slices. Skipped when the request already lists its requirements; they go under Goal in STATE.md instead.
 - `DECISIONS.md`: append-only log of lasting decisions, `## YYYY-MM-DD: title`. Supersede, never edit.
 - `evidence.jsonl`: written only by the CLI. Never edit it by hand.

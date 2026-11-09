@@ -101,7 +101,7 @@ Everything lives in `.godpowers/`, which you commit with your code:
   (plan, build, review, harden, ship, done), and `verify` (your check command).
   Optional keys: `fast` (a file-local check; `{files}` is replaced by the
   changed files, passed as arguments, not on Windows), `docs` (comma-separated
-  globs that count as documentation, or `none`), and `risk` (comma-separated
+  globs that narrow what counts as documentation, or `none`), and `risk` (comma-separated
   globs that make a change high risk). Its body holds Goal, Now, Next, and Risks. A risk is one checkbox line:
   `- [ ] critical: SQL injection in /search (src/api/search.ts:40)`.
 - `PLAN.md` holds the goal, requirements with "Done when" checks, non-goals,
@@ -141,7 +141,9 @@ Other commands are recorded but do not count.
   check. Normal risk also needs a passing review record. High risk also needs
   a passing security record. With no tag and no `--base` there is nothing to
   compare, so the tier is high. An open critical risk always blocks, and
-  `tests` findings show as a warning.
+  `tests` findings show as a warning. Outside a git work tree the gate fails
+  with "not a git repository: evidence cannot be bound to the code", because no
+  record can be tied to the code there.
 
 ### Risk tiers
 
@@ -171,22 +173,27 @@ satisfies a gate. After upgrading from 7.0, run `verify` once.
 
 `docs:` in STATE.md decides only what the Stop hook may let through without a
 check (a session that changed only documentation) and what keeps a change in
-the low risk tier. The built-in rule applies without it; `docs: none` turns the
-allowance off. A path counts as documentation only when the rule committed at
-the baseline (HEAD for the Stop hook, the base commit for risk and the ship
-gate) and the working rule both say so, so editing `docs:` after the baseline
-cannot loosen a gate. A baseline STATE.md that exists but cannot be read counts
-nothing as documentation and makes the tier high. Agent instruction files
+the low risk tier. It can only narrow the built-in rule, never widen it: a path
+is documentation only when the built-in rule says so (markdown,
+reStructuredText, AsciiDoc, and a few well-known names) and, when `docs:`
+lists globs, one of them matches too. `docs: none` turns the allowance off. A
+path also has to count under the rule committed at the baseline (HEAD for the
+Stop hook, the base commit for risk and the ship gate) and the working rule,
+so editing `docs:` after the baseline cannot loosen a gate. A baseline
+STATE.md that exists but cannot be read counts nothing as documentation and
+makes the tier high, and so does a STATE.md with `lint` errors (a duplicate
+key, an unusable glob), at the base or in the working tree: the Stop hook then
+allows no documentation edit unchecked and `risk` says which STATE.md has
+errors. Agent instruction files
 (`AGENTS.md`, `CLAUDE.md`, `SKILL.md`, anything under `.claude`, `agents`,
 `skills`, `prompts`, and similar) are never documentation by default, and
 neither is any path that matches a high-risk pattern or a `risk:` glob. A
 glob is unusable when it is made only of wildcards (`**`, `*.*`), is longer
 than 512 characters, or needs more than 64 alternatives (more than six `**`
 inside names in all). `lint` reports an unusable `docs:` or `risk:` glob as an
-error. An unusable `docs:` glob is ignored; an unusable `risk:` glob (in the
-working STATE.md or at the base) keeps the tier high with the reason
-`unusable risk pattern: <glob>`, and makes the Stop hook count nothing as
-documentation. In a glob, `**` inside a name (`src/**.js`) can span directories.
+error. An unusable `risk:` glob (in the working STATE.md or at the base) keeps
+the tier high with the reason `unusable risk pattern: <glob>`, and makes the
+Stop hook count nothing as documentation. In a glob, `**` inside a name (`src/**.js`) can span directories.
 
 To switch the Stop and commit gates off, add `gate: off` to STATE.md's
 frontmatter, or set `GODPOWERS_GATE=off` for one session.
@@ -247,8 +254,14 @@ the files changed since HEAD plus untracked files. It never writes the ledger,
 so it is feedback, not evidence. With `{files}` in the command and nothing
 changed, it runs nothing. Every `{files}` is replaced by `"$@"` and the
 command runs as `/bin/sh -c <script> godpowers-fast <file>...`, so file names
-are arguments and never part of the shell script, wherever `{files}` sits
-(`eslint {files} --fix`, or inside quotes or backticks). Names that start with
+are arguments and never part of the shell script. `{files}` must be a word of
+its own outside quotes, backticks, and `$(...)` (`eslint --format "stylish"
+{files} --fix` is fine). Inside quotes the shell would split or glob the
+names, or pass a literal, so `"{files}"`, `'{files}'`, `` `x {files}` ``,
+`x{files}`, and `{files}x` exit 2 with a message naming the supported form
+(the hook fails open). A very long list of changed files can exceed the
+operating system's argument limit (`E2BIG`); the command then fails with exit
+2, and passing explicit files is the way around it. Names that start with
 `-` are passed as `./-name`, names with control characters are skipped with a
 note, and so is any file that resolves outside the project through a symlink.
 The hook runs nothing when the payload names a path that is rejected. `fast`

@@ -241,29 +241,58 @@ test('{files} is replaced by "$@" in the script, and no file name appears in it'
   assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false);
 });
 
-test('{files} inside backticks, quotes, or a substitution still cannot make a file name run', async () => {
-  const declared = ['echo `node args.js {files}`', 'echo "{files}"', 'echo "a {files} b"', "echo '{files}'", 'echo $(node args.js {files})', 'echo x{files}y'];
-  for (const command of declared) {
-    const root = fastRepo(command);
+const NOT_STANDALONE = /`\{files\}` must be a separate word outside quotes, backticks, and \$\(\.\.\.\), for example `eslint \{files\}`/;
+
+test('{files} outside quotes, as its own word, passes exact arguments, whatever else the command quotes', async () => {
+  const names = ['my file.js', 'star*.js', "it's.js", 'say "hi".js', 'plain.js', 'new\nline.js'];
+  const expected = ['my file.js', 'plain.js', 'say "hi".js', "it's.js", 'star*.js'].sort();
+  const lines = tail => tail.trim().split('\n').map(line => JSON.parse(line));
+  const root = fastRepo('node args.js --format "stylish" {files}');
+  for (const name of names) write(root, name, 'x');
+  const quoted = await fastJson(root);
+  assert.equal(quoted.code, 0);
+  assert.deepEqual(lines(quoted.json.tail), [['--format', 'stylish', ...expected]], 'the newline name is skipped, the others are exact');
+  assert.match(quoted.err, /skipped 1 file\(s\)/);
+  const twice = fastRepo('node args.js {files} && node args.js -- {files}');
+  for (const name of names) write(twice, name, 'x');
+  assert.deepEqual(lines((await fastJson(twice)).json.tail), [expected, ['--', ...expected]]);
+  const spaced = fastRepo("node args.js 'a  b'  {files}\n");
+  write(spaced, 'x y.js', 'x');
+  assert.deepEqual(lines((await fastJson(spaced)).json.tail), [['a  b', 'x y.js']]);
+  const escaped = fastRepo('node args.js a\\ b {files}');
+  write(escaped, 'x.js', 'x');
+  assert.deepEqual(lines((await fastJson(escaped)).json.tail), [['a b', 'x.js']], 'an escaped space keeps its word, and {files} is still a word of its own');
+  const scripts = [];
+  await fastTools.fast(escaped, { onRun: script => scripts.push(script) });
+  assert.deepEqual(scripts, ['node args.js a\\ b "$@"']);
+});
+
+test('{files} inside quotes or backticks, or attached to other text, is refused with exit 2 and nothing runs', async () => {
+  const refused = ['node args.js "{files}"', "node args.js '{files}'", 'node args.js `x {files}`', 'node args.js x{files}', 'node args.js {files}x', 'node args.js "a {files} b"',
+    'node args.js $(echo {files})', 'node args.js "$(echo {files} )"', 'node args.js x\\ {files}', 'node args.js {files};', 'node args.js "{files}" {files}', 'node args.js {files} "{files}"', "node args.js 'a' '{files}", 'node args.js \\{files}'];
+  for (const command of refused) {
+    const root = fastRepo(`touch RAN; ${command}`);
     write(root, '$(touch INJECTED).js', 'x');
-    write(root, '`touch INJECTED`.js', 'x');
-    const result = await fastJson(root);
-    assert.equal(result.code, 0, command);
+    write(root, 'a b.js', 'x');
+    const result = await run(['fast'], { cwd: root });
+    assert.equal(result.code, 2, command);
+    assert.match(result.err, NOT_STANDALONE, command);
+    assert.equal(result.out, '', command);
+    assert.equal(fs.existsSync(path.join(root, 'RAN')), false, `nothing ran: ${command}`);
     assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false, command);
-    const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: '$(touch INJECTED).js' }), env: { FAST_EXIT: '4' } });
-    assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false, `hook: ${command}`);
+    const explicit = await run(['fast', 'a b.js'], { cwd: root });
+    assert.equal(explicit.code, 2, `explicit files: ${command}`);
+    const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: 'a b.js' }), env: { FAST_EXIT: '4' } });
+    assert.equal(hook.code, 0, `the hook fails open: ${command}`);
+    assert.match(hook.err, /^godpowers fast --hook: skipped \(`\{files\}` must be a separate word/, command);
+    assert.equal(fs.existsSync(path.join(root, 'RAN')), false, `hook: ${command}`);
   }
-  const root = fastRepo('echo `node args.js {files}`');
-  write(root, '$(touch INJECTED).js', 'x');
+});
+
+test('a command without {files} is not checked for placement', async () => {
+  const root = fastRepo('echo "{ files }" `echo hi`');
   const result = await fastJson(root);
-  assert.match(result.json.tail, /\$\(touch INJECTED\)\.js/, 'the name arrived as data');
-  // A placeholder the shell cannot parse (an escaped or unbalanced quote) is a shell error, not code from a name.
-  for (const command of ['echo \\{files}', 'echo "{files}', "echo 'a' '{files}"]) {
-    const broken = fastRepo(command);
-    write(broken, '$(touch INJECTED).js', 'x');
-    assert.notEqual((await fastJson(broken)).code, 0, command);
-    assert.equal(fs.existsSync(path.join(broken, 'INJECTED')), false, command);
-  }
+  assert.equal(result.code, 0);
 });
 
 test('a command with {files} twice gets the same arguments both times', async () => {

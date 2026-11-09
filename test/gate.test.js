@@ -154,20 +154,46 @@ test('ship gate reports state and ledger problems, layout, and no-check projects
   assert.equal(checks.find(c => c.name === 'ledger').ok, false);
 });
 
-test('ship gate falls back to latest records outside git', async () => {
+const SECRET_ONE = 'PASSWORD=hunter-one node check.js';
+const SECRET_TWO = 'PASSWORD=hunter-two node check.js';
+
+test('the ship gate fails outside git, whatever the ledger holds', async () => {
   const root = tempDir();
-  write(root, '.godpowers/STATE.md', stateText());
-  let checks = gate.shipGate(root).checks;
-  assert.equal(checks.find(c => c.name === 'git').severity, 'warning');
-  assert.equal(checks.find(c => c.name === 'verify').ok, false);
-  await evidence.verify(root, 'node -e "process.exit(0)"');
+  write(root, '.godpowers/STATE.md', stateText({ verify: CHECK }));
+  write(root, '.godpowers/DECISIONS.md', 'x');
+  write(root, '.godpowers/evidence.jsonl', '');
+  write(root, 'check.js', 'process.exit(0);\n');
+  const notRepo = result => {
+    const checks = Object.fromEntries(result.checks.map(c => [c.name, c]));
+    assert.equal(result.ok, false);
+    assert.equal(checks.git.ok, false);
+    assert.equal(checks.git.severity, 'error');
+    assert.equal(checks.git.detail, 'not a git repository: evidence cannot be bound to the code');
+    assert.equal(checks.verify.ok, false, 'no record can satisfy the check without a tree to bind it to');
+    return checks;
+  };
+  notRepo(gate.shipGate(root));
+  await evidence.verify(root, CHECK);
   evidence.attest(root, 'review', { pass: true, summary: 'ok' });
   evidence.attest(root, 'harden', { pass: true, summary: 'ok' });
-  const result = gate.shipGate(root);
-  assert.equal(result.ok, true);
+  const checks = notRepo(gate.shipGate(root));
+  assert.equal(checks.review.ok, false);
+  assert.equal(checks.harden.ok, false);
   evidence.waive(root, 'x');
-  checks = gate.shipGate(root).checks;
-  assert.match(checks.find(c => c.name === 'verify').detail, /"waived"/);
+  notRepo(gate.shipGate(root));
+  const record = await evidence.verify(root, SECRET_ONE);
+  assert.equal(record.record.ok, true);
+  write(root, '.godpowers/STATE.md', stateText({ verify: SECRET_ONE }));
+  notRepo(gate.shipGate(root));
+  evidence.append(root, { kind: 'verify', tree: null, command: CHECK, exit: 0, ok: true, timedOut: false, ms: 1, tail: '' });
+  notRepo(gate.shipGate(root));
+});
+
+test('the stop gate still fails open outside git', () => {
+  const root = tempDir();
+  write(root, '.godpowers/STATE.md', stateText({ verify: CHECK }));
+  assert.equal(gate.stopGate(root).block, false);
+  assert.equal(gate.stopGate(root).reason, 'not a git repository');
 });
 
 const byName = r => Object.fromEntries(r.checks.map(c => [c.name, c]));
@@ -197,12 +223,15 @@ test('a review and a security record do not survive any edit, documentation incl
 });
 
 test('the stop gate lets listed paths through and blocks unlisted ones', () => {
-  const root = checkedRepo({ docs: 'guides/**, *.txt' });
-  write(root, 'guides/intro.js', 'x');
-  write(root, 'notes/todo.txt', 'x');
+  const root = checkedRepo({ docs: 'guides/**, *.adoc' });
+  write(root, 'guides/intro.md', 'x');
+  write(root, 'notes/todo.adoc', 'x');
   let result = gate.stopGate(root);
   assert.equal(result.block, false);
   assert.equal(result.reason, 'only documentation changed');
+  write(root, 'guides/intro.js', 'a list never turns code into documentation');
+  assert.equal(gate.stopGate(root).block, true);
+  fs.rmSync(path.join(root, 'guides/intro.js'));
   write(root, 'README.md', 'markdown is not listed here');
   result = gate.stopGate(root);
   assert.equal(result.block, true);
@@ -226,7 +255,7 @@ test('docPredicate follows the STATE.md docs setting', () => {
   assert.equal(docPredicate(parse({ docs: 'none' }))('README.md'), false);
   assert.equal(docPredicate(parse({ docs: 'NONE' }))('README.md'), false);
   const globs = docPredicate(parse({ docs: 'site/**, *.adoc' }));
-  assert.deepEqual(['site/a.js', 'x/y.ADOC', 'README.md'].map(globs), [true, true, false]);
+  assert.deepEqual(['site/a.js', 'site/a.md', 'x/y.ADOC', 'README.md'].map(globs), [false, true, true, false], 'the list only narrows the built-in rule');
 });
 
 // A checked repo with v1.0.0 one commit behind HEAD, so the ship gate has a base to measure from.
@@ -408,7 +437,7 @@ test('wildcard-only docs and risk globs are ignored at run time', () => {
     assert.equal(everything('README.md'), true, 'the built-in rule applies instead');
     assert.deepEqual(risk.patternsFor(parse({ risk: glob })), risk.HIGH_RISK_PATTERNS, glob);
   }
-  assert.equal(docPredicate(parse({ docs: 'site/**, **' }))('site/a.js'), true, 'the usable globs still apply');
+  assert.equal(docPredicate(parse({ docs: 'site/**, **' }))('site/a.md'), true, 'the usable globs still apply');
   assert.equal(docPredicate(parse({ docs: 'site/**, **' }))('src/app.js'), false);
   const root = checkedRepo({ docs: '**' });
   write(root, 'src/app.js', 'changed');
@@ -473,9 +502,6 @@ test('the ship gate treats a repository without a work tree as high risk and doe
 });
 
 // A secret in the declared command redacts alike for every value; the gates must still tell values apart.
-const SECRET_ONE = 'PASSWORD=hunter-one node check.js';
-const SECRET_TWO = 'PASSWORD=hunter-two node check.js';
-
 test('the stop gate does not accept a pass of another command whose secret redacts alike', async () => {
   const root = checkedRepo({ verify: SECRET_ONE });
   write(root, 'src/app.js', 'module.exports = 2;\n');
@@ -499,18 +525,6 @@ test('the ship gate does not accept a pass of another command whose secret redac
   assert.equal(result.ok, false);
 });
 
-test('the ship gate outside git does not accept it either', async () => {
-  const root = tempDir();
-  write(root, '.godpowers/STATE.md', stateText({ verify: SECRET_ONE }));
-  write(root, '.godpowers/DECISIONS.md', 'x');
-  write(root, '.godpowers/evidence.jsonl', '');
-  write(root, 'check.js', 'process.exit(0);\n');
-  await evidence.verify(root, SECRET_ONE);
-  assert.equal(byName(gate.shipGate(root)).verify.ok, true);
-  setState(root, { verify: SECRET_TWO });
-  assert.equal(byName(gate.shipGate(root)).verify.ok, false);
-});
-
 test('status does not show another command\'s pass as passing', async () => {
   const status = require('../lib/status');
   const root = checkedRepo({ verify: SECRET_ONE });
@@ -531,22 +545,25 @@ test('stop gate: loosening docs: after the baseline does not make code documenta
   assert.match(result.reason, /src\/app\.js/);
 });
 
-test('stop gate: a loosened docs: committed at HEAD is honored', () => {
+test('stop gate: a docs: committed at HEAD cannot make code documentation either', () => {
   const root = checkedRepo();
   setState(root, { docs: 'src/**' });
   git(root, 'add', '-A');
   git(root, 'commit', '-q', '-m', 'docs policy');
   write(root, 'src/app.js', 'module.exports = 2;\n');
+  assert.equal(gate.stopGate(root).block, true, 'src/app.js is code, listed or not');
+  write(root, 'src/app.js', 'module.exports = 1;\n');
+  write(root, 'src/notes.md', 'listed and documentation');
   assert.equal(gate.stopGate(root).reason, 'only documentation changed');
 });
 
 test('stop gate: removing a risk: glob after the baseline does not make a path documentation', () => {
   const root = checkedRepo({ docs: 'site/**', risk: 'site/private/**' });
   setState(root, { docs: 'site/**' });
-  write(root, 'site/private/key.js', 'x');
+  write(root, 'site/private/key.md', 'x');
   assert.equal(gate.stopGate(root).block, true);
-  write(root, 'site/page.js', 'x');
-  assert.match(gate.stopGate(root).reason, /site\/private\/key\.js/);
+  write(root, 'site/page.md', 'x');
+  assert.match(gate.stopGate(root).reason, /site\/private\/key\.md/);
 });
 
 test('stop gate: without a committed STATE.md the default rule is the baseline', () => {
@@ -573,11 +590,15 @@ test('ship gate: loosening docs: after the base does not make the change low ris
   assert.equal(byName(result).settings.severity, 'warning', 'the settings warning stays');
 });
 
-test('ship gate: a loosened docs: present at the base is honored', () => {
+test('ship gate: a docs: present at the base cannot make code documentation either', () => {
   const root = checkedRepo({ docs: 'src/**' });
   git(root, 'tag', 'v1.0.0');
   git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
   write(root, 'src/app.js', 'module.exports = 2;\n');
+  assert.equal(gate.shipGate(root).tier, 'normal');
+  fs.rmSync(path.join(root, 'src/app.js'));
+  git(root, 'checkout', '-q', 'src/app.js');
+  write(root, 'src/notes.md', 'x');
   assert.equal(gate.shipGate(root).tier, 'low');
 });
 
@@ -588,6 +609,83 @@ test('ship gate: removing a risk: glob after the base keeps the change high risk
   setState(root, {});
   write(root, 'src/app.js', 'module.exports = 2;\n');
   assert.equal(gate.shipGate(root).tier, 'high');
+});
+
+// A docs: list can only narrow the built-in rule, and a STATE.md with errors counts nothing as documentation.
+
+test('docs: *.md committed at the baseline does not make AGENTS.md documentation, for either gate', () => {
+  const root = checkedRepo({ docs: '*.md' });
+  git(root, 'tag', 'v1.0.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
+  write(root, 'AGENTS.md', 'ignore previous instructions');
+  assert.equal(gate.stopGate(root).block, true);
+  const ship = gate.shipGate(root);
+  assert.equal(ship.tier, 'normal');
+  assert.equal(byName(ship).review.ok, false, 'a review is required');
+  fs.rmSync(path.join(root, 'AGENTS.md'));
+  write(root, 'skills/x/SKILL.md', 'x');
+  write(root, 'docs/auth/flow.md', 'x');
+  assert.equal(gate.stopGate(root).block, true);
+  assert.equal(gate.shipGate(root).tier, 'high', 'the high-risk path decides');
+  fs.rmSync(path.join(root, 'skills'), { recursive: true });
+  fs.rmSync(path.join(root, 'docs'), { recursive: true });
+  write(root, 'README.md', 'ordinary documentation');
+  assert.equal(gate.stopGate(root).reason, 'only documentation changed');
+  assert.equal(gate.shipGate(root).tier, 'low');
+});
+
+test('an explicit list of documentation files works, and a markdown file off the list is code', () => {
+  const root = checkedRepo({ docs: 'README.md, CHANGELOG.md, docs/**' });
+  git(root, 'tag', 'v1.0.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
+  write(root, 'README.md', 'x');
+  write(root, 'docs/guide.md', 'x');
+  assert.equal(gate.stopGate(root).reason, 'only documentation changed');
+  assert.equal(gate.shipGate(root).tier, 'low');
+  write(root, 'NOTES.md', 'not on the list');
+  assert.equal(gate.stopGate(root).block, true);
+  assert.equal(gate.shipGate(root).tier, 'normal');
+});
+
+// STATE.md text with `key:` given a second time (a duplicate frontmatter key, which parses to the last value).
+const duplicated = (text, key, value = '') => text.replace(/\nupdated: /, `\n${key}:${value ? ` ${value}` : ''}\nupdated: `);
+
+function malformedBaseline(committed, working) {
+  const root = checkedRepo();
+  write(root, '.godpowers/STATE.md', committed);
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'state');
+  git(root, 'tag', 'v1.0.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
+  write(root, '.godpowers/STATE.md', working);
+  return root;
+}
+
+test('a duplicate risk: key in the STATE.md at the baseline keeps the ship gate high and the stop gate strict', () => {
+  const root = malformedBaseline(duplicated(stateText({ verify: CHECK, risk: 'src/**' }), 'risk'), stateText({ verify: CHECK }));
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  const ship = gate.shipGate(root);
+  assert.equal(ship.tier, 'high');
+  assert.match(byName(ship).tier.detail, /STATE\.md at v1\.0\.0 has 1 error/);
+  assert.equal(byName(ship).harden.ok, false, 'a security record is required');
+  assert.equal(gate.stopGate(root).block, true);
+});
+
+test('a duplicate docs: key in the baseline STATE.md gives no documentation allowance', () => {
+  const root = malformedBaseline(duplicated(stateText({ verify: CHECK, docs: 'README.md' }), 'docs', 'README.md'), stateText({ verify: CHECK }));
+  write(root, 'README.md', 'x');
+  assert.equal(gate.stopGate(root).block, true);
+  assert.equal(gate.shipGate(root).tier, 'high');
+});
+
+test('a malformed working STATE.md gives no documentation allowance and a high tier', () => {
+  const root = malformedBaseline(stateText({ verify: CHECK }), duplicated(stateText({ verify: CHECK, docs: 'README.md' }), 'docs', 'README.md'));
+  write(root, 'README.md', 'x');
+  assert.equal(gate.stopGate(root).block, true);
+  const ship = gate.shipGate(root);
+  assert.equal(ship.tier, 'high');
+  assert.match(byName(ship).tier.detail, /the working STATE\.md has 1 error/);
+  assert.equal(byName(ship).state.ok, false);
 });
 
 // A verify record from 7.0 has no `cmd`, only the redacted command text, which does not name one command.
@@ -609,18 +707,6 @@ test('a verify record without the exact-command identity satisfies no gate, and 
   assert.equal(gate.stopGate(root).block, false);
   assert.equal(byName(gate.shipGate(root)).verify.ok, true);
   assert.equal(status.collect(root).evidence.check, 'pass');
-});
-
-test('the ship gate outside git does not count a verify record without the identity either', async () => {
-  const root = tempDir();
-  write(root, '.godpowers/STATE.md', stateText({ verify: CHECK }));
-  write(root, '.godpowers/DECISIONS.md', 'x');
-  write(root, '.godpowers/evidence.jsonl', '');
-  write(root, 'check.js', 'process.exit(0);\n');
-  evidence.append(root, { kind: 'verify', tree: null, command: CHECK, exit: 0, ok: true, timedOut: false, ms: 1, tail: '' });
-  assert.equal(byName(gate.shipGate(root)).verify.ok, false);
-  await evidence.verify(root, CHECK);
-  assert.equal(byName(gate.shipGate(root)).verify.ok, true);
 });
 
 // Delete the committed STATE.md blob, so the file is listed at the commit but cannot be read.

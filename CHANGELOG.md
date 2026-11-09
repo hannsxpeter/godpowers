@@ -18,10 +18,14 @@ and a ship gate that scales with the risk of the change.
 - `godpowers fast [files...]` runs the STATE.md `fast:` command on the given
   files, or on the files changed since HEAD plus untracked files. Every
   `{files}` becomes `"$@"` and the command runs as `/bin/sh -c <script>
-  godpowers-fast <file>...`, so file names are arguments and never shell source,
-  even inside quotes or backticks. Names that start with `-` get a `./` prefix,
-  and names with control characters or that resolve outside the project
-  through a symlink are skipped. A command with `{files}` is not supported on
+  godpowers-fast <file>...`, so file names are arguments and never shell
+  source. `{files}` is supported only as a word of its own outside quotes,
+  backticks, and `$(...)` (a POSIX quote scanner decides); `"{files}"`,
+  `'{files}'`, `x{files}`, and the like exit 2 with a message naming the
+  supported form, and the hook fails open. A very long file list can exceed the
+  operating system's argument limit (`E2BIG`); pass explicit files then. Names
+  that start with `-` get a `./` prefix, and names with control characters or
+  that resolve outside the project through a symlink are skipped. A command with `{files}` is not supported on
   Windows and exits 2 ("declare a command without it"; the hook fails open).
   The hook runs nothing when its payload names a rejected path. It prints
   `Running: <script>` and the file list on stderr and never writes the ledger.
@@ -46,18 +50,28 @@ and a ship gate that scales with the risk of the change.
   line marked `godpowers: allow-test-change` is a deliberate change.
 - `godpowers risk` classifies the change since the base as low, normal, or high
   from its paths. STATE.md `risk:` adds high-risk globs.
-- STATE.md `docs:` (globs, or `none`) defines documentation for the stop
-  gate's allowance (a session that changed only documentation may stop without
-  a check) and the low risk tier. Agent instruction files and high-risk paths
-  are never documentation. A `docs:` or `risk:` glob that is wildcard-only,
-  longer than 512 characters, or over the alternatives cap is a `lint` error:
-  an unusable `docs:` glob is ignored, and an unusable `risk:` glob keeps the
-  risk tier high (`unusable risk pattern: <glob>`).
+- STATE.md `docs:` (globs, or `none`) narrows what counts as documentation for
+  the stop gate's allowance (a session that changed only documentation may stop
+  without a check) and the low risk tier. It can never widen the built-in rule:
+  a path is documentation only if the built-in rule says so, it is not an agent
+  instruction file or a high-risk path, and a listed glob matches. A `docs:` or
+  `risk:` glob that is wildcard-only, longer than 512 characters, or over the
+  alternatives cap is a `lint` error, and a STATE.md with errors (also a
+  duplicate key), at the base or in the working tree, gives no documentation
+  allowance and a high tier. An unusable `risk:` glob keeps the risk tier high
+  (`unusable risk pattern: <glob>`).
 - The ship gate warns when `docs:` or `risk:` differs from the base commit's.
 - Prose notes flag plan slices that have no `(behavior)` or `(refactor)` kind.
 
 ### Changed
 
+- **Behavior change:** `gate ship` fails outside a git work tree with
+  `not a git repository: evidence cannot be bound to the code`. Before, it
+  passed on the latest records with a warning. The stop gate still fails open
+  there.
+- `verify` reuses a record only if the gates would accept it too: a locally
+  signed record without the exact-command `cmd` identity (from an earlier build
+  of this branch) is no longer reused.
 - Every record still matches the exact code, as in 7.0: a documentation edit
   voids a review, so record it again after the last change.
 - The ship gate scales with risk: it no longer requires a security record for
