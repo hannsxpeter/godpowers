@@ -30,7 +30,8 @@ const required = [
 const forbidden = /^(test|scripts|docs|\.godpowers|\.github|\.claude-plugin|hooks|coverage)\//;
 const missing = required.filter(file => !files.includes(file));
 const extra = files.filter(file => forbidden.test(file));
-const maxBytes = 256 * 1024;
+// 7.2.0 added the verdict, drift, and Codex metadata files; keep the cap close above the real size so growth stays a choice.
+const maxBytes = 288 * 1024;
 const problems = [
   ...missing.map(file => `missing: ${file}`),
   ...extra.map(file => `should not ship: ${file}`),
