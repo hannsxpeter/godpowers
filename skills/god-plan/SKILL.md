@@ -1,6 +1,6 @@
 ---
 name: god-plan
-description: Write or refresh .godpowers/PLAN.md with the goal, requirements that each have a "Done when" check, non-goals, design, and thin vertical slices. Use for /god-plan, "plan this", or before building a feature or product.
+description: Use for /god-plan, "plan this", or before building a feature or product. Writes PLAN.md.
 argument-hint: "[goal or change]"
 ---
 

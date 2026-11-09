@@ -100,7 +100,7 @@ test('Codex install uses ~/.agents/skills, TOML agents, and hooks.json', () => {
   const toml = read(base, '.codex/agents/god-reviewer.toml');
   const field = key => JSON.parse(new RegExp(`^${key} = (".*")$`, 'm').exec(toml)[1]);
   assert.equal(field('name'), 'god-reviewer');
-  assert.match(field('description'), /Independent reviewer/);
+  assert.match(field('description'), /independent fresh-context review/);
   assert.match(field('developer_instructions'), /You review a change you did not write/);
   assert.ok(read(base, '.codex/agents/god-executor.toml').includes('.codex/godpowers/bin/godpowers.js'));
   assert.ok(read(base, '.agents/skills/god/SKILL.md').includes('.codex/godpowers/bin/godpowers.js'));

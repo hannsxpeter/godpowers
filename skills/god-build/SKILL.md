@@ -1,6 +1,6 @@
 ---
 name: god-build
-description: Implement the next PLAN.md slices, or the requirements a request lists, test-first and record the check once for the exact code. Use for /god-build, "build it", "implement the plan", or continuing work in progress.
+description: Use for /god-build, "build it", "implement the plan", or continuing work in progress. Builds test-first.
 argument-hint: "[slice or change]"
 ---
 

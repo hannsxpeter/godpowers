@@ -1,0 +1,4 @@
+interface:
+  display_name: "God Review"
+  short_description: "Independent review of the current change"
+  default_prompt: "Use $god-review to review the current change against its requirements."

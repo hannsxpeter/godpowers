@@ -1,0 +1,4 @@
+interface:
+  display_name: "God Harden"
+  short_description: "Security pass on the current code"
+  default_prompt: "Use $god-harden to run a security pass on this code."

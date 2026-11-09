@@ -24,6 +24,7 @@ const required = [
   'lib/install.js',
   'skills/godpowers/SKILL.md',
   ...['god', 'god-init', 'god-plan', 'god-build', 'god-review', 'god-harden', 'god-ship', 'god-status'].map(name => `skills/${name}/SKILL.md`),
+  ...['godpowers', 'god', 'god-init', 'god-plan', 'god-build', 'god-review', 'god-harden', 'god-ship', 'god-status'].map(name => `skills/${name}/agents/openai.yaml`),
   ...['god-planner', 'god-executor', 'god-reviewer', 'god-security-auditor'].map(name => `agents/${name}.md`)
 ];
 const forbidden = /^(test|scripts|docs|\.godpowers|\.github|\.claude-plugin|hooks|coverage)\//;

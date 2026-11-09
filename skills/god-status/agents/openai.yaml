@@ -1,0 +1,4 @@
+interface:
+  display_name: "God Status"
+  short_description: "Show project state, evidence, and risks"
+  default_prompt: "Use $god-status to show where the project stands."

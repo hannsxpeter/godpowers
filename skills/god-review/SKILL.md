@@ -1,6 +1,6 @@
 ---
 name: god-review
-description: Independent fresh-context review of the current changes against the plan or the listed requirements for correctness, tests, blast radius, safety, and fit, then fix and record the outcome. Use for /god-review, "review this", or before shipping.
+description: Use for /god-review, "review this", or before shipping. Independent fresh-context review.
 argument-hint: "[base ref]"
 ---
 
@@ -12,8 +12,8 @@ argument-hint: "[base ref]"
    - Tests: does each requirement have a test, including the cases that must not trigger it? A test that would still pass with the behavior broken is a finding; name the missing case.
    - Blast radius: what depends on the changed code? Name the one fact that must hold for the change to be safe, and how it was proven.
    - Safety and fit: input validation, auth, secrets, destructive operations, data loss; existing patterns, no scope creep.
-   - Output: findings as `severity: what, where, why`, then pass or fail.
-3. Verify each finding before acting on it. Fix it, or dismiss it with a one-line reason. Do not fix every finding by default. Critical and high findings you leave open go under Risks in STATE.md.
+   - Output: findings as `severity: what, where, why`, then pass or fail. Severity is relative to the goal: high means the intended case is wrong or callers will hit a real bug; another code path, a rare case, a small cost, or extra compatibility is low, whatever its label.
+3. Verify each finding before acting on it. Fix it, or dismiss it with a one-line reason. Do not fix every finding by default. If `reviews` warns the change grew, cut what review added beyond the goal first. Critical and high findings you leave open go under Risks in STATE.md.
 4. If you changed code, record the check once after the fixes: `npx -y godpowers@7 verify "<verify command>"`. After a large fix, review the new diff again. When `reviews` reports three failed rounds, stop and rethink the approach.
-5. Record the outcome on the final code: `npx -y godpowers@7 record review --pass --summary "<one line>"`, or `--fail` with the reason. Add `--dismiss "<finding>: <reason>"` for each dismissal.
+5. Record the outcome on the final code: `npx -y godpowers@7 record review --pass --reviewer "<model the reviewer reported>" --summary "<one line>"` (omit `--reviewer` if unknown), or `--fail` with the reason. Add `--dismiss "<finding>: <reason>"` for each dismissal.
 6. When the review passes, set `stage: harden` in STATE.md if a security pass is due (the change touches a trust boundary, or the user asked to ship), otherwise `stage: done`.

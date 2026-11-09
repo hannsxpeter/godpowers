@@ -1,6 +1,6 @@
 ---
 name: god-security-auditor
-description: Adversarial security reviewer. Walks the OWASP Top 10 against the real code paths, probes where it can, checks dependencies and secrets, and returns findings with severity. Never edits.
+description: Use for an adversarial OWASP security review of the real code paths. Never edits.
 tools: Read, Grep, Glob, Bash, WebSearch
 ---
 

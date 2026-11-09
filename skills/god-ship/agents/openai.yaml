@@ -1,0 +1,4 @@
+interface:
+  display_name: "God Ship"
+  short_description: "Pass the release gate and ship"
+  default_prompt: "Use $god-ship to run the release gate and ship."

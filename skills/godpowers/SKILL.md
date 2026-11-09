@@ -1,6 +1,6 @@
 ---
 name: godpowers
-description: Shared contract for Godpowers projects (repos with a .godpowers/ folder): where state lives, how completion is proven with recorded checks, and which gates code enforces. Use when the user mentions godpowers or the repo has .godpowers/.
+description: Use when the user mentions godpowers or the repo has .godpowers/. Shared contract for state, evidence, and gates.
 ---
 
 # Godpowers
@@ -35,6 +35,7 @@ Update STATE.md at milestones (stage change, slice done, new risk), not after ev
 - Run `npx -y godpowers@7 fast` while you work when STATE.md declares `fast`. It is cheap and never recorded.
 - A passing record goes stale when code changes, so record it after your last change. `verify` reuses a passing record of the same command on unchanged code; `--force` runs it again.
 - If no automated check can cover a change, record why with `npx -y godpowers@7 verify --waive "<reason>"` and say the change is unverified. Never waive a failing check.
+- Record reviews with `--reviewer "<model>"` when the reviewer reported its model. `npx -y godpowers@7 verdict` prints the ledger summary to paste unedited into a PR or release notes.
 - Report failures as failures, with the output.
 
 ## Risks
