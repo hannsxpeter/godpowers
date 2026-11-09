@@ -258,7 +258,8 @@ are arguments and never part of the shell script. `{files}` must be a word of
 its own outside quotes, backticks, and `$(...)` (`eslint --format "stylish"
 {files} --fix` is fine). Inside quotes the shell would split or glob the
 names, or pass a literal, so `"{files}"`, `'{files}'`, `` `x {files}` ``,
-`x{files}`, and `{files}x` exit 2 with a message naming the supported form
+`x{files}`, `{files}x`, `{files}` next to a non-ASCII space, `{files}` after
+a `#` comment, and any command with `${` exit 2 with a message naming the supported form
 (the hook fails open). A very long list of changed files can exceed the
 operating system's argument limit (`E2BIG`); the command then fails with exit
 2, and passing explicit files is the way around it. Names that start with

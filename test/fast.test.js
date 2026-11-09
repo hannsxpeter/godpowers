@@ -289,6 +289,33 @@ test('{files} inside quotes or backticks, or attached to other text, is refused 
   }
 });
 
+test('{files} next to a non-POSIX space, in a comment, or near a parameter expansion is refused with exit 2 and nothing runs', async () => {
+  const refused = ['node args.js {files}\u00a0suffix', 'node args.js\u00a0{files}', 'node args.js {files}\u2003suffix', 'node args.js \u2003{files}',
+    'node args.js # {files}', 'node args.js ${UNSET:+ {files} }', 'node args.js {files} ${X}', 'node args.js ok;# {files}'];
+  for (const command of refused) {
+    const root = fastRepo(`touch RAN; ${command}`);
+    write(root, 'a b.js', 'x');
+    const result = await run(['fast'], { cwd: root });
+    assert.equal(result.code, 2, command);
+    assert.match(result.err, NOT_STANDALONE, command);
+    assert.equal(fs.existsSync(path.join(root, 'RAN')), false, `nothing ran: ${command}`);
+    const explicit = await run(['fast', 'a b.js'], { cwd: root });
+    assert.equal(explicit.code, 2, `explicit files: ${command}`);
+    const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: 'a b.js' }), env: { FAST_EXIT: '4' } });
+    assert.equal(hook.code, 0, `the hook fails open: ${command}`);
+    assert.match(hook.err, /^godpowers fast --hook: skipped \(`\{files\}` must be a separate word/, command);
+    assert.equal(fs.existsSync(path.join(root, 'RAN')), false, `hook: ${command}`);
+  }
+});
+
+test('a hash inside a word or quotes, or after {files}, does not make {files} a comment', async () => {
+  for (const command of ['node args.js a#b {files}', 'node args.js "# x" {files}', 'node args.js {files} # note', 'node args.js \\# {files}']) {
+    const root = fastRepo(command);
+    write(root, 'x.js', 'x');
+    assert.equal((await fastJson(root)).code, 0, command);
+  }
+});
+
 test('a command without {files} is not checked for placement', async () => {
   const root = fastRepo('echo "{ files }" `echo hi`');
   const result = await fastJson(root);

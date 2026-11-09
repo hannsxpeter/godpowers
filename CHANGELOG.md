@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [7.1.0] - 2026-11-08
+## [7.1.0] - 2026-11-09
 
 Faster and more selective verification: cheap local feedback, no repeated
 checks on unchanged code, bounded review loops, a check for weakened tests,

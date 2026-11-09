@@ -17,8 +17,8 @@ for the command map and upgrade steps.
 - **`godpowers fast`** runs a file-local check declared as `fast:` in STATE.md
   on the changed files, for quick feedback. It is never recorded. `{files}`
   must be a word of its own outside quotes and becomes `"$@"`, so file names
-  are arguments and never shell source (not supported on Windows). `fast --hook` is a handler for a PostToolUse hook you
-  add yourself.
+  are arguments and never shell source (not supported on Windows). `fast --hook`
+  is a handler for a PostToolUse hook you add yourself.
 - **`verify` reuses a passing record** of the same command on unchanged code.
   `--force` runs it again.
 - **Bounded reviews.** Review records store the commit they saw and the findings
@@ -31,8 +31,9 @@ for the command map and upgrade steps.
   check, normal ones also a review, and high-risk ones also a security record.
   With no tag to compare against, the tier is high.
 - **`docs:` in STATE.md** narrows what counts as documentation for the stop
-  gate and the low risk tier; it can never widen the built-in rule. Every record still matches the exact code, so a
-  documentation edit voids a review, as in 7.0. Unusable `docs:` or `risk:`
+  gate and the low risk tier; it can never widen the built-in rule. Every
+  record still matches the exact code, so a documentation edit voids a review,
+  as in 7.0. Unusable `docs:` or `risk:`
   globs are `lint` errors, and a STATE.md with errors or an unusable `risk:`
   glob keeps the tier high.
 - **`godpowers stats`** reports check runs, recovery time, and review rounds.
@@ -43,7 +44,20 @@ for the command map and upgrade steps.
 
 Godpowers does not register a hook that runs the `fast` command, because an
 installed hook would run a command any cloned repository declares. The README
-shows a hook you can add to your own settings.
+shows a hook you can add to a trusted repository's own
+`.claude/settings.local.json`.
+
+## Evidence hardening
+
+- `verify` reuses only records signed with a key kept on this machine
+  (`~/.godpowers/local.key`), over the exact command, so a ledger committed to a
+  repository cannot stand in for a check that never ran here.
+- Every gate matches a check to the declared command by an exact identity, not
+  by its redacted text.
+- Settings a repository controls (`docs:`, `risk:`) can only make a gate
+  stricter, and a STATE.md with errors keeps the strictest requirement.
+- File names with control characters are fingerprinted and make the tier high.
+- Redaction covers Basic credentials, Google API keys, and quoted values.
 
 ## Behavior change
 
