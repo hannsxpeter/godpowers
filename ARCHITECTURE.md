@@ -52,7 +52,8 @@ test/                 node:test suites
 | `templates.js` | Starting content for STATE.md, PLAN.md, DECISIONS.md |
 | `state.js` | STATE.md sections, risk lines, validation, field updates |
 | `match.js` | Glob matching (case-insensitive) and comma-separated list parsing for STATE.md settings |
-| `docs.js` | What counts as documentation: the built-in rule or the `docs:` setting |
+| `policy.js` | Shared constants and checks: the high-risk patterns, control characters in paths and printed text, wildcard-only globs |
+| `docs.js` | What counts as documentation: the built-in rule or the `docs:` setting, and a digest of the rule in force |
 | `git.js` | Read-only snapshots and fingerprints (whole tree and code only), changed paths, release base, diffs, lines removed since HEAD |
 | `evidence.js` | The evidence ledger: run and record checks, reuse, waivers, attestations, chain |
 | `fast.js` | The `fast` check: expands `{files}` with shell quoting and runs it without writing the ledger; `fast --hook` reads a PostToolUse payload, checks the edited file, and exits 2 with the output on failure |
@@ -97,7 +98,17 @@ mismatches and invalid lines as errors, and chain breaks (from merges) as
 warnings.
 
 Records also carry `code`, a second fingerprint over the files that are not
-documentation (see `docs.js`), and attestations carry `head` (the HEAD commit,
+documentation (see `docs.js`) mixed with a digest of the documentation rule in
+force (the default rule's version, `none`, or the sorted `docs:` globs, plus the
+`risk:` globs), so changing the rule voids carry-forward; it is null when no
+file is code. Paths that match a high-risk pattern or have a control
+character in their name are never documentation, and neither are agent
+instruction files under the default rule (`AGENTS.md`, `CLAUDE.md`,
+`SKILL.md`, and files under `.claude`, `.agents`, `agents`, `skills`,
+`prompts`, and similar). A `docs:` or `risk:` glob made only of wildcards is a
+validation error and is ignored. File names with a newline or other control
+character are fingerprinted like any other (hashed one at a time, since
+`--stdin-paths` reads one name per line). Attestations carry `head` (the HEAD commit,
 or null outside git). A review record may also carry `dismissed`: up to 20
 findings of 300 characters each, redacted, that the author chose not to fix.
 The fingerprint version stays 1, so 7.0 records, which have no `code`, keep
@@ -110,25 +121,41 @@ Verify and waive records match only when `tree` matches, because a check can
 read documentation. Review, harden, and ship records match when `tree` or
 `code` matches; `viaCode` reports which of them matched only by `code`.
 
-`verify` reuses work: `findReusable` returns the latest `verify` record of the
-same redacted command on the current tree that passed, has the current
-fingerprint version, and has neither `changedDuringRun` nor `timedOut`. The CLI
-prints it and exits 0 without running the command or appending. `--force`
-skips the lookup.
+`verify` reuses work, but only a record this machine can vouch for. Every new
+`verify` record carries `local`, an HMAC-SHA256 over its fields (all but
+`digest` and `local`) and the exact, unredacted command, keyed by 32 random
+bytes at `$GODPOWERS_HOME/local.key` (default `~/.godpowers`; directory 0700,
+file 0600, created exclusively). The key is not in the repository, the ledger,
+or any output. `findReusable` returns the latest `verify` record of the same
+redacted command on the current tree only when `readAll` reports no integrity
+error anywhere in the ledger, the record passed, has the current fingerprint
+version, has neither `changedDuringRun` nor `timedOut`, and its `local`
+verifies with this machine's key over the exact current command. That closes
+three gaps: two commands whose secrets redact alike, a forged but validly
+chained ledger committed to a repository, and a damaged ledger. If the key
+cannot be created or read (no home, read-only home, a file others can read),
+reuse is off and the check runs; `verify` never fails because of the key.
+The CLI prints the reuse and exits 0 without running the command or appending,
+and says that inputs outside git are not covered. `--force` skips the lookup.
 
 ## Gates and risk
 
-The ship gate takes a base: the `--base` ref, otherwise the latest `v*` tag
-reachable from HEAD, otherwise none. `risk.classify` lists the paths that differ
-from the base (untracked files included). A path that matches a built-in
-pattern in `HIGH_RISK_PATTERNS` or a `risk:` glob makes the change high; only
+The ship gate takes a base: the `--base` ref, otherwise the latest `v<digit>`
+tag reachable from HEAD that does not point at HEAD itself (so a just-tagged
+release is compared with the previous one, and a tag such as `vnext` is not a
+release), otherwise none. `risk.classify` lists the paths that differ
+from the base (untracked files included); when they cannot be listed (a
+repository without a work tree, or a failing git call) the tier is high. A path
+with a control character in its name, one that matches a built-in
+pattern in `HIGH_RISK_PATTERNS` (in `policy.js`) or a `risk:` glob makes the change high; only
 documentation and test files, or no change, make it low; anything else is
 normal. With no base the tier is high, so the gate relaxes only when the CLI can
 see what changed. The gate requires a passing check for every tier, a review at
 normal and high, and a security record at high, and always blocks on an open
 critical risk. Records a tier does not need show as ok with the reason. When a
 base exists it also runs `testguard` and shows its findings as a warning that
-does not block.
+does not block, and warns when the `docs:` or `risk:` setting in STATE.md
+differs from the base commit's (a missing file there means no setting).
 
 Review rounds are bounded: `reviews` counts failed review records since the
 last passing one and says to stop and rethink the approach at three. A

@@ -268,3 +268,91 @@ test('workingChanges is relative to a project in a subdirectory', () => {
   write(root, 'other/b.js', 'edited');
   assert.deepEqual(gitTools.workingChanges(path.join(root, 'pkg')), ['a.js', 'c.js']);
 });
+
+test('a file name with a newline or other control character is part of every view of the tree', () => {
+  const root = gitRepo();
+  const clean = gitTools.treeFingerprint(root);
+  const cleanCode = gitTools.fingerprints(root, () => false).code;
+  for (const name of ['src/auth/token\n.js', 'src/bell\u0007.js', 'src/tab\t.js']) {
+    write(root, name, 'one');
+    const added = gitTools.treeFingerprint(root);
+    assert.notEqual(added, clean, JSON.stringify(name));
+    assert.notEqual(gitTools.fingerprints(root, () => false).code, cleanCode);
+    write(root, name, 'two');
+    assert.notEqual(gitTools.treeFingerprint(root), added, 'an edit to it changes the fingerprint');
+    assert.ok(gitTools.workingChanges(root).includes(name), 'workingChanges lists it');
+    assert.ok(gitTools.changedSince(root, 'HEAD').includes(name), 'changedSince lists it');
+    assert.ok(gitTools.snapshot(root).files[name], 'the snapshot has its hash');
+    fs.rmSync(path.join(root, name));
+  }
+  assert.equal(gitTools.treeFingerprint(root), clean);
+  write(root, 'src/auth/token\n.js', 'tracked');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'odd name');
+  const committed = gitTools.treeFingerprint(root);
+  assert.equal(gitTools.headTree(root), committed);
+  write(root, 'src/auth/token\n.js', 'edited after commit');
+  assert.notEqual(gitTools.treeFingerprint(root), committed, 'a tracked file with a newline in its name is rehashed');
+  assert.deepEqual(gitTools.changedSince(root, 'HEAD'), ['src/auth/token\n.js']);
+  assert.equal(gitTools.hashPath(root, 'src/auth/token\n.js'), gitTools.git(root, ['hash-object', '--', 'src/auth/token\n.js']).stdout.trim());
+  assert.deepEqual(gitTools.diffSince(root, 'HEAD').files.map(f => f.path), ['src/auth/token\n.js']);
+});
+
+test('changes cannot be listed in a repository without a work tree, and the error says so', () => {
+  const root = gitRepo();
+  const bare = path.join(tempDir(), 'bare.git');
+  git(root, 'clone', '-q', '--bare', root, bare);
+  assert.equal(git(bare, 'rev-parse', 'HEAD'), git(root, 'rev-parse', 'HEAD'), 'the base itself resolves in a bare repository');
+  assert.equal(gitTools.resolveBase(bare, 'HEAD'), git(root, 'rev-parse', 'HEAD'));
+  assert.throws(() => gitTools.changedSince(bare, 'HEAD'), /no work tree/);
+  assert.throws(() => gitTools.diffSince(bare, 'HEAD'), /no work tree/);
+  assert.throws(() => gitTools.changedSince(path.join(bare, 'objects'), 'HEAD'), /no work tree/, 'inside the git directory too');
+  assert.deepEqual(gitTools.changedSince(root, 'HEAD'), []);
+});
+
+test('releaseBase takes only v<digit> tags and skips tags on HEAD', () => {
+  const root = gitRepo();
+  git(root, 'tag', 'v1.0.0');
+  write(root, 'one.txt', '1');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'one');
+  git(root, 'tag', 'vnext');
+  git(root, 'tag', 'v-draft');
+  git(root, 'tag', '-a', 'vfoo', '-m', 'not a release');
+  assert.equal(gitTools.releaseBase(root).ref, 'v1.0.0', 'tags that are not v<digit> do not count');
+  git(root, 'tag', 'v1.1.0');
+  assert.equal(gitTools.releaseBase(root).ref, 'v1.0.0', 'the tag on HEAD is skipped: the just-tagged release compares with the previous one');
+  write(root, 'two.txt', '2');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'two');
+  assert.equal(gitTools.releaseBase(root).ref, 'v1.1.0');
+  git(root, 'tag', '-a', 'v2.0.0', '-m', 'annotated');
+  git(root, 'tag', 'v2.0.1');
+  assert.equal(gitTools.releaseBase(root).ref, 'v1.1.0', 'annotated and lightweight tags on HEAD are both skipped');
+  const only = gitRepo();
+  git(only, 'tag', 'v1.0.0');
+  assert.equal(gitTools.releaseBase(only), null, 'a repository whose only tag is on HEAD has no base');
+});
+
+test('codeFingerprint mixes in the documentation rule and is null without code files', () => {
+  const files = { 'a.md': '1', 'b.js': '2' };
+  const plain = rel => rel.endsWith('.md');
+  const ruleA = Object.assign(rel => rel.endsWith('.md'), { policy: 'rule-a' });
+  const ruleB = Object.assign(rel => rel.endsWith('.md'), { policy: 'rule-b' });
+  assert.equal(gitTools.codeFingerprint(files, plain), gitTools.fingerprintOf({ 'b.js': '2' }), 'a predicate without a policy changes nothing');
+  assert.notEqual(gitTools.codeFingerprint(files, ruleA), gitTools.codeFingerprint(files, plain));
+  assert.notEqual(gitTools.codeFingerprint(files, ruleA), gitTools.codeFingerprint(files, ruleB));
+  assert.equal(gitTools.codeFingerprint(files, ruleA), gitTools.codeFingerprint({ ...files, 'c.md': '3' }, ruleA));
+  assert.equal(gitTools.codeFingerprint({ 'a.md': '1' }, ruleA), null, 'only documentation: nothing to carry forward');
+  assert.equal(gitTools.codeFingerprint({}, plain), null);
+});
+
+test('showAt reads a file as it was at a commit, relative to the project, or null', () => {
+  const root = gitRepo();
+  const sha = git(root, 'rev-parse', 'HEAD');
+  assert.equal(gitTools.showAt(root, sha, 'src/app.js'), 'module.exports = 1;\n');
+  assert.equal(gitTools.showAt(root, sha, 'missing.txt'), null);
+  assert.equal(gitTools.showAt(root, 'not-a-sha', 'src/app.js'), null);
+  assert.equal(gitTools.showAt(tempDir(), sha, 'src/app.js'), null);
+  assert.equal(gitTools.showAt(path.join(root, 'src'), sha, 'app.js'), 'module.exports = 1;\n', 'a project in a subdirectory');
+});

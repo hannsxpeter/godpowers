@@ -99,8 +99,8 @@ Everything lives in `.godpowers/`, which you commit with your code:
 
 - `STATE.md` is the one state file. Its frontmatter holds `project`, `stage`
   (plan, build, review, harden, ship, done), and `verify` (your check command).
-  Optional keys: `fast` (a file-local check; `{files}` expands to the changed
-  files, each quoted for the shell), `docs` (comma-separated globs that count
+  Optional keys: `fast` (a file-local check; a bare `{files}` expands to the
+  changed files, each quoted for the shell), `docs` (comma-separated globs that count
   as documentation, or `none`), and `risk` (comma-separated globs that make a
   change high risk). Its body holds Goal, Now, Next, and Risks. A risk is one checkbox line:
   `- [ ] critical: SQL injection in /search (src/api/search.ts:40)`.
@@ -149,11 +149,16 @@ Other commands are recorded but do not count.
 only documentation and test files changed (or nothing). High means a changed
 path matches a built-in pattern or a `risk:` glob from STATE.md. Everything
 else is normal. The built-in patterns (`HIGH_RISK_PATTERNS` in
-[lib/risk.js](lib/risk.js)) cover sign-in and authorization code, sessions,
+[lib/policy.js](lib/policy.js)) cover sign-in and authorization code, sessions,
 permissions, crypto, secrets and `.env` files, database migrations and SQL
 schemas, payments and billing, CI workflows, Docker and Compose files,
 Terraform, Kubernetes and Helm, and deploy and infra folders. Matching is
-case-insensitive.
+case-insensitive. A path with a control character in its name (a newline, for
+example) is high too, and so is a change that cannot be listed, such as in a
+repository without a work tree. The base is the latest tag of the form `v<digit>...`
+reachable from HEAD, leaving out tags on HEAD itself, so the gate for a
+just-tagged release compares with the previous release. The ship gate warns
+when `docs:` or `risk:` in STATE.md differs from the base commit's.
 
 ### Records that survive documentation edits
 
@@ -162,7 +167,12 @@ Review, harden, and ship records match when either fingerprint matches, so a
 README typo does not void a review. Check and waiver records still match only
 the whole tree, because a test suite can read documentation. `docs:` in
 STATE.md changes what counts as documentation; `docs: none` turns the
-exemption off, for the records and for the Stop hook.
+exemption off, for the records and for the Stop hook. Agent instruction files
+(`AGENTS.md`, `CLAUDE.md`, `SKILL.md`, anything under `.claude`, `agents`,
+`skills`, `prompts`, and similar) are never documentation by default, and
+neither is any path that matches a high-risk pattern or a `risk:` glob. A
+glob made only of wildcards (`**`, `*.*`) is an error and is ignored. Changing
+the rule voids carried-forward records.
 
 To switch the Stop and commit gates off, add `gate: off` to STATE.md's
 frontmatter, or set `GODPOWERS_GATE=off` for one session.
@@ -211,12 +221,23 @@ Stopping `verify` stops the check too.
 `verify` reuses work. When the latest record of the same command on the same
 code passed, it prints that it reused the record and exits 0 without running
 the command or writing the ledger. `--force` always runs it (use it when the
-environment may have changed). `--json` output then has `reused: true`.
+environment may have changed: installed dependencies and the environment are
+not covered). `--json` output then has `reused: true`. Only a record this
+machine signed is reused: each `verify` record carries `local`, an HMAC with a
+key in `~/.godpowers/local.key` (`$GODPOWERS_HOME/local.key`), so a ledger from
+a clone, or a record for another command whose secret redacts the same, never
+stands in for a run. A damaged ledger, or no readable key, turns reuse off.
 
 `fast` runs the `fast:` command from STATE.md on the files you give it, or on
 the files changed since HEAD plus untracked files. It never writes the ledger,
 so it is feedback, not evidence. With `{files}` in the command and nothing
-changed, it runs nothing.
+changed, it runs nothing. Write `{files}` bare: Godpowers quotes each name
+itself, and a `{files}` inside quotes is refused because the shell would expand
+a file name like `$(...)`. Names that start with `-` are passed as `./-name`,
+and names with control characters are skipped with a note. `fast` prints
+`Running: <command>` on stderr first, so you see what the repository declared.
+On Windows, names containing `%` or `"` are refused (native Windows is
+untested).
 
 `reviews` lists the review rounds since the last passing one, with the commit
 each saw and the findings dismissed. After three failed rounds it says to stop
@@ -229,8 +250,9 @@ and longest duration, the median time from a failing run to the next passing
 one, waivers, and review rounds.
 
 `tests` compares the working tree with the base (default: the latest `v*` tag;
-exit 2 when there is none and no `--base`) and flags deleted test files, fewer
-test declarations or assertions in a file, and added skip or focus markers. It
+exit 2 when there is none and no `--base`) and flags deleted test files, test
+files that turned binary, fewer test declarations or assertions in a file, and
+added skip or focus markers. It
 exits 1 with findings. Put `godpowers: allow-test-change` on a line to mark a
 deliberate change.
 

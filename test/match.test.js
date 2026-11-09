@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const { toRegExp, matches, parseList } = require('../lib/match');
+const { matches, parseList } = require('../lib/match');
 
 test('** spans path segments, including none', () => {
   const globs = ['**/x/**'];
@@ -59,7 +59,40 @@ test('regex metacharacters in names are literal', () => {
 test('matching is case-insensitive', () => {
   assert.equal(matches(['SRC/*.JS'], 'src/App.js'), true);
   assert.equal(matches(['readme.MD'], 'Docs/ReadMe.md'), true);
-  assert.equal(toRegExp('A').flags, 'i');
+  assert.equal(matches(['A'], 'dir/a'), true);
+  assert.equal(matches(['dir/A?C'], 'DIR/abc'), true);
+});
+
+test('a hostile glob finishes quickly instead of backtracking', () => {
+  const hostile = '*a*a*a*a*a*a*a*a*a*a*a*b';
+  const long = `${'a'.repeat(200)}`;
+  const started = Date.now();
+  assert.equal(matches([hostile], long), false);
+  assert.equal(matches([hostile], `dir/${long}`), false);
+  assert.equal(matches([`src/${hostile}/**/${hostile}.js`], `src/${long}/${long}/${long}`), false);
+  assert.equal(matches(['**/**/**/**/**/**/**/**/**/**/**/x'], `${'a/'.repeat(100)}y`), false);
+  assert.equal(matches([hostile], `${long}b`), true, 'the same pattern still matches when it should');
+  assert.ok(Date.now() - started < 500, `took ${Date.now() - started} ms`);
+});
+
+test('globs longer than 512 characters never match, and the cutoff is exact', () => {
+  const at = `${'a'.repeat(509)}.js`;
+  assert.equal(at.length, 512);
+  assert.equal(matches([at.replace(/^a/, '*')], at), true);
+  assert.equal(matches([`${at}x`], `${at}x`), false);
+  assert.equal(matches(['*'.repeat(600)], 'a.js'), false);
+});
+
+test('wildcards treat literal stars and question marks in names as ordinary characters', () => {
+  assert.equal(matches(['a*c'], 'a*c'), true);
+  assert.equal(matches(['a?c'], 'a?c'), true);
+  assert.equal(matches(['a*c'], 'abbbc'), true);
+  assert.equal(matches(['*b*'], 'abc'), true);
+  assert.equal(matches(['a*b*c'], 'acb'), false);
+  assert.equal(matches(['*'], 'x/y'), true, 'a glob without a slash matches the base name');
+  assert.equal(matches(['x/*'], 'x/y/z'), false);
+  assert.equal(matches(['a**b'], 'a/b'), false, '** inside a name behaves like *');
+  assert.equal(matches(['a**b'], 'axxb'), true);
 });
 
 test('no globs match nothing, and any glob may match', () => {

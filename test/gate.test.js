@@ -249,13 +249,14 @@ test('docPredicate follows the STATE.md docs setting', () => {
   assert.deepEqual(['site/a.js', 'x/y.ADOC', 'README.md'].map(globs), [true, true, false]);
 });
 
-// A checked repo tagged v1.0.0 at HEAD, so the ship gate has a base to measure from.
+// A checked repo with v1.0.0 one commit behind HEAD, so the ship gate has a base to measure from.
 function releasedRepo(overrides = {}) {
   const root = checkedRepo(overrides);
   write(root, 'test/app.test.js', 'test("a", () => { expect(1).toBe(1); });\n');
   git(root, 'add', '-A');
   git(root, 'commit', '-q', '-m', 'tests');
   git(root, 'tag', 'v1.0.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
   return root;
 }
 
@@ -379,4 +380,152 @@ test('--base chooses the base commit and a refused ref throws', async () => {
   assert.throws(() => gate.shipGate(root, { base: '--output=x' }), /cannot start with "-"/);
   assert.throws(() => gate.shipGate(root, { base: 'nope' }), /does not name a commit/);
   assert.equal(gate.shipGate(tempDir()).tier, null, 'a non-project has no tier');
+});
+
+test('a file name with a newline is a code change for the stop gate', () => {
+  const root = checkedRepo();
+  write(root, 'src/auth/token\n.js', 'x');
+  const result = gate.stopGate(root);
+  assert.equal(result.block, true);
+  assert.deepEqual(result.changed, ['src/auth/token\n.js']);
+  const docsLooking = checkedRepo();
+  write(docsLooking, 'README\n.md', 'x');
+  assert.equal(gate.stopGate(docsLooking).block, true, 'even one that looks like documentation');
+});
+
+test('agent instruction files and high-risk paths are never documentation', () => {
+  const { docPredicate, isDocPath, isInstructionPath } = require('../lib/docs');
+  const parse = overrides => require('../lib/state').parse(stateText(overrides));
+  const instructions = [
+    'AGENTS.md', 'sub/CLAUDE.md', 'GEMINI.md', 'skills/god/SKILL.md', 'x/SKILL.md', '.cursorrules', '.windsurfrules', '.github/copilot-instructions.md',
+    '.claude/commands/ship.md', '.codex/prompts/a.md', '.cursor/rules/a.md', '.agents/notes.md', '.gemini/x.md', '.windsurf/x.md',
+    'agents/reviewer.md', 'docs/skills/intro.md', 'prompts/system.md', 'Agents.MD', 'SKILLS/readme.md'
+  ];
+  for (const rel of instructions) {
+    assert.equal(isInstructionPath(rel), true, rel);
+    assert.equal(isDocPath(rel), false, rel);
+    assert.equal(docPredicate(null)(rel), false, rel);
+  }
+  for (const rel of ['README.md', 'docs/guide.md', 'docs/agent-notes.md', 'skills.md', 'CHANGELOG.md']) assert.equal(isDocPath(rel), true, rel);
+  const never = ['docs/security/model.md', 'docs/auth/flow.md', 'docs/auth.md', 'docs/migrations/001.md', 'notes/password-policy.md', '.env.md', 'docs/deploy/runbook.md', 'a\nb.md'];
+  for (const rel of never) {
+    assert.equal(isDocPath(rel), false, rel);
+    assert.equal(docPredicate(parse({ docs: '**/*.md' }))(rel), false, `${rel} under a docs glob`);
+  }
+  const custom = docPredicate(parse({ docs: '*.md, notes/**', risk: 'notes/private/**' }));
+  assert.equal(custom('notes/public/a.md'), true);
+  assert.equal(custom('notes/private/a.md'), false, 'a STATE.md risk glob also keeps a path out');
+  assert.equal(docPredicate(parse({ docs: 'none' }))('README.md'), false);
+});
+
+test('wildcard-only docs and risk globs are ignored at run time', () => {
+  const { docPredicate } = require('../lib/docs');
+  const risk = require('../lib/risk');
+  const parse = overrides => require('../lib/state').parse(stateText(overrides));
+  for (const glob of ['*', '**', '**/*', '*.*']) {
+    const everything = docPredicate(parse({ docs: glob }));
+    assert.equal(everything('src/app.js'), false, glob);
+    assert.equal(everything('README.md'), true, 'the built-in rule applies instead');
+    assert.deepEqual(risk.patternsFor(parse({ risk: glob })), risk.HIGH_RISK_PATTERNS, glob);
+  }
+  assert.equal(docPredicate(parse({ docs: 'site/**, **' }))('site/a.js'), true, 'the usable globs still apply');
+  assert.equal(docPredicate(parse({ docs: 'site/**, **' }))('src/app.js'), false);
+  const root = checkedRepo({ docs: '**' });
+  write(root, 'src/app.js', 'changed');
+  assert.equal(gate.stopGate(root).block, true);
+  const first = gitTools.fingerprints(root, docPredicate(parse({ docs: '**' }))).code;
+  write(root, 'src/app.js', 'changed again');
+  assert.notEqual(gitTools.fingerprints(root, docPredicate(parse({ docs: '**' }))).code, first, 'the code fingerprint is not constant');
+});
+
+test('changing the documentation rule voids a carried-forward review', () => {
+  const root = checkedRepo();
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  write(root, 'README.md', 'docs edit');
+  assert.equal(byName(gate.shipGate(root)).review.ok, true, 'a docs edit still carries the review forward');
+  setState(root, { docs: '*.md, extras/**' });
+  write(root, 'extras/new.js', 'code that the new rule calls documentation');
+  assert.equal(byName(gate.shipGate(root)).review.ok, false, 'a new rule does not let later code match through "code"');
+  setState(root, {});
+  fs.rmSync(path.join(root, 'extras/new.js'));
+  assert.equal(byName(gate.shipGate(root)).review.ok, true, 'restoring the rule and the code restores the match');
+  setState(root, { risk: 'extras/**' });
+  assert.equal(byName(gate.shipGate(root)).review.ok, false, 'a risk glob change is a policy change too');
+  setState(root, {});
+  const none = gitTools.fingerprints(root, require('../lib/docs').docPredicate(require('../lib/state').parse(stateText({ docs: 'none' }))));
+  assert.notEqual(none.code, gitTools.fingerprints(root, require('../lib/docs').docPredicate(null)).code);
+});
+
+test('a high-risk path in a docs glob still voids the review and stops the gate', () => {
+  const root = checkedRepo({ docs: '*.md, src/auth/**' });
+  write(root, 'src/auth/token.js', 'v1');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'auth');
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  write(root, 'src/auth/token.js', 'v2 with a hole');
+  assert.equal(byName(gate.shipGate(root)).review.ok, false);
+  assert.equal(gate.stopGate(root).block, true);
+});
+
+test('there is no code fingerprint when nothing is code', () => {
+  const root = tempDir();
+  gitTools.git(root, ['init', '-q']);
+  write(root, 'README.md', 'only docs');
+  const { tree, code } = gitTools.fingerprints(root, require('../lib/docs').docPredicate(null));
+  assert.match(tree, /^[0-9a-f]{64}$/);
+  assert.equal(code, null);
+  write(root, '.godpowers/STATE.md', stateText());
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  write(root, 'NOTES.md', 'other docs');
+  const records = evidence.readAll(root).records;
+  const now = gitTools.fingerprints(root, require('../lib/docs').docPredicate(null));
+  assert.equal(evidence.statusFor(records, now.tree, { code: now.code }).review, 'none', 'a null code never carries a record forward');
+});
+
+test('the ship gate warns when the docs or risk setting differs from the base', () => {
+  const root = releasedRepo();
+  const settings = r => byName(gate.shipGate(r)).settings;
+  assert.equal(settings(root), undefined, 'no change, no warning');
+  setState(root, { docs: 'site/**' });
+  const warning = settings(root);
+  assert.equal(warning.severity, 'warning');
+  assert.equal(warning.ok, false);
+  assert.match(warning.detail, /docs: "" at v1\.0\.0 is now "site\/\*\*"/);
+  assert.doesNotMatch(warning.detail, /risk:/);
+  setState(root, { docs: 'site/**', risk: 'db/**' });
+  assert.match(settings(root).detail, /docs: .*; risk: "" at v1\.0\.0 is now "db\/\*\*"/);
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'settings');
+  assert.match(settings(root).detail, /docs:/, 'committed settings still differ from the base');
+  setState(root, {});
+  assert.equal(settings(root), undefined, 'back to the base setting');
+  const same = releasedRepo({ docs: 'b/**,  a/**' });
+  setState(same, { docs: 'a/**, b/**' });
+  assert.equal(settings(same), undefined, 'spacing and order do not matter');
+});
+
+test('a STATE.md that did not exist at the base counts as no settings', () => {
+  const root = gitRepo();
+  git(root, 'tag', 'v1.0.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after');
+  write(root, '.godpowers/STATE.md', stateText({ docs: 'site/**' }));
+  write(root, '.godpowers/DECISIONS.md', 'x');
+  write(root, '.godpowers/evidence.jsonl', '');
+  const result = gate.shipGate(root);
+  assert.match(byName(result).settings.detail, /docs: "" at v1\.0\.0 is now "site\/\*\*"/);
+  write(root, '.godpowers/STATE.md', stateText());
+  assert.equal(byName(gate.shipGate(root)).settings, undefined);
+});
+
+test('the ship gate treats a repository without a work tree as high risk and does not crash', () => {
+  const source = releasedRepo();
+  const bare = path.join(tempDir(), 'bare.git');
+  git(source, 'clone', '-q', '--bare', source, bare);
+  write(bare, '.godpowers/STATE.md', stateText({ verify: CHECK }));
+  const result = gate.shipGate(bare, { base: 'HEAD' });
+  assert.equal(result.tier, 'high');
+  assert.equal(result.ok, false);
+  assert.match(byName(result).tier.detail, /could not list the changes since HEAD/);
+  assert.match(byName(result).tests.detail, /test guard could not run/);
+  assert.equal(byName(result).tests.severity, 'warning');
 });

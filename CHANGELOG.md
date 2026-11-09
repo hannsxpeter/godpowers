@@ -16,26 +16,38 @@ and a ship gate that scales with the risk of the change.
 ### Added
 
 - `godpowers fast [files...]` runs the STATE.md `fast:` command on the given
-  files, or on the files changed since HEAD plus untracked files. `{files}`
-  expands to them, quoted for the shell. It never writes the ledger.
+  files, or on the files changed since HEAD plus untracked files. A bare
+  `{files}` expands to them, quoted for the shell (inside quotes it is
+  refused). Names that start with `-` get a `./` prefix, names with control
+  characters are skipped, and on Windows names with `%` or `"` are refused. It
+  prints `Running: <command>` on stderr and never writes the ledger.
   `fast --hook` is a handler for a PostToolUse hook that users add to their own
   settings: it reads the hook JSON from stdin, checks the edited file, stays
   silent unless the check fails, and then exits 2 with the output on stderr.
 - `verify` reuses the latest passing record of the same command on unchanged
-  code instead of running it again. `--force` runs it anyway.
+  code instead of running it again. `--force` runs it anyway. Only records this
+  machine signed count: every `verify` record carries `local`, an HMAC over its
+  fields and the exact command, keyed by a random key at
+  `$GODPOWERS_HOME/local.key` (default `~/.godpowers/local.key`). A forged or
+  copied ledger, a command whose secret redacts like another's, a ledger with
+  an integrity error, or an unreadable key all mean the check runs.
 - Review records store the HEAD commit and the findings the author chose not to
   fix (`record review --dismiss "<finding>: <reason>"`). `godpowers reviews`
   lists the rounds since the last pass, and after three failed rounds `reviews`,
   `status`, and `record review --fail` say to stop and rethink.
 - `godpowers stats` reports check runs, median recovery time from a failing to
   a passing run, waivers, and review rounds from the ledger.
-- `godpowers tests` flags deleted test files, fewer tests or assertions, and
-  added skip or focus markers since the base (default: the latest `v*` tag). A
+- `godpowers tests` flags deleted test files, test files that turned binary,
+  fewer tests or assertions, and added skip or focus markers since the base (default: the latest `v*` tag). A
   line marked `godpowers: allow-test-change` is a deliberate change.
 - `godpowers risk` classifies the change since the base as low, normal, or high
   from its paths. STATE.md `risk:` adds high-risk globs.
 - STATE.md `docs:` (globs, or `none`) defines documentation. Records store a
-  second fingerprint over the files that are not documentation.
+  second fingerprint over the files that are not documentation, mixed with a
+  digest of the documentation rule, so changing the rule voids carry-forward.
+  Agent instruction files and high-risk paths are never documentation, and
+  wildcard-only `docs:` or `risk:` globs are errors and are ignored.
+- The ship gate warns when `docs:` or `risk:` differs from the base commit's.
 - Prose notes flag plan slices that have no `(behavior)` or `(refactor)` kind.
 
 ### Changed
@@ -46,6 +58,15 @@ and a ship gate that scales with the risk of the change.
   normal-risk changes, or a review for low-risk ones. With no base to compare,
   the tier is high and the 7.0 rule applies. `gate ship` takes `--base` and
   warns about `tests` findings.
+- File names with a newline or other control character are fingerprinted and
+  listed like any other, and a changed one makes the change high risk.
+  `changedSince` and `diffSince` fail in a repository without a work tree, and a
+  change that cannot be listed is high risk. Compose files named `*.yaml` are
+  high risk. The base tag must look like `v<digit>...` and not point at HEAD.
+- Redaction also masks `Authorization: Basic` credentials, Google API keys, and
+  quoted secret values in full. Ledger text printed by `reviews`, `status`,
+  `stats`, and the reuse message loses control characters, and `reviews`
+  tolerates odd `head` and `dismissed` values.
 - Plan slices carry a kind: `- [ ] 1. (behavior) <slice>: <how it is verified>`.
   The skills keep refactors apart from behavior changes.
 - `/god-review` scopes re-reviews to the change since the last reviewed commit,

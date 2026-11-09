@@ -5,6 +5,8 @@ const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 
 const cli = require('../lib/cli');
+const evidence = require('../lib/evidence');
+const gitTools = require('../lib/git');
 const { tempDir, write, git, run, stateText, v7Repo } = require('./helpers');
 
 const BIN = path.join(__dirname, '..', 'bin', 'godpowers.js');
@@ -237,7 +239,7 @@ test('verify reuses a passing record unless forced', async () => {
   assert.equal((await run(['verify', cmd], { cwd: root })).code, 0);
   const reused = await run(['verify', cmd], { cwd: root });
   assert.equal(reused.code, 0);
-  assert.match(reused.out, /^Reused passing record ev_\S+ from \S+: .* already passed on this code\. Use --force to run it again\./);
+  assert.match(reused.out, /^Reused passing record ev_\S+ from \S+: .* already passed on this code\. Inputs outside git \(installed dependencies, environment\) are not covered; --force runs it again\./);
   assert.doesNotMatch(reused.out, /PASS:/);
   assert.equal(count(), 1);
   const json = JSON.parse((await run(['verify', cmd, '--json'], { cwd: root })).out);
@@ -251,6 +253,85 @@ test('verify reuses a passing record unless forced', async () => {
   write(root, 'src/app.js', 'module.exports = 2;\n');
   assert.match((await run(['verify', cmd], { cwd: root })).out, /PASS:/, 'changed tree runs');
   assert.equal(count(), 5);
+});
+
+// Lines in the ledger, and a helper to run verify and say whether it ran the command.
+const ledgerLines = root => fs.readFileSync(path.join(root, '.godpowers/evidence.jsonl'), 'utf8').split('\n').filter(Boolean);
+const ranIt = result => /^(?:[\s\S]*\n\n)?(PASS|FAIL):/.test(result.out) && !/^Reused/.test(result.out);
+
+test('a record for one secret value is not reused for another command that redacts the same', async () => {
+  const root = v7Repo();
+  const one = 'PASSWORD=hunter-one node -e "console.log(1)"';
+  const two = 'PASSWORD=hunter-two node -e "console.log(1)"';
+  assert.equal(ranIt(await run(['verify', one], { cwd: root })), true);
+  assert.equal(evidence.readAll(root).records[0].command, 'PASSWORD=[redacted] node -e "console.log(1)"');
+  assert.match((await run(['verify', one], { cwd: root })).out, /^Reused passing record/, 'the exact command is reused');
+  assert.equal(ranIt(await run(['verify', two], { cwd: root })), true, 'a different secret runs the check');
+  assert.equal(ledgerLines(root).length, 2);
+});
+
+test('verify does not reuse a forged record, a record from another key, or anything in a damaged ledger', async () => {
+  const root = v7Repo();
+  const cmd = 'node -e "console.log(2)"';
+  const { tree, code } = gitTools.fingerprints(root, require('../lib/docs').forRoot(root));
+  const forged = { kind: 'verify', tree, code, command: cmd, claim: null, exit: 0, ok: true, timedOut: false, ms: 1, tail: '' };
+  evidence.append(root, forged);
+  assert.deepEqual(evidence.readAll(root).problems, [], 'the forgery is validly chained');
+  assert.equal(ranIt(await run(['verify', cmd], { cwd: root })), true, 'a record without a local signature is not reused');
+  evidence.append(root, { ...forged, local: 'ab'.repeat(32) });
+  assert.equal(ranIt(await run(['verify', cmd], { cwd: root })), true, 'a record with a made-up signature is not reused');
+
+  assert.match((await run(['verify', cmd], { cwd: root })).out, /^Reused passing record/, 'the run just made is reused');
+  const otherHome = path.join(tempDir(), '.godpowers');
+  assert.equal(ranIt(await run(['verify', cmd], { cwd: root, env: { GODPOWERS_HOME: otherHome } })), true, 'another machine key does not vouch for it');
+  assert.match((await run(['verify', cmd], { cwd: root, env: { GODPOWERS_HOME: otherHome } })).out, /^Reused passing record/);
+  assert.match(fs.readFileSync(path.join(otherHome, 'local.key'), 'utf8'), /^[0-9a-f]{64}$/);
+
+  fs.appendFileSync(path.join(root, '.godpowers/evidence.jsonl'), 'not json\n');
+  assert.equal(ranIt(await run(['verify', cmd], { cwd: root, env: { GODPOWERS_HOME: otherHome } })), true, 'an integrity error anywhere turns reuse off');
+});
+
+test('verify runs and records normally when the key cannot be created, and never prints the key', async () => {
+  const root = v7Repo();
+  const blocker = write(tempDir(), 'file', 'x');
+  const cmd = 'node -e "console.log(3)"';
+  const env = { GODPOWERS_HOME: path.join(blocker, 'home') };
+  const first = await run(['verify', cmd], { cwd: root, env });
+  assert.equal(first.code, 0, first.err);
+  assert.equal(ranIt(first), true);
+  assert.equal(ranIt(await run(['verify', cmd], { cwd: root, env })), true, 'no key, no reuse');
+  assert.equal(ledgerLines(root).length, 2);
+  assert.equal(JSON.parse(ledgerLines(root)[0]).local, undefined);
+  const home = path.join(tempDir(), '.godpowers');
+  const out = (await run(['verify', cmd, '--json'], { cwd: root, env: { GODPOWERS_HOME: home } })).out;
+  const key = fs.readFileSync(path.join(home, 'local.key'), 'utf8');
+  assert.equal(out.includes(key), false);
+  const reused = await run(['verify', cmd], { cwd: root, env: { GODPOWERS_HOME: home } });
+  assert.equal(reused.out.includes(key) || reused.err.includes(key), false);
+});
+
+test('reviews, status, stats, and the reuse message cope with odd ledger fields and print no control characters', async () => {
+  const root = v7Repo();
+  const esc = '\u001b';
+  evidence.append(root, { kind: 'review', verdict: 'fail', head: 12345, dismissed: 'one finding', summary: `bad${esc}[31m\nline two`, tree: 't', code: 'c' });
+  evidence.append(root, { kind: 'review', verdict: 'fail', head: { not: 'a string' }, dismissed: [7, null, `x${esc}y\u009b`], summary: 's', tree: 't', code: 'c' });
+  evidence.append(root, { kind: 'review', verdict: 'fail', head: `${esc}abcdefghij`, dismissed: 3, summary: 'third', tree: 't', code: 'c', time: `2026-01-01${esc}` });
+  const reviews = await run(['reviews'], { cwd: root });
+  assert.equal(reviews.code, 0, reviews.err);
+  assert.doesNotMatch(reviews.out.replace(/\n/g, ''), /[\u0000-\u0008\u000a-\u001f\u007f-\u009f]/);
+  assert.match(reviews.out, /Round 1: fail no commit at \S+: bad\[31mline two\n  dismissed: one finding/);
+  assert.match(reviews.out, /dismissed: xy\n/);
+  const status = await run(['status'], { cwd: root });
+  assert.equal(status.code, 0, status.err);
+  assert.doesNotMatch(status.out.replace(/\n/g, ''), /[\u0000-\u0008\u000a-\u001f\u007f-\u009f]/);
+  const stats = await run(['stats'], { cwd: root });
+  assert.equal(stats.code, 0, stats.err);
+  assert.doesNotMatch(stats.out.replace(/\n/g, ''), /[\u0000-\u0008\u000a-\u001f\u007f-\u009f]/);
+  const cmd = 'node -e "console.log(4)"';
+  await run(['verify', cmd], { cwd: root });
+  const reused = await run(['verify', cmd], { cwd: root });
+  assert.match(reused.out, /^Reused passing record/);
+  assert.doesNotMatch(reused.out.replace(/\n$/, ''), /[\u0000-\u0008\u000a-\u001f\u007f-\u009f]/);
 });
 
 test('verify runs again after a failed latest run and after changedDuringRun', async () => {
@@ -299,6 +380,7 @@ test('the tiered ship gate through the CLI: tier, --base, JSON, and a refused re
   assert.equal(JSON.parse((await run(['gate', 'ship', '--json'], { cwd: root })).out).tier, 'high');
   assert.equal(JSON.parse((await run(['gate', 'ship', '--json'], { cwd: root })).out).base, null);
   git(root, 'tag', 'v1.0.0');
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
   write(root, 'README.md', 'docs only');
   assert.equal((await run(['verify'], { cwd: root })).code, 0);
   const ship = await run(['gate', 'ship'], { cwd: root });

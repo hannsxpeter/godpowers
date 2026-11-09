@@ -174,3 +174,135 @@ test('--hook fails open on an internal error', async () => {
   assert.equal(result.out, '');
   assert.match(result.err, /^godpowers fast --hook: skipped \(.*--timeout must be a number/);
 });
+
+// Run `body` with process.platform pretending to be `name`. Native Windows stays unproven.
+async function onPlatform(name, body) {
+  const platform = Object.getOwnPropertyDescriptor(process, 'platform');
+  try {
+    Object.defineProperty(process, 'platform', { value: name });
+    return await body();
+  } finally {
+    Object.defineProperty(process, 'platform', platform);
+  }
+}
+
+test('placeholderInQuotes sees {files} inside single or double quotes only', () => {
+  const inside = ['echo "{files}"', "echo '{files}'", 'echo "a $(x) {files}"', 'echo "a\\" {files}"', 'echo "{files}', "echo 'a'\"{files}\"", 'x "{files}" {files}'];
+  const bare = ['echo {files}', 'echo "a" {files}', "echo 'a' \"b\" {files}", 'echo \\"{files}', 'echo "a\\"" {files}', "echo '\\' {files}", 'echo plain'];
+  for (const command of inside) assert.equal(fastTools.placeholderInQuotes(command), true, command);
+  for (const command of bare) assert.equal(fastTools.placeholderInQuotes(command), false, command);
+});
+
+test('a quoted {files} is refused, so a file name cannot run code', async () => {
+  for (const declared of ['node args.js "{files}"', "node args.js '{files}'"]) {
+    const root = fastRepo(declared);
+    write(root, '$(touch INJECTED).js', 'x');
+    const result = await run(['fast'], { cwd: root });
+    assert.equal(result.code, 2, declared);
+    assert.match(result.err, /\{files\} must be bare/);
+    assert.match(result.err, /quotes each file name itself/);
+    assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false);
+    const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: '$(touch INJECTED).js' }) });
+    assert.equal(hook.code, 0, 'the hook fails open');
+    assert.equal(hook.out, '');
+    assert.match(hook.err, /^godpowers fast --hook: skipped \(\{files\} must be bare[^\n]*\)\n$/);
+    assert.equal(fs.existsSync(path.join(root, 'INJECTED')), false);
+  }
+});
+
+test('file names that start with a dash reach the command as ./ paths', async () => {
+  const root = fastRepo();
+  write(root, '-rf.js', 'x');
+  write(root, 'sub/-dash.js', 'x');
+  const changed = await fastJson(root);
+  assert.deepEqual(changed.json.files, ['./-rf.js', 'sub/-dash.js']);
+  assert.deepEqual(JSON.parse(changed.json.tail.trim()), ['./-rf.js', 'sub/-dash.js']);
+  const explicit = await fastTools.fast(root, { files: ['--config=evil.js', './-rf.js'] });
+  assert.deepEqual(explicit.files, ['./--config=evil.js', './-rf.js']);
+  assert.deepEqual(JSON.parse(explicit.run.tail.trim()), ['./--config=evil.js', './-rf.js']);
+  const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: '--config=evil.js' }), env: { FAST_EXIT: '4' } });
+  assert.equal(hook.code, 2);
+  assert.deepEqual(JSON.parse(hook.err.split('\n')[0]), ['./--config=evil.js']);
+});
+
+test('on Windows a file name with % or a quote is refused, and the hook fails open', async () => {
+  const root = fastRepo();
+  write(root, '100%.js', 'x');
+  await onPlatform('win32', async () => {
+    const result = await run(['fast'], { cwd: root });
+    assert.equal(result.code, 2);
+    assert.match(result.err, /cannot pass "100%\.js" to the fast command on Windows/);
+    const quoted = await run(['fast', 'say "hi".js'], { cwd: root });
+    assert.equal(quoted.code, 2);
+    assert.match(quoted.err, /say "hi"\.js/);
+    const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: '100%.js' }) });
+    assert.equal(hook.code, 0);
+    assert.match(hook.err, /^godpowers fast --hook: skipped \(cannot pass "100%\.js"[^\n]*\)\n$/);
+  });
+  const elsewhere = await fastJson(root);
+  assert.equal(elsewhere.code, 0, 'POSIX shells quote these names safely');
+  assert.deepEqual(elsewhere.json.files, ['100%.js']);
+});
+
+test('a path with a control character is skipped with a note on stderr', async () => {
+  const root = fastRepo();
+  write(root, 'tab\there.js', 'x');
+  write(root, 'ok.js', 'x');
+  const result = await fastJson(root, ['ok.js', 'new\nline.js', 'tab\there.js']);
+  assert.deepEqual(result.json.files, ['ok.js']);
+  assert.deepEqual(JSON.parse(result.json.tail.trim()), ['ok.js']);
+  assert.match(result.err, /^godpowers fast: skipped 2 file\(s\) with control characters in the name: "new\\nline\.js", "tab\\there\.js"\n$/);
+  const changed = await fastJson(root);
+  assert.deepEqual(changed.json.files, ['ok.js']);
+  assert.match(changed.err, /skipped 1 file\(s\) .*"tab\\there\.js"/);
+  const only = await fastJson(root, ['new\nline.js']);
+  assert.equal(only.code, 0);
+  assert.deepEqual(only.json.files, []);
+  assert.match(only.err, /skipped 1 file/);
+  const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: 'new\nline.js' }), env: { FAST_EXIT: '4' } });
+  assert.equal(hook.code, 0, 'nothing is left to check');
+  assert.match(hook.err, /skipped 1 file/);
+});
+
+test('hookFile follows symlinks, so a link out of the project or into .godpowers is refused', { skip: process.platform === 'win32' }, () => {
+  const root = fastRepo();
+  const outside = tempDir();
+  write(outside, 'secret.js', 'x');
+  fs.symlinkSync(path.join(outside, 'secret.js'), path.join(root, 'link.js'));
+  fs.symlinkSync(outside, path.join(root, 'linkdir'));
+  fs.symlinkSync(path.join(root, '.godpowers'), path.join(root, 'own'));
+  fs.symlinkSync(path.join(root, 'nowhere.js'), path.join(root, 'dangling.js'));
+  fs.symlinkSync(path.join(root, 'src'), path.join(root, 'inside'));
+  const hook = file => fastTools.hookFile(root, payload({ file_path: file }));
+  assert.equal(hook('link.js'), null);
+  assert.equal(hook('linkdir/new.js'), null);
+  assert.equal(hook('linkdir/secret.js'), null);
+  assert.equal(hook('own/STATE.md'), null);
+  assert.equal(hook('dangling.js'), null);
+  assert.equal(hook('inside/app.js'), 'src/app.js', 'a link that stays inside the project resolves to its target');
+  assert.equal(hook('src/new-file.js'), 'src/new-file.js', 'a file that does not exist yet is fine');
+  assert.equal(hook(path.join(root, 'src', 'app.js')), 'src/app.js');
+});
+
+test('hookFile ignores .godpowers in any letter case', () => {
+  const root = fastRepo();
+  for (const file of ['.godpowers/PLAN.md', '.GODPOWERS/PLAN.md', '.GodPowers', path.join(root, '.Godpowers', 'x.md')]) {
+    assert.equal(fastTools.hookFile(root, payload({ file_path: file })), null, file);
+  }
+});
+
+test('the command is printed on stderr before it runs, except in JSON and passing hook runs', async () => {
+  const root = fastRepo();
+  write(root, 'a b.js', 'x');
+  const text = await run(['fast'], { cwd: root });
+  assert.equal(text.err, "Running: node args.js 'a b.js'\n");
+  assert.equal(text.code, 0);
+  const json = await fastJson(root);
+  assert.equal(json.err, '');
+  const hook = await run(['fast', '--hook'], { cwd: root, stdin: payload({ file_path: 'a b.js' }) });
+  assert.deepEqual(pick(hook), [0, '', '']);
+  const plain = fastRepo('node args.js plain');
+  assert.equal((await run(['fast'], { cwd: plain })).err, 'Running: node args.js plain\n');
+  const nothing = fastRepo();
+  assert.equal((await run(['fast'], { cwd: nothing })).err, '', 'nothing runs, nothing is printed');
+});

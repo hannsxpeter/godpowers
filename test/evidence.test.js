@@ -160,17 +160,109 @@ test('works outside git with a null tree, and waits out a held lock', async () =
   assert.equal(fs.existsSync(lock), false);
 });
 
-test('findReusable returns only a clean passing record of the same command on the same tree', () => {
-  const base = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', ok: true };
-  assert.equal(evidence.findReusable([base], 't1', 'npm test'), base);
-  assert.equal(evidence.findReusable([base], 't2', 'npm test'), null, 'changed tree');
-  assert.equal(evidence.findReusable([base], 't1', 'npm run lint'), null, 'different command');
-  assert.equal(evidence.findReusable([base], null, 'npm test'), null, 'no tree');
-  assert.equal(evidence.findReusable([{ ...base, fp: 0 }], 't1', 'npm test'), null, 'old fingerprint version');
-  assert.equal(evidence.findReusable([base, { ...base, ok: false }], 't1', 'npm test'), null, 'latest failed');
-  assert.equal(evidence.findReusable([{ ...base, ok: false }, base], 't1', 'npm test'), base, 'latest passed');
-  assert.equal(evidence.findReusable([{ ...base, changedDuringRun: true }], 't1', 'npm test'), null);
-  assert.equal(evidence.findReusable([{ ...base, timedOut: true }], 't1', 'npm test'), null);
+const KEY_A = 'a'.repeat(64);
+const KEY_B = 'b'.repeat(64);
+const signed = (record, command = record.command, key = KEY_A) => ({ ...record, local: evidence.localTag(key, record, command) });
+const ledgerOf = (...records) => ({ records, problems: [] });
+
+test('findReusable returns only a clean, signed passing record of the same command on the same tree', () => {
+  const unsigned = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'npm test', ok: true };
+  const base = signed(unsigned);
+  const find = (ledger, tree, command, key = KEY_A) => evidence.findReusable(ledger, tree, command, { key });
+  assert.equal(find(ledgerOf(base), 't1', 'npm test'), base);
+  assert.equal(find(ledgerOf(base), 't2', 'npm test'), null, 'changed tree');
+  assert.equal(find(ledgerOf(base), 't1', 'npm run lint'), null, 'different command');
+  assert.equal(find(ledgerOf(base), null, 'npm test'), null, 'no tree');
+  assert.equal(find(ledgerOf(signed({ ...unsigned, fp: 0 })), 't1', 'npm test'), null, 'old fingerprint version');
+  assert.equal(find(ledgerOf(base, signed({ ...unsigned, ok: false })), 't1', 'npm test'), null, 'latest failed');
+  assert.equal(find(ledgerOf(signed({ ...unsigned, ok: false }), base), 't1', 'npm test'), base, 'latest passed');
+  assert.equal(find(ledgerOf(signed({ ...unsigned, changedDuringRun: true })), 't1', 'npm test'), null);
+  assert.equal(find(ledgerOf(signed({ ...unsigned, timedOut: true })), 't1', 'npm test'), null);
+  assert.equal(find(ledgerOf(unsigned), 't1', 'npm test'), null, 'no local signature');
+  assert.equal(find(ledgerOf({ ...base, local: 'f'.repeat(64) }), 't1', 'npm test'), null, 'a wrong signature');
+  assert.equal(find(ledgerOf({ ...base, local: 12 }), 't1', 'npm test'), null, 'a signature that is not text');
+  assert.equal(find(ledgerOf(base), 't1', 'npm test', KEY_B), null, 'signed with another key');
+  assert.equal(find(ledgerOf(base), 't1', 'npm test', null), null, 'no key, no reuse');
+  assert.equal(find([base], 't1', 'npm test'), null, 'a bare record list says nothing about integrity');
+  assert.equal(find(null, 't1', 'npm test'), null);
+  assert.equal(find({ records: [base], problems: [{ severity: 'warning', message: 'chain break' }] }, 't1', 'npm test'), base, 'a chain break from a merge is only a warning');
+  assert.equal(find({ records: [base], problems: [{ severity: 'error', message: 'edited' }] }, 't1', 'npm test'), null, 'any integrity error anywhere');
+  const edited = { ...signed({ ...unsigned, ok: false }), ok: true };
+  assert.equal(find(ledgerOf(edited), 't1', 'npm test'), null, 'a failing record edited to pass, even with a fresh digest');
+});
+
+test('the signature covers the exact command, which the stored record has redacted', () => {
+  const stored = { kind: 'verify', fp: evidence.FP_VERSION, tree: 't1', command: 'PASSWORD=[redacted] node x.js', ok: true };
+  const record = signed(stored, 'PASSWORD=hunter-one node x.js');
+  const find = command => evidence.findReusable(ledgerOf(record), 't1', command, { key: KEY_A });
+  assert.equal(find('PASSWORD=hunter-one node x.js'), record);
+  assert.equal(find('PASSWORD=hunter-two node x.js'), null);
+});
+
+test('the local key is private, created once, shared by racing readers, and never leaks', async () => {
+  const home = path.join(tempDir(), '.godpowers');
+  const saved = process.env.GODPOWERS_HOME;
+  process.env.GODPOWERS_HOME = home;
+  try {
+    assert.equal(evidence.localKey(), null, 'reading never creates a key');
+    assert.equal(fs.existsSync(home), false);
+    const key = evidence.localKey({ create: true });
+    assert.match(key, /^[0-9a-f]{64}$/);
+    assert.equal(evidence.localKey({ create: true }), key, 'a second caller reads the first key');
+    assert.equal(evidence.localKey(), key);
+    if (process.platform !== 'win32') {
+      assert.equal(fs.statSync(path.join(home, 'local.key')).mode & 0o777, 0o600);
+      assert.equal(fs.statSync(home).mode & 0o777, 0o700);
+      fs.chmodSync(path.join(home, 'local.key'), 0o644);
+      assert.equal(evidence.localKey({ create: true }), null, 'a key others can read is not trusted, and is not replaced');
+      fs.chmodSync(path.join(home, 'local.key'), 0o600);
+    }
+    fs.writeFileSync(path.join(home, 'local.key'), 'not a key');
+    fs.chmodSync(path.join(home, 'local.key'), 0o600);
+    assert.equal(evidence.localKey({ create: true }), null, 'a malformed key is not replaced either');
+    fs.rmSync(path.join(home, 'local.key'));
+    const root = v7Repo();
+    const { record } = await evidence.verify(root, 'node -e "0"');
+    const fresh = evidence.localKey();
+    assert.match(record.local, /^[0-9a-f]{64}$/);
+    assert.notEqual(record.local, fresh);
+    assert.equal(read(root, '.godpowers/evidence.jsonl').includes(fresh), false, 'the key is not in the ledger');
+  } finally {
+    if (saved === undefined) delete process.env.GODPOWERS_HOME;
+    else process.env.GODPOWERS_HOME = saved;
+  }
+});
+
+test('without a usable key the check still runs and records, and nothing is reusable', async () => {
+  const root = v7Repo();
+  const blocker = write(tempDir(), 'file', 'a regular file where the key directory should go');
+  const saved = process.env.GODPOWERS_HOME;
+  process.env.GODPOWERS_HOME = path.join(blocker, 'home');
+  try {
+    assert.equal(evidence.localKey({ create: true }), null);
+    const { record } = await evidence.verify(root, 'node -e "0"');
+    assert.equal(record.ok, true);
+    assert.equal(record.local, undefined);
+    const tree = gitTools.treeFingerprint(root);
+    assert.equal(evidence.findReusable(evidence.readAll(root), tree, 'node -e "0"'), null);
+  } finally {
+    if (saved === undefined) delete process.env.GODPOWERS_HOME;
+    else process.env.GODPOWERS_HOME = saved;
+  }
+});
+
+test('redact masks Basic credentials, Google API keys, and quoted secret values in full', () => {
+  assert.equal(evidence.redact('curl -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" https://x.test'), 'curl -H "Authorization: Basic [redacted]" https://x.test');
+  assert.equal(evidence.redact('authorization=basic dXNlcjpwYXNz'), 'authorization=basic [redacted]');
+  assert.equal(evidence.redact(`key=AIza${'B'.repeat(35)} next`), 'key=[redacted] next');
+  assert.equal(evidence.redact(`AIza${'a1_-'.repeat(8)}xyz`), '[redacted]');
+  assert.equal(evidence.redact('password="hunter two words" done'), 'password="[redacted]" done');
+  assert.equal(evidence.redact("PASSWORD='hunter two words'"), "PASSWORD='[redacted]'");
+  assert.equal(evidence.redact('{"token": "a b c", "n": 1}'), '{"token": "[redacted]", "n": 1}');
+  assert.equal(evidence.redact('secret: "say \\"hi\\" there" end'), 'secret: "[redacted]" end');
+  assert.equal(evidence.redact('api_key=abcdefghij'), 'api_key=[redacted]');
+  assert.equal(evidence.redact('token=""'), 'token=""', 'an empty value hides nothing');
+  assert.doesNotMatch(evidence.redact('password="hunter two words"'), /hunter|two|words/);
 });
 
 test('reviewHistory counts rounds after the last passing review', () => {

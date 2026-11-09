@@ -10,6 +10,10 @@ function tempDir(prefix = 'gp-test-') {
   return fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), prefix)));
 }
 
+// The machine-local evidence key lives under GODPOWERS_HOME. Tests get their
+// own, so they never read or create ~/.godpowers (child processes inherit it).
+if (!process.env.GODPOWERS_HOME) process.env.GODPOWERS_HOME = path.join(tempDir('gp-home-'), '.godpowers');
+
 function write(root, rel, content) {
   const file = path.join(root, rel);
   fs.mkdirSync(path.dirname(file), { recursive: true });

@@ -85,3 +85,18 @@ test('accepts fast, docs, and risk keys and warns about an empty fast command', 
   const empty = stateStore.parse(stateText({ fast: '' }));
   assert.match(messages(stateStore.validate(empty)), /warning: frontmatter "fast" is empty/);
 });
+
+test('docs and risk globs that would match nearly every path are errors', () => {
+  for (const glob of ['*', '**', '**/*', '*.*', '*/', './**', '?', '**/**']) {
+    for (const key of ['docs', 'risk']) {
+      const text = messages(stateStore.validate(stateStore.parse(stateText({ [key]: glob }))));
+      assert.match(text, new RegExp(`error: frontmatter "${key}" has a glob that would match nearly every path \\(`), `${key}: ${glob}`);
+      assert.match(text, /It is ignored/);
+    }
+  }
+  const several = messages(stateStore.validate(stateStore.parse(stateText({ docs: 'README.md, **, *.*' }))));
+  assert.match(several, /error: frontmatter "docs" has globs that .* \(\*\*, \*\.\*\)/);
+  for (const glob of ['none', 'docs/**', '*.md', 'a*', 'src/*/x', '*.txt', '*auth*']) {
+    assert.doesNotMatch(messages(stateStore.validate(stateStore.parse(stateText({ docs: glob, risk: glob })))), /nearly every path/, glob);
+  }
+});

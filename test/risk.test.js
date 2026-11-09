@@ -11,6 +11,8 @@ const { write, git, v7Repo, run } = require('./helpers');
 function releasedRepo(stateOverrides) {
   const root = v7Repo(stateOverrides);
   git(root, 'tag', 'v1.0.0');
+  // A tag on HEAD itself is not a base; the release is measured from the one before.
+  git(root, 'commit', '-q', '--allow-empty', '-m', 'after the release');
   return root;
 }
 
@@ -126,12 +128,13 @@ test('deleting, renaming, and staging count as changes', () => {
 test('risk through the CLI: text, json, --base, and a refused ref', async () => {
   const root = releasedRepo();
   const sha = git(root, 'rev-parse', 'HEAD');
+  const tagged = git(root, 'rev-parse', 'v1.0.0');
   write(root, 'src/app.js', 'x');
   for (let i = 0; i < 12; i++) write(root, `src/f${String(i).padStart(2, '0')}.js`, 'x');
   let result = await run(['risk'], { cwd: root });
   assert.equal(result.code, 0);
   const lines = result.out.trim().split('\n');
-  assert.equal(lines[0], `Risk: normal since v1.0.0 (${sha.slice(0, 7)})`);
+  assert.equal(lines[0], `Risk: normal since v1.0.0 (${tagged.slice(0, 7)})`);
   assert.match(lines[1], /no high-risk paths since v1\.0\.0; 13 code paths changed/);
   assert.equal(lines.length, 2 + 10 + 1);
   assert.equal(lines[lines.length - 1], '  and 3 more');
@@ -158,4 +161,73 @@ test('risk without a tag says there is no base and exits 0 as high', async () =>
   assert.equal(result.code, 0);
   assert.match(result.out, /^Risk: high \(no base to compare against\)\nnothing to compare against/);
   assert.equal(JSON.parse((await run(['risk', '--json'], { cwd: root })).out).base, null);
+});
+
+test('Compose files with either extension are deployment configuration', () => {
+  const names = ['compose.yaml', 'docker-compose.yaml', 'docker-compose.prod.yml', 'compose.yml', 'docker-compose.override.yaml', 'services/web/compose.prod.yaml'];
+  for (const name of names) {
+    const fresh = releasedRepo();
+    write(fresh, name, 'services: {}');
+    const result = classify(fresh);
+    assert.equal(result.tier, 'high', name);
+    assert.equal(result.high[0].path, name);
+  }
+  const root = releasedRepo();
+  write(root, 'composer.json', '{}');
+  write(root, 'src/decompose.yaml', 'x');
+  assert.equal(classify(root).tier, 'normal', 'look-alikes are not compose files');
+});
+
+test('a changed path with a control character in its name is high, whatever it looks like', async () => {
+  for (const name of ['src/auth/token\n.js', 'README\n.md', 'test/a\u001b.test.js', 'src/x\u0085y.js']) {
+    const root = releasedRepo();
+    write(root, name, 'x');
+    const result = classify(root);
+    assert.equal(result.tier, 'high', JSON.stringify(name));
+    assert.deepEqual(result.high, [{ path: name, pattern: 'unusual file name' }]);
+  }
+  const root = releasedRepo();
+  write(root, 'docs/guide\n.md', 'x');
+  const text = risk.formatRisk(classify(root));
+  assert.match(text, /docs\/guide\\u000a\.md \(unusual file name\)/);
+  assert.equal(text.includes('\n.md'), false, 'the name is not printed raw');
+  const json = JSON.parse((await run(['risk', '--json'], { cwd: root })).out);
+  assert.equal(json.tier, 'high');
+  assert.equal(json.high[0].pattern, 'unusual file name');
+});
+
+test('a change that cannot be listed is high, not low', () => {
+  const source = releasedRepo();
+  const bare = path.join(require('./helpers').tempDir(), 'bare.git');
+  git(source, 'clone', '-q', '--bare', source, bare);
+  const base = { ref: 'HEAD', sha: git(bare, 'rev-parse', 'HEAD') };
+  const result = risk.classify(bare, { base });
+  assert.equal(result.tier, 'high');
+  assert.match(result.reason, /could not list the changes since HEAD: .*no work tree/);
+  assert.deepEqual(result.high, []);
+  assert.equal(risk.classify(source, { base: { ref: 'HEAD', sha: '0'.repeat(40) } }).tier, 'high', 'a failing git call too');
+});
+
+test('a nearby tag that is not a release does not become the base, and a tag on HEAD is skipped', () => {
+  const root = releasedRepo();
+  write(root, 'src/auth/token.js', 'x');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'auth');
+  git(root, 'tag', 'vnext');
+  assert.equal(classify(root).tier, 'high', 'vnext is not a base, so the auth change since v1.0.0 still counts');
+  git(root, 'tag', 'v1.1.0');
+  const result = classify(root);
+  assert.equal(result.base.ref, 'v1.0.0', 'the tag on HEAD is skipped');
+  assert.equal(result.tier, 'high');
+});
+
+test('agent instruction files and prompts are not documentation, so they keep a change out of the low tier', () => {
+  for (const name of ['AGENTS.md', 'CLAUDE.md', 'skills/god/SKILL.md', '.claude/commands/ship.md', 'prompts/system.md', 'docs/agents/review.md', '.cursorrules', '.github/copilot-instructions.md']) {
+    const root = releasedRepo();
+    write(root, name, 'x');
+    assert.equal(classify(root).tier, 'normal', name);
+  }
+  const root = releasedRepo();
+  write(root, 'README.md', 'docs');
+  assert.equal(classify(root).tier, 'low');
 });
