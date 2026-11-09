@@ -4,6 +4,8 @@ const assert = require('node:assert/strict');
 const gate = require('../lib/gate');
 const evidence = require('../lib/evidence');
 const gitTools = require('../lib/git');
+const fs = require('fs');
+const path = require('path');
 const { tempDir, write, git, gitRepo, stateText, v7Repo } = require('./helpers');
 
 // The declared check passes unless CHECK_FAIL is set in the environment.
@@ -245,4 +247,136 @@ test('docPredicate follows the STATE.md docs setting', () => {
   assert.equal(docPredicate(parse({ docs: 'NONE' }))('README.md'), false);
   const globs = docPredicate(parse({ docs: 'site/**, *.adoc' }));
   assert.deepEqual(['site/a.js', 'x/y.ADOC', 'README.md'].map(globs), [true, true, false]);
+});
+
+// A checked repo tagged v1.0.0 at HEAD, so the ship gate has a base to measure from.
+function releasedRepo(overrides = {}) {
+  const root = checkedRepo(overrides);
+  write(root, 'test/app.test.js', 'test("a", () => { expect(1).toBe(1); });\n');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'tests');
+  git(root, 'tag', 'v1.0.0');
+  return root;
+}
+
+test('the ship gate reports the tier and base, and without a tag it is high', async () => {
+  const root = checkedRepo();
+  const result = gate.shipGate(root);
+  assert.equal(result.tier, 'high');
+  assert.equal(result.base, null);
+  assert.equal(byName(result).tier.ok, true);
+  assert.match(byName(result).tier.detail, /^high risk: nothing to compare against/);
+  assert.equal(byName(result).tests, undefined, 'no base, no test guard');
+  assert.match(byName(result).harden.detail, /god-harden/, 'today\'s rule applies at the high tier');
+  const tagged = releasedRepo();
+  const second = gate.shipGate(tagged);
+  assert.equal(second.tier, 'low');
+  assert.deepEqual(second.base, gitTools.releaseBase(tagged));
+  assert.match(byName(second).tier.detail, /^low risk since v1\.0\.0 \([0-9a-f]{7}\): nothing changed since v1\.0\.0$/);
+});
+
+test('low risk needs only a passing check', async () => {
+  const root = releasedRepo();
+  write(root, 'README.md', 'docs');
+  write(root, 'test/app.test.js', 'test("a", () => { expect(1).toBe(1); });\ntest("b", () => {});\n');
+  let result = gate.shipGate(root);
+  assert.equal(result.tier, 'low');
+  assert.equal(result.ok, false);
+  assert.equal(byName(result).verify.ok, false);
+  assert.equal(byName(result).review.ok, true);
+  assert.equal(byName(result).review.detail, 'not required for a low-risk change (only documentation and test files changed since v1.0.0)');
+  assert.equal(byName(result).harden.detail, 'not required for a low-risk change (only documentation and test files changed since v1.0.0)');
+  await runCheck(root);
+  result = gate.shipGate(root);
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.checks.filter(c => c.severity === 'warning'), []);
+});
+
+test('normal risk needs a check and a review, but not a security record', async () => {
+  const root = releasedRepo();
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  await runCheck(root);
+  let result = gate.shipGate(root);
+  assert.equal(result.tier, 'normal');
+  assert.equal(result.ok, false);
+  assert.match(byName(result).review.detail, /god-review/);
+  assert.equal(byName(result).harden.ok, true);
+  assert.equal(byName(result).harden.detail, 'not required for a normal-risk change (no high-risk paths since v1.0.0)');
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  result = gate.shipGate(root);
+  assert.equal(result.ok, true);
+  assert.equal(byName(result).review.detail, 'review passed on the current code');
+});
+
+test('high risk needs a check, a review, and a security record', async () => {
+  const root = releasedRepo();
+  write(root, 'src/auth/token.js', 'module.exports = 1;\n');
+  await runCheck(root);
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  let result = gate.shipGate(root);
+  assert.equal(result.tier, 'high');
+  assert.equal(result.ok, false);
+  assert.match(byName(result).harden.detail, /god-harden/);
+  assert.match(byName(result).tier.detail, /^high risk since v1\.0\.0 \(.{7}\): 1 changed path matches high-risk patterns since v1\.0\.0$/);
+  evidence.attest(root, 'harden', { pass: true, summary: 'no findings' });
+  result = gate.shipGate(root);
+  assert.equal(result.ok, true);
+  setState(root, { risk: 'src/other/**' });
+  write(root, 'src/other/x.js', 'x');
+  write(root, 'src/auth/token.js', 'module.exports = 2;\n');
+  assert.equal(gate.shipGate(root).tier, 'high');
+});
+
+test('a record the tier does not require still warns when it failed on this code', async () => {
+  const root = releasedRepo();
+  write(root, 'src/app.js', 'module.exports = 2;\n');
+  await runCheck(root);
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  evidence.attest(root, 'harden', { pass: false, summary: 'found something' });
+  let result = gate.shipGate(root);
+  assert.equal(result.ok, true, 'normal risk does not require a security record');
+  assert.equal(byName(result).harden.severity, 'warning');
+  assert.equal(byName(result).harden.ok, false);
+  assert.match(byName(result).harden.detail, /the last security record failed on the current code \(not required for a normal-risk change\)/);
+  evidence.attest(root, 'harden', { pass: true, summary: 'fixed' });
+  assert.equal(byName(gate.shipGate(root)).harden.severity, 'ok');
+
+  const docsOnly = releasedRepo();
+  write(docsOnly, 'README.md', 'docs');
+  await runCheck(docsOnly);
+  evidence.attest(docsOnly, 'review', { pass: false, summary: 'nit' });
+  result = gate.shipGate(docsOnly);
+  assert.equal(result.ok, true);
+  assert.match(byName(result).review.detail, /the last review failed on the current code \(not required for a low-risk change\)/);
+  assert.equal(byName(result).review.severity, 'warning');
+});
+
+test('test-guard findings are a non-blocking warning with the first three', async () => {
+  const root = releasedRepo();
+  fs.rmSync(path.join(root, 'test/app.test.js'));
+  write(root, 'test/a.test.js', 'it.skip("a");\n'); // godpowers: allow-test-change
+  write(root, 'test/b.test.js', 'it.skip("b");\n'); // godpowers: allow-test-change
+  write(root, 'test/c.test.js', 'it.only("c");\n'); // godpowers: allow-test-change
+  await runCheck(root);
+  const result = gate.shipGate(root);
+  assert.equal(byName(result).tests.severity, 'warning');
+  assert.match(byName(result).tests.detail, /^4 test-guard finding\(s\) since v1\.0\.0: deleted-test test\/app\.test\.js; skip-marker test\/a\.test\.js:1; skip-marker test\/b\.test\.js:1; \.\.\. \(run `.* tests`\)$/);
+  evidence.attest(root, 'review', { pass: true, summary: 'clean' });
+  assert.equal(gate.shipGate(root).ok, true, 'the warning does not block');
+  const clean = releasedRepo();
+  assert.equal(byName(gate.shipGate(clean)).tests, undefined);
+});
+
+test('--base chooses the base commit and a refused ref throws', async () => {
+  const root = releasedRepo();
+  write(root, 'src/auth/x.js', 'x');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'auth');
+  assert.equal(gate.shipGate(root).tier, 'high', 'the default base is v1.0.0');
+  const result = gate.shipGate(root, { base: 'HEAD' });
+  assert.equal(result.tier, 'low');
+  assert.equal(result.base.ref, 'HEAD');
+  assert.throws(() => gate.shipGate(root, { base: '--output=x' }), /cannot start with "-"/);
+  assert.throws(() => gate.shipGate(root, { base: 'nope' }), /does not name a commit/);
+  assert.equal(gate.shipGate(tempDir()).tier, null, 'a non-project has no tier');
 });

@@ -5,7 +5,7 @@ const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 
 const cli = require('../lib/cli');
-const { tempDir, write, run, stateText, v7Repo } = require('./helpers');
+const { tempDir, write, git, run, stateText, v7Repo } = require('./helpers');
 
 const BIN = path.join(__dirname, '..', 'bin', 'godpowers.js');
 const VERSION = require('../package.json').version;
@@ -37,6 +37,10 @@ test('verify keeps the command exactly as typed', () => {
 test('help, version, and errors', async () => {
   assert.match((await run(['--help'])).out, /Install \(default: Claude Code, global\)/);
   assert.match((await run(['help'])).out, /gate ship/);
+  const help = (await run(['help'])).out;
+  assert.match(help, /tests \[--base <ref>\] \[--json\]/);
+  assert.match(help, /risk \[--base <ref>\] \[--json\]/);
+  assert.match(help, /gate ship \[--base <ref>\] \[--json\]/);
   assert.equal((await run(['--version'])).out.trim(), VERSION);
   assert.equal((await run(['version'])).out.trim(), VERSION);
   const unknown = await run(['deploy']);
@@ -286,4 +290,30 @@ test('record review reports rounds, dismissals, and the three-round warning', as
   const bad = await run(['record', 'harden', '--pass', '--summary', 'ok', '--dismiss', 'a: b'], { cwd: root });
   assert.equal(bad.code, 2);
   assert.match(bad.err, /--dismiss only applies to record review/);
+});
+
+test('the tiered ship gate through the CLI: tier, --base, JSON, and a refused ref', async () => {
+  const root = v7Repo();
+  const noBase = await run(['gate', 'ship'], { cwd: root });
+  assert.match(noBase.out, /\+ tier\s+high risk: nothing to compare against/);
+  assert.equal(JSON.parse((await run(['gate', 'ship', '--json'], { cwd: root })).out).tier, 'high');
+  assert.equal(JSON.parse((await run(['gate', 'ship', '--json'], { cwd: root })).out).base, null);
+  git(root, 'tag', 'v1.0.0');
+  write(root, 'README.md', 'docs only');
+  assert.equal((await run(['verify'], { cwd: root })).code, 0);
+  const ship = await run(['gate', 'ship'], { cwd: root });
+  assert.equal(ship.code, 0, ship.out);
+  assert.match(ship.out, /\+ tier\s+low risk since v1\.0\.0 \(\w{7}\): only documentation and test files changed since v1\.0\.0/);
+  assert.match(ship.out, /\+ review\s+not required for a low-risk change/);
+  assert.match(ship.out, /Ship gate: PASS/);
+  const json = JSON.parse((await run(['gate', 'ship', '--json'], { cwd: root })).out);
+  assert.equal(json.tier, 'low');
+  assert.equal(json.base.ref, 'v1.0.0');
+  write(root, 'src/auth/token.js', 'x');
+  assert.equal((await run(['gate', 'ship'], { cwd: root })).code, 1, 'a high-risk path needs a check on the new code');
+  const head = await run(['gate', 'ship', '--base', 'HEAD', '--json'], { cwd: root });
+  assert.equal(JSON.parse(head.out).base.ref, 'HEAD');
+  const refused = await run(['gate', 'ship', '--base=--output=x'], { cwd: root });
+  assert.equal(refused.code, 2);
+  assert.match(refused.err, /cannot start with "-"/);
 });
