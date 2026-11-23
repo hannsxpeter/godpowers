@@ -100,7 +100,7 @@ test('a note written before the package rename still counts as the 7.x note', ()
   fs.writeFileSync(path.join(root, 'CLAUDE.md'), read(root, 'AGENTS.md'));
   assert.deepEqual(context.cleanLegacy(root), [], 'the old 7.x note is not mistaken for a 6.x block');
   assert.match(read(root, 'AGENTS.md'), /npx -y godpowers@7 verify/);
-  assert.equal(context.writeAgentsNote(root), 'updated', 'the next init rewrites it with the new package');
+  assert.equal(context.writeAgentsNote(root), 'updated', 'writing the note again replaces it with the new package');
   assert.match(read(root, 'AGENTS.md'), /npx -y @hxp-tools\/godpowers@7 verify/);
 });
 
@@ -148,5 +148,14 @@ test('no warning for a current note, a missing AGENTS.md, or a symlinked AGENTS.
   fs.symlinkSync('real.md', path.join(linked, 'AGENTS.md'));
   assert.equal(context.legacyNoteWarning(linked), null);
   assert.ok(!(await run(['status'], { cwd: linked })).out.includes('Warning'));
+  assert.ok(!(await run(['doctor', '--project', linked])).out.includes('warning:'));
   assert.equal(read(linked, 'real.md'), LEGACY_NOTE);
+});
+
+test('init on a 7.x project leaves a legacy AGENTS.md note byte-identical', () => {
+  const root = v7Repo();
+  write(root, 'AGENTS.md', LEGACY_NOTE);
+  const result = require('../lib/init').init(root);
+  assert.equal(result.status, 'exists');
+  assert.equal(read(root, 'AGENTS.md'), LEGACY_NOTE);
 });

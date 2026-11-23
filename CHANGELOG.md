@@ -20,9 +20,12 @@ skill names do not change. No behavior change.
   Skills, agents, the AGENTS.md note, hook messages, and the docs now call
   `npx -y @hxp-tools/godpowers@7 ...`. The spec lives in one place,
   `lib/paths.js`. Existing AGENTS.md notes that name the old spec are still
-  recognized and replaced.
+  recognized (not treated as 6.x blocks), and `status` and `doctor` warn about
+  them.
 - `godpowers status` and `godpowers doctor` warn, read-only, when AGENTS.md
-  still runs `npx -y godpowers@7`. Neither command rewrites the file.
+  still runs `npx -y godpowers@7`. `status` checks initialized 7.x projects and
+  `doctor` checks the current folder. Neither command rewrites the file, and the
+  check refuses a symlinked or non-regular AGENTS.md.
 - The publish workflow reads the package name from `package.json` for its
   "already published" check.
 - README rewritten as a short tour: install, the quest map (init, plan, build,

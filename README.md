@@ -84,7 +84,8 @@ reasoning effort explicitly instead of letting a subagent inherit its own.
 An achievement is a record in `.godpowers/evidence.jsonl`, and it is earned
 only with real evidence. Each record is tied to a fingerprint of the tracked
 and untracked files (not ignored files, and not `.godpowers/`). When that
-fingerprint changes, the achievement goes stale until you earn it again.
+fingerprint differs, the record is stale until you earn it again, and it counts
+again if the code returns to the fingerprint it was recorded on.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/hannsxpeter/godpowers/main/docs/assets/badge-verified.svg" alt="Achievement: Verified. The declared check passed on this exact code." width="240">
@@ -122,7 +123,8 @@ boss:
 - **Stop hook.** If a session ends a turn after changing code and there is
   neither a passing run of your declared check nor a recorded waiver for the
   current code (a waiver is not a check run), the agent is asked to run
-  `godpowers verify` first. Documentation-only changes pass.
+  `godpowers verify` first. The latest record for the current code decides, so a
+  later failed check overrides an earlier waiver. Documentation-only changes pass.
 - **Commit hook.** `git commit` is blocked while `godpowers lint` finds errors
   in `.godpowers/`, such as a malformed risk line or an edited past decision.
 
