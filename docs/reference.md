@@ -119,6 +119,11 @@ alone.
 
 ## CLI
 
+The commands below are shown as `godpowers <cmd>`. The quick-start install does
+not put `godpowers` on your PATH, so run them as
+`npx -y @hxp-tools/godpowers@7 <cmd>`, or install the binary with
+`npm install -g @hxp-tools/godpowers`.
+
 On Claude Code and Codex, the installed skills call the installed copy of the
 CLI by path, so the agent runs the same version as the hooks and needs no
 network. Elsewhere they use `npx -y @hxp-tools/godpowers@7`. You can run the commands
@@ -126,7 +131,7 @@ directly too:
 
 ```text
 godpowers init [--verify "<cmd>"] [--goal "<text>"] [--no-agents-md]
-godpowers migrate [--dry-run]           6.x layout to 7.x; archives, deletes nothing
+godpowers migrate [--dry-run]           6.x layout to 7.x; archives, backs up instruction files
 godpowers clean [--dry-run]             remove 6.x blocks from AGENTS.md, CLAUDE.md, rule files
 godpowers status [--json]               stage, evidence freshness, risks, next step
 godpowers verify "<cmd>" [--claim "<text>"]   run a check and record it

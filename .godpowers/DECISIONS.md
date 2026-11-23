@@ -70,3 +70,8 @@ Why: A setting a repository controls should only be able to make a gate stricter
 Context: tstack (Theo Browne's agent skills, MIT) automates the pull request lifecycle: a review loop with GPT Sol, a three-model council, a PR watcher script, and unattended merging.
 Decision: Take what the CLI can check or what costs a few tokens: a verdict block printed from the ledger, the reviewer on review records, review-growth and base-drift warnings, trigger-style descriptions, Codex skill metadata, and unattended-run guidance in /god. Do not adopt council, the pr-wait watcher, unattended merging, or the PR comment and filing skills.
 Why: Code over prose, and use what the host provides. Hosts already watch pull requests, three reviewers per round triples review cost with no evidence it pays (docs/ab-eval.md), and merging is the user's irreversible step.
+
+## 2026-11-23: Instructions use the scoped package @hxp-tools/godpowers
+Context: The unscoped `godpowers` npm package belonged to a deleted npm account and can no longer be published, so `npx -y godpowers@7` would never reach 7.3.0.
+Decision: Supersedes the decision that installed instructions and the AGENTS.md note call `npx -y godpowers@7`. They now call `npx -y @hxp-tools/godpowers@7`, kept in one constant (`NPX_SPEC` in lib/paths.js). The command stays `godpowers`. Notes written by 7.0 to 7.2 are still recognized, and `godpowers init` on an existing 7.x project refreshes only the text between the markers when it names the old package.
+Why: The old spec is orphaned. Recognizing old notes keeps existing projects from carrying a dead command, without touching anything outside the markers.

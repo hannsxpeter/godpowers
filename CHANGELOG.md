@@ -21,6 +21,9 @@ skill names do not change. No behavior change.
   `npx -y @hxp-tools/godpowers@7 ...`. The spec lives in one place,
   `lib/paths.js`. Existing AGENTS.md notes that name the old spec are still
   recognized and replaced.
+- `godpowers init` on an existing 7.x project now refreshes an AGENTS.md note
+  that still names the old package. It rewrites only the text between the
+  markers, skips a symlinked AGENTS.md, and prints one line when it does.
 - The publish workflow reads the package name from `package.json` for its
   "already published" check.
 - README rewritten as a short tour: install, the quest map (init, plan, build,

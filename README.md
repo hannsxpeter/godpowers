@@ -83,8 +83,9 @@ reasoning effort explicitly instead of letting a subagent inherit its own.
 
 An achievement is a record in `.godpowers/evidence.jsonl`, and it is earned
 only with real evidence. Each record is bound to the exact code it describes.
-Change a single file afterwards and the achievement goes stale until you earn
-it again.
+Change a tracked or untracked file afterwards and the achievement goes stale
+until you earn it again; ignored files and `.godpowers/` are not part of the
+fingerprint.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/hannsxpeter/godpowers/main/docs/assets/badge-verified.svg" alt="Achievement: Verified. The declared check passed on this exact code." width="240">
@@ -120,13 +121,15 @@ nothing to compare, so the tier is high. Two hooks guard the road before the
 boss:
 
 - **Stop hook.** If a session ends a turn after changing code and no passing
-  run of your declared check matches the current code, the agent is asked to run
-  `godpowers verify` first. Documentation-only changes pass.
+  (or waived) run of your declared check matches the current code, the agent is
+  asked to run `godpowers verify` first. Documentation-only changes pass.
 - **Commit hook.** `git commit` is blocked while `godpowers lint` finds errors
   in `.godpowers/`, such as a malformed risk line or an edited past decision.
 
 Hooks exist only on Claude Code and Codex. On other hosts the gates are
-instructions. The full rules, including how records match code, are in the
+instructions. A waiver (`godpowers verify --waive "<reason>"`) records that no
+automated check covers the code; with `verify: none` in `STATE.md`, a waived
+check does not block the ship gate and shows as a warning. The full rules, including how records match code, are in the
 [reference](docs/reference.md#gates).
 
 ## Your save file
@@ -142,7 +145,10 @@ Everything lives in `.godpowers/`, which you commit with your code:
 
 ## CLI at a glance
 
-The powers call the CLI for you. You can run it directly too:
+The powers call the CLI for you. You can run it directly too. The quick-start
+install does not put `godpowers` on your PATH, so run these as
+`npx -y @hxp-tools/godpowers@7 <cmd>`, or install the binary with
+`npm install -g @hxp-tools/godpowers`.
 
 ```text
 godpowers init [--verify "<cmd>"]       set up .godpowers/
@@ -155,7 +161,7 @@ godpowers verdict [--base <ref>]        evidence summary to paste into a PR
 godpowers lint                          validate .godpowers/ files
 godpowers doctor                        installed hosts, hooks, 6.x leftovers
 godpowers budget                        prompt size of the shipped skills
-godpowers migrate [--dry-run]           6.x layout to 7.x; deletes nothing
+godpowers migrate [--dry-run]           6.x layout to 7.x; archives, backs up instruction files
 godpowers clean [--dry-run]             remove 6.x blocks from instruction files
 ```
 
