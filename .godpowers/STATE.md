@@ -4,7 +4,7 @@ project: godpowers
 stage: ship
 verify: npm test
 fast: node scripts/check-text.js
-docs: README.md, CHANGELOG.md, RELEASE.md, CONTRIBUTING.md, ARCHITECTURE.md, SECURITY.md, SUPPORT.md, USERS.md, INSPIRATION.md, CODE_OF_CONDUCT.md, docs/**
+docs: README.md, CHANGELOG.md, CONTRIBUTING.md, ARCHITECTURE.md, SECURITY.md, INSPIRATION.md, CODE_OF_CONDUCT.md, docs/**
 updated: 2026-11-09
 ---
 # godpowers
@@ -13,12 +13,12 @@ updated: 2026-11-09
 Keep Godpowers a small, verified core: durable project state, checks bound to exact code, an independent reviewer, and gates enforced by hooks in Claude Code and Codex.
 
 ## Now
-- 7.1.0 is merged to main (c0b2900), tagged v7.1.0, and pushed; CI passed. The publish job (run 42567838762) passed the identity and release checks and failed at the final PUT with E404, so npm still has 6.3.0 as latest. The GitHub release is a draft until npm has 7.1.0.
-- 7.2.0 (verdict block, reviewer on review records, review-growth and base-drift warnings, Codex skill metadata, trigger-style descriptions, unattended /god; ideas from tstack) is rebased on main in feat/tstack-picks, Codex-reviewed, and passes the ship gate at the normal tier.
+- 7.3.0 renames the npm package to @hxp-tools/godpowers, because the unscoped `godpowers` package belonged to a deleted npm account and cannot be published. The command stays `godpowers`. It also carries the docs refresh (new README, graphics, doc cleanup). npm still has 6.3.0 as the last release of the unscoped package.
+- The unscoped 7.1.0 and 7.2.0 tags will never reach npm. Their draft releases on the code host get a note pointing to 7.3.0.
 
 ## Next
-- Merge feat/tstack-picks to main, tag v7.2.0, and keep its GitHub release a draft until npm has 7.2.0.
-- Fix npm credentials (a trusted publisher for publish.yml and no NPM_TOKEN secret, or a new granular NPM_TOKEN). Then `gh run rerun 42567838762` for v7.1.0 first and re-run the v7.2.0 publish job after it, so `latest` ends on 7.2.0; publish both draft releases (`gh release edit <tag> --draft=false`); and upgrade the local install (`npx godpowers@7 --claude --codex --global`).
+- Publish 7.3.0 as @hxp-tools/godpowers. The first publish of a new package name is the one allowed manual publish (see Releasing in CONTRIBUTING.md): `npm login` as hannsxpeter, then `npm publish` from the v7.3.0 tag. After that, add a trusted publisher for publish.yml on the scoped package and remove the NPM_TOKEN secret.
+- Add the "moved to 7.3.0" note to the v7.1.0 and v7.2.0 draft releases, then upgrade the local install (`npx -y @hxp-tools/godpowers@7 --claude --codex --global`).
 
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested

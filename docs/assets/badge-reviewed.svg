@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" width="320" height="96" role="img" aria-labelledby="t">
+  <title id="t">Achievement: Reviewed. A fresh-context review passed on this exact code.</title>
+  <rect width="320" height="96" fill="#101722"/>
+  <rect x="2" y="2" width="316" height="92" fill="#182233" stroke="#6FB7FF" stroke-width="4"/>
+  <rect x="14" y="14" width="68" height="68" fill="#6FB7FF"/>
+  <circle cx="45" cy="45" r="14" fill="none" stroke="#101722" stroke-width="8"/>
+  <path d="M56 56L70 70" stroke="#101722" stroke-width="9" stroke-linecap="square"/>
+  <text x="98" y="38" font-family="Newsreader, Georgia, 'Times New Roman', serif" font-weight="600" font-size="28" fill="#F2EBDD">Reviewed</text>
+  <text x="98" y="60" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#9AA7BD">A fresh-context review passed</text>
+  <text x="98" y="78" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#9AA7BD">on this exact code.</text>
+</svg>

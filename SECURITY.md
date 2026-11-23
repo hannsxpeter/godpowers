@@ -69,7 +69,7 @@ Out of scope:
 
 | Version | Supported |
 | --- | --- |
-| 7.0.x | Yes |
+| 7.x (latest release) | Yes |
 | 6.x and earlier | No. Upgrade to 7. |
 
 ## Disclosure policy

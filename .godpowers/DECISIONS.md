@@ -70,3 +70,14 @@ Why: A setting a repository controls should only be able to make a gate stricter
 Context: tstack (Theo Browne's agent skills, MIT) automates the pull request lifecycle: a review loop with GPT Sol, a three-model council, a PR watcher script, and unattended merging.
 Decision: Take what the CLI can check or what costs a few tokens: a verdict block printed from the ledger, the reviewer on review records, review-growth and base-drift warnings, trigger-style descriptions, Codex skill metadata, and unattended-run guidance in /god. Do not adopt council, the pr-wait watcher, unattended merging, or the PR comment and filing skills.
 Why: Code over prose, and use what the host provides. Hosts already watch pull requests, three reviewers per round triples review cost with no evidence it pays (docs/ab-eval.md), and merging is the user's irreversible step.
+
+## 2026-11-23: Instructions use the scoped package @hxp-tools/godpowers
+Context: The unscoped `godpowers` npm package belonged to a deleted npm account and can no longer be published, so `npx -y godpowers@7` would never reach 7.3.0.
+Decision: Supersedes the decision that installed instructions and the AGENTS.md note call `npx -y godpowers@7`. They now call `npx -y @hxp-tools/godpowers@7`, kept in one constant (`NPX_SPEC` in lib/paths.js). The command stays `godpowers`. Notes written by 7.0 to 7.2 are still recognized, and `godpowers init` on an existing 7.x project refreshes only the text between the markers when it names the old package.
+Why: The old spec is orphaned. Recognizing old notes keeps existing projects from carrying a dead command, without touching anything outside the markers.
+
+
+## 2026-11-23: Warn about an old AGENTS.md note instead of rewriting it
+Context: The previous entry said `godpowers init` refreshes an AGENTS.md note that names the unscoped package. Review found the write could follow a substituted symlink or hard link, a stray begin marker could pair with a later block and erase text between them, and /god-init stops on an initialized project before init runs.
+Decision: Supersedes the refresh clause of the previous entry. `init` on a 7.x project changes nothing. `godpowers status` and `godpowers doctor` print a read-only warning when AGENTS.md at the project root is a regular file that still contains `npx -y godpowers@7`, and the user replaces the line by hand. Old notes are still recognized when cleaning. The scoped `npx -y @hxp-tools/godpowers@7` is what the AGENTS.md note uses and the fallback in skills; Claude Code and Codex installs substitute the path of the installed CLI instead.
+Why: A warning cannot corrupt a file or follow a link, and the one line is easy to fix by hand.

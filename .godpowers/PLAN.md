@@ -19,10 +19,10 @@ Source: the November 2026 research review of agent verification bottlenecks
 - R8: Plans mark each slice as `(behavior)` or `(refactor)`. The PLAN.md template and the lint placeholder put `(behavior)` after the slice number, and prose notes flag slices without a kind. Done when: lint and prose tests cover the new template and the note.
 - R9: Skills and agents use the new commands within their token budgets: `/god` decides the security pass with `godpowers risk`; `/god-build` runs `godpowers fast` after each slice and keeps refactors apart from behavior changes; `/god-review` runs `godpowers reviews` and `godpowers tests`, scopes re-reviews to the change since the last reviewed commit, passes dismissed findings, verifies each finding before fixing, stops after three failed rounds, and prefers a reviewer from a different model family; `/god-ship` follows the tiered gate and shows test warnings to the user; the shared skill names no specific model. Done when: `npm run budget` passes and `test/package.test.js` passes.
 - R10: CI does less duplicate work: pull request runs cancel superseded runs of the same pull request, lint runs once, and the release check runs in parallel with the test matrix. Done when: `.github/workflows/ci.yml` shows it and the next CI run passes.
-- R11: README, ARCHITECTURE.md, CHANGELOG.md, RELEASE.md, and the version (7.1.0) describe the release. Done when: `npm run release:check` passes.
+- R11: README, ARCHITECTURE.md, CHANGELOG.md, and the version describe the release. Done when: `npm run release:check` passes.
 
 ## Non-goals
-- Registering a hook that runs the `fast` command on every edit. Godpowers never runs a command a repository declares unless the agent or user calls the CLI; the README shows a hook users can add to their own settings.
+- Registering a hook that runs the `fast` command on every edit. Godpowers never runs a command a repository declares unless the agent or user calls the CLI; docs/reference.md shows a hook users can add to their own settings.
 - Remote caching, merge queues, post-merge validation, or letting CI trust `evidence.jsonl`.
 - Counting stop-hook nudges in `stats` (they live in temporary session files).
 

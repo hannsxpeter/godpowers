@@ -121,7 +121,7 @@ test('migrate archives 6.x files, writes the 7.x files, and cleans instruction f
   assert.equal(fs.existsSync(path.join(root, 'CLAUDE.md')), false);
   const agents = read(root, 'AGENTS.md');
   assert.match(agents, /^# Rules/);
-  assert.match(agents, /npx -y godpowers@7 verify/);
+  assert.match(agents, /npx -y @hxp-tools\/godpowers@7 verify/);
   assert.doesNotMatch(agents, /old block/);
   assert.equal(lint.lintProject(root).errors, 0);
   assert.equal(migrateTools.migrate(root).reason, 'already on the 7.x layout');

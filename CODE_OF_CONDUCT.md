@@ -9,7 +9,8 @@ do not.
 ## Reporting
 
 To report a violation, either open a private security advisory on GitHub or
-contact the maintainers through the channel listed in [SUPPORT.md](SUPPORT.md).
+contact the maintainers through the channels listed under "Getting help" in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 Reports are handled privately. You will not be asked to confront the other
 person, and you do not need to have documented everything perfectly before

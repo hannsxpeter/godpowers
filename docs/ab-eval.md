@@ -134,3 +134,15 @@ The skills now make sizing its own step: before starting a subagent, the agent
 says which model and effort it picked and why, then passes both explicitly.
 That change is not measured yet. One task and two runs per arm is a small
 sample, so run your own before drawing conclusions.
+
+## Sharing your results
+
+If you run it on a real project, open an issue or a discussion with the
+numbers, especially the ones that make Godpowers look bad. Record at least:
+
+- the repository shape and the tasks,
+- the model and effort level for both arms,
+- tokens, cost, and wall-clock time,
+- how often you had to step in, and why,
+- what the independent review found,
+- whether you would ship each result.

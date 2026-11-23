@@ -231,7 +231,7 @@ late payloads read as empty.
 Godpowers never runs a command a repository declares from a hook. The `fast`
 and `verify` commands in STATE.md run only when the agent or the user calls the
 CLI, because an installed hook would run whatever any cloned repository
-declares, without a permission prompt. The README shows a PostToolUse hook
+declares, without a permission prompt. The reference (docs/reference.md) shows a PostToolUse hook
 (`godpowers fast --hook`) that users can add to a trusted repository's own
 local settings.
 
