@@ -5,7 +5,7 @@ stage: ship
 verify: npm test
 fast: node scripts/check-text.js
 docs: README.md, CHANGELOG.md, CONTRIBUTING.md, ARCHITECTURE.md, SECURITY.md, INSPIRATION.md, CODE_OF_CONDUCT.md, docs/**
-updated: 2026-11-09
+updated: 2026-11-23
 ---
 # godpowers
 
@@ -13,12 +13,13 @@ updated: 2026-11-09
 Keep Godpowers a small, verified core: durable project state, checks bound to exact code, an independent reviewer, and gates enforced by hooks in Claude Code and Codex.
 
 ## Now
-- 7.3.0 renames the npm package to @hxp-tools/godpowers, because the unscoped `godpowers` package belonged to a deleted npm account and cannot be published. The command stays `godpowers`. It also carries the docs refresh (new README, graphics, doc cleanup). npm still has 6.3.0 as the last release of the unscoped package.
-- The unscoped 7.1.0 and 7.2.0 tags will never reach npm. Their draft releases on the code host get a note pointing to 7.3.0.
+- 7.3.0 is on npm as @hxp-tools/godpowers (latest, published 2026-11-23 by hand as the one allowed first publish of a new name) and is the Latest GitHub release. The command stays `godpowers`. The local Claude Code and Codex install is on 7.3.0.
+- The unscoped `godpowers` package stops at 6.3.0. The v7.1.0 and v7.2.0 tags never reached npm; their GitHub releases stay drafts.
+- No NPM_TOKEN secret is set. The v7.3.0 tag publish run failed at authentication before the manual publish, which is expected.
 
 ## Next
-- Publish 7.3.0 as @hxp-tools/godpowers. The first publish of a new package name is the one allowed manual publish (see Releasing in CONTRIBUTING.md): `npm login` as hannsxpeter, then `npm publish` from the v7.3.0 tag. After that, add a trusted publisher for publish.yml on the scoped package and remove the NPM_TOKEN secret.
-- Add the "moved to 7.3.0" note to the v7.1.0 and v7.2.0 draft releases, then upgrade the local install (`npx -y @hxp-tools/godpowers@7 --claude --codex --global`).
+- Add a trusted publisher on npmjs.com for @hxp-tools/godpowers: GitHub Actions, hannsxpeter/godpowers, workflow publish.yml, blank environment, direct `npm publish` allowed. Until then a tag push cannot publish.
+- Merge main into feat/feedback-loop so its AGENTS.md note and docs use the scoped package, then finish its review.
 
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested
