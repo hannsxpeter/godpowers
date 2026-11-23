@@ -13,7 +13,7 @@ const POINTER = `${context.BEGIN}\n## Godpowers project\n\nThis project uses God
 test('writes, updates, and removes the short AGENTS.md note', () => {
   const root = tempDir();
   assert.equal(context.writeAgentsNote(root), 'created');
-  assert.match(read(root, 'AGENTS.md'), /npx -y godpowers@7 verify/);
+  assert.match(read(root, 'AGENTS.md'), /npx -y @hxp-tools\/godpowers@7 verify/);
   assert.equal(context.writeAgentsNote(root), 'unchanged');
   write(root, 'AGENTS.md', `# Team rules\n\nUse tabs.\n\n${context.BEGIN}\nold\n${context.END}\n\nFooter\n`);
   assert.equal(context.writeAgentsNote(root), 'updated');
@@ -92,12 +92,24 @@ test('cleanLegacy removes the early uppercase GODPOWERS blocks too', () => {
   assert.deepEqual(context.removeOldBlocks('plain'), { text: 'plain', removed: false });
 });
 
+test('a note written before the package rename still counts as the 7.x note', () => {
+  const root = tempDir();
+  context.writeAgentsNote(root);
+  const file = path.join(root, 'AGENTS.md');
+  fs.writeFileSync(file, read(root, 'AGENTS.md').replace('npx -y @hxp-tools/godpowers@7', 'npx -y godpowers@7'));
+  fs.writeFileSync(path.join(root, 'CLAUDE.md'), read(root, 'AGENTS.md'));
+  assert.deepEqual(context.cleanLegacy(root), [], 'the old 7.x note is not mistaken for a 6.x block');
+  assert.match(read(root, 'AGENTS.md'), /npx -y godpowers@7 verify/);
+  assert.equal(context.writeAgentsNote(root), 'updated', 'the next init rewrites it with the new package');
+  assert.match(read(root, 'AGENTS.md'), /npx -y @hxp-tools\/godpowers@7 verify/);
+});
+
 test('cleanLegacy skips symlinks, leaves unterminated markers alone, and keeps user-written Pillars blocks', () => {
   const root = tempDir();
   context.writeAgentsNote(root);
   fs.symlinkSync('AGENTS.md', path.join(root, 'CLAUDE.md'));
   assert.deepEqual(context.cleanLegacy(root), []);
-  assert.match(read(root, 'AGENTS.md'), /npx -y godpowers@7/, 'the 7.x note survives a CLAUDE.md symlink');
+  assert.match(read(root, 'AGENTS.md'), /npx -y @hxp-tools\/godpowers@7/, 'the 7.x note survives a CLAUDE.md symlink');
   assert.ok(fs.lstatSync(path.join(root, 'CLAUDE.md')).isSymbolicLink());
   const stray = tempDir();
   write(stray, 'GEMINI.md', `${context.BEGIN}\nstray marker, never closed\n\n# My notes\nKeep this.\n\n${context.BEGIN}\nold\n${context.END}\n`);

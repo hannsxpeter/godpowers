@@ -18,5 +18,5 @@ Size the plan to the work. When the request already lists its requirements, the 
    - `## Open questions`: only ones that change the plan, each with who decides.
 3. Append lasting choices (stack, data model, external services, trade-offs) to DECISIONS.md as `## YYYY-MM-DD: <decision>` with one line each for Context, Decision, and Why. Never edit old entries; add one that supersedes.
 4. Put known risks in STATE.md, set `stage: build`, and name the first slice under Next.
-5. Run `npx -y godpowers@7 lint` and fix any errors.
+5. Run `npx -y @hxp-tools/godpowers@7 lint` and fix any errors.
 6. Ask the user only about open questions that block the first slice.

@@ -4,7 +4,7 @@ project: godpowers
 stage: ship
 verify: npm test
 fast: node scripts/check-text.js
-docs: README.md, CHANGELOG.md, RELEASE.md, CONTRIBUTING.md, ARCHITECTURE.md, SECURITY.md, SUPPORT.md, USERS.md, INSPIRATION.md, CODE_OF_CONDUCT.md, docs/**
+docs: README.md, CHANGELOG.md, CONTRIBUTING.md, ARCHITECTURE.md, SECURITY.md, INSPIRATION.md, CODE_OF_CONDUCT.md, docs/**
 updated: 2026-11-09
 ---
 # godpowers
@@ -18,7 +18,7 @@ Keep Godpowers a small, verified core: durable project state, checks bound to ex
 
 ## Next
 - Merge feat/tstack-picks to main, tag v7.2.0, and keep its GitHub release a draft until npm has 7.2.0.
-- Fix npm credentials (a trusted publisher for publish.yml and no NPM_TOKEN secret, or a new granular NPM_TOKEN). Then `gh run rerun 42567838762` for v7.1.0 first and re-run the v7.2.0 publish job after it, so `latest` ends on 7.2.0; publish both draft releases (`gh release edit <tag> --draft=false`); and upgrade the local install (`npx godpowers@7 --claude --codex --global`).
+- Fix npm credentials (a trusted publisher for publish.yml and no NPM_TOKEN secret, or a new granular NPM_TOKEN). Then `gh run rerun 42567838762` for v7.1.0 first and re-run the v7.2.0 publish job after it, so `latest` ends on 7.2.0; publish both draft releases (`gh release edit <tag> --draft=false`); and upgrade the local install (`npx -y @hxp-tools/godpowers@7 --claude --codex --global`).
 
 ## Risks
 - [ ] low: Windows behavior (process-tree kill, argument quoting) is untested

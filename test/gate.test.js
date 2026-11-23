@@ -44,7 +44,7 @@ test('stop gate blocks a code change until the declared check passes on it', asy
   assert.equal(result.block, true);
   assert.match(result.reason, /No run of the project check \(node check\.js\) matches the current code/);
   assert.match(result.reason, /Changed: src\/app\.js/);
-  assert.match(result.reason, /npx -y godpowers@7 verify`/, 'the hint uses plain verify, which runs the declared check');
+  assert.match(result.reason, /npx -y @hxp-tools\/godpowers@7 verify`/, 'the hint uses plain verify, which runs the declared check');
   await evidence.verify(root, 'true');
   assert.equal(gate.stopGate(root).block, true, 'another command does not satisfy the gate');
   await runCheck(root, { fail: true });

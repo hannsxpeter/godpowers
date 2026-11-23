@@ -7,8 +7,11 @@ moves and how.
 
 ## 1. Reinstall
 
+From 7.3.0 the npm package is `@hxp-tools/godpowers`. The old unscoped
+`godpowers` package stops at 6.3.0, and the command is still `godpowers`.
+
 ```bash
-npx godpowers@7 --claude --codex --global
+npx -y @hxp-tools/godpowers@7 --claude --codex --global
 ```
 
 Use the flags for your hosts. The installer removes the 6.x skills and agents,
@@ -19,7 +22,7 @@ skills whose names start with `god` but not `god-` (for example `goddesign`).
 Check the result:
 
 ```bash
-npx godpowers@7 doctor
+npx -y @hxp-tools/godpowers@7 doctor
 ```
 
 In Codex, open `/hooks` once and trust the three Godpowers hooks.
@@ -27,8 +30,8 @@ In Codex, open `/hooks` once and trust the three Godpowers hooks.
 ## 2. Migrate each project
 
 ```bash
-npx godpowers@7 migrate --dry-run
-npx godpowers@7 migrate
+npx -y @hxp-tools/godpowers@7 migrate --dry-run
+npx -y @hxp-tools/godpowers@7 migrate
 ```
 
 The migration:
@@ -56,8 +59,8 @@ reminds you to migrate.
 
 Projects that never had `.godpowers/` state can still carry 6.x instruction
 blocks (for example a "Godpowers Project Context" Pillars block in AGENTS.md).
-Remove just those with `npx godpowers@7 clean --dry-run`, then
-`npx godpowers@7 clean`.
+Remove just those with `npx -y @hxp-tools/godpowers@7 clean --dry-run`, then
+`npx -y @hxp-tools/godpowers@7 clean`.
 
 ## Command map
 
@@ -72,7 +75,7 @@ Remove just those with `npx godpowers@7 clean --dry-run`, then
 | `/god-harden`, `/god-status` | unchanged |
 
 Everything else was removed. If you rely on a removed command, keep using 6.x
-with `npx godpowers@6`; the 6.4 source is tagged `v6.4.0`.
+with the unscoped package (`npx --package godpowers@6 godpowers`); the 6.4 source is tagged `v6.4.0`.
 
 ## What changed in the files
 

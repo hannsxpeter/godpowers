@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 520" width="1280" height="520" role="img" aria-labelledby="t d">
+  <title id="t">The Godpowers quest map</title>
+  <desc id="d">Six stages in order: init, plan, build, review, harden, ship. Each stage is cleared by a power command. The ship stage is the boss gate, which opens only for recorded evidence matching the exact code.</desc>
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#1D2A40" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="520" fill="#101722"/>
+  <rect width="1280" height="520" fill="url(#grid)"/>
+  <text x="48" y="58" font-family="Newsreader, Georgia, 'Times New Roman', serif" font-weight="600" font-size="34" fill="#F2EBDD">The quest map</text>
+  <text x="48" y="88" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif" font-size="16" fill="#9AA7BD">/god picks the route. It skips stages the goal does not need, and ships only when you ask.</text>
+  <path d="M120 250H1030" stroke="#2B3A55" stroke-width="10" stroke-dasharray="4 10"/>
+  <path d="M120 250H880" stroke="#4FD1A1" stroke-width="6"/>
+  <g font-family="Archivo, 'Helvetica Neue', Arial, sans-serif" text-anchor="middle">
+    <g fill="#182233" stroke="#4FD1A1" stroke-width="4">
+      <rect x="88" y="218" width="64" height="64"/>
+      <rect x="278" y="218" width="64" height="64"/>
+      <rect x="468" y="218" width="64" height="64"/>
+      <rect x="658" y="218" width="64" height="64"/>
+      <rect x="848" y="218" width="64" height="64"/>
+    </g>
+    <g font-family="Newsreader, Georgia, 'Times New Roman', serif" font-weight="600" font-size="34" fill="#4FD1A1">
+      <text x="120" y="262">1</text><text x="310" y="262">2</text><text x="500" y="262">3</text><text x="690" y="262">4</text><text x="880" y="262">5</text>
+    </g>
+    <g font-weight="600" font-size="20" letter-spacing="2" fill="#F2EBDD">
+      <text x="120" y="324">INIT</text><text x="310" y="324">PLAN</text><text x="500" y="324">BUILD</text><text x="690" y="324">REVIEW</text><text x="880" y="324">HARDEN</text>
+    </g>
+    <g font-size="15" fill="#4FD1A1">
+      <text x="120" y="350">/god-init</text><text x="310" y="350">/god-plan</text><text x="500" y="350">/god-build</text><text x="690" y="350">/god-review</text><text x="880" y="350">/god-harden</text>
+    </g>
+    <g font-size="14" fill="#9AA7BD">
+      <text x="120" y="378">creates .godpowers/</text>
+      <text x="310" y="378">PLAN.md, Done-when checks</text>
+      <text x="500" y="378">test-first slices</text>
+      <text x="690" y="378">fresh-context reviewer</text>
+      <text x="880" y="378">OWASP pass, by risk</text>
+    </g>
+    <path d="M1090 168L1152 190V250C1152 288 1124 316 1090 330C1056 316 1028 288 1028 250V190Z" fill="#2A1A1E" stroke="#FF6B57" stroke-width="5"/>
+    <text x="1090" y="244" font-family="Newsreader, Georgia, 'Times New Roman', serif" font-weight="600" font-size="42" fill="#FF6B57">6</text>
+    <text x="1090" y="278" font-weight="600" font-size="16" letter-spacing="2" fill="#F2EBDD">SHIP GATE</text>
+    <text x="1090" y="146" font-weight="600" font-size="14" letter-spacing="3" fill="#FF6B57">FINAL BOSS</text>
+    <text x="1090" y="358" font-size="15" fill="#FF6B57">/god-ship</text>
+    <text x="1090" y="378" font-size="14" fill="#9AA7BD">falls only to evidence</text>
+  </g>
+  <g font-family="Archivo, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#9AA7BD">
+    <rect x="48" y="450" width="14" height="14" fill="none" stroke="#4FD1A1" stroke-width="3"/>
+    <text x="72" y="462">stage</text>
+    <rect x="150" y="450" width="14" height="14" fill="none" stroke="#FF6B57" stroke-width="3"/>
+    <text x="174" y="462">boss gate: low risk needs a check, normal adds a review, high adds a security record</text>
+    <text x="1232" y="462" text-anchor="end">/god-status shows where you stand, read-only</text>
+  </g>
+</svg>

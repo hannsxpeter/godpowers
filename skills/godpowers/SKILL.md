@@ -31,11 +31,11 @@ Update STATE.md at milestones (stage change, slice done, new risk), not after ev
 
 ## Evidence
 
-- Run targeted tests directly while you work. Before saying code work is done, record the project check once through the CLI: `npx -y godpowers@7 verify "<command>"`. It records the result against the exact code on disk.
-- Run `npx -y godpowers@7 fast` while you work when STATE.md declares `fast`. It is cheap and never recorded.
+- Run targeted tests directly while you work. Before saying code work is done, record the project check once through the CLI: `npx -y @hxp-tools/godpowers@7 verify "<command>"`. It records the result against the exact code on disk.
+- Run `npx -y @hxp-tools/godpowers@7 fast` while you work when STATE.md declares `fast`. It is cheap and never recorded.
 - A passing record goes stale when code changes, so record it after your last change. `verify` reuses a passing record of the same command on unchanged code; `--force` runs it again.
-- If no automated check can cover a change, record why with `npx -y godpowers@7 verify --waive "<reason>"` and say the change is unverified. Never waive a failing check.
-- Record reviews with `--reviewer "<model>"` when the reviewer reported its model. `npx -y godpowers@7 verdict` prints the ledger summary to paste unedited into a PR or release notes.
+- If no automated check can cover a change, record why with `npx -y @hxp-tools/godpowers@7 verify --waive "<reason>"` and say the change is unverified. Never waive a failing check.
+- Record reviews with `--reviewer "<model>"` when the reviewer reported its model. `npx -y @hxp-tools/godpowers@7 verdict` prints the ledger summary to paste unedited into a PR or release notes.
 - Report failures as failures, with the output.
 
 ## Risks
@@ -45,8 +45,8 @@ Risks are checkbox lines under `## Risks` in STATE.md: `- [ ] critical: what, wh
 ## Gates enforced by code
 
 - Stop hook: if code changed during the session and no passing record matches it, you are asked to verify before finishing.
-- Commit hook: `git commit` is blocked while `npx -y godpowers@7 lint` reports errors in `.godpowers/` (including edits to past decisions).
-- Ship gate: `npx -y godpowers@7 gate ship` scales with `npx -y godpowers@7 risk`. Low risk needs a passing check, normal adds a review, high adds a security record (no base to compare means high). An open critical risk always blocks.
+- Commit hook: `git commit` is blocked while `npx -y @hxp-tools/godpowers@7 lint` reports errors in `.godpowers/` (including edits to past decisions).
+- Ship gate: `npx -y @hxp-tools/godpowers@7 gate ship` scales with `npx -y @hxp-tools/godpowers@7 risk`. Low risk needs a passing check, normal adds a review, high adds a security record (no base to compare means high). An open critical risk always blocks.
 
 ## Working style
 

@@ -37,7 +37,7 @@ npm run pack:check  # the npm package contains what an install needs
 - **New commands and agents need a strong case.** Show what a current model
   gets wrong without it, ideally with an A/B run (`docs/ab-eval.md`). Adding a
   skill means a folder under `skills/` with a `SKILL.md`, a row in the README
-  table, and updates to `test/package.test.js` and `scripts/check-pack.js`.
+  powers table, and updates to `test/package.test.js` and `scripts/check-pack.js`.
 - **No production dependencies.**
 - **Write plainly.** Short sentences, named actors, real file paths. No em
   dashes, en dashes, or emoji anywhere in the repository.
@@ -56,8 +56,7 @@ Say what changed and why in the body when it is not obvious.
 ## Releasing
 
 1. Update the version in `package.json`, `.claude-plugin/plugin.json`, and
-   `.claude-plugin/marketplace.json`, add the CHANGELOG entry, and rewrite
-   `RELEASE.md`.
+   `.claude-plugin/marketplace.json`, and add the CHANGELOG entry.
 2. `npm run release:check`. `godpowers gate ship` checks the tier of the
    change since the last tag (low: a check; normal: also a review; high: also
    a security record), so run it before tagging.
@@ -66,7 +65,12 @@ Say what changed and why in the body when it is not obvious.
    The publish workflow checks the tag against `package.json` and `main`, runs
    the release check again, and publishes with provenance. Never run
    `npm publish` by hand.
-5. `gh release create v<version> --notes-file RELEASE.md`.
+5. `gh release create v<version>` with the CHANGELOG entry as the notes
+   (`--notes "..."`, or `--generate-notes` and then edit).
+
+The package is published as `@hxp-tools/godpowers` (`publishConfig.access` is
+`public`), so the `@hxp-tools` scope on npmjs.com must exist and the trusted
+publisher or token must be for that package.
 
 Publishing authenticates with npm Trusted Publishing when it is configured for
 this repository and `.github/workflows/publish.yml` on npmjs.com (package
@@ -81,11 +85,22 @@ that step succeeds.
 Dependabot is enabled. Merge its pull requests rather than adding npm
 `overrides`, unless the patched version is outside every declared range.
 
-## Reporting bugs
+## Getting help and reporting bugs
 
-Open an issue with the output of `npx godpowers doctor` and
-`npx godpowers status`, what you ran, and what happened. Report security
-problems privately; see [SECURITY.md](SECURITY.md).
+| What you have | Where it goes |
+| --- | --- |
+| Something is broken | A GitHub issue |
+| An idea for a feature | A GitHub issue with the feature-request template |
+| A question | GitHub Discussions |
+| A security vulnerability | **Not an issue.** See [SECURITY.md](SECURITY.md) for private reporting. |
+
+Two commands answer many questions on their own, and their output makes an
+issue much faster to handle: `npx @hxp-tools/godpowers doctor` (what is installed where,
+hooks, 6.x leftovers) and `npx @hxp-tools/godpowers status` (what Godpowers believes about
+the current project). Include their output, what you ran, and what happened.
+
+This is a small project maintained on a best-effort basis. Issues are triaged
+by severity and impact, not arrival order.
 
 ## License
 

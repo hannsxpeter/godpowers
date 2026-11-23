@@ -63,7 +63,7 @@ test('Claude Code install writes skill directories, agents, runtime, and hooks, 
   for (const name of SKILLS) assert.ok(fs.existsSync(path.join(base, '.claude/skills', name, 'SKILL.md')), name);
   for (const name of AGENTS) assert.ok(fs.existsSync(path.join(base, '.claude/agents', `${name}.md`)), name);
   assert.ok(fs.existsSync(path.join(base, '.claude/godpowers/bin/godpowers.js')));
-  assert.equal(json(base, '.claude/godpowers/package.json').name, 'godpowers');
+  assert.equal(json(base, '.claude/godpowers/package.json').name, '@hxp-tools/godpowers');
   for (const gone of ['skills/god-mode.md', 'skills/god-smite.md', 'skills/godpowers.md', 'agents/god-orchestrator.md', 'godpowers-references', 'godpowers-runtime', 'GODPOWERS_VERSION', 'GODPOWERS_PROFILE', 'hooks/session-start.sh']) {
     assert.equal(fs.existsSync(path.join(base, '.claude', gone)), false, gone);
   }
@@ -79,7 +79,7 @@ test('Claude Code install writes skill directories, agents, runtime, and hooks, 
   const cli = `node "${path.join(base, '.claude/godpowers/bin/godpowers.js')}"`;
   const skill = read(base, '.claude/skills/god-build/SKILL.md');
   assert.ok(skill.includes(`${cli} verify`), 'installed skills call the installed CLI');
-  assert.ok(!skill.includes('npx -y godpowers@7'));
+  assert.ok(!skill.includes('npx -y @hxp-tools/godpowers@7'));
   assert.ok(read(base, '.claude/agents/god-executor.md').includes(cli));
   assert.ok(fs.existsSync(path.join(base, '.claude/godpowers/.godpowers-runtime')));
   assert.equal(settings.hooks.PreToolUse.length, 2);
@@ -116,7 +116,7 @@ test('flat hosts get markdown files and no hooks; local installs use project-rel
   const cursor = install.install('cursor', { srcDir: SRC, base });
   assert.equal(cursor.hooks, null);
   assert.ok(fs.existsSync(path.join(base, '.cursor/rules/god-build.md')));
-  assert.ok(read(base, '.cursor/rules/god-build.md').includes('npx -y godpowers@7'), 'hosts without a runtime copy keep npx');
+  assert.ok(read(base, '.cursor/rules/god-build.md').includes('npx -y @hxp-tools/godpowers@7'), 'hosts without a runtime copy keep npx');
   assert.ok(fs.existsSync(path.join(base, '.cursor/agents/god-reviewer.md')));
   assert.equal(fs.existsSync(path.join(base, '.cursor/godpowers')), false);
   const project = tempDir('gp-local-');
@@ -278,7 +278,7 @@ test('an installed copy names itself by path in agent-facing hints', () => {
   const installed = path.join(base, '.claude/godpowers');
   const probe = spawnSync(process.execPath, ['-e', `console.log(require(${JSON.stringify(path.join(installed, 'lib/paths.js'))}).cliCommand())`], { encoding: 'utf8' });
   assert.equal(probe.stdout.trim(), `node "${path.join(installed, 'bin/godpowers.js')}"`);
-  assert.equal(require('../lib/paths').cliCommand(), 'npx -y godpowers@7', 'the source checkout falls back to npx');
+  assert.equal(require('../lib/paths').cliCommand(), 'npx -y @hxp-tools/godpowers@7', 'the source checkout falls back to npx');
   const plugin = spawnSync(process.execPath, ['-e', 'console.log(require("./lib/paths").cliCommand())'], { cwd: SRC, encoding: 'utf8', env: { ...process.env, CLAUDE_PLUGIN_ROOT: SRC } });
   assert.equal(plugin.stdout.trim(), `node "${path.join(SRC, 'bin/godpowers.js')}"`);
 });
@@ -434,7 +434,7 @@ test('a source that cannot be copied fails with the installed copy intact', () =
   const noPackage = sourceTree();
   fs.rmSync(path.join(noPackage, 'package.json'));
   assert.throws(() => install.install('claude', { srcDir: noPackage, base }), /ENOENT/);
-  assert.equal(json(base, '.claude/godpowers/package.json').name, 'godpowers', 'the old runtime copy is still in place');
+  assert.equal(json(base, '.claude/godpowers/package.json').name, '@hxp-tools/godpowers', 'the old runtime copy is still in place');
   assert.ok(fs.existsSync(path.join(base, '.claude/godpowers/lib/install.js')));
   assert.deepEqual(fs.readdirSync(path.join(base, '.claude')).filter(name => name.startsWith('.godpowers-new-')), []);
 });
