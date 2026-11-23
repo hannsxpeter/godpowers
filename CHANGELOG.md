@@ -21,9 +21,8 @@ skill names do not change. No behavior change.
   `npx -y @hxp-tools/godpowers@7 ...`. The spec lives in one place,
   `lib/paths.js`. Existing AGENTS.md notes that name the old spec are still
   recognized and replaced.
-- `godpowers init` on an existing 7.x project now refreshes an AGENTS.md note
-  that still names the old package. It rewrites only the text between the
-  markers, skips a symlinked AGENTS.md, and prints one line when it does.
+- `godpowers status` and `godpowers doctor` warn, read-only, when AGENTS.md
+  still runs `npx -y godpowers@7`. Neither command rewrites the file.
 - The publish workflow reads the package name from `package.json` for its
   "already published" check.
 - README rewritten as a short tour: install, the quest map (init, plan, build,
@@ -45,7 +44,9 @@ npx -y @hxp-tools/godpowers@7 --claude --codex --global
 ```
 
 Use your hosts' flags. In Codex, open `/hooks` once if you have not trusted the
-hooks. Projects need nothing: `.godpowers/` is unchanged. Claude Code plugin
+hooks. `.godpowers/` is unchanged. Replace `npx -y godpowers@7` with
+`npx -y @hxp-tools/godpowers@7` in your projects' AGENTS.md by hand;
+`godpowers status` tells you when one still has the old line. Claude Code plugin
 users keep `godpowers@godpowers`.
 
 ## [7.2.0] - 2026-11-09

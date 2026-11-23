@@ -72,6 +72,12 @@ The package is published as `@hxp-tools/godpowers` (`publishConfig.access` is
 `public`), so the `@hxp-tools` scope on npmjs.com must exist and the trusted
 publisher or token must be for that package.
 
+The only exception to "never run `npm publish` by hand" is the first publish of
+a new package name, because npm trusted publishing can only be configured on a
+package that already exists. The maintainer runs that publish from the tagged
+commit, then sets the trusted publisher for `publish.yml`, and every later
+release goes through the tag push.
+
 Publishing authenticates with npm Trusted Publishing when it is configured for
 this repository and `.github/workflows/publish.yml` on npmjs.com (package
 settings, Trusted Publisher, GitHub Actions), and the `NPM_TOKEN` secret is

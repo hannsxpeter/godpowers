@@ -82,10 +82,9 @@ reasoning effort explicitly instead of letting a subagent inherit its own.
 ## Achievements
 
 An achievement is a record in `.godpowers/evidence.jsonl`, and it is earned
-only with real evidence. Each record is bound to the exact code it describes.
-Change a tracked or untracked file afterwards and the achievement goes stale
-until you earn it again; ignored files and `.godpowers/` are not part of the
-fingerprint.
+only with real evidence. Each record is tied to a fingerprint of the tracked
+and untracked files (not ignored files, and not `.godpowers/`). When that
+fingerprint changes, the achievement goes stale until you earn it again.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/hannsxpeter/godpowers/main/docs/assets/badge-verified.svg" alt="Achievement: Verified. The declared check passed on this exact code." width="240">
@@ -120,9 +119,10 @@ An open critical risk always blocks. With no tag and no `--base` there is
 nothing to compare, so the tier is high. Two hooks guard the road before the
 boss:
 
-- **Stop hook.** If a session ends a turn after changing code and no passing
-  (or waived) run of your declared check matches the current code, the agent is
-  asked to run `godpowers verify` first. Documentation-only changes pass.
+- **Stop hook.** If a session ends a turn after changing code and there is
+  neither a passing run of your declared check nor a recorded waiver for the
+  current code (a waiver is not a check run), the agent is asked to run
+  `godpowers verify` first. Documentation-only changes pass.
 - **Commit hook.** `git commit` is blocked while `godpowers lint` finds errors
   in `.godpowers/`, such as a malformed risk line or an edited past decision.
 

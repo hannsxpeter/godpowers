@@ -17,7 +17,7 @@ Keep Godpowers a small, verified core: durable project state, checks bound to ex
 - The unscoped 7.1.0 and 7.2.0 tags will never reach npm. Their draft releases on the code host get a note pointing to 7.3.0.
 
 ## Next
-- Publish 7.3.0 as @hxp-tools/godpowers. The first publish is manual by the maintainer: `npm login` as hannsxpeter, then `npm publish` from the v7.3.0 tag. After that, add a trusted publisher for publish.yml on the scoped package and remove the NPM_TOKEN secret.
+- Publish 7.3.0 as @hxp-tools/godpowers. The first publish of a new package name is the one allowed manual publish (see Releasing in CONTRIBUTING.md): `npm login` as hannsxpeter, then `npm publish` from the v7.3.0 tag. After that, add a trusted publisher for publish.yml on the scoped package and remove the NPM_TOKEN secret.
 - Add the "moved to 7.3.0" note to the v7.1.0 and v7.2.0 draft releases, then upgrade the local install (`npx -y @hxp-tools/godpowers@7 --claude --codex --global`).
 
 ## Risks

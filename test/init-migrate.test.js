@@ -55,38 +55,6 @@ test('init creates the project, then reports it exists; legacy projects are refu
   assert.equal(initTools.init(v6).status, 'legacy');
 });
 
-test('init on a 7.x project refreshes an AGENTS.md note that names the retired package, and nothing else', () => {
-  const context = require('../lib/context');
-  const legacy = `# Team rules\n\nUse tabs.\n\n${context.BEGIN}\n## Godpowers\n\nrun \`npx -y godpowers@7 verify "<check command>"\`.\n${context.END}\n\nFooter\n`;
-  const root = tempDir();
-  initTools.init(root, { verify: 'npm test' });
-  write(root, 'AGENTS.md', legacy);
-  const result = initTools.init(root);
-  assert.equal(result.status, 'exists');
-  assert.equal(result.agents, 'updated');
-  const text = read(root, 'AGENTS.md');
-  assert.ok(text.includes('npx -y @hxp-tools/godpowers@7 verify'));
-  assert.ok(!text.includes('npx -y godpowers@7'));
-  assert.ok(text.startsWith('# Team rules\n\nUse tabs.\n\n'), 'text before the markers is untouched');
-  assert.ok(text.endsWith(`${context.END}\n\nFooter\n`), 'text after the markers is untouched');
-  assert.equal(initTools.init(root).agents, 'unchanged', 'a second run changes nothing');
-  const before = read(root, 'AGENTS.md');
-  const skipped = initTools.init(root, { agentsMd: false });
-  assert.equal(skipped.agents, 'skipped');
-  const current = tempDir();
-  initTools.init(current, { verify: 'npm test' });
-  const note = read(current, 'AGENTS.md');
-  assert.equal(initTools.init(current).agents, 'unchanged');
-  assert.equal(read(current, 'AGENTS.md'), note, 'a current note stays byte-identical');
-  assert.equal(read(root, 'AGENTS.md'), before);
-  const linked = tempDir();
-  initTools.init(linked, { verify: 'npm test', agentsMd: false });
-  write(linked, 'real.md', legacy);
-  fs.symlinkSync('real.md', path.join(linked, 'AGENTS.md'));
-  assert.equal(initTools.init(linked).agents, 'unchanged', 'a symlinked AGENTS.md is left alone');
-  assert.equal(read(linked, 'real.md'), legacy);
-});
-
 test('stageFromTiers maps 6.x tier statuses onto 7.x stages', () => {
   const tiers = (prd, build, harden, deploy, launch) => ({
     'tier-1': { prd, arch: 'done', roadmap: 'done', design: 'not-required' },

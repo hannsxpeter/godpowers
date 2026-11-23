@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const context = require('../lib/context');
-const { tempDir, write, read } = require('./helpers');
+const { tempDir, write, read, run, v7Repo } = require('./helpers');
 
 const V6_BLOCK = `${context.BEGIN}\n## Godpowers project\n\nThis project uses Godpowers. The on-disk state is the source of truth.\n### Quarterback rule\n${context.END}`;
 const PILLARS_BLOCK = '<!-- pillars:begin -->\n# Godpowers Project Context\nLoad pillars.\n<!-- pillars:end -->';
@@ -118,4 +118,35 @@ test('cleanLegacy skips symlinks, leaves unterminated markers alone, and keeps u
   const pillars = tempDir();
   write(pillars, 'AGENTS.md', '<!-- pillars:begin -->\n# Team pillars\nWe also use godpowers here.\n<!-- pillars:end -->\n');
   assert.deepEqual(context.cleanLegacy(pillars), []);
+});
+
+const LEGACY_NOTE = `# Team rules\n\n${context.BEGIN}\n## Godpowers\n\nrun \`npx -y godpowers@7 verify "<check command>"\`.\n${context.END}\n`;
+const WARNING = 'AGENTS.md still runs `npx -y godpowers@7`; the package moved, replace it with `npx -y @hxp-tools/godpowers@7`.';
+
+test('status and doctor warn, read-only, about an AGENTS.md note that still runs the retired package', async () => {
+  const root = v7Repo();
+  write(root, 'AGENTS.md', LEGACY_NOTE);
+  const status = await run(['status'], { cwd: root });
+  assert.ok(status.out.includes(`Warning: ${WARNING}`), status.out);
+  assert.deepEqual(JSON.parse((await run(['status', '--json'], { cwd: root })).out).warnings, [WARNING]);
+  const doctor = await run(['doctor', '--project', root]);
+  assert.ok(doctor.out.includes(`warning: ${WARNING}`), doctor.out);
+  assert.deepEqual(JSON.parse((await run(['doctor', '--json', '--project', root])).out).project.notes, [WARNING]);
+  assert.equal(read(root, 'AGENTS.md'), LEGACY_NOTE, 'neither command writes');
+});
+
+test('no warning for a current note, a missing AGENTS.md, or a symlinked AGENTS.md', async () => {
+  const current = v7Repo();
+  context.writeAgentsNote(current);
+  const before = read(current, 'AGENTS.md');
+  assert.ok(!(await run(['status'], { cwd: current })).out.includes('Warning'));
+  assert.ok(!(await run(['doctor', '--project', current])).out.includes('warning:'));
+  assert.equal(read(current, 'AGENTS.md'), before);
+  assert.equal(context.legacyNoteWarning(v7Repo()), null);
+  const linked = v7Repo();
+  write(linked, 'real.md', LEGACY_NOTE);
+  fs.symlinkSync('real.md', path.join(linked, 'AGENTS.md'));
+  assert.equal(context.legacyNoteWarning(linked), null);
+  assert.ok(!(await run(['status'], { cwd: linked })).out.includes('Warning'));
+  assert.equal(read(linked, 'real.md'), LEGACY_NOTE);
 });
